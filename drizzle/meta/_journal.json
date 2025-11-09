@@ -8,6 +8,20 @@
       "when": 1762683119384,
       "tag": "0000_sudden_living_mummy",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1762699437519,
+      "tag": "0001_massive_ted_forrester",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1762701102125,
+      "tag": "0002_striped_power_pack",
+      "breakpoints": true
     }
   ]
 }

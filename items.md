@@ -1,6 +1,1 @@
-accessories 
-mobile phones
-speakers 
-covers 
-
-
+product details name , description , images ( multiple images of each product will also work ) , email of the website owner mobile number address , social medias contact etc
