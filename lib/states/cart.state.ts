@@ -3,11 +3,14 @@ import { ProductInCart } from "@/lib/types/cart.types";
 
 const userCartState = create<{
   items: ProductInCart[];
+  setItems: (items: ProductInCart[]) => void;
   addItem: (item: ProductInCart) => void;
   removeItem: (productId: string) => void;
   clearCart: () => void;
+  updateItemQuantity: (productId: string, type: "inc" | "dec") => void;
 }>((set) => ({
   items: [],
+  setItems: (items) => set({ items }),
   addItem: (item) =>
     set((state) => {
       const existingItemIndex = state.items.findIndex(
@@ -25,6 +28,26 @@ const userCartState = create<{
       items: state.items.filter((item) => item.productId !== productId),
     })),
   clearCart: () => set({ items: [] }),
+  updateItemQuantity: (productId, type) =>
+    set((state) => {
+      const updatedItems = state.items
+        .map((item) =>
+          item.productId === productId
+            ? {
+                ...item,
+                quantity:
+                  type === "inc"
+                    ? item.quantity + 1
+                    : item.quantity - 1 < 1
+                    ? 0
+                    : item.quantity - 1,
+              }
+            : item
+        )
+        .filter((item) => item.quantity > 0);
+      console.log("Updated Items:", updatedItems);
+      return { items: updatedItems };
+    }),
 }));
 
 export default userCartState;
