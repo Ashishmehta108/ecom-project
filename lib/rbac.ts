@@ -1,43 +1,15 @@
-export enum Role {
-  USER = "USER",
-  ADMIN = "ADMIN",
+import { User } from "better-auth";
+
+interface UserT extends User{
+  role:"admin"|"user";
 }
 
-export enum Permission {
-  READ = "READ",
-  WRITE = "WRITE",
-  DELETE = "DELETE",
-  MANAGE_USERS = "MANAGE_USERS",
-}
 
-export const rolePermissions: Record<Role, Permission[]> = {
-  [Role.USER]: [Permission.READ],
-  [Role.ADMIN]: [
-    Permission.READ,
-    Permission.WRITE,
-    Permission.DELETE,
-    Permission.MANAGE_USERS,
-  ],
-};
 
-export interface User {
-  id: string;
-  role: Role;
-}
 
-export class RBACControl {
-  static hasPermission(user: User, permission: Permission): boolean {
-    const userPermissions = rolePermissions[user.role];
-    return userPermissions.includes(permission);
-  }
+export async function isAdmin(user:UserT){
 
-  static isAdmin(user: User): boolean {
-    return user.role === Role.ADMIN;
-  }
 
-  static isUser(user: User): boolean {
-    return user.role === Role.USER;
-  }
 }
 
 // Usage example:

@@ -30,8 +30,7 @@ import {
   wishlist,
 } from "@/lib/db/schema";
 
-
-import {admin} from "better-auth/plugins"
+import { admin } from "better-auth/plugins";
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "./lib/loadEnv";
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -89,7 +88,13 @@ export const auth = betterAuth({
     max: 100,
     message: "Too many requests from this IP, please try again later.",
   },
-  plugins:[
-    admin()
-  ]
+  plugins: [admin()],
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        input: false,
+      },
+    },
+  },
 });
