@@ -3,9 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { Trash2 } from "lucide-react";
 import userCartState from "@/lib/states/cart.state";
+import { ProductInCart } from "@/lib/types/cart.types";
+
+type CartItemWithImage = ProductInCart & {
+  image: string;
+};
 
 export default function CartPage() {
-  const [cartItems, _] = useState([
+  const [cartItems, _] = useState<CartItemWithImage[]>([
     {
       productId: "1",
       name: "Semi-Mechanical Gaming Keyboard",
@@ -25,7 +30,7 @@ export default function CartPage() {
   const { items, removeItem, updateItemQuantity, setItems } = userCartState();
   useEffect(() => {
     setItems(cartItems);
-  }, []);
+  }, [cartItems, setItems]);
   // const updateQty = (id: number, type: "inc" | "dec") => {
   //   setCartItems((prev) =>
   //     prev.map((item) =>
@@ -44,7 +49,7 @@ export default function CartPage() {
 
   const formattedTotal = useMemo(() => {
     const total = items.reduce(
-      (sum, item) => sum + item.price * item.quantity,
+      (sum: number, item: ProductInCart) => sum + item.price * item.quantity,
       0
     );
     return total.toLocaleString("en-IN");
@@ -62,8 +67,8 @@ export default function CartPage() {
 
         <main className="grid md:grid-cols-3 gap-8">
           <section className="md:col-span-2 space-y-6">
-            {items.map((item) => {
-              if (item.quantity <= 0) return;
+            {items.map((item: ProductInCart) => {
+              if (item.quantity <= 0) return null;
               return (
                 <article
                   key={item.productId}
@@ -72,7 +77,7 @@ export default function CartPage() {
                 border border-neutral-200 dark:border-neutral-800 shadow-sm"
                 >
                   <img
-                    src={cartItems[0].image}
+                    src={cartItems.find(c => c.productId === item.productId)?.image || ""}
                     alt={item.name}
                     className="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover"
                   />
