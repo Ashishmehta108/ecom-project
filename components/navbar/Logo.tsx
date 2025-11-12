@@ -8,6 +8,7 @@ function Logo() {
       <Link href="/">
         <Icon />
       </Link>
+      
     </Button>
   );
 }

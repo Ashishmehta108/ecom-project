@@ -1,13 +1,12 @@
 "use client";
 import { useSession } from "@/lib/auth-client";
 import Container from "../giobal/Container";
-import { ModeToggle } from "../ToggleTheme";
 import CartButton from "./CartItems";
-import LinksDropdown from "./LinksDropdown";
 import Logo from "./Logo";
 import NavSearch from "./NavSearch";
 import { Suspense } from "react";
 import Image from "next/image";
+import NotificationBell from "./NotificationBell";
 function Navbar() {
   const { data } = useSession();
   const isloggedIn = data?.user.id;
@@ -19,7 +18,6 @@ function Navbar() {
       <Container className="flex  sm:flex-row justify-between sm:items-center  flex-wrap py-8 gap-4">
         <Logo />
         <Suspense>
-          <NavSearch />
         </Suspense>
         <div className="flex gap-4 items-center">
           {isloggedIn && (
@@ -33,9 +31,9 @@ function Navbar() {
               />
             </div>
           )}
-          <ModeToggle />
           <CartButton items={totalItems} />
-          <LinksDropdown />
+          <NotificationBell/>
+          {/* <LinksDropdown /> */}
         </div>
       </Container>
     </nav>
