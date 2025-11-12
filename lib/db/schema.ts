@@ -1,4 +1,13 @@
-import { pgTable, text, timestamp, boolean, json } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  json,
+  integer,
+  index,
+  uniqueIndex,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -11,6 +20,10 @@ export const user = pgTable("user", {
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
+  role: text("role"),
+  banned: boolean("banned").default(false),
+  banReason: text("ban_reason"),
+  banExpires: timestamp("ban_expires"),
 });
 
 export const session = pgTable("session", {
@@ -26,6 +39,7 @@ export const session = pgTable("session", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  impersonatedBy: text("impersonated_by"),
 });
 
 export const account = pgTable("account", {
@@ -60,13 +74,40 @@ export const verification = pgTable("verification", {
     .notNull(),
 });
 
-export const cartItem = pgTable("cartitems", {
-  id: text("cartid").primaryKey(),
-  cartItem: json("cart_item").notNull(),
+
+export const cart = pgTable("carts", {
+  id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
+    .references(() => user.id, { onDelete: "cascade" })
+    .unique(),
+  total: integer("total").notNull().default(0),
+  currency: text("currency").notNull().default("INR"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 });
+
+export const cartItem = pgTable(
+  "cart_items",
+  {
+    id: text("id").primaryKey(),
+    cartId: text("cart_id")
+      .notNull()
+      .references(() => cart.id, { onDelete: "cascade" }),
+    productId: text("product_id").notNull(),
+    name: text("name").notNull(),
+    price: integer("price").notNull(),
+    quantity: integer("quantity").notNull().default(1),
+    addedAt: timestamp("added_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [index("idx_cart_id").on(table.cartId)]
+);
 
 export const favorites = pgTable("favorites", {
   id: text("favoriteid").primaryKey(),
