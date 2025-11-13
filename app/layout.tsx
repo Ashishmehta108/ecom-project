@@ -1,24 +1,16 @@
 import type { Metadata } from "next";
-// import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { Lato, Outfit, Sansita_Swashed, Open_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar/Navbar";
+import Footer from "@/components/footer/Footer";
+
 const sans = Open_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
   weight: ["400", "700"],
 });
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,20 +19,28 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`antialiased ${sans.className} `}>
+      <body className={`antialiased ${sans.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          {/* NAVBAR ALWAYS ON TOP */}
           <Navbar />
-          {children}
+
+          {/* MAIN CONTENT */}
+          <main className="min-h-screen">
+            {children}
+          </main>
+
+          {/* FOOTER ALWAYS AT BOTTOM */}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

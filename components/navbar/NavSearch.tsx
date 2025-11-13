@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { SearchFavorite, SearchFavorite1, SearchNormal, SearchNormal1, SearchStatus } from "iconsax-reactjs";
+import { SearchNormal1 } from "iconsax-reactjs"; // 🔥 ADDED ICON
 
 type SearchProduct = {
   id: string;
@@ -48,35 +48,59 @@ function NavSearch() {
 
   return (
     <div className="w-full px-3 sm:px-6 mt-3 sm:mt-4 flex flex-col items-center z-30 mb-5">
+      
+      {/* 🔹 Search Wrapper */}
+      <div className="w-full sm:max-w-[600px] relative flex items-center">
 
-<div className="w-full relative  sm:max-w-[600px]">
-  {/* Search Status Icon */}
-  <div className="absolute left-[26%] top-1/2 -translate-y-1/2 translate-x-1/2 text-neutral-400">
-    <SearchNormal1 />
-  </div>
+        {/* 🔥 Search Icon (added) */}
+        <SearchNormal1
+          size="18"
+          className="absolute left-4 text-gray-500 dark:text-gray-300"
+        />
 
-  <Input
-    type="search"
-    placeholder="Search for products..."
-    className="w-full rounded-lg py-6 border placeholder:text-base text-center border-gray-300 dark:border-neutral-700 bg-gray-200 dark:bg-neutral-900  pl-10 pr-4 text-[15px] text-neutral-800 dark:text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-2 focus-visible:ring-neutral-300 dark:focus-visible:ring-neutral-700 focus-visible:outline-none transition-all duration-200 shadow-sm hover:shadow-md"
-    value={search}
-    onChange={(e) => {
-      setSearch(e.target.value);
-      handleSearch(e.target.value);
-      fetchSuggestions(e.target.value);
-    }}
-  />
-</div>
- 
+        <Input
+          type="search"
+          placeholder="Search for products..."
+          className="
+            w-full rounded-full border border-gray-300 
+            bg-white text-gray-800 text-sm sm:text-base 
+            py-2.5 sm:py-3 px-4 pl-11
+            focus:ring-2 focus:ring-gray-400 focus:outline-none
+            transition-all
+
+            shadow-none     /* 🔥 Remove shadow in light theme */
+            dark:border-0   /* 🔥 Remove border in dark theme */
+            dark:bg-neutral-900
+          "
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            handleSearch(e.target.value);
+            fetchSuggestions(e.target.value);
+          }}
+        />
+      </div>
+
+      {/* 🔹 Dropdown suggestions */}
       {search.length > 0 && products.length > 0 && (
-        <div className="w-full sm:max-w-[600px] bg-white border border-gray-200 rounded-xl mt-2 shadow-lg overflow-y-auto max-h-[300px]">
+        <div
+          className="
+            w-full sm:max-w-[600px] bg-white dark:bg-neutral-900 
+            rounded-xl mt-2 overflow-y-auto max-h-[300px]
+
+            border border-gray-200    /* Light border */
+            dark:border-0             /* 🔥 Remove border in dark */
+
+            shadow-none dark:shadow-none  /* 🔥 Remove shadow in both modes */
+          "
+        >
           {products.map((product) => (
             <a
               key={product.id}
               href={`/products/${product.id}`}
-              className="flex items-center gap-3 p-2 hover:bg-gray-100 transition"
+              className="flex items-center gap-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 transition"
             >
-              <div className="relative w-12 h-12 rounded-md bg-gray-50 overflow-hidden flex-shrink-0">
+              <div className="relative w-12 h-12 rounded-md bg-gray-50 dark:bg-neutral-800 overflow-hidden flex-shrink-0">
                 <Image
                   src={product.image}
                   alt={product.name}
@@ -86,10 +110,12 @@ function NavSearch() {
                 />
               </div>
               <div className="flex flex-col">
-                <h3 className="text-gray-800 text-sm font-semibold line-clamp-1">
+                <h3 className="text-gray-800 dark:text-gray-100 text-sm font-semibold line-clamp-1">
                   {product.name}
                 </h3>
-                <p className="text-gray-500 text-xs mt-1">₹{product.price.toFixed(2)}</p>
+                <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">
+                  ₹{product.price.toFixed(2)}
+                </p>
               </div>
             </a>
           ))}
