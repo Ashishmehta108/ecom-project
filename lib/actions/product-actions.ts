@@ -12,12 +12,12 @@ export const getProductById = async (id: string) => {
   return Product;
 };
 
-export const createProduct = async (product: typeof product.$inferInsert) => {
-  const [newProduct] = await db.insert(product).values(product).returning();
+export const createProduct = async (p: typeof product.$inferInsert) => {
+  const [newProduct] = await db.insert(product).values(p).returning();
   return newProduct;
 };
 
-export const updateProduct = async (id: string, product: typeof product.$inferUpdate) => {
+export const updateProduct = async (id: string, p: typeof product.$inferInsert) => {
   const [updatedProduct] = await db.update(product).set(product).where(eq(product.id, id)).returning();
   return updatedProduct;
 };
@@ -26,3 +26,4 @@ export const deleteProduct = async (id: string) => {
   const [deletedProduct] = await db.delete(product).where(eq(product.id, id)).returning();
   return deletedProduct;
 };
+

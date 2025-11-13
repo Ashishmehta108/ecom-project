@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -6,7 +7,8 @@ import {
   json,
   integer,
   index,
-  uniqueIndex,
+  unique,
+  numeric,
 } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
@@ -74,48 +76,105 @@ export const verification = pgTable("verification", {
     .notNull(),
 });
 
+/*
 
-export const cart = pgTable("carts", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" })
-    .unique(),
-  total: integer("total").notNull().default(0),
-  currency: text("currency").notNull().default("INR"),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-});
-
+Cart Item schema 
+*/
+export const cart = pgTable(
+  "cart",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    currency: text("currency").notNull().default("INR"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("idx_cart_user_id").on(table.userId),
+  ]
+);
+/*
+Cart item schema
+*/
 export const cartItem = pgTable(
-  "cart_items",
+  "cart_item",
   {
     id: text("id").primaryKey(),
     cartId: text("cart_id")
       .notNull()
       .references(() => cart.id, { onDelete: "cascade" }),
-    productId: text("product_id").notNull(),
+    productId: text("product_id")
+      .notNull()
+      .references(() => product.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
-    price: integer("price").notNull(),
+    price: numeric("price", { precision: 10, scale: 2 }).notNull(),
     quantity: integer("quantity").notNull().default(1),
     addedAt: timestamp("added_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
   },
-  (table) => [index("idx_cart_id").on(table.cartId)]
+  (table) => [
+    index("idx_cart_item_cart_id").on(table.cartId),
+    unique("uq_cart_product").on(table.cartId, table.productId),
+  ]
 );
 
+/*
+Favorites schema
+*/
+
 export const favorites = pgTable("favorites", {
-  id: text("favoriteid").primaryKey(),
-  favoriteItems: json(),
+  id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
 });
+
+
+
+
+/*
+Favorite item schema
+*/
+export const favoriteItem = pgTable("favorite_item", {
+  id: text("id").primaryKey(),
+  favoritesId: text("favorites_id")
+    .notNull()
+    .references(() => favorites.id, { onDelete: "cascade" }),
+  productId: text("product_id")
+    .notNull()
+    .references(() => product.id, { onDelete: "cascade" }),
+});
+
+/*
+Product schema
+*/
+export const product = pgTable("product", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  price: numeric("price", { precision: 10, scale: 2 }).notNull(),
+  images: text("images").array(), //TODO: add images later
+  currency: text("currency").notNull().default("INR"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+  productDiscount:numeric("product_discount").notNull().default("0"),
+});
+
+export const productCategoryRelation=relations(product,({one,many})=>({
+  categories:many(category),
+}))
+
+
 export const orders = pgTable("orders", {
   id: text("orderid").primaryKey(),
   orderItems: json("order_items").$type<OrderItem[]>(),
@@ -138,13 +197,6 @@ type OrderItem = {
   price: number;
 };
 
-export const product = pgTable("product", {
-  id: text("productid").primaryKey(),
-  name: text("name").notNull(),
-  description: text("description").notNull(),
-  price: text("price").notNull(),
-  images: json("images").notNull(),
-});
 
 export const review = pgTable("review", {
   id: text("reviewid").primaryKey(),
@@ -184,7 +236,7 @@ export const paymentMethod = pgTable("paymentmethod", {
 export const category = pgTable("category", {
   id: text("categoryid").primaryKey(),
   name: text("name").notNull(),
-  description: text("description").notNull(),
+  // description: text("description").notNull(),
 });
 
 export const productCategory = pgTable("productcategory", {
