@@ -23,7 +23,7 @@ interface ImageSliderProps {
 
 export default function ImageSlider({
   slides,
-  autoPlayInterval = 5000,
+  autoPlayInterval = 2000,
   showControls = true,
   showProgress = true,
 }: ImageSliderProps) {
@@ -111,7 +111,7 @@ export default function ImageSlider({
           return (
             <div
               key={index}
-              className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+              className={`absolute lg:inset-0 transition-all duration-1000 ease-in-out ${
                 isActive
                   ? "opacity-100 scale-100 z-10"
                   : "opacity-0 scale-105 z-0"
@@ -120,7 +120,7 @@ export default function ImageSlider({
               <img
                 src={slide.image}
                 alt={slide.title || `Slide ${index + 1}`}
-                className="w-full h-full object-cover sm:rounded-2xl"
+                className="w-full h-full object-contain lg:object-cover sm:rounded-2xl"
               />
 
               {/* Gradient Overlay */}
@@ -148,7 +148,7 @@ export default function ImageSlider({
                     {slide.buttonText && (
                       <Link
                         href={slide.buttonLink || "#"}
-                        className="inline-flex items-center gap-2 bg-white text-gray-900 font-semibold text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+                        className="inline-flex items-center gap-2 bg-[#96d1c7] text-gray-900 font-semibold text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
                       >
                         {slide.buttonText}
                         <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -163,7 +163,7 @@ export default function ImageSlider({
       </div>
 
       {/* Navigation Arrows */}
-      {showControls && slides.length > 1 && (
+      {/* {showControls && slides.length > 1 && (
         <>
           <button
             onClick={goToPrevious}
@@ -180,7 +180,7 @@ export default function ImageSlider({
             <ChevronRight className="w-5 h-5 text-gray-700" />
           </button>
         </>
-      )}
+      )} */}
     </div>
   );
 }

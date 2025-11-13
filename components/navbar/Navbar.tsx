@@ -14,7 +14,7 @@ function Navbar() {
   //   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
   const totalItems = 10;
   return (
-    <nav className="border-b bg-white dark:bg-neutral-950  top-0">
+    <nav className=" bg-white dark:bg-neutral-950  top-0">
       <Container className="flex  sm:flex-row justify-between sm:items-center  flex-wrap py-8 gap-4">
         <Logo />
         <Suspense>

@@ -58,7 +58,7 @@ export default function App() {
         <NavSearch/>
         <ImageSlider 
           slides={saleBanners} 
-          autoPlayInterval={5000}
+        
           showControls={true}
           showProgress={true}
         />

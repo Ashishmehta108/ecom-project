@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { SearchFavorite, SearchFavorite1, SearchNormal, SearchNormal1, SearchStatus } from "iconsax-reactjs";
 
 type SearchProduct = {
   id: string;
@@ -47,22 +48,26 @@ function NavSearch() {
 
   return (
     <div className="w-full px-3 sm:px-6 mt-3 sm:mt-4 flex flex-col items-center z-30 mb-5">
-      {/* 🔹 Always visible search box */}
-      <div className="w-full sm:max-w-[600px]">
-        <Input
-          type="search"
-          placeholder="Search for products..."
-          className="w-full rounded-full border border-gray-300 bg-white shadow-md text-gray-800 text-sm sm:text-base py-2.5 sm:py-3 px-4 focus:ring-2 focus:ring-gray-400 focus:outline-none transition-all"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            handleSearch(e.target.value);
-            fetchSuggestions(e.target.value);
-          }}
-        />
-      </div>
 
-      {/* 🔹 Dropdown suggestions (optional) */}
+<div className="w-full relative  sm:max-w-[600px]">
+  {/* Search Status Icon */}
+  <div className="absolute left-[26%] top-1/2 -translate-y-1/2 translate-x-1/2 text-neutral-400">
+    <SearchNormal1 />
+  </div>
+
+  <Input
+    type="search"
+    placeholder="Search for products..."
+    className="w-full rounded-lg py-6 border placeholder:text-base text-center border-gray-300 dark:border-neutral-700 bg-gray-200 dark:bg-neutral-900  pl-10 pr-4 text-[15px] text-neutral-800 dark:text-neutral-100 placeholder:text-neutral-400 focus-visible:ring-2 focus-visible:ring-neutral-300 dark:focus-visible:ring-neutral-700 focus-visible:outline-none transition-all duration-200 shadow-sm hover:shadow-md"
+    value={search}
+    onChange={(e) => {
+      setSearch(e.target.value);
+      handleSearch(e.target.value);
+      fetchSuggestions(e.target.value);
+    }}
+  />
+</div>
+ 
       {search.length > 0 && products.length > 0 && (
         <div className="w-full sm:max-w-[600px] bg-white border border-gray-200 rounded-xl mt-2 shadow-lg overflow-y-auto max-h-[300px]">
           {products.map((product) => (
