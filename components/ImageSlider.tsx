@@ -1,186 +1,151 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-export interface Slide {
-  image: string;
-  title?: string;
-  subtitle?: string;
-  discount?: string;
-  buttonText?: string;
-  buttonLink?: string;
-  badge?: string;
-}
+export default function PromoSlider({ slides }: { slides: any[] }) {
+  const [index, setIndex] = useState(0);
+  const [hovered, setHovered] = useState(false);
+  const timer = useRef<any>(null);
 
-interface ImageSliderProps {
-  slides: Slide[];
-  autoPlayInterval?: number;
-  showControls?: boolean;
-  showProgress?: boolean;
-}
-
-export default function ImageSlider({
-  slides,
-  autoPlayInterval = 5000,
-  showControls = true,
-  showProgress = true,
-}: ImageSliderProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [progress, setProgress] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const minSwipeDistance = 50;
-
-  const goToNext = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
-    setProgress(0);
+  const next = useCallback(() => {
+    setIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   }, [slides.length]);
 
-  const goToPrevious = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + slides.length) % slides.length);
-    setProgress(0);
-  }, [slides.length]);
-
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-    setProgress(0);
+  const prev = () => {
+    setIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   };
 
   useEffect(() => {
-    if (slides.length <= 1) return;
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-
-    if (isPlaying && !isHovered) {
-      const progressStep = 100 / (autoPlayInterval / 50);
-      progressIntervalRef.current = setInterval(() => {
-        setProgress((prev) => (prev >= 100 ? 0 : prev + progressStep));
-      }, 50);
-
-      intervalRef.current = setInterval(() => {
-        goToNext();
-      }, autoPlayInterval);
-    } else {
-      setProgress(0);
+    if (!hovered) {
+      timer.current = setInterval(next, 4500);
     }
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-    };
-  }, [isPlaying, isHovered, autoPlayInterval, goToNext, slides.length]);
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    if (distance > minSwipeDistance) goToNext();
-    if (distance < -minSwipeDistance) goToPrevious();
-  };
-
-  if (slides.length === 0) return null;
+    return () => clearInterval(timer.current);
+  }, [hovered, next]);
 
   return (
     <div
-      className="relative w-full sm:max-w-[98%] mx-auto sm:rounded-2xl overflow-hidden shadow-xl transition-all duration-500"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
+      className="w-full pt-6 pb-6 relative flex flex-col items-center justify-center"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
-      <div className="relative w-full aspect-[4/5] sm:aspect-[16/9] md:aspect-[16/7] lg:aspect-[21/7]">
-        {slides.map((slide, index) => {
-          const isActive = index === currentIndex;
+      <div className="relative w-[95%] md:w-[92%] lg:w-[88%] rounded-[30px] overflow-hidden">
+        <div
+          className="
+            relative w-full bg-[#1d2242] rounded-[28px] shadow-xl
+            min-h-[360px] sm:min-h-[380px] md:min-h-[420px] lg:min-h-[450px]
+            flex items-center justify-center
+          "
+        >
+          {slides.map((slide, i) => {
+            const active = i === index;
 
-          return (
-            <div
-              key={index}
-              className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-                isActive
-                  ? "opacity-100 scale-100 z-10"
-                  : "opacity-0 scale-105 z-0"
-              }`}
-            >
-              <img
-                src={slide.image}
-                alt={slide.title || `Slide ${index + 1}`}
-                className="w-full h-full object-cover sm:rounded-2xl"
-              />
+            return (
+              <div
+                key={i}
+                className={`
+                  absolute inset-0 flex flex-col md:flex-row items-center 
+                  justify-between px-6 sm:px-12 md:px-14 lg:px-20
+                  gap-8 md:gap-12 
 
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-transparent z-10 sm:rounded-2xl" />
+                  transition-all duration-700 ease-out
 
-              {/* Overlay Text with subtle delay */}
-              {(slide.title || slide.subtitle || slide.buttonText) && (
-                <div
-                  className={`absolute inset-0 z-20 flex items-center justify-center sm:justify-start
-                    transition-all duration-700 ease-out
-                    ${isActive ? "opacity-100 delay-200 translate-y-0" : "opacity-0 translate-y-3"}
-                  `}
-                >
-                  <div className="px-4 sm:px-8 md:px-12 lg:px-16 text-center sm:text-left">
-                    {slide.title && (
-                      <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-2 sm:mb-3 drop-shadow-lg leading-tight">
-                        {slide.title}
-                      </h2>
-                    )}
-                    {slide.subtitle && (
-                      <p className="text-white/90 text-sm sm:text-base md:text-lg mb-3 sm:mb-4 max-w-md mx-auto sm:mx-0">
-                        {slide.subtitle}
-                      </p>
-                    )}
-                    {slide.buttonText && (
-                      <Link
-                        href={slide.buttonLink || "#"}
-                        className="inline-flex items-center gap-2 bg-white text-gray-900 font-semibold text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
-                      >
-                        {slide.buttonText}
-                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                      </Link>
-                    )}
-                  </div>
+                  ${
+                    active
+                      ? "opacity-100 translate-y-0 z-10"
+                      : "opacity-0 translate-y-4 z-0 hidden"
+                  }
+                `}
+              >
+                {/* LEFT TEXT SECTION */}
+                <div className="flex flex-col gap-4 sm:gap-5 md:gap-6 max-w-[550px] text-center md:text-left">
+                  <p className="text-white/70 text-lg sm:text-xl lg:text-2xl font-medium leading-snug">
+                    {slide.subtitle}
+                  </p>
+
+                  <h1 className="text-white font-extrabold text-3xl sm:text-5xl lg:text-6xl leading-tight">
+                    {slide.title}
+                  </h1>
+
+                  <p className="text-white text-lg sm:text-xl lg:text-2xl font-semibold">
+                    {slide.discount}
+                  </p>
+
+                  {slide.buttonText && (
+                    <Link
+                      href={slide.buttonLink || "#"}
+                      className="
+                        inline-block mt-3 bg-white text-blue-700 
+                        px-7 py-3 sm:px-8 sm:py-4 
+                        rounded-xl font-semibold shadow-md
+                        text-sm sm:text-base hover:scale-105 transition
+                        mx-auto md:mx-0
+                      "
+                    >
+                      {slide.buttonText}
+                    </Link>
+                  )}
                 </div>
-              )}
-            </div>
-          );
-        })}
+
+                {/* RIGHT IMAGE SECTION */}
+                <div className="flex items-center justify-center w-full md:w-auto">
+                  <img
+                    src={slide.image}
+                    alt="Slide"
+                    className="
+                      object-contain drop-shadow-2xl
+                      h-[200px] sm:h-[240px] md:h-[280px] lg:h-[300px]
+                      max-w-[90%] md:max-w-none
+                    "
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Navigation Arrows */}
-      {showControls && slides.length > 1 && (
-        <>
-          <button
-            onClick={goToPrevious}
-            className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full w-10 h-10 items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 z-30"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="w-5 h-5 text-gray-700" />
-          </button>
-          <button
-            onClick={goToNext}
-            className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full w-10 h-10 items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 z-30"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="w-5 h-5 text-gray-700" />
-          </button>
-        </>
-      )}
+      {/* ARROWS */}
+      <button
+        onClick={prev}
+        className="
+          hidden sm:flex absolute left-4 md:left-10 top-1/2
+          -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 
+          rounded-full bg-white border shadow-xl
+          items-center justify-center hover:scale-110 transition
+          z-20
+        "
+      >
+        <ChevronLeft className="w-6 h-6 md:w-7 md:h-7 text-gray-700" />
+      </button>
+
+      <button
+        onClick={next}
+        className="
+          hidden sm:flex absolute right-4 md:right-10 top-1/2
+          -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 
+          rounded-full bg-white border shadow-xl
+          items-center justify-center hover:scale-110 transition
+          z-20
+        "
+      >
+        <ChevronRight className="w-6 h-6 md:w-7 md:h-7 text-gray-700" />
+      </button>
+
+      {/* DOTS */}
+      <div className="flex items-center gap-2 mt-4 sm:mt-6">
+        {slides.map((_, dot) => (
+          <div
+            key={dot}
+            onClick={() => setIndex(dot)}
+            className={`
+              h-2 rounded-full cursor-pointer transition-all
+              ${dot === index ? "w-8 bg-blue-600" : "w-2 bg-gray-400"}
+            `}
+          />
+        ))}
+      </div>
     </div>
   );
 }
