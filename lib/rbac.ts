@@ -1,15 +1,20 @@
 import { User } from "better-auth";
 
-interface UserT extends User{
-  role:"admin"|"user";
+interface UserT extends User {
+  role: "admin" | "user";
 }
 
-
-
-
-export async function isAdmin(user:UserT){
-
-
+export async function isAdmin(user: UserT) {
+  try {
+    if (user && user.role) {
+      if (user.role == "admin") {
+        return true;
+      }
+    }
+    throw new Error("user doesnt exists");
+  } catch (error: any) {
+    return error.message;
+  }
 }
 
 // Usage example:

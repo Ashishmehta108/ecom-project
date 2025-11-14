@@ -1,0 +1,112 @@
+[
+  {
+    "id": "",
+    "productName": "Hoco EW30 Intelligent True Wireless Bluetooth Earphone",
+    "brand": "Hoco",
+    "model": "EW30",
+    "category": "Earphone & Headset",
+    "subCategory": "Bluetooth Earphone",
+    "description": "Hoco EW30 is a true wireless Bluetooth 5.3 earphone featuring long standby time, fast pairing, master-slave switching, and voice assistant support.",
+    "features": [
+      "Bluetooth 5.3",
+      "Charging case battery: 300mAh",
+      "Earphone battery: 25mAh",
+      "Use time: 3.5 hours",
+      "Standby time: 150 hours",
+      "Supports master-slave switching",
+      "Supports voice assistant (Siri)"
+    ],
+    "price": "660",
+    "currency": "INR",
+    "discount": "",
+    "inStock": true,
+    "stockQuantity": 0,
+    "timeToDeliver": "2-5 days",
+    "specifications": {
+      "general": {
+        "color": "White",
+        "bluetoothVersion": "5.3",
+        "usageTime": "3.5 hours",
+        "standbyTime": "150 hours"
+      },
+
+      "technical": {
+        "chargingCaseBattery": "300mAh",
+        "earphoneBattery": "25mAh",
+        "functions": "Master-slave switching, Voice assistant support"
+      },
+
+      "package": {
+        "packageWeightKg": 0.11,
+        "packageWeightLb": 0.25,
+        "packageSizeCm": {
+          "length": 10,
+          "width": 10,
+          "height": 4
+        },
+        "packageSizeInch": {
+          "length": 3.94,
+          "width": 3.94,
+          "height": 1.57
+        }
+      },
+
+      "carton": {
+        "qtyPerCarton": 120,
+        "cartonWeightKg": 14.20,
+        "cartonWeightLb": 31.31,
+        "cartonSizeCm": {
+          "length": 42,
+          "width": 32,
+          "height": 42
+        },
+        "cartonSizeInch": {
+          "length": 16.54,
+          "width": 12.6,
+          "height": 16.54
+        },
+        "loadingCapacity": {
+          "20GP": {
+            "cartons": 472,
+            "totalPcs": 56640
+          },
+          "40HQ": {
+            "cartons": 1096,
+            "totalPcs": 131520
+          }
+        }
+      },
+
+      "rankings": {
+        "appleAccessories": "#9753",
+        "earphoneHeadset": "#692",
+        "bluetoothEarphone": "#128"
+      },
+
+      "oem": {
+        "oemAvailable": true,
+        "odmAvailable": true,
+        "customLogoSupport": true,
+        "notes": "OEM allows custom branding and packaging. ODM supports custom product design."
+      }
+    },
+
+    "localimageFolder": "",
+    "images": [
+      {
+        "url": "",
+        "fileId": ""
+      }
+    ],
+
+    "tags": [
+      "Bluetooth Earphone",
+      "TWS",
+      "Wireless Earbuds",
+      "Hoco",
+      "EW30"
+    ],
+
+    "otherInfo": {}
+  }
+]

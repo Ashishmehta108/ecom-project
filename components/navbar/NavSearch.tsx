@@ -62,14 +62,18 @@ function NavSearch() {
           type="search"
           placeholder="Search for products..."
           className="
-            w-full rounded-full border border-gray-300 
+            w-full rounded-md  border border-gray-300 
             bg-white text-gray-800 text-sm sm:text-base 
-            py-2.5 sm:py-3 px-4 pl-11
+             px-4 pl-11
             focus:ring-2 focus:ring-gray-400 focus:outline-none
             transition-all
+            lg:py-5
 
-            shadow-none     /* 🔥 Remove shadow in light theme */
-            dark:border-0   /* 🔥 Remove border in dark theme */
+            shadow-none   
+            dark:border-0   
+            focus-visible:ring-0 
+            focus-visible:outline-neutral-100
+            focus-visible:ring-offset-0
             dark:bg-neutral-900
           "
           value={search}

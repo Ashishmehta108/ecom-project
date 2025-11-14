@@ -21,11 +21,10 @@ export default function Navbar() {
 
   return (
     <nav className="w-full border-b bg-white dark:bg-neutral-950 sticky top-0 z-50 shadow-sm">
-      <Container>
+      <Container >
         <div className="flex items-center justify-between py-3 sm:py-4 gap-4">
 
           <div className="flex items-center gap-4">
-           
             <Logo />
           </div>
 
@@ -35,13 +34,13 @@ export default function Navbar() {
 
           <div className="flex items-center gap-4">
 
-            <ModeToggle />
+            {/* <ModeToggle /> */}
 
-            <NotificationBell />
+            <NotificationBell  />
 
             <CartButton items={totalItems} />
 
-            {isLoggedIn && (
+            {/* {isLoggedIn && (
               <Image
                 src={data.user.image!}
                 width={38}
@@ -49,13 +48,13 @@ export default function Navbar() {
                 alt="User"
                 className="rounded-full hidden sm:block"
               />
-            )}
+            )} */}
 
             <LinksDropdown />
             
           </div>
         </div>
-        <CategoriesBar/>
+        {/* <CategoriesBar/> */}
 
         <div className="md:hidden px-1 pb-3">
           <NavSearch />

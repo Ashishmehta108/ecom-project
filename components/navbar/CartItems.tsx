@@ -10,9 +10,9 @@ function CartButton(props: { items: number }) {
       className="flex justify-center items-center  relative   "
     >
       <Link href="/cart">
-        <ShoppingCart className="" />
+        <ShoppingCart className="size-6" />
         {props.items > 0 && (
-          <span className="absolute -top-0 -right-0 bg-blue-800 text-white rounded-full h-3 w-3 flex items-center justify-center text-[7px]">
+          <span className="absolute -top-2 -right-2 bg-blue-800 text-white rounded-full h-5  w-5  flex items-center justify-center text-[10px]">
             {props.items}
           </span>
         )}

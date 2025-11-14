@@ -9,7 +9,9 @@ import {
   index,
   unique,
   numeric,
+  primaryKey,
 } from "drizzle-orm/pg-core";
+import { db } from ".";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -80,13 +82,14 @@ export const verification = pgTable("verification", {
 
 Cart Item schema 
 */
+
 export const cart = pgTable(
   "cart",
   {
     id: text("id").primaryKey(),
     userId: text("user_id")
       .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
+      .references(() => user.id, { onDelete: "cascade" ,"onUpdate":"cascade"}),
     currency: text("currency").notNull().default("INR"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
@@ -95,9 +98,7 @@ export const cart = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => [
-    index("idx_cart_user_id").on(table.userId),
-  ]
+  (table) => [index("idx_cart_user_id").on(table.userId)]
 );
 /*
 Cart item schema
@@ -108,10 +109,10 @@ export const cartItem = pgTable(
     id: text("id").primaryKey(),
     cartId: text("cart_id")
       .notNull()
-      .references(() => cart.id, { onDelete: "cascade" }),
+      .references(() => cart.id, { onDelete: "cascade" ,"onUpdate":"cascade"}),
     productId: text("product_id")
       .notNull()
-      .references(() => product.id, { onDelete: "cascade" }),
+      .references(() => product.id, { onDelete: "cascade","onUpdate":"cascade" }),
     name: text("name").notNull(),
     price: numeric("price", { precision: 10, scale: 2 }).notNull(),
     quantity: integer("quantity").notNull().default(1),
@@ -133,11 +134,8 @@ export const favorites = pgTable("favorites", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
+    .references(() => user.id, { onDelete: "cascade","onUpdate":"cascade" }),
 });
-
-
-
 
 /*
 Favorite item schema
@@ -146,10 +144,10 @@ export const favoriteItem = pgTable("favorite_item", {
   id: text("id").primaryKey(),
   favoritesId: text("favorites_id")
     .notNull()
-    .references(() => favorites.id, { onDelete: "cascade" }),
+    .references(() => favorites.id, { onDelete: "cascade","onUpdate":"cascade" }),
   productId: text("product_id")
     .notNull()
-    .references(() => product.id, { onDelete: "cascade" }),
+    .references(() => product.id, { onDelete: "cascade","onUpdate":"cascade" }),
 });
 
 /*
@@ -160,218 +158,219 @@ export const product = pgTable("product", {
   name: text("name").notNull(),
   description: text("description").notNull(),
   price: numeric("price", { precision: 10, scale: 2 }).notNull(),
-  images: text("images").array(), //TODO: add images later
   currency: text("currency").notNull().default("INR"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
-  productDiscount:numeric("product_discount").notNull().default("0"),
+  productDiscount: numeric("product_discount").notNull().default("0"),
 });
 
-export const productCategoryRelation=relations(product,({one,many})=>({
-  categories:many(category),
-}))
+export const productRelations = relations(product, ({ many }) => ({
+  productImages: many(productImage),
+}));
 
-
-export const orders = pgTable("orders", {
-  id: text("orderid").primaryKey(),
-  orderItems: json("order_items").$type<OrderItem[]>(),
-  totalAmount: text("total_amount").notNull(),
-  shippingAddress: json("shipping_address").notNull(),
-  status: text("status").notNull().default("pending"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-});
-
-type OrderItem = {
-  productId: string;
-  quantity: number;
-  price: number;
-};
-
-
-export const review = pgTable("review", {
-  id: text("reviewid").primaryKey(),
-  rating: text("rating").notNull(),
-  comment: text("comment").notNull(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
+export const productImage = pgTable("product_image", {
+  id: text("id").primaryKey(),
   productId: text("product_id")
     .notNull()
-    .references(() => product.id, { onDelete: "cascade" }),
+    .references(() => product.id, { onDelete: "cascade","onUpdate":"cascade" }),
+  url: text("url").notNull(),
+  fileId: text("file_id").notNull(), 
+  position: numeric("position").default("0"),
 });
 
-export const address = pgTable("address", {
-  id: text("addressid").primaryKey(),
-  street: text("street").notNull(),
-  city: text("city").notNull(),
-  state: text("state").notNull(),
-  zipCode: text("zip_code").notNull(),
-  country: text("country").notNull(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-});
+export const productImageRelations = relations(productImage, ({ one }) => ({
+  product: one(product, {
+    fields: [productImage.productId],
+    references: [product.id],
+  }),
+}));
 
-export const paymentMethod = pgTable("paymentmethod", {
-  id: text("paymentmethodid").primaryKey(),
-  type: text("type").notNull(),
-  provider: text("provider").notNull(),
-  accountNumber: text("account_number").notNull(),
-  expiryDate: text("expiry_date").notNull(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-});
+export const productCategoryRelation = relations(product, ({ one, many }) => ({
+  categories: many(category),
+}));
 
 export const category = pgTable("category", {
-  id: text("categoryid").primaryKey(),
+  id: text("id").primaryKey(),
   name: text("name").notNull(),
-  // description: text("description").notNull(),
+  imageUrl: text("categoryurl").notNull().default("default"),
 });
 
-export const productCategory = pgTable("productcategory", {
-  productId: text("product_id")
-    .notNull()
-    .references(() => product.id, { onDelete: "cascade" }),
-  categoryId: text("category_id")
-    .notNull()
-    .references(() => category.id, { onDelete: "cascade" }),
-});
+export const productCategory = pgTable(
+  "productcategory",
+  {
+    productId: text("product_id")
+      .notNull()
+      .references(() => product.id, { onDelete: "cascade","onUpdate":"cascade" }),
 
-export const productInventory = pgTable("productinventory", {
-  id: text("inventoryid").primaryKey(),
-  quantity: text("quantity").notNull(),
-  productId: text("product_id")
-    .notNull()
-    .references(() => product.id, { onDelete: "cascade" }),
-});
+    categoryId: text("category_id")
+      .notNull()
+      .references(() => category.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+  },
+  (table) => [primaryKey({ columns: [table.productId, table.categoryId] })]
+);
 
-export const productImage = pgTable("productimage", {
-  id: text("imageid").primaryKey(),
-  url: text("url").notNull(),
-  altText: text("alt_text").notNull(),
-  productId: text("product_id")
-    .notNull()
-    .references(() => product.id, { onDelete: "cascade" }),
-});
+// export const orders = pgTable("orders", {
+//   id: text("orderid").primaryKey(),
+//   orderItems: json("order_items").$type<OrderItem[]>(),
+//   totalAmount: text("total_amount").notNull(),
+//   shippingAddress: json("shipping_address").notNull(),
+//   status: text("status").notNull().default("pending"),
+//   createdAt: timestamp("created_at").defaultNow().notNull(),
+//   updatedAt: timestamp("updated_at")
+//     .defaultNow()
+//     .$onUpdate(() => new Date())
+//     .notNull(),
+//   userId: text("user_id")
+//     .notNull()
+//     .references(() => user.id, { onDelete: "cascade" }),
+// });
 
-export const discount = pgTable("discount", {
-  id: text("discountid").primaryKey(),
-  code: text("code").notNull(),
-  description: text("description").notNull(),
-  percentage: text("percentage").notNull(),
-  validFrom: timestamp("valid_from").notNull(),
-  validTo: timestamp("valid_to").notNull(),
-});
+// type OrderItem = {
+//   productId: string;
+//   quantity: number;
+//   price: number;
+// };
 
-export const productDiscount = pgTable("productdiscount", {
-  productId: text("product_id")
-    .notNull()
-    .references(() => product.id, { onDelete: "cascade" }),
-  discountId: text("discount_id")
-    .notNull()
-    .references(() => discount.id, { onDelete: "cascade" }),
-});
+// export const review = pgTable("review", {
+//   id: text("reviewid").primaryKey(),
+//   rating: text("rating").notNull(),
+//   comment: text("comment").notNull(),
+//   userId: text("user_id")
+//     .notNull()
+//     .references(() => user.id, { onDelete: "cascade" }),
+//   productId: text("product_id")
+//     .notNull()
+//     .references(() => product.id, { onDelete: "cascade" }),
+// });
 
-export const wishlist = pgTable("wishlist", {
-  id: text("wishlistid").primaryKey(),
-  name: text("name").notNull(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-});
+// export const address = pgTable("address", {
+//   id: text("addressid").primaryKey(),
+//   street: text("street").notNull(),
+//   city: text("city").notNull(),
+//   state: text("state").notNull(),
+//   zipCode: text("zip_code").notNull(),
+//   country: text("country").notNull(),
+//   userId: text("user_id")
+//     .notNull()
+//     .references(() => user.id, { onDelete: "cascade" }),
+// });
 
-export const wishlistItem = pgTable("wishlistitem", {
-  wishlistId: text("wishlist_id")
-    .notNull()
-    .references(() => wishlist.id, { onDelete: "cascade" }),
-  productId: text("product_id")
-    .notNull()
-    .references(() => product.id, { onDelete: "cascade" }),
-});
+// export const paymentMethod = pgTable("paymentmethod", {
+//   id: text("paymentmethodid").primaryKey(),
+//   type: text("type").notNull(),
+//   provider: text("provider").notNull(),
+//   accountNumber: text("account_number").notNull(),
+//   expiryDate: text("expiry_date").notNull(),
+//   userId: text("user_id")
+//     .notNull()
+//     .references(() => user.id, { onDelete: "cascade" }),
+// });
 
-export const reviewImage = pgTable("reviewimage", {
-  id: text("reviewimageid").primaryKey(),
-  url: text("url").notNull(),
-  altText: text("alt_text").notNull(),
-  reviewId: text("review_id")
-    .notNull()
-    .references(() => review.id, { onDelete: "cascade" }),
-});
+// export const productInventory = pgTable("productinventory", {
+//   id: text("inventoryid").primaryKey(),
+//   quantity: text("quantity").notNull(),
+//   productId: text("product_id")
+//     .notNull()
+//     .references(() => product.id, { onDelete: "cascade" }),
+// });
 
-export const shipment = pgTable("shipment", {
-  id: text("shipmentid").primaryKey(),
-  trackingNumber: text("tracking_number").notNull(),
-  carrier: text("carrier").notNull(),
-  status: text("status").notNull(),
-  estimatedDelivery: timestamp("estimated_delivery").notNull(),
-  orderId: text("order_id")
-    .notNull()
-    .references(() => orders.id, { onDelete: "cascade" }),
-});
 
-export const payment = pgTable("payment", {
-  id: text("paymentid").primaryKey(),
-  amount: text("amount").notNull(),
-  method: text("method").notNull(),
-  status: text("status").notNull(),
-  paidAt: timestamp("paid_at").notNull(),
-  orderId: text("order_id")
-    .notNull()
-    .references(() => orders.id, { onDelete: "cascade" }),
-});
+// export const discount = pgTable("discount", {
+//   id: text("discountid").primaryKey(),
+//   code: text("code").notNull(),
+//   description: text("description").notNull(),
+//   percentage: text("percentage").notNull(),
+//   validFrom: timestamp("valid_from").notNull(),
+//   validTo: timestamp("valid_to").notNull(),
+// });
 
-export const refund = pgTable("refund", {
-  id: text("refundid").primaryKey(),
-  amount: text("amount").notNull(),
-  reason: text("reason").notNull(),
-  status: text("status").notNull(),
-  requestedAt: timestamp("requested_at").notNull(),
-  processedAt: timestamp("processed_at"),
-  orderId: text("order_id")
-    .notNull()
-    .references(() => orders.id, { onDelete: "cascade" }),
-});
+// export const productDiscount = pgTable("productdiscount", {
+//   productId: text("product_id")
+//     .notNull()
+//     .references(() => product.id, { onDelete: "cascade" }),
+//   discountId: text("discount_id")
+//     .notNull()
+//     .references(() => discount.id, { onDelete: "cascade" }),
+// });
 
-export const notification = pgTable("notification", {
-  id: text("notificationid").primaryKey(),
-  type: text("type").notNull(),
-  message: text("message").notNull(),
-  isRead: boolean("is_read").default(false).notNull(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-});
+// export const wishlist = pgTable("wishlist", {
+//   id: text("wishlistid").primaryKey(),
+//   name: text("name").notNull(),
+//   userId: text("user_id")
+//     .notNull()
+//     .references(() => user.id, { onDelete: "cascade" }),
+// });
 
-export const reviewHelpful = pgTable("reviewhelpful", {
-  id: text("reviewhelpfulid").primaryKey(),
-  isHelpful: boolean("is_helpful").notNull(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-  reviewId: text("review_id")
-    .notNull()
-    .references(() => review.id, { onDelete: "cascade" }),
-});
+// export const wishlistItem = pgTable("wishlistitem", {
+//   wishlistId: text("wishlist_id")
+//     .notNull()
+//     .references(() => wishlist.id, { onDelete: "cascade" }),
+//   productId: text("product_id")
+//     .notNull()
+//     .references(() => product.id, { onDelete: "cascade" }),
+// });
 
-export const orderItem = pgTable("orderitem", {
-  id: text("orderitemid").primaryKey(),
-  quantity: text("quantity").notNull(),
-  price: text("price").notNull(),
-  orderId: text("order_id")
-    .notNull()
-    .references(() => orders.id, { onDelete: "cascade" }),
-  productId: text("product_id")
-    .notNull()
-    .references(() => product.id, { onDelete: "cascade" }),
-});
+
+
+// export const shipment = pgTable("shipment", {
+//   id: text("shipmentid").primaryKey(),
+//   trackingNumber: text("tracking_number").notNull(),
+//   carrier: text("carrier").notNull(),
+//   status: text("status").notNull(),
+//   estimatedDelivery: timestamp("estimated_delivery").notNull(),
+//   orderId: text("order_id")
+//     .notNull()
+//     .references(() => orders.id, { onDelete: "cascade" }),
+// });
+
+// export const payment = pgTable("payment", {
+//   id: text("paymentid").primaryKey(),
+//   amount: text("amount").notNull(),
+//   method: text("method").notNull(),
+//   status: text("status").notNull(),
+//   paidAt: timestamp("paid_at").notNull(),
+//   orderId: text("order_id")
+//     .notNull()
+//     .references(() => orders.id, { onDelete: "cascade" }),
+// });
+
+// export const refund = pgTable("refund", {
+//   id: text("refundid").primaryKey(),
+//   amount: text("amount").notNull(),
+//   reason: text("reason").notNull(),
+//   status: text("status").notNull(),
+//   requestedAt: timestamp("requested_at").notNull(),
+//   processedAt: timestamp("processed_at"),
+//   orderId: text("order_id")
+//     .notNull()
+//     .references(() => orders.id, { onDelete: "cascade" }),
+// });
+
+// export const notification = pgTable("notification", {
+//   id: text("notificationid").primaryKey(),
+//   type: text("type").notNull(),
+//   message: text("message").notNull(),
+//   isRead: boolean("is_read").default(false).notNull(),
+//   userId: text("user_id")
+//     .notNull()
+//     .references(() => user.id, { onDelete: "cascade" }),
+// });
+
+
+// export const orderItem = pgTable("orderitem", {
+//   id: text("orderitemid").primaryKey(),
+//   quantity: text("quantity").notNull(),
+//   price: text("price").notNull(),
+//   orderId: text("order_id")
+//     .notNull()
+//     .references(() => orders.id, { onDelete: "cascade" }),
+//   productId: text("product_id")
+//     .notNull()
+//     .references(() => product.id, { onDelete: "cascade" }),
+// });

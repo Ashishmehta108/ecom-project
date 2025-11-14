@@ -1,10 +1,10 @@
-import ImageSlider, { Slide } from "@/components/ImageSlider";
+import ImageSlider from "@/components/ImageSlider";
 import ProductDealsSection from "@/components/products/ProductDealsSection";
 import TopCategoriesSection from "@/components/products/TopCategoriesSection";
 import ElectronicsBrandSlider from "@/components/products/ElectronicsBrandSlider";
 
 // Sale banner slides...
-const saleBanners: Slide[] = [
+const saleBanners = [
   {
     image:
       "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1920&h=1080&fit=crop&q=90",
@@ -69,9 +69,9 @@ export default function App() {
         {/* 🎥 Full-width slider */}
         <ImageSlider
           slides={saleBanners}
-          autoPlayInterval={5000}
-          showControls={true}
-          showProgress={true}
+          // autoPlayInterval={5000}
+          // showControls={true}
+          // showProgress={true}
         />
         <TopCategoriesSection />
         <ProductDealsSection />

@@ -5,6 +5,7 @@ import { Lato, Outfit, Sansita_Swashed, Open_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
+import { Toaster } from "sonner";
 
 const sans = Open_Sans({
   variable: "--font-sans",
@@ -31,15 +32,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* NAVBAR ALWAYS ON TOP */}
+          <Toaster position="top-right" />
           <Navbar />
-
-          {/* MAIN CONTENT */}
-          <main className="min-h-screen">
-            {children}
-          </main>
-
-          {/* FOOTER ALWAYS AT BOTTOM */}
+          <main className="min-h-screen">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>
