@@ -56,6 +56,11 @@ export default function TopCategorySection() {
   const [index, setIndex] = useState(0);
   const autoSlideRef = useRef(null);
 
+  // ⬇ Swipe refs
+  const startX = useRef(0);
+  const currentX = useRef(0);
+  const isDragging = useRef(false);
+
   const nextSlide = () => {
     setIndex((prev) => (prev === categories.length - 1 ? 0 : prev + 1));
   };
@@ -72,6 +77,32 @@ export default function TopCategorySection() {
   const stopAuto = () => clearInterval(autoSlideRef.current);
   const startAuto = () => {
     autoSlideRef.current = setInterval(nextSlide, 3000);
+  };
+
+  // ⬇ Touch handlers for swipe
+  const handleTouchStart = (e) => {
+    startX.current = e.touches[0].clientX;
+    isDragging.current = true;
+    stopAuto();
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging.current) return;
+    currentX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!isDragging.current) return;
+
+    const diff = startX.current - currentX.current;
+
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) nextSlide(); // swipe left
+      else prevSlide(); // swipe right
+    }
+
+    isDragging.current = false;
+    startAuto();
   };
 
   return (
@@ -101,6 +132,9 @@ export default function TopCategorySection() {
           className="relative overflow-hidden"
           onMouseEnter={stopAuto}
           onMouseLeave={startAuto}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           <div
             className="flex transition-transform duration-500"
@@ -109,16 +143,15 @@ export default function TopCategorySection() {
             {categories.map((c) => (
               <div
                 key={c.id}
-                className="min-w-full flex justify-center px-2
-                h-[320px] sm:h-[380px] lg:h-[420px]" 
+                className="min-w-full flex justify-center px-2 h-[320px] sm:h-[380px] lg:h-[420px]"
               >
                 <div
                   className={`${c.bgColor} rounded-3xl
-                  p-6 sm:p-8 lg:p-10
-                  w-full sm:w-[90%] lg:w-[70%] xl:w-[65%]
-                  flex flex-col sm:flex-row
-                  items-center justify-between
-                  gap-6 shadow-xl`}
+                    p-6 sm:p-8 lg:p-10
+                    w-full sm:w-[90%] lg:w-[70%] xl:w-[65%]
+                    flex flex-col sm:flex-row
+                    items-center justify-between
+                    gap-6 shadow-xl`}
                 >
                   {/* Left text section */}
                   <div className="flex flex-col gap-4 sm:gap-6 text-center sm:text-left">
@@ -160,8 +193,8 @@ export default function TopCategorySection() {
           <button
             onClick={prevSlide}
             className="absolute left-4 top-1/2 -translate-y-1/2 
-            text-3xl bg-white dark:bg-neutral-800 text-neutral-800 dark:text-white 
-            shadow-md p-3 rounded-full hover:scale-110 transition"
+              text-3xl bg-white dark:bg-neutral-800 text-neutral-800 dark:text-white 
+              shadow-md p-3 rounded-full hover:scale-110 transition"
           >
             ‹
           </button>
@@ -170,8 +203,8 @@ export default function TopCategorySection() {
           <button
             onClick={nextSlide}
             className="absolute right-4 top-1/2 -translate-y-1/2 
-            text-3xl bg-white dark:bg-neutral-800 text-neutral-800 dark:text-white 
-            shadow-md p-3 rounded-full hover:scale-110 transition"
+              text-3xl bg-white dark:bg-neutral-800 text-neutral-800 dark:text-white 
+              shadow-md p-3 rounded-full hover:scale-110 transition"
           >
             ›
           </button>
