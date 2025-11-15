@@ -89,7 +89,7 @@ export const cart = pgTable(
     id: text("id").primaryKey(),
     userId: text("user_id")
       .notNull()
-      .references(() => user.id, { onDelete: "cascade" ,"onUpdate":"cascade"}),
+      .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
     currency: text("currency").notNull().default("INR"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
@@ -109,10 +109,13 @@ export const cartItem = pgTable(
     id: text("id").primaryKey(),
     cartId: text("cart_id")
       .notNull()
-      .references(() => cart.id, { onDelete: "cascade" ,"onUpdate":"cascade"}),
+      .references(() => cart.id, { onDelete: "cascade", onUpdate: "cascade" }),
     productId: text("product_id")
       .notNull()
-      .references(() => product.id, { onDelete: "cascade","onUpdate":"cascade" }),
+      .references(() => product.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
     name: text("name").notNull(),
     price: numeric("price", { precision: 10, scale: 2 }).notNull(),
     quantity: integer("quantity").notNull().default(1),
@@ -134,7 +137,7 @@ export const favorites = pgTable("favorites", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
-    .references(() => user.id, { onDelete: "cascade","onUpdate":"cascade" }),
+    .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
 });
 
 /*
@@ -144,10 +147,13 @@ export const favoriteItem = pgTable("favorite_item", {
   id: text("id").primaryKey(),
   favoritesId: text("favorites_id")
     .notNull()
-    .references(() => favorites.id, { onDelete: "cascade","onUpdate":"cascade" }),
+    .references(() => favorites.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
   productId: text("product_id")
     .notNull()
-    .references(() => product.id, { onDelete: "cascade","onUpdate":"cascade" }),
+    .references(() => product.id, { onDelete: "cascade", onUpdate: "cascade" }),
 });
 
 /*
@@ -167,43 +173,16 @@ export const product = pgTable("product", {
   productDiscount: numeric("product_discount").notNull().default("0"),
 });
 
-export const productRelations = relations(product, ({ many }) => ({
-  productImages: many(productImage),
-}));
-
-export const productImage = pgTable("product_image", {
-  id: text("id").primaryKey(),
-  productId: text("product_id")
-    .notNull()
-    .references(() => product.id, { onDelete: "cascade","onUpdate":"cascade" }),
-  url: text("url").notNull(),
-  fileId: text("file_id").notNull(), 
-  position: numeric("position").default("0"),
-});
-
-export const productImageRelations = relations(productImage, ({ one }) => ({
-  product: one(product, {
-    fields: [productImage.productId],
-    references: [product.id],
-  }),
-}));
-
-export const productCategoryRelation = relations(product, ({ one, many }) => ({
-  categories: many(category),
-}));
-
-export const category = pgTable("category", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  imageUrl: text("categoryurl").notNull().default("default"),
-});
 
 export const productCategory = pgTable(
   "productcategory",
   {
     productId: text("product_id")
       .notNull()
-      .references(() => product.id, { onDelete: "cascade","onUpdate":"cascade" }),
+      .references(() => product.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
 
     categoryId: text("category_id")
       .notNull()
@@ -214,6 +193,43 @@ export const productCategory = pgTable(
   },
   (table) => [primaryKey({ columns: [table.productId, table.categoryId] })]
 );
+export const productRelations = relations(product, ({ many }) => ({
+  productImages: many(productImage),
+  productCategories: many(productCategory),
+}));
+
+
+export const productImage = pgTable("product_image", {
+  id: text("id").primaryKey(),
+  productId: text("product_id")
+    .notNull()
+    .references(() => product.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  url: text("url").notNull(),
+  fileId: text("file_id").notNull(),
+  position: numeric("position").default("0"),
+});
+
+export const productCategoryRelations = relations(productCategory, ({ one }) => ({
+  product: one(product, {
+    fields: [productCategory.productId],
+    references: [product.id],
+  }),
+  category: one(category, {
+    fields: [productCategory.categoryId],
+    references: [category.id],
+  }),
+}));
+
+
+export const category = pgTable("category", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  imageUrl: text("categoryurl").notNull().default("default"),
+});
+
+export const categoryRelations = relations(category, ({ many }) => ({
+  productCategories: many(productCategory),
+}));
 
 // export const orders = pgTable("orders", {
 //   id: text("orderid").primaryKey(),
@@ -280,7 +296,6 @@ export const productCategory = pgTable(
 //     .references(() => product.id, { onDelete: "cascade" }),
 // });
 
-
 // export const discount = pgTable("discount", {
 //   id: text("discountid").primaryKey(),
 //   code: text("code").notNull(),
@@ -315,8 +330,6 @@ export const productCategory = pgTable(
 //     .notNull()
 //     .references(() => product.id, { onDelete: "cascade" }),
 // });
-
-
 
 // export const shipment = pgTable("shipment", {
 //   id: text("shipmentid").primaryKey(),
@@ -361,7 +374,6 @@ export const productCategory = pgTable(
 //     .notNull()
 //     .references(() => user.id, { onDelete: "cascade" }),
 // });
-
 
 // export const orderItem = pgTable("orderitem", {
 //   id: text("orderitemid").primaryKey(),

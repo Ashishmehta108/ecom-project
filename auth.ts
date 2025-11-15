@@ -32,6 +32,7 @@ import {
 
 import { admin } from "better-auth/plugins";
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "./lib/loadEnv";
+import { sendEmail } from "./lib/sendemail";
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -65,11 +66,31 @@ export const auth = betterAuth({
     },
   }),
 
+  emailVerification: {
+    sendOnSignUp: true,
+    
+    sendVerificationEmail: async ({ user, url }) => {
+      await sendEmail({
+        to: user.email,
+        subject: "Verify your email address",
+        html: `<div>Click the link to verify your email: ${url}</div>`,
+      });
+    },
+  },
+
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,
     maxPasswordLength: 128,
-    requireEmailVerification: false,
+    requireEmailVerification: true,
+    sendResetPassword: async ({ user, url }) => {
+      await sendEmail({
+        to: user.email,
+        subject: "Reset your password",
+        html: `<div>Click the link to reset your password: ${url}</div>`,
+      });
+    },
+    
   },
   socialProviders: {
     github: {
