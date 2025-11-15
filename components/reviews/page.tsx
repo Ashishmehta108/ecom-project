@@ -44,7 +44,7 @@ function ReviewForm() {
                 onClick={() => setRating(starValue)}
                 className={`w-7 h-7 cursor-pointer transition-all ${
                   (hoverRating || rating) >= starValue
-                    ? "fill-black text-black dark:fill-white dark:text-white"
+                    ? "fill-yellow-300 text-yellow-300 dark:fill-white dark:text-white"
                     : "text-gray-300 dark:text-gray-600"
                 }`}
               />
@@ -97,20 +97,17 @@ export default function ReviewPage() {
 
   return (
     <div className="max-w-4xl mx-auto py-10 px-4 space-y-10">
-      {/* ==================== Rating Summary ==================== */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-10">
-        {/* Left Side Summary */}
         <div className="text-center md:text-left">
           <p className="text-5xl font-bold">{averageRating.toFixed(1)}</p>
 
-          {/* Star Row */}
           <div className="flex justify-center md:justify-start mt-2">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star
                 key={i}
                 className={`w-6 h-6 ${
                   i < Math.round(averageRating)
-                    ? "fill-black text-black dark:fill-white dark:text-white"
+                    ? "fill-yellow-400 text-yellow-400 dark:fill-white dark:text-white"
                     : "text-gray-300 dark:text-gray-600"
                 }`}
               />
@@ -133,7 +130,7 @@ export default function ReviewPage() {
 
               <div className="flex-1 bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
                 <div
-                  className="bg-gray-800 dark:bg-gray-300 h-full rounded-full transition-all"
+                  className="bg-yellow-400 dark:bg-gray-300 h-full rounded-full transition-all"
                   style={{
                     width: `${(item.count / reviews.length) * 100 || 1}%`,
                   }}
@@ -190,8 +187,8 @@ export default function ReviewPage() {
                   key={i}
                   className={`w-4 h-4 ${
                     i < review.rating
-                      ? "fill-black text-black dark:fill-white dark:text-white"
-                      : "text-gray-300 dark:text-gray-600"
+                      ? "fill-yellow-300 text-yellow-300 dark:fill-white dark:text-white"
+                      : "text-yellow-300 dark:text-gray-600"
                   }`}
                 />
               ))}

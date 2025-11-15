@@ -44,7 +44,7 @@ export default function PromoSlider({ slides }: { slides: any[] }) {
 
     const diff = startX.current - currentX.current;
 
-    if (Math.abs(diff) > 50) {
+    if (Math.abs(diff) > 0) {
       if (diff > 0) next(); // swipe left
       else prev(); // swipe right
     }

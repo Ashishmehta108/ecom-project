@@ -232,7 +232,7 @@ export const formatted = images.map((ele) => ({
   url: ele.url,
   fileId: ele.fileId,
 }));
-console.log(formatted)
+console.log(formatted);
 export const sampleProductDataset = {
   name: "Hoco Premium Wireless Earbuds",
   description:
@@ -277,9 +277,6 @@ export const createProduct = async (
   return await getProductById(productId);
 };
 
-// -----------------------------
-// GET ALL PRODUCTS
-// -----------------------------
 export const getAllProducts = async () => {
   return db.query.product.findMany({
     with: {
@@ -288,25 +285,25 @@ export const getAllProducts = async () => {
   });
 };
 
-// -----------------------------
-// GET PRODUCT BY ID
-// -----------------------------
 export const getProductById = async (productId: string) => {
   const productData = await db.query.product.findFirst({
     where: (fields, { eq }) => eq(fields.id, productId),
     with: {
-      productImages: true, // cannot order here
+      productImages: true,
+      productCategories: {
+        with: {
+          category: true,
+        },
+      },
     },
   });
 
   if (!productData) return null;
 
-  // Return productData if productImages not present or not array
   if (!Array.isArray((productData as any).productImages)) {
     return productData;
   }
 
-  // Manually sort images and ensure type correctness
   (productData as any).productImages = (productData as any).productImages.sort(
     (a: { position: string }, b: { position: string }) =>
       Number(a.position) - Number(b.position)
@@ -315,9 +312,6 @@ export const getProductById = async (productId: string) => {
   return productData;
 };
 
-// -----------------------------
-// UPDATE PRODUCT
-// ------------------------------
 export const updateProduct = async (
   productId: string,
   data: {
@@ -332,9 +326,6 @@ export const updateProduct = async (
   return await getProductById(productId);
 };
 
-// -----------------------------
-// ADD PRODUCT IMAGE
-// -----------------------------
 export const addProductImage = async (
   productId: string,
   img: { url: string; fileId: string }
@@ -356,9 +347,6 @@ export const addProductImage = async (
   return await getProductById(productId);
 };
 
-// -----------------------------
-// DELETE PRODUCT IMAGE
-// -----------------------------
 export const deleteProductImage = async (imageId: string) => {
   await db.delete(productImage).where(eq(productImage.id, imageId));
   return { success: true };

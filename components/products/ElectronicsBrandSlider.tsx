@@ -70,7 +70,7 @@ export default function TopCategorySection() {
   };
 
   useEffect(() => {
-    autoSlideRef.current = setInterval(nextSlide, 3000);
+    autoSlideRef.current = setInterval(nextSlide, 2000);
     return () => clearInterval(autoSlideRef.current);
   }, []);
 

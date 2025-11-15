@@ -28,8 +28,8 @@ export default function RootLayout({
       <body className={`antialiased ${sans.className}`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
+          
           disableTransitionOnChange
         >
           <Toaster position="top-right" />

@@ -2,7 +2,7 @@ import fs from "fs";
 import Imagekit from "imagekit";
 import path from "path";
 
-const client = new Imagekit({
+export const client = new Imagekit({
   privateKey: process.env.IMAGE_KIT_PRIVATE_KEY!,
   publicKey: process.env.IMAGE_KIT_PUBLIC_KEY!,
   urlEndpoint: process.env.IMAGE_KIT_BASE_URL!,

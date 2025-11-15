@@ -1,29 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth-client";
+
 import Container from "../giobal/Container";
 import CartButton from "./CartItems";
 import Logo from "./Logo";
 import NavSearch from "./NavSearch";
 import NotificationBell from "./NotificationBell";
 import LinksDropdown from "./LinksDropdown";
-import { ModeToggle } from "../ToggleTheme";
-import Image from "next/image";
-import { Menu, X } from "lucide-react";
-import CategoriesBar from "./CategoriesBar";
-
+import { checkUser } from "@/lib/actions/navbar.action";
 export default function Navbar() {
   const { data } = useSession();
-  const isLoggedIn = data?.user?.id;
+  const isLoggedIn = !!data?.user?.id;
+
+  const [role, setRole] = useState<string | null>(null);
+  const [loadingRole, setLoadingRole] = useState(true);
+
   const totalItems = 10;
 
+  useEffect(() => {
+    const fetchRole = async () => {
+      const r = await checkUser();
+      console.log("User role:", r);
+      setRole(r!);
+      setLoadingRole(false);
+    };
+    fetchRole();
+  }, []);
+
+  // if (loadingRole) return null;
+
+  // if (role == "admin") return null;
 
   return (
     <nav className="w-full border-b bg-white dark:bg-neutral-950 sticky top-0 z-50 shadow-sm">
-      <Container >
+      <Container>
         <div className="flex items-center justify-between py-3 sm:py-4 gap-4">
-
           <div className="flex items-center gap-4">
             <Logo />
           </div>
@@ -33,33 +46,15 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-4">
-
-            {/* <ModeToggle /> */}
-
-            <NotificationBell  />
-
+            <NotificationBell />
             <CartButton items={totalItems} />
-
-            {/* {isLoggedIn && (
-              <Image
-                src={data.user.image!}
-                width={38}
-                height={38}
-                alt="User"
-                className="rounded-full hidden sm:block"
-              />
-            )} */}
-
-            <LinksDropdown />
-            
+           <LinksDropdown />
           </div>
         </div>
-        {/* <CategoriesBar/> */}
 
         <div className="md:hidden px-1 pb-3">
           <NavSearch />
         </div>
-
       </Container>
     </nav>
   );

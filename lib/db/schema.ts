@@ -253,17 +253,17 @@ export const categoryRelations = relations(category, ({ many }) => ({
 //   price: number;
 // };
 
-// export const review = pgTable("review", {
-//   id: text("reviewid").primaryKey(),
-//   rating: text("rating").notNull(),
-//   comment: text("comment").notNull(),
-//   userId: text("user_id")
-//     .notNull()
-//     .references(() => user.id, { onDelete: "cascade" }),
-//   productId: text("product_id")
-//     .notNull()
-//     .references(() => product.id, { onDelete: "cascade" }),
-// });
+  // export const review = pgTable("review", {
+  //   id: text("reviewid").primaryKey(),
+  //   rating: text("rating").notNull(),
+  //   comment: text("comment").notNull(),
+  //   userId: text("user_id")
+  //     .notNull()
+  //     .references(() => user.id, { onDelete: "cascade" }),
+  //   productId: text("product_id")
+  //     .notNull()
+  //     .references(() => product.id, { onDelete: "cascade" }),
+  // });
 
 // export const address = pgTable("address", {
 //   id: text("addressid").primaryKey(),
