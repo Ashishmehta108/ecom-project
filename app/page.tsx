@@ -2,6 +2,7 @@ import ImageSlider from "@/components/ImageSlider";
 import ProductDealsSection from "@/components/products/ProductDealsSection";
 import TopCategoriesSection from "@/components/products/TopCategoriesSection";
 import ElectronicsBrandSlider from "@/components/products/ElectronicsBrandSlider";
+import { getAllCategories } from "@/lib/actions/categories.actions";
 
 // Sale banner slides...
 const saleBanners = [
@@ -62,7 +63,8 @@ const saleBanners = [
   },
 ];
 
-export default function App() {
+export default async function App() {
+  const categories = await getAllCategories();
   return (
     <div className="min-h-screen bg-background">
       <div className="w-full">
@@ -73,9 +75,8 @@ export default function App() {
           // showControls={true}
           // showProgress={true}
         />
-        <TopCategoriesSection />
+        <TopCategoriesSection categories={categories} />
         <ProductDealsSection />
-
         <ElectronicsBrandSlider />
       </div>
     </div>

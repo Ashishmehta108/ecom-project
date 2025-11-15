@@ -28,6 +28,7 @@ export default function CartPage() {
   ]);
 
   const { items, removeItem, updateItemQuantity, setItems } = userCartState();
+
   useEffect(() => {
     setItems(cartItems);
   }, [cartItems, setItems]);
@@ -42,41 +43,44 @@ export default function CartPage() {
 
   return (
     <div className="bg-white dark:bg-black min-h-screen">
-      <div className="max-w-7xl mx-auto px-5 md:px-10 py-10 text-neutral-900 dark:text-neutral-200">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold mb-1">Shopping Cart</h1>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 py-8 text-neutral-900 dark:text-neutral-200">
+
+        {/* HEADER */}
+        <header className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-1">Shopping Cart</h1>
           <p className="text-neutral-500 dark:text-neutral-400 text-sm">
             {items.length} items in your cart
           </p>
         </header>
 
-        <main className="grid md:grid-cols-3 gap-8">
+        <main className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+
           {/* LEFT SIDE */}
-          <section className="md:col-span-2 space-y-6">
+          <section className="md:col-span-2 space-y-5 sm:space-y-6">
             {items.map((item: ProductInCart) => {
               if (item.quantity <= 0) return null;
 
               const image =
-                cartItems.find((c) => c.productId === item.productId)?.image ||
-                "";
+                cartItems.find((c) => c.productId === item.productId)?.image || "";
 
               return (
                 <article
                   key={item.productId}
-                  className="flex md:flex-row items-start gap-4 md:gap-6 p-4 md:p-6 
+                  className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 p-4 sm:p-5
                   rounded-2xl bg-white dark:bg-neutral-900 
-                  border border-neutral-200 dark:border-neutral-800 
-                  shadow-sm"
+                  border border-neutral-200 dark:border-neutral-800 shadow-sm"
                 >
+                  {/* IMAGE */}
                   <img
                     src={image}
                     alt={item.name}
-                    className="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover"
+                    className="w-24 h-24 sm:w-28 sm:h-28 rounded-xl object-cover mx-auto sm:mx-0"
                   />
 
+                  {/* DETAILS */}
                   <div className="flex-1 flex flex-col justify-between w-full">
                     <div className="flex flex-col gap-1">
-                      <h2 className="text-lg font-semibold leading-tight">
+                      <h2 className="text-base sm:text-lg font-semibold leading-tight">
                         {item.name}
                       </h2>
 
@@ -89,13 +93,15 @@ export default function CartPage() {
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-between mt-4">
+                    {/* ACTIONS */}
+                    <div className="flex flex-col sm:flex-row items-center justify-between mt-4 gap-4 sm:gap-0">
+
                       {/* REMOVE */}
                       <button
                         onClick={() => removeItem(item.productId)}
                         className="flex items-center gap-1 text-red-500 hover:text-red-600 dark:hover:text-red-500 
-                        bg-red-900/10 dark:bg-red-900/10 dark:hover:bg-red-900/20 
-                        px-3 py-2 rounded text-sm"
+                        bg-red-900/10 hover:bg-red-900/20 
+                        px-3 py-2 rounded text-sm w-full sm:w-auto justify-center"
                       >
                         <Trash2 size={14} /> Remove
                       </button>
@@ -103,9 +109,7 @@ export default function CartPage() {
                       {/* QTY */}
                       <div className="flex items-center gap-3">
                         <button
-                          onClick={() =>
-                            updateItemQuantity(item.productId, "dec")
-                          }
+                          onClick={() => updateItemQuantity(item.productId, "dec")}
                           className="w-8 h-8 flex items-center justify-center rounded-full 
                           border dark:border-neutral-600 text-lg"
                         >
@@ -117,9 +121,7 @@ export default function CartPage() {
                         </span>
 
                         <button
-                          onClick={() =>
-                            updateItemQuantity(item.productId, "inc")
-                          }
+                          onClick={() => updateItemQuantity(item.productId, "inc")}
                           className="w-8 h-8 flex items-center justify-center rounded-full 
                           border dark:border-neutral-600 text-lg"
                         >
@@ -134,36 +136,27 @@ export default function CartPage() {
           </section>
 
           {/* RIGHT SIDE */}
-          <aside className="md:sticky md:top-28 self-start">
+          <aside className="md:sticky md:top-24 w-full">
             <div
-              className="p-6 rounded-3xl 
+              className="p-5 sm:p-6 rounded-3xl 
               bg-white dark:bg-neutral-900 
-              border border-neutral-200 dark:border-neutral-800
-              shadow-md"
+              border border-neutral-200 dark:border-neutral-800 shadow-md"
             >
-              <h3 className="text-xl font-bold mb-5">Order Summary</h3>
+              <h3 className="text-lg sm:text-xl font-bold mb-5">Order Summary</h3>
 
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-neutral-600 dark:text-neutral-400">
-                    Subtotal
-                  </span>
-                  <span className="font-medium">
-                    ₹{formattedTotal}
-                  </span>
+                  <span className="text-neutral-600 dark:text-neutral-400">Subtotal</span>
+                  <span className="font-medium">₹{formattedTotal}</span>
                 </div>
 
                 <div className="flex justify-between">
-                  <span className="text-neutral-600 dark:text-neutral-400">
-                    Shipping
-                  </span>
+                  <span className="text-neutral-600 dark:text-neutral-400">Shipping</span>
                   <span className="font-medium text-green-600">Free</span>
                 </div>
 
                 <div className="flex justify-between">
-                  <span className="text-neutral-600 dark:text-neutral-400">
-                    Tax
-                  </span>
+                  <span className="text-neutral-600 dark:text-neutral-400">Tax</span>
                   <span>Calculated at checkout</span>
                 </div>
               </div>
@@ -176,10 +169,8 @@ export default function CartPage() {
               </div>
 
               <button
-                className="w-full mt-5 py-3 
-                bg-blue-600 hover:bg-blue-700 
-                dark:bg-blue-700 dark:hover:bg-blue-600
-                text-white text-sm rounded-xl font-semibold
+                className="w-full mt-5 py-3 bg-blue-600 hover:bg-blue-700 
+                dark:bg-blue-700 dark:hover:bg-blue-600 text-white text-sm rounded-xl font-semibold
                 transition-all shadow-md hover:shadow-lg"
               >
                 Proceed to Checkout

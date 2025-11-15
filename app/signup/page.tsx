@@ -1,9 +1,12 @@
 import SignUpForm from "@/components/SignupForm";
-// import { isAuthenticated } from "@/server";
+import { getUserSession } from "@/server";
+import { Apple } from "iconsax-reactjs";
 import { redirect } from "next/navigation";
 
 export default async function Signup() {
-  // if (isAuthenticated) {
+  // const session = await getUserSession();
+  // console.log(session)
+  // if (session == null) {
   //   redirect("/");
   // }
   return (
