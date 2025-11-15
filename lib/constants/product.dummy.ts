@@ -1,0 +1,58 @@
+export const product = {
+  id: "",
+  productName: "Hoco EW30 Intelligent True Wireless Bluetooth Earphone",
+  brand: "Hoco",
+  model: "EW30",
+  category: "Earphone & Headset",
+  subCategory: "Bluetooth Earphone",
+  description:
+    "Hoco EW30 is a true wireless Bluetooth 5.3 headset with low latency, long standby time, LED indicators, and ergonomic design.",
+  features: [
+    "Bluetooth 5.3",
+    "41–50ms low-latency wireless audio",
+    "Charging case 300mAh, Earbuds 25mAh",
+    "3.5 hours use time",
+    "150 hours standby",
+    "Leader–follower switching",
+    "Summon Siri",
+    "LED battery indicator",
+    "IPX-3 waterproof rating",
+  ],
+  pricing: {
+    price: 660,
+    currency: "INR",
+    discount: 0,
+    inStock: true,
+    stockQuantity: 10,
+  },
+  specifications: {
+    general: {
+      productName: "EW30 Intelligent True Wireless Bluetooth Headset",
+      brandName: "Hoco",
+      colors: "White",
+      material: "ABS",
+      weight: "37g",
+      sizeMm: "51 x 44 x 21 mm",
+      privateMold: "Yes",
+      certificate: ["CE", "FCC", "ROHS"],
+    },
+    technical: {
+      bluetoothVersion: "5.3",
+      wirelessDelayTime: "41-50 ms",
+      waterproofStandard: "IPX-3",
+      chipset: "JL AC6983D2",
+      batteryCapacity: "300mAh, 25mAh",
+      useTime: "3.5 hours",
+      standbyTime: "150 hours",
+    },
+  },
+  images: [
+    {
+      url: "https://ik.imagekit.io/wxwtesflu/hoco_0_A9W4w_AaN.jpeg",
+    },
+    {
+      url: "https://ik.imagekit.io/wxwtesflu/hoco_2_2mJc_07BL.jpeg",
+    },
+  ],
+  tags: ["Bluetooth Earphone", "TWS", "Hoco", "EW30"],
+};

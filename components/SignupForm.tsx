@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { createUserViaEmailAction } from "@/lib/actions/create-user";
 import {
   Form,
   FormField,
@@ -14,25 +13,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-// import { signIn, useSession } from "next-auth/react";
 import { Github } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import logo from "@/public/google.svg";
-import Image from "next/image";
-import { CloudinaryUploader } from "@/components/CloudinaryUploader";
-import { UploadedFile } from "@/lib/types/general.types";
+import { Google } from "iconsax-reactjs";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
-import { signIn, useSession } from "@/lib/auth-client";
-import { Google } from "iconsax-reactjs";
+import { authClient, signIn, useSession } from "@/lib/auth-client";
 
 const formViaEmailSchema = z.object({
-  email: z.string().regex(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/, {
-    message: "Email is invalid",
-  }),
-  image: z.string().optional().nullable(),
-  password: z.string(),
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  email: z.string().email("Email is invalid"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export default function SignUpForm() {
@@ -40,8 +32,8 @@ export default function SignUpForm() {
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   const { data } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const uploadRef = useRef<UploadedFile[]>([]);
 
+  // If already logged in → redirect
   useEffect(() => {
     if (data?.user) {
       window.location.href = "/dashboard";
@@ -51,90 +43,118 @@ export default function SignUpForm() {
   const form = useForm<z.infer<typeof formViaEmailSchema>>({
     resolver: zodResolver(formViaEmailSchema),
     defaultValues: {
+      name: "",
       email: "",
-      image: "",
       password: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formViaEmailSchema>) {
-    try {
-      setIsSubmitting(true);
-      const uploadedImage = uploadRef.current?.[0]?.uploadedUrl;
-      const payload = {
-        ...values,
-        image: uploadedImage || values.image,
-      };
-      //   await createUserViaEmailAction(payload);
-      window.location.href = "/dashboard";
-      toast("User created successfully!");
+    setIsSubmitting(true);
 
+    try {
+      const { data, error } = await authClient.signUp.email({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) {
+        if (
+          error.message?.includes("unique") ||
+          error.message?.includes("exists")
+        ) {
+          toast.error("An account with this email already exists.");
+          return;
+        }
+
+        if (error.message?.includes("weak password")) {
+          toast.error("Password is too weak.");
+          return;
+        }
+
+        toast.error(error.message || "Something went wrong.");
+        return;
+      }
+
+      toast.success("Account created! Please check your email to verify.");
       form.reset();
-    } catch (err) {
-      console.error(err);
-      alert("Failed to create user.");
+    } catch (err: any) {
+      console.error("Signup error:", err);
+
+      toast.error(err?.message || "Failed to create account.");
     } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
-    <div className="absolute inset-0 min-h-screen w-full bg-white dark:bg-neutral-900 flex flex-col items-center justify-start pt-24 px-6 space-y-8">
+    <div className="absolute inset-0 min-h-screen w-full bg-white dark:bg-neutral-900 flex flex-col items-center justify-start pt-24 px-6 space-y-8 top-20">
       <div>
         <h1 className="text-2xl font-semibold">Create an account with us</h1>
       </div>
+
+      {/* Social Login Buttons */}
       <div className="relative w-full max-w-sm">
         <div className="flex w-full justify-center gap-2">
           <Button
             variant="outline"
             className="flex w-1/2 items-center cursor-pointer justify-center gap-2"
-            onClick={
-              async () =>
-                await signIn.social({
-                  provider: "github",
-                  disableRedirect: false,
-                  callbackURL: callbackUrl,
-                })
-              //   signIn("github", {
-              //     redirect: true,
-              //     callbackUrl: callbackUrl,
-              //   })
+            onClick={() =>
+              signIn.social({
+                provider: "github",
+                disableRedirect: false,
+                callbackURL: callbackUrl,
+              })
             }
           >
             <Github className="h-5 w-5" />
             GitHub
           </Button>
+
           <Button
             variant="outline"
             className="flex w-1/2 items-center cursor-pointer justify-center gap-2"
-            onClick={
-              async () =>
-                await signIn.social({
-                  provider: "google",
-                  disableRedirect: false,
-                  callbackURL: callbackUrl,
-                })
-              //   signIn("google", {
-              //     redirect: true,
-              //     callbackUrl: callbackUrl,
-              //   })
+            onClick={() =>
+              signIn.social({
+                provider: "google",
+                disableRedirect: false,
+                callbackURL: callbackUrl,
+              })
             }
           >
-            <Google className="fill-neutral-800 dark:text-neutral-100 dark:fill-neutral-100 w-5 h-5 text-neutral-800" />
+            <Google className="w-5 h-5" />
             Google
           </Button>
         </div>
+
         <div className="flex items-center justify-center py-4">
           <div className="border-t border-muted w-full" />
           <span className="px-2 text-muted-foreground text-sm">OR</span>
           <div className="border-t border-muted w-full" />
         </div>
       </div>
+
+      {/* Email Signup Form */}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-6 min-w-[300px] max-w-sm w-full"
         >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter your name here" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="email"
@@ -152,6 +172,7 @@ export default function SignUpForm() {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="password"
@@ -169,22 +190,8 @@ export default function SignUpForm() {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="image"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Profile Image (optional)</FormLabel>
-                <FormControl>
-                  <CloudinaryUploader
-                    ref={uploadRef}
-                    isSubmitting={isSubmitting}
-                    accept={true}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+
+          {/* Submit */}
           <Button
             type="submit"
             disabled={isSubmitting}
@@ -194,6 +201,7 @@ export default function SignUpForm() {
           </Button>
         </form>
       </Form>
+
       <div className="text-center mt-4 text-sm text-muted-foreground">
         Already have an account?{" "}
         <Link href="/login" className="text-blue-500 hover:underline">
