@@ -1,0 +1,65 @@
+[
+  {
+    "productName": "Hoco Y26 Smart Watch",
+    "brand": "Hoco",
+    "model": "Y26",
+    "categories": ["Electronics", "Watch"],
+    "subCategory": "Wearable",
+    "description": "The Hoco Y26 Smart Watch features a 1.81-inch TFT touch screen, IPX4 life-grade waterproofing, Bluetooth 5.0, multiple health tracking modes, and up to 7 days of battery life. It includes sleep tracking, activity monitoring, calling support, message reminders, and a range of everyday smart functions. The detachable silica gel band and alloy body provide both comfort and durability.",
+    "features": [
+      "1.81-inch TFT touch display",
+      "Resolution 240 × 286",
+      "Bluetooth 5.0",
+      "230mAh battery with 3–7 days usage",
+      "IPX4 splash-proof design",
+      "Alloy case with detachable silica gel band",
+      "Sleep monitoring",
+      "Steps and activity tracking",
+      "Supports calling: Answer/Make calls",
+      "Message and notification reminders",
+      "Alarm clock, calculator, passometer",
+      "Heart rate tracking",
+      "Multi-language support (22+ languages)",
+      "Wide compatibility: Android & iOS"
+    ],
+    "pricing": {
+      "price": 3596,
+      "currency": "INR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 25
+    },
+    "specifications": {
+      "general": {
+        "productName": "Hoco Y26 Smart Watch",
+        "brandName": "Hoco",
+        "colors": "Black",
+        "material": "Alloy case + Silica gel band",
+        "weight": "Not specified",
+        "sizeMm": "Not specified",
+        "privateMold": "Yes",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.0",
+        "wirelessDelayTime": "Not specified",
+        "waterproofStandard": "IPX4",
+        "chipset": "Not specified",
+        "batteryCapacity": "230mAh",
+        "useTime": "3–7 days",
+        "standbyTime": "Not specified"
+      }
+    },
+    "imagesFolder": "/Techbar/hocowatchy26",
+    "tags": [
+      "Smart Watch",
+      "Hoco",
+      "Y26",
+      "Bluetooth 5.0",
+      "1.81 inch display",
+      "IPX4",
+      "Wearable",
+      "Activity Tracker"
+    ]
+  }
+]

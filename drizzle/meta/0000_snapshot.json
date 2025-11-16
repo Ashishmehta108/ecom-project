@@ -1,5 +1,5 @@
 {
-  "id": "1b29eb1f-789d-460d-9e73-3e073aa91249",
+  "id": "b8e0cbd2-07cc-4e0e-9807-08f56edad9a7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -434,8 +434,26 @@
           "primaryKey": true,
           "notNull": true
         },
-        "name": {
-          "name": "name",
+        "product_name": {
+          "name": "product_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "brand": {
+          "name": "brand",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "model": {
+          "name": "model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sub_category": {
+          "name": "sub_category",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -446,18 +464,29 @@
           "primaryKey": false,
           "notNull": true
         },
-        "price": {
-          "name": "price",
-          "type": "numeric(10, 2)",
+        "features": {
+          "name": "features",
+          "type": "jsonb",
           "primaryKey": false,
           "notNull": true
         },
-        "currency": {
-          "name": "currency",
-          "type": "text",
+        "pricing": {
+          "name": "pricing",
+          "type": "jsonb",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'INR'"
+          "notNull": true
+        },
+        "specifications": {
+          "name": "specifications",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tags": {
+          "name": "tags",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -472,13 +501,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
-        },
-        "product_discount": {
-          "name": "product_discount",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'0'"
         }
       },
       "indexes": {},

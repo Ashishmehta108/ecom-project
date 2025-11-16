@@ -13,7 +13,7 @@ export default function NotificationBell() {
       "
       aria-label="Notifications"
     >
-      <NotificationBing className="size-7"/>
+      <NotificationBing className="size-[22px]"/>
     </button>
   );
 }

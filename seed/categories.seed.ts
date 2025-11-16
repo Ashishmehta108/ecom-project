@@ -20,9 +20,6 @@ const BASE_FOLDER = path.join(process.cwd(), "/categoryimages");
 
 async function uploadCategoryFolder(categoryName: string) {
   const file = path.join(BASE_FOLDER, `${categoryName}.jpeg`);
-
-
-
   console.log(` Uploading ${file} for ${categoryName}...`);
 
   const upload = await client.upload({

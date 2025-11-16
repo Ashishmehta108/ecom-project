@@ -10,6 +10,7 @@ import {
   unique,
   numeric,
   primaryKey,
+  jsonb,
 } from "drizzle-orm/pg-core";
 import { db } from ".";
 
@@ -159,20 +160,44 @@ export const favoriteItem = pgTable("favorite_item", {
 /*
 Product schema
 */
+
 export const product = pgTable("product", {
   id: text("id").primaryKey(),
-  name: text("name").notNull(),
+
+  productName: text("product_name").notNull(),
+  brand: text("brand").notNull(),
+  model: text("model").notNull(),
+
+  subCategory: text("sub_category").notNull(),
   description: text("description").notNull(),
-  price: numeric("price", { precision: 10, scale: 2 }).notNull(),
-  currency: text("currency").notNull().default("INR"),
+
+  features: jsonb("features").$type<string[]>().notNull(),
+
+  pricing: jsonb("pricing")
+    .$type<{
+      price: number;
+      currency: string;
+      discount: number;
+      inStock: boolean;
+      stockQuantity?: number;
+    }>()
+    .notNull(),
+
+  specifications: jsonb("specifications").$type<any>().notNull(),
+  tags: jsonb("tags").$type<string[]>().notNull(),
+
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
-  productDiscount: numeric("product_discount").notNull().default("0"),
 });
 
+export const category = pgTable("category", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  imageUrl: text("categoryurl").notNull().default("default"),
+});
 
 export const productCategory = pgTable(
   "productcategory",
@@ -193,11 +218,6 @@ export const productCategory = pgTable(
   },
   (table) => [primaryKey({ columns: [table.productId, table.categoryId] })]
 );
-export const productRelations = relations(product, ({ many }) => ({
-  productImages: many(productImage),
-  productCategories: many(productCategory),
-}));
-
 
 export const productImage = pgTable("product_image", {
   id: text("id").primaryKey(),
@@ -209,23 +229,39 @@ export const productImage = pgTable("product_image", {
   position: numeric("position").default("0"),
 });
 
-export const productCategoryRelations = relations(productCategory, ({ one }) => ({
+/* -------------------------------------------------------------------------- */
+/*                                RELATIONS FIX                                */
+/* -------------------------------------------------------------------------- */
+
+/* Product relations */
+export const productRelations = relations(product, ({ many }) => ({
+  productImages: many(productImage),
+  productCategories: many(productCategory),
+}));
+
+/* ProductImage ←→ Product relation (MISSING earlier — FIXED) */
+export const productImageRelations = relations(productImage, ({ one }) => ({
   product: one(product, {
-    fields: [productCategory.productId],
+    fields: [productImage.productId],
     references: [product.id],
-  }),
-  category: one(category, {
-    fields: [productCategory.categoryId],
-    references: [category.id],
   }),
 }));
 
+/* ProductCategory relations */
+export const productCategoryRelations = relations(
+  productCategory,
+  ({ one }) => ({
+    product: one(product, {
+      fields: [productCategory.productId],
+      references: [product.id],
+    }),
 
-export const category = pgTable("category", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  imageUrl: text("categoryurl").notNull().default("default"),
-});
+    category: one(category, {
+      fields: [productCategory.categoryId],
+      references: [category.id],
+    }),
+  })
+);
 
 export const categoryRelations = relations(category, ({ many }) => ({
   productCategories: many(productCategory),
@@ -253,17 +289,21 @@ export const categoryRelations = relations(category, ({ many }) => ({
 //   price: number;
 // };
 
-  // export const review = pgTable("review", {
-  //   id: text("reviewid").primaryKey(),
-  //   rating: text("rating").notNull(),
-  //   comment: text("comment").notNull(),
-  //   userId: text("user_id")
-  //     .notNull()
-  //     .references(() => user.id, { onDelete: "cascade" }),
-  //   productId: text("product_id")
-  //     .notNull()
-  //     .references(() => product.id, { onDelete: "cascade" }),
-  // });
+export const review = pgTable("review", {
+  id: text("reviewid").primaryKey(),
+  rating: text("rating").notNull(),
+  comment: text("comment").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  productId: text("product_id")
+    .notNull()
+    .references(() => product.id, { onDelete: "cascade" }),
+});
+
+export const userReviewRelation = relations(user, ({ one, many }) => ({
+  reviews: many(review),
+}));
 
 // export const address = pgTable("address", {
 //   id: text("addressid").primaryKey(),

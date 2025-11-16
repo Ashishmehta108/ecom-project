@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./lib/db";
+import { stripe } from "@better-auth/stripe";
 import {
   user,
   account,
@@ -33,6 +34,7 @@ import {
 import { admin } from "better-auth/plugins";
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "./lib/loadEnv";
 import { sendEmail } from "./lib/sendemail";
+import { stripeClient } from "./lib/stripe";
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -68,13 +70,17 @@ export const auth = betterAuth({
 
   emailVerification: {
     sendOnSignUp: true,
-    
+
     sendVerificationEmail: async ({ user, url }) => {
-      await sendEmail({
-        to: user.email,
-        subject: "Verify your email address",
-        html: `<div>Click the link to verify your email: ${url}</div>`,
-      });
+      try {
+        await sendEmail({
+          to: user.email,
+          subject: "Verify your email address",
+          html: `<div>Click the link to verify your email: ${url}</div>`,
+        });
+      } catch (err) {
+        console.error("EMAIL ERROR:", err);
+      }
     },
   },
 
@@ -90,7 +96,6 @@ export const auth = betterAuth({
         html: `<div>Click the link to reset your password: ${url}</div>`,
       });
     },
-    
   },
   socialProviders: {
     github: {
@@ -109,7 +114,14 @@ export const auth = betterAuth({
     max: 100,
     message: "Too many requests from this IP, please try again later.",
   },
-  plugins: [admin()],
+  plugins: [
+    admin(),
+    stripe({
+      stripeClient: stripeClient,
+      createCustomerOnSignUp: true,
+      stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
+    }),
+  ],
   user: {
     additionalFields: {
       role: {

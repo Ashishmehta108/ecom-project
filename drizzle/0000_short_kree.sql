@@ -52,13 +52,17 @@ CREATE TABLE "favorites" (
 --> statement-breakpoint
 CREATE TABLE "product" (
 	"id" text PRIMARY KEY NOT NULL,
-	"name" text NOT NULL,
+	"product_name" text NOT NULL,
+	"brand" text NOT NULL,
+	"model" text NOT NULL,
+	"sub_category" text NOT NULL,
 	"description" text NOT NULL,
-	"price" numeric(10, 2) NOT NULL,
-	"currency" text DEFAULT 'INR' NOT NULL,
+	"features" jsonb NOT NULL,
+	"pricing" jsonb NOT NULL,
+	"specifications" jsonb NOT NULL,
+	"tags" jsonb NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL,
-	"product_discount" numeric DEFAULT '0' NOT NULL
+	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "productcategory" (

@@ -12,40 +12,85 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
 
-function ReviewForm() {
+import {
+  createReview,
+  updateReview,
+  deleteReview,
+} from "@/lib/actions/create-review";
+
+function ReviewForm({
+  productId,
+  onAddReview,
+}: {
+  productId: string;
+  onAddReview: any;
+}) {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const { data } = authClient.useSession();
+  const userId = data?.user?.id;
+
+  async function handleSubmit() {
+    if (!userId)
+      return toast.error("You must be logged in to submit a review.");
+    if (rating === 0) return toast.error("Please select a rating.");
+    if (!comment.trim()) return toast.error("Please write a review.");
+
+    setLoading(true);
+
+    const res = await createReview(productId, comment.trim(), String(rating));
+
+    setLoading(false);
+
+    if (!res.success) return toast.error(res.error || "Unable to post review");
+
+    toast.success("Review submitted!");
+
+    onAddReview({
+      ...res.data,
+      name,
+      date: new Date().toISOString().split("T")[0],
+    });
+  }
 
   return (
-    <form className="space-y-5">
-      {/* Username */}
-      <div className="space-y-1.5">
-        <label className="text-sm font-medium dark:text-gray-200">
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
           Your Name
         </label>
-        <Input placeholder="Enter your name" className="dark:bg-neutral-800" />
+        <Input
+          placeholder="Enter your name"
+          className="h-11 border-gray-200 dark:border-gray-700 dark:bg-gray-800/50 focus:ring-1 focus:ring-gray-900 dark:focus:ring-gray-100"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
       </div>
 
-      {/* Star Rating Selector */}
-      <div className="space-y-1.5">
-        <label className="text-sm font-medium dark:text-gray-200">
-          Your Rating
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Rating
         </label>
-
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           {Array.from({ length: 5 }).map((_, i) => {
-            const starValue = i + 1;
+            const star = i + 1;
             return (
               <Star
                 key={i}
-                onMouseEnter={() => setHoverRating(starValue)}
+                onMouseEnter={() => setHoverRating(star)}
                 onMouseLeave={() => setHoverRating(0)}
-                onClick={() => setRating(starValue)}
-                className={`w-7 h-7 cursor-pointer transition-all ${
-                  (hoverRating || rating) >= starValue
-                    ? "fill-yellow-300 text-yellow-300 dark:fill-white dark:text-white"
-                    : "text-gray-300 dark:text-gray-600"
+                onClick={() => setRating(star)}
+                className={`w-6 h-6 cursor-pointer transition-all ${
+                  (hoverRating || rating) >= star
+                    ? "fill-amber-400 text-amber-400 scale-105"
+                    : "text-gray-300 dark:text-gray-600 hover:text-gray-400"
                 }`}
               />
             );
@@ -53,42 +98,122 @@ function ReviewForm() {
         </div>
       </div>
 
-      {/* Review Text */}
-      <div className="space-y-1.5">
-        <label className="text-sm font-medium dark:text-gray-200">
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
           Your Review
         </label>
         <Textarea
           placeholder="Share your experience..."
-          className="min-h-[110px] resize-none dark:bg-neutral-800"
+          className="min-h-[120px] border-gray-200 dark:border-gray-700 dark:bg-gray-800/50 focus:ring-1 focus:ring-gray-900 dark:focus:ring-gray-100 resize-none"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
         />
       </div>
 
-      <Button className="w-full text-sm py-5">Submit Review</Button>
-    </form>
+      <Button
+        disabled={loading}
+        onClick={handleSubmit}
+        className="w-full h-11 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 dark:text-gray-900 font-medium"
+      >
+        {loading ? "Submitting..." : "Submit Review"}
+      </Button>
+    </div>
   );
 }
 
-export default function ReviewPage() {
-  const [reviews] = useState([
-    {
-      id: 1,
-      name: "Amit Sharma",
-      rating: 5,
-      comment: "Amazing product! Great quality and fast delivery.",
-      date: "2025-11-01",
-    },
-    {
-      id: 2,
-      name: "Riya Verma",
-      rating: 4,
-      comment: "Good product but packaging could be better.",
-      date: "2025-10-28",
-    },
-  ]);
+function EditReviewForm({ review, onUpdate, onClose }: any) {
+  const [rating, setRating] = useState(review.rating);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [comment, setComment] = useState(review.comment);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit() {
+    setLoading(true);
+
+    const res = await updateReview(review.id, comment, rating);
+
+    setLoading(false);
+
+    if (!res.success) return toast.error(res.error);
+
+    toast.success("Review updated!");
+
+    onUpdate(res.data);
+    onClose();
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Rating
+        </label>
+        <div className="flex gap-1.5">
+          {Array.from({ length: 5 }).map((_, i) => {
+            const star = i + 1;
+            return (
+              <Star
+                key={i}
+                onMouseEnter={() => setHoverRating(star)}
+                onMouseLeave={() => setHoverRating(0)}
+                onClick={() => setRating(star)}
+                className={`w-6 h-6 cursor-pointer transition-all ${
+                  (hoverRating || rating) >= star
+                    ? "fill-amber-400 text-amber-400 scale-105"
+                    : "text-gray-300 dark:text-gray-600 hover:text-gray-400"
+                }`}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Your Review
+        </label>
+        <Textarea
+          className="min-h-[120px] border-gray-200 dark:border-gray-700 dark:bg-gray-800/50 focus:ring-1 focus:ring-gray-900 dark:focus:ring-gray-100 resize-none"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+      </div>
+
+      <Button
+        disabled={loading}
+        onClick={handleSubmit}
+        className="w-full h-11 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 dark:text-gray-900 font-medium"
+      >
+        {loading ? "Saving..." : "Save Changes"}
+      </Button>
+    </div>
+  );
+}
+
+export default function ReviewPage({ productId }: { productId: string }) {
+  const { data } = authClient.useSession();
+  const userId = data?.user?.id;
+
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [editingReview, setEditingReview] = useState<any>(null);
+
+  const onAddReview = (rev: any) => setReviews((prev) => [rev, ...prev]);
+  const onEdit = (review: any) => setEditingReview(review);
+
+  const onDelete = async (id: string) => {
+    const res = await deleteReview(id);
+    if (!res.success) return toast.error(res.error);
+
+    toast.success("Review deleted");
+    setReviews((prev) => prev.filter((r) => r.id !== id));
+  };
 
   const averageRating =
-    reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length;
+    reviews.length > 0
+      ? (
+          reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
+        ).toFixed(1)
+      : "0.0";
 
   const ratingCounts = [5, 4, 3, 2, 1].map((star) => ({
     star,
@@ -96,110 +221,170 @@ export default function ReviewPage() {
   }));
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-4 space-y-10">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-10">
-        <div className="text-center md:text-left">
-          <p className="text-5xl font-bold">{averageRating.toFixed(1)}</p>
-
-          <div className="flex justify-center md:justify-start mt-2">
+    <div className="max-w-4xl mx-auto py-12 px-6 space-y-12">
+      {/* Header Section */}
+      <div className="flex flex-col lg:flex-row items-start justify-between gap-10 pb-8 border-b border-gray-100 dark:border-gray-800">
+        {/* Average Rating */}
+        <div className="flex flex-col items-center lg:items-start min-w-[140px]">
+          <div className="text-5xl font-semibold text-gray-900 dark:text-gray-100 tracking-tight">
+            {averageRating}
+          </div>
+          <div className="flex gap-0.5 mt-3">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star
                 key={i}
-                className={`w-6 h-6 ${
-                  i < Math.round(averageRating)
-                    ? "fill-yellow-400 text-yellow-400 dark:fill-white dark:text-white"
-                    : "text-gray-300 dark:text-gray-600"
+                className={`w-5 h-5 ${
+                  i < Math.round(Number(averageRating))
+                    ? "fill-amber-400 text-amber-400"
+                    : "text-gray-200 dark:text-gray-700"
                 }`}
               />
             ))}
           </div>
-
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-            Based on {reviews.length} reviews
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2.5">
+            {reviews.length} {reviews.length === 1 ? "review" : "reviews"}
           </p>
         </div>
 
-        {/* Rating Bars */}
-        <div className="flex-1 space-y-2">
-          {ratingCounts.map((item) => (
-            <div
-              key={item.star}
-              className="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300"
-            >
-              <span className="w-10">{item.star}★</span>
+        {/* Rating Breakdown */}
+        <div className="flex-1 space-y-2.5 max-w-md w-full">
+          {ratingCounts.map((item) => {
+            const percentage =
+              reviews.length === 0 ? 0 : (item.count / reviews.length) * 100;
 
-              <div className="flex-1 bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
-                <div
-                  className="bg-yellow-400 dark:bg-gray-300 h-full rounded-full transition-all"
-                  style={{
-                    width: `${(item.count / reviews.length) * 100 || 1}%`,
-                  }}
-                />
+            return (
+              <div key={item.star} className="flex items-center gap-3">
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-400 w-8">
+                  {item.star}
+                </span>
+                <div className="flex-1 bg-gray-100 dark:bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                  <div
+                    className="bg-amber-400 dark:bg-amber-500 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${percentage}%` }}
+                  />
+                </div>
+                <span className="text-sm text-gray-500 dark:text-gray-400 w-8 text-right">
+                  {item.count}
+                </span>
               </div>
-
-              <span className="w-6 text-right">{item.count}</span>
-            </div>
-          ))}
+            );
+          })}
         </div>
+
+        {/* Write Review Button */}
         <Dialog>
           <DialogTrigger asChild>
             <Button
               variant="outline"
-              className="border-gray-300 dark:border-gray-700 dark:text-gray-200"
+              className="h-10 px-6 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 font-medium whitespace-nowrap"
             >
               Write a Review
             </Button>
           </DialogTrigger>
 
-          <DialogContent className="max-w-md dark:bg-neutral-900 dark:border-neutral-700">
+          <DialogContent className="max-w-lg border-gray-200 dark:border-gray-700 dark:bg-gray-900 shadow-xl">
             <DialogHeader>
-              <DialogTitle className="dark:text-white">
+              <DialogTitle className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                 Write a Review
               </DialogTitle>
             </DialogHeader>
 
-            <ReviewForm />
+            <ReviewForm productId={productId} onAddReview={onAddReview} />
           </DialogContent>
         </Dialog>
       </div>
-      <div className="space-y-6">
-        {reviews.map((review) => (
-          <div
-            key={review.id}
-            className="
-              border border-gray-200 dark:border-gray-800 
-              rounded-xl p-5 shadow-sm 
-              bg-white dark:bg-neutral-900 
-              transition-all
-            "
-          >
-            <div className="flex justify-between items-center">
-              <p className="font-medium dark:text-white">{review.name}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {review.date}
-              </p>
-            </div>
 
-            {/* Stars */}
-            <div className="mt-2 flex items-center gap-1">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-4 h-4 ${
-                    i < review.rating
-                      ? "fill-yellow-300 text-yellow-300 dark:fill-white dark:text-white"
-                      : "text-yellow-300 dark:text-gray-600"
-                  }`}
-                />
-              ))}
+      {/* Reviews List */}
+      <div className="space-y-4">
+        {reviews.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+              <Star className="w-6 h-6 text-gray-400" />
             </div>
-
-            <p className="text-gray-700 dark:text-gray-300 mt-3 leading-relaxed">
-              {review.comment}
+            <p className="text-gray-500 dark:text-gray-400 text-sm">
+              No reviews yet. Be the first to share your experience!
             </p>
           </div>
-        ))}
+        ) : (
+          reviews.map((review) => (
+            <div
+              key={review.id}
+              className="group border border-gray-100 dark:border-gray-800 rounded-2xl p-6 bg-white dark:bg-gray-900/50 hover:shadow-sm transition-shadow"
+            >
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <p className="font-medium text-gray-900 dark:text-gray-100">
+                    {review.name}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                    {review.date}
+                  </p>
+                </div>
+
+                {review.userId === userId && (
+                  <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={() => onEdit(review)}
+                      className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => onDelete(review.id)}
+                      className="text-sm text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-0.5 mb-3">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`w-4 h-4 ${
+                      i < review.rating
+                        ? "fill-amber-400 text-amber-400"
+                        : "text-gray-200 dark:text-gray-700"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <p className="text-[15px] leading-relaxed text-gray-700 dark:text-gray-300">
+                {review.comment}
+              </p>
+            </div>
+          ))
+        )}
       </div>
+
+      {/* Edit Review Dialog */}
+      <Dialog
+        open={!!editingReview}
+        onOpenChange={() => setEditingReview(null)}
+      >
+        <DialogContent className="max-w-lg border-gray-200 dark:border-gray-700 dark:bg-gray-900 shadow-xl">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+              Edit Review
+            </DialogTitle>
+          </DialogHeader>
+
+          {editingReview && (
+            <EditReviewForm
+              review={editingReview}
+              onUpdate={(updated: any) =>
+                setReviews((prev) =>
+                  prev.map((r) => (r.id === updated.id ? updated : r))
+                )
+              }
+              onClose={() => setEditingReview(null)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -4,7 +4,6 @@ import TopCategoriesSection from "@/components/products/TopCategoriesSection";
 import ElectronicsBrandSlider from "@/components/products/ElectronicsBrandSlider";
 import { getAllCategories } from "@/lib/actions/categories.actions";
 
-// Sale banner slides...
 const saleBanners = [
   {
     image:
@@ -65,16 +64,12 @@ const saleBanners = [
 
 export default async function App() {
   const categories = await getAllCategories();
+  const data = await fetch("http://localhost:3000/api/categories");
+  console.log(await data.json());
   return (
     <div className="min-h-screen bg-background">
       <div className="w-full">
-        {/* 🎥 Full-width slider */}
-        <ImageSlider
-          slides={saleBanners}
-          // autoPlayInterval={5000}
-          // showControls={true}
-          // showProgress={true}
-        />
+        <ImageSlider slides={saleBanners} />
         <TopCategoriesSection categories={categories} />
         <ProductDealsSection />
         <ElectronicsBrandSlider />

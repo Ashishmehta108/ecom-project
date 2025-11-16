@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
-import { authClient, signIn, useSession } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 
 const formViaEmailSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -30,7 +30,7 @@ const formViaEmailSchema = z.object({
 export default function SignUpForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
-  const { data } = useSession();
+  const { data } = authClient.useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // If already logged in → redirect
@@ -101,7 +101,7 @@ export default function SignUpForm() {
             variant="outline"
             className="flex w-1/2 items-center cursor-pointer justify-center gap-2"
             onClick={() =>
-              signIn.social({
+              authClient.signIn.social({
                 provider: "github",
                 disableRedirect: false,
                 callbackURL: callbackUrl,
@@ -116,7 +116,7 @@ export default function SignUpForm() {
             variant="outline"
             className="flex w-1/2 items-center cursor-pointer justify-center gap-2"
             onClick={() =>
-              signIn.social({
+              authClient.signIn.social({
                 provider: "google",
                 disableRedirect: false,
                 callbackURL: callbackUrl,

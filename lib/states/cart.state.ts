@@ -1,53 +1,66 @@
 import { create } from "zustand";
-import { ProductInCart } from "@/lib/types/cart.types";
+import { persist } from "zustand/middleware";
 
-const userCartState = create<{
-  items: ProductInCart[];
-  setItems: (items: ProductInCart[]) => void;
-  addItem: (item: ProductInCart) => void;
-  removeItem: (productId: string) => void;
-  clearCart: () => void;
-  updateItemQuantity: (productId: string, type: "inc" | "dec") => void;
-}>((set) => ({
-  items: [],
-  setItems: (items) => set({ items }),
-  addItem: (item) =>
-    set((state) => {
-      const existingItemIndex = state.items.findIndex(
-        (i) => i.productId === item.productId
-      );
-      if (existingItemIndex >= 0) {
-        const updatedItems = [...state.items];
-        updatedItems[existingItemIndex].quantity += item.quantity;
-        return { items: updatedItems };
-      }
-      return { items: [...state.items, item] };
+export type CartItem = {
+  id: string; // cartItem.id from DB
+  productId: string;
+  name: string;
+  price: number | string;
+  quantity: number;
+  imageUrl?: string | null;
+};
+
+interface CartState {
+  items: CartItem[];
+
+  setItems: (items: CartItem[]) => void;
+  addOrReplaceItem: (item: CartItem) => void;
+  removeItem: (cartItemId: string) => void;
+
+  clear: () => void;
+
+  updateQty: (cartItemId: string, newQty: number) => void;
+}
+
+const userCartState = create<CartState>()(
+  persist(
+    (set) => ({
+      items: [],
+
+      setItems: (items) => set({ items }),
+
+      addOrReplaceItem: (item) =>
+        set((state) => {
+          const exists = state.items.some((i) => i.id === item.id);
+
+          if (exists) {
+            return {
+              items: state.items.map((i) => (i.id === item.id ? item : i)),
+            };
+          }
+
+          return { items: [...state.items, item] };
+        }),
+
+      removeItem: (cartItemId) =>
+        set((state) => ({
+          items: state.items.filter((item) => item.id !== cartItemId),
+        })),
+
+      clear: () => set({ items: [] }),
+
+      updateQty: (cartItemId, newQty) =>
+        set((state) => ({
+          items: state.items.map((item) =>
+            item.id === cartItemId ? { ...item, quantity: newQty } : item
+          ),
+        })),
     }),
-  removeItem: (productId) =>
-    set((state) => ({
-      items: state.items.filter((item) => item.productId !== productId),
-    })),
-  clearCart: () => set({ items: [] }),
-  updateItemQuantity: (productId, type) =>
-    set((state) => {
-      const updatedItems = state.items
-        .map((item) =>
-          item.productId === productId
-            ? {
-                ...item,
-                quantity:
-                  type === "inc"
-                    ? item.quantity + 1
-                    : item.quantity - 1 < 1
-                    ? 0
-                    : item.quantity - 1,
-              }
-            : item
-        )
-        .filter((item) => item.quantity > 0);
-      console.log("Updated Items:", updatedItems);
-      return { items: updatedItems };
-    }),
-}));
+    {
+      name: "cart-storage", // localStorage key
+      version: 1,
+    }
+  )
+);
 
 export default userCartState;

@@ -50,9 +50,43 @@ export async function uploadHocoImages() {
       resp.push(result);
       console.log("Uploaded:", result.fileId, result.url);
     }
-return resp
     console.log("All files uploaded successfully!");
+    return resp;
   } catch (error) {
     console.error("Upload failed:", error);
   }
+}
+
+export async function uploadFolderToImageKit(
+  folderPath: string,
+  prefix: string
+) {
+  const absPath = path.join(process.cwd(), folderPath);
+  const files = fs.readdirSync(absPath);
+  const results: { url: string; fileId: string; position: number }[] = [];
+
+  let index = 0;
+  for (const file of files) {
+    const fullPath = path.join(absPath, file);
+    if (!fs.statSync(fullPath).isFile()) continue;
+
+    const stream = fs.createReadStream(fullPath);
+    const fileName = `${prefix}_${index}${path.extname(file)}`;
+
+    const upload = await client.upload({
+      file: stream,
+      fileName,
+      tags: ["techbar", prefix],
+    });
+
+    results.push({
+      url: upload.url,
+      fileId: upload.fileId,
+      position: index,
+    });
+
+    index++;
+  }
+
+  return results;
 }

@@ -26,17 +26,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`antialiased ${sans.className}`}>
-        <ThemeProvider
+        {/* <ThemeProvider
           attribute="class"
           defaultTheme="light"
           
           disableTransitionOnChange
-        >
+        > */}
           <Toaster position="top-right" />
           <Navbar />
           <main className="min-h-screen">{children}</main>
           <Footer />
-        </ThemeProvider>
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );

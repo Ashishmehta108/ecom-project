@@ -12,15 +12,19 @@ import menu from "../../app/menu.svg";
 import Image from "next/image";
 import { Menu } from "lucide-react";
 import { ModeToggle } from "../ToggleTheme";
+import { Profile } from "iconsax-reactjs";
 // import { Menu } from "lucide-react";
 // import { UserButton, useUser } from "@clerk/nextjs";
 function LinksDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="flex cursor-pointer  gap-4 max-w-[80px] ">
+        <Button
+          variant="ghost"
+          className="flex cursor-pointer  gap-4 max-w-[80px] "
+        >
           {/* <Image src={menu} alt="menu" className="w-6 h-6 dark:invert" /> */}
-          <Menu className="size-6"/>
+          <Menu className="size-6" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -38,8 +42,12 @@ function LinksDropdown() {
             </DropdownMenuItem>
           );
         })}
+
         <DropdownMenuItem>
-          Theme <ModeToggle/>
+          <Link href={"/profile"} className="flex gap-2 items-center">
+            <Profile />
+            Profile
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

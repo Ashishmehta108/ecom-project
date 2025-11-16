@@ -1,0 +1,707 @@
+[
+  {
+    "productName": "Hoco EW30 Intelligent True Wireless Bluetooth Earphone",
+    "brand": "Hoco",
+    "model": "EW30",
+    "categories": ["Electronics", "Earphones"],
+    "subCategory": "Bluetooth Earphone",
+    "description": "Hoco EW30 is a true wireless Bluetooth 5.3 headset with low latency, long standby time, LED indicators, and ergonomic design.",
+    "features": [
+      "Bluetooth 5.3",
+      "41–50ms low-latency wireless audio",
+      "Charging case 300mAh, Earbuds 25mAh",
+      "3.5 hours use time",
+      "150 hours standby",
+      "Leader–follower switching",
+      "Summon Siri",
+      "LED battery indicator",
+      "IPX-3 waterproof rating"
+    ],
+    "pricing": {
+      "price": 660,
+      "currency": "INR",
+      "discount": 0,
+      "inStock": true
+    },
+    "specifications": {
+      "general": {
+        "productName": "EW30 Intelligent True Wireless Bluetooth Headset",
+        "brandName": "Hoco",
+        "colors": "White",
+        "material": "ABS",
+        "weight": "37g",
+        "sizeMm": "51 x 44 x 21 mm",
+        "privateMold": "Yes",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.3",
+        "wirelessDelayTime": "41–50 ms",
+        "waterproofStandard": "IPX-3",
+        "chipset": "JL AC6983D2",
+        "batteryCapacity": "300mAh (case), 25mAh (earbuds)",
+        "useTime": "3.5 hours",
+        "standbyTime": "150 hours"
+      }
+    },
+    "imagesFolder": "/Techbar/hocoew30",
+    "tags": ["Bluetooth Earphone", "TWS", "Hoco", "EW30"]
+  },
+
+  {
+    "productName": "Hoco EQ20 True Wireless ANC+ENC Noise Reduction Bluetooth Earphone",
+    "brand": "Hoco",
+    "model": "EQ20",
+    "categories": ["Electronics", "Earphones"],
+    "subCategory": "Bluetooth Earphone",
+    "description": "The Hoco EQ20 is a true wireless Bluetooth 5.4 earphone featuring ANC+ENC noise reduction, long battery life, one-to-two connection, master–slave switching, and Siri voice assistant support.",
+    "features": [
+      "Bluetooth 5.4",
+      "ANC + ENC dual noise reduction",
+      "400mAh charging case, 40mAh earbuds",
+      "Up to 7 hours usage (6 hours with ANC on)",
+      "Master–slave switching",
+      "Summon Siri voice assistant",
+      "One-to-two dual device connection"
+    ],
+    "pricing": {
+      "price": 1299,
+      "currency": "INR",
+      "discount": 10,
+      "inStock": true
+    },
+    "specifications": {
+      "general": {
+        "productName": "EQ20 Bluetooth Earphone",
+        "brandName": "Hoco",
+        "colors": "Black",
+        "material": "ABS",
+        "weight": "180g (package)",
+        "sizeMm": "140 x 110 x 50 mm",
+        "privateMold": "Yes",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.4",
+        "wirelessDelayTime": "Low Latency",
+        "waterproofStandard": "IPX-3",
+        "chipset": "Jerry AC7003",
+        "batteryCapacity": "400mAh (case), 40mAh (earbuds)",
+        "useTime": "7 hours (6 hours with ANC on)",
+        "standbyTime": "100+ hours"
+      }
+    },
+    "imagesFolder": "/Techbar/hocoeq20",
+    "tags": ["Bluetooth Earphone", "ANC", "ENC", "Hoco", "EQ20", "TWS"]
+  },
+
+  {
+    "productName": "Hoco Y23 Smart Watch",
+    "brand": "Hoco",
+    "model": "Y23",
+    "categories": ["Electronics", "Watch"],
+    "subCategory": "Wearable",
+    "description": "The Hoco Y23 Smart Watch features a large 2.02-inch HD touchscreen with a 320×385 resolution, Bluetooth 5.3 connectivity, and IP67 water resistance. With 5–7 days of battery life, heart rate monitoring, sleep tracking, step counting, and support for 22 languages, it offers a complete smart wearable experience for Android and iOS users.",
+    "features": [
+      "2.02-inch HD touchscreen display",
+      "320×385 high-resolution screen",
+      "Bluetooth 5.3 seamless connectivity",
+      "5–7 days battery life on a single charge",
+      "IP67 waterproof rating",
+      "Heart rate monitoring",
+      "Sleep tracking",
+      "Step counter",
+      "Multi-sport modes",
+      "Real-time weather updates",
+      "Supports 22 languages",
+      "Compatible with Android and iOS"
+    ],
+    "pricing": {
+      "price": 3596,
+      "currency": "INR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 25
+    },
+    "specifications": {
+      "general": {
+        "productName": "Hoco Y23 Smart Watch",
+        "brandName": "Hoco",
+        "colors": "Black",
+        "material": "Silicone strap + ABS/Metal body",
+        "weight": "Not specified",
+        "sizeMm": "Not specified",
+        "privateMold": "Yes",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.3",
+        "wirelessDelayTime": "Not specified",
+        "waterproofStandard": "IP67",
+        "chipset": "Not specified",
+        "batteryCapacity": "Not specified",
+        "useTime": "5–7 days",
+        "standbyTime": "Not specified"
+      }
+    },
+    "imagesFolder": "/Techbar/hocoy23watch",
+    "tags": [
+      "Smart Watch",
+      "Hoco",
+      "Y23",
+      "Bluetooth 5.3",
+      "2.02 inch display",
+      "IP67",
+      "Wearable",
+      "Fitness Tracker"
+    ]
+  },
+  {
+    "productName": "HOCO DS61 Retro Leather Bluetooth Speaker",
+    "brand": "Hoco",
+    "model": "DS61",
+    "categories": ["Electronics", "Speaker"],
+    "subCategory": "Bluetooth Speaker",
+    "description": "The HOCO DS61 Retro Leather Bluetooth Speaker combines vintage aesthetics with modern Bluetooth 5.3 technology. Featuring dual 2.5-inch speaker units, 14W total output, multiple playback modes, and a 2400mAh battery, it is designed for rich, powerful sound with a stylish leather finish.",
+    "features": [
+      "Bluetooth 5.3 (AC6966B chipset)",
+      "Dual 2.5-inch speaker units",
+      "Output power: 7W × 2 (14W total)",
+      "2400mAh long-lasting battery",
+      "3-4 hours charging time",
+      "2-3 hours continuous playtime",
+      "Supports Bluetooth, TF card, USB disk, AUX",
+      "Premium retro leather design"
+    ],
+    "pricing": {
+      "price": 4114.45,
+      "currency": "INR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 15
+    },
+    "specifications": {
+      "general": {
+        "productName": "HOCO DS61 Retro Leather Bluetooth Speaker",
+        "brandName": "Hoco",
+        "colors": "Leather Brown / Black",
+        "material": "Leather + ABS",
+        "weight": "1361g",
+        "sizeMm": "263 × 100 × 134 mm",
+        "privateMold": "Yes",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.3",
+        "chipset": "AC6966B",
+        "batteryCapacity": "2400mAh",
+        "useTime": "2–3 hours",
+        "standbyTime": "Not specified"
+      }
+    },
+    "imagesFolder": "/Techbar/hocods61speaker",
+    "tags": [
+      "Bluetooth Speaker",
+      "Retro Speaker",
+      "Wireless Speaker",
+      "Hoco",
+      "DS61",
+      "Leather Speaker"
+    ]
+  },
+
+  {
+    "productName": "Hoco A10 Max 10.1″ Tablet 8GB RAM 256GB 5G - Metal Grey",
+    "brand": "Hoco",
+    "model": "A10 Max",
+    "categories": ["Electronics", "Tablet"],
+    "subCategory": "Android Tablet",
+    "description": "The Hoco A10 Max is a 10.1-inch Android tablet featuring an HD display, 8GB RAM, 256GB storage, 5G connectivity, quad-core T310 processor, dual-band WiFi, SIM support, GPS, and a 4000mAh battery. Designed for entertainment, study, and daily productivity with a sleek metal grey body.",
+    "features": [
+      "4000mAh battery with Type-C 5V2A input",
+      "T310 2.0GHz quad-core CPU",
+      "Mali-G57 GPU",
+      "8GB DDR RAM",
+      "256GB eMMC storage",
+      "10.1-inch capacitive touch display (800x1280)",
+      "Bluetooth 5.0",
+      "Dual-band WiFi (2.4G + 5G)",
+      "Dual speakers (1W x 2)",
+      "Front camera 2MP + Rear camera 5MP",
+      "3.5mm headphone jack",
+      "TF card support",
+      "SIM support & GPS",
+      "Multi-language support"
+    ],
+    "pricing": {
+      "price": 15450,
+      "currency": "INR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 20
+    },
+    "specifications": {
+      "general": {
+        "productName": "Hoco A10 Max Tablet",
+        "brandName": "Hoco",
+        "colors": "Metal Grey",
+        "material": "Metal + ABS",
+        "weight": "499g",
+        "sizeMm": "240 × 159 × 9 mm",
+        "privateMold": "Yes",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.0",
+        "chipset": "T310 2.0GHz Quad-Core",
+        "batteryCapacity": "4000mAh (3.7V)",
+        "useTime": "Varies by usage",
+        "standbyTime": "Not specified"
+      }
+    },
+    "imagesFolder": "/Techbar/hocotablet",
+    "tags": [
+      "Tablet",
+      "Android Tablet",
+      "Hoco",
+      "A10 Max",
+      "10.1 Inch",
+      "5G Tablet",
+      "8GB RAM",
+      "256GB Storage"
+    ]
+  },
+
+  {
+    "productName": "Hoco EW81 Elegant True Wireless Touch Screen Earbuds",
+    "brand": "Hoco",
+    "model": "EW81",
+    "categories": ["Electronics", "Earphones"],
+    "subCategory": "TWS Earbuds",
+    "description": "The Hoco EW81 Elegant True Wireless Earbuds feature Bluetooth 5.4, a smart LED touch screen on the charging case, 4-hour battery life, and lightweight ABS design. With accurate battery indicators, comfortable fit, and seamless connectivity, it is a stylish and functional choice for everyday users.",
+    "features": [
+      "Bluetooth 5.4 with JL AC6983D4 chipset",
+      "Smart LED touch screen on charging case",
+      "Earbuds battery 30mAh, case battery 300mAh",
+      "Up to 4 hours of playtime",
+      "Lightweight 50g design",
+      "Compact size: 54.5 × 46.5 × 23 mm",
+      "ABS material build",
+      "Microphone included",
+      "Compatible with Android and iOS",
+      "Accurate battery level display for earbuds and case"
+    ],
+    "pricing": {
+      "price": 3082,
+      "currency": "INR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 40
+    },
+    "specifications": {
+      "general": {
+        "productName": "Hoco EW81 Elegant True Wireless Earbuds",
+        "brandName": "Hoco",
+        "colors": "White",
+        "material": "ABS",
+        "weight": "50g",
+        "sizeMm": "54.5 × 46.5 × 23 mm",
+        "privateMold": "Yes",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.4",
+        "wirelessDelayTime": "Not specified",
+        "waterproofStandard": "Not specified",
+        "chipset": "JL AC6983D4",
+        "batteryCapacity": "30mAh (earbuds), 300mAh (case)",
+        "useTime": "4 hours",
+        "standbyTime": "Not specified"
+      }
+    },
+    "imagesFolder": "/Techbar/hocoew81",
+    "tags": [
+      "TWS",
+      "Bluetooth Earbuds",
+      "Hoco",
+      "EW81",
+      "Touch Screen Case",
+      "Wireless Earphone"
+    ]
+  },
+  {
+    "productName": "Hoco W60 28Hrs Kids Bluetooth Headband Wireless Headphones",
+    "brand": "Hoco",
+    "model": "W60",
+    "categories": ["Electronics", "Earphones"],
+    "subCategory": "Kids Wireless Headphones",
+    "description": "The Hoco W60 Kids Bluetooth Headphones are designed for children, offering comfort, durability, and long 28-hour playback time. With Bluetooth 5.4, AUX support, a lightweight headband design, and a built-in microphone, they are ideal for music, videos, online classes, and everyday entertainment.",
+    "features": [
+      "Bluetooth 5.4 wireless connection",
+      "Up to 28 hours of continuous playtime",
+      "180 hours standby time",
+      "250mAh battery with 2-hour full charge time",
+      "Lightweight and ergonomic design (159g)",
+      "Headband/helmet-style kid-friendly fit",
+      "3.5mm AUX cable support",
+      "Built-in microphone for calls and online classes",
+      "Hi-Fi immersive sound",
+      "Button controls for easy use",
+      "Compatible with iPhone, iPad, Mac, Android, laptops and tablets",
+      "Type-C charging"
+    ],
+    "pricing": {
+      "price": 3082,
+      "currency": "INR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 30
+    },
+    "specifications": {
+      "general": {
+        "productName": "Hoco W60 Kids Headphones",
+        "brandName": "Hoco",
+        "colors": "Blue, Purple, Yellow",
+        "material": "ABS + Silicone",
+        "weight": "159g",
+        "sizeMm": "Not specified",
+        "privateMold": "Yes",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.4",
+        "wirelessDelayTime": "Low Latency",
+        "waterproofStandard": "Not specified",
+        "chipset": "Not specified",
+        "batteryCapacity": "250mAh",
+        "useTime": "28 hours",
+        "standbyTime": "180 hours"
+      }
+    },
+    "imagesFolder": "/Techbar/hocow60",
+    "tags": [
+      "Kids Headphones",
+      "Bluetooth Headphones",
+      "Hoco",
+      "W60",
+      "Wireless Headband",
+      "Hi-Fi Sound",
+      "Child Safe Headphones"
+    ]
+  },
+
+  {
+    "productName": "Hoco Y24 Smart Watch",
+    "brand": "Hoco",
+    "model": "Y24",
+    "categories": ["Electronics", "Watch"],
+    "subCategory": "Wearable",
+    "description": "The Hoco Y24 Smart Watch features a 1.43-inch round display with 466×466 resolution, IP67 waterproof rating, Bluetooth 5.3 connectivity, a 390 mAh battery offering up to 10 days of use, supports video playback, local music, information push and more. Compatible with Android and iOS smartphones.",
+    "features": [
+      "1.43\" round display, resolution 466×466",
+      "Waterproof rating IP67",
+      "CPU Torch core ATS3085S",
+      "128 MB RAM + 4 GB storage",
+      "Bluetooth 5.3",
+      "390 mAh battery—up to 10 days usage life",
+      "Supports video playback and local music",
+      "Push notifications and multi-function support",
+      "22 languages supported",
+      "Silicone strap"
+    ],
+    "pricing": {
+      "price": 3596,
+      "currency": "INR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 25
+    },
+    "specifications": {
+      "general": {
+        "productName": "Hoco Y24 Smart Watch",
+        "brandName": "Hoco",
+        "colors": "Black",
+        "material": "Silicone strap + metal/ABS body",
+        "weight": "Not specified",
+        "sizeMm": "Not specified",
+        "privateMold": "Yes",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.3",
+        "wirelessDelayTime": "Not specified",
+        "waterproofStandard": "IP67",
+        "chipset": "Torch core ATS3085S",
+        "batteryCapacity": "390mAh",
+        "useTime": "Up to 10 days",
+        "standbyTime": "Not specified"
+      }
+    },
+    "imagesFolder": "/Techbar/hocowatchy24",
+    "tags": [
+      "Smart Watch",
+      "Hoco",
+      "Y24",
+      "1.43 inch display",
+      "IP67",
+      "Bluetooth 5.3",
+      "Wearable"
+    ]
+  },
+
+  {
+    "productName": "Hoco Y26 Smart Watch",
+    "brand": "Hoco",
+    "model": "Y26",
+    "categories": ["Electronics", "Watch"],
+    "subCategory": "Wearable",
+    "description": "The Hoco Y26 Smart Watch features a 1.81-inch TFT touch screen, IPX4 life-grade waterproofing, Bluetooth 5.0, multiple health tracking modes, and up to 7 days of battery life. It includes sleep tracking, activity monitoring, calling support, message reminders, and a range of everyday smart functions. The detachable silica gel band and alloy body provide both comfort and durability.",
+    "features": [
+      "1.81-inch TFT touch display",
+      "Resolution 240 × 286",
+      "Bluetooth 5.0",
+      "230mAh battery with 3–7 days usage",
+      "IPX4 splash-proof design",
+      "Alloy case with detachable silica gel band",
+      "Sleep monitoring",
+      "Steps and activity tracking",
+      "Supports calling: Answer/Make calls",
+      "Message and notification reminders",
+      "Alarm clock, calculator, passometer",
+      "Heart rate tracking",
+      "Multi-language support (22+ languages)",
+      "Wide compatibility: Android & iOS"
+    ],
+    "pricing": {
+      "price": 3596,
+      "currency": "INR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 25
+    },
+    "specifications": {
+      "general": {
+        "productName": "Hoco Y26 Smart Watch",
+        "brandName": "Hoco",
+        "colors": "Black",
+        "material": "Alloy case + Silica gel band",
+        "weight": "Not specified",
+        "sizeMm": "Not specified",
+        "privateMold": "Yes",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.0",
+        "wirelessDelayTime": "Not specified",
+        "waterproofStandard": "IPX4",
+        "chipset": "Not specified",
+        "batteryCapacity": "230mAh",
+        "useTime": "3–7 days",
+        "standbyTime": "Not specified"
+      }
+    },
+    "imagesFolder": "/Techbar/hocoywatchy26",
+    "tags": [
+      "Smart Watch",
+      "Hoco",
+      "Y26",
+      "Bluetooth 5.0",
+      "1.81 inch display",
+      "IPX4",
+      "Wearable",
+      "Activity Tracker"
+    ]
+  },
+  {
+    "productName": "Hoco Y30 Smart Watch",
+    "brand": "Hoco",
+    "model": "Y30",
+    "categories": ["Electronics", "Watch"],
+    "subCategory": "Wearable",
+    "description": "The Hoco Y30 is a feature-rich smartwatch with a 2.0-inch TFT capacitive display, Bluetooth calling support, and full health monitoring. Equipped with a JL 7012A6 chipset and Bluetooth 5.0, it offers seamless hands-free calling, notifications, sports tracking, real-time weather, and utilities like music/camera control, stopwatch, alarm, and more. Its 230mAh battery provides 3–7 days of use and up to 25 days standby. With IP67 water resistance and compatibility with Android and iOS via the Vband/FitCloudPro apps, the Y30 is a versatile everyday smartwatch.",
+    "features": [
+      "2.0-inch TFT capacitive touchscreen",
+      "410 × 494 HD resolution",
+      "JL 7012A6 chipset",
+      "Bluetooth 5.0",
+      "Hands-free calling with mic and speaker",
+      "Call controls and contacts sync",
+      "Heart rate, SpO₂, blood pressure & sleep monitoring",
+      "Multiple sports modes",
+      "Real-time weather updates",
+      "Sedentary and hydration reminders",
+      "App notifications",
+      "Music and camera controls",
+      "Phone finder",
+      "Alarm, stopwatch, calculator",
+      "Lock screen security",
+      "230mAh magnetic charge battery",
+      "3–7 days use, up to 15–25 days standby",
+      "IP67 splash-resistant",
+      "Compatible with Android and iOS (Vband/FitCloudPro)"
+    ],
+    "pricing": {
+      "price": 3082,
+      "currency": "INR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 25
+    },
+    "specifications": {
+      "general": {
+        "productName": "Hoco Y30 Smart Watch",
+        "brandName": "Hoco",
+        "colors": "Black",
+        "material": "Alloy + Silicone Strap",
+        "weight": "Not specified",
+        "sizeMm": "Not specified",
+        "privateMold": "Yes",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.0",
+        "wirelessDelayTime": "Not specified",
+        "waterproofStandard": "IP67",
+        "chipset": "JL 7012A6",
+        "batteryCapacity": "230mAh",
+        "useTime": "3–7 days",
+        "standbyTime": "15–25 days"
+      }
+    },
+    "imagesFolder": "/Techbar/hocoy30",
+    "tags": [
+      "Smart Watch",
+      "Hoco",
+      "Y30",
+      "Bluetooth Calling",
+      "Health Tracker",
+      "IP67",
+      "Wearable"
+    ]
+  },
+
+  {
+    "productName": "Redmi Buds 6 Play - In-Ear Wireless Earbuds (Blue)",
+    "brand": "Xiaomi",
+    "model": "Redmi Buds 6 Play",
+    "categories": ["Electronics", "Earphones"],
+    "subCategory": "TWS Earbuds",
+    "description": "The Redmi Buds 6 Play are lightweight in-ear wireless earbuds featuring 36 hours of total battery life, 10mm dynamic drivers, Bluetooth 5.4, AI noise cancellation for calls, and fast charging that provides 3 hours of playback in just 10 minutes. Designed for daily use with comfort, strong connectivity, app control, and IP-rated water resistance.",
+    "features": [
+      "36 hours total battery life",
+      "10mm dynamic audio driver",
+      "AI noise cancellation for calls",
+      "Bluetooth 5.4 wireless connectivity",
+      "Fast charging: 10 minutes = 3 hours playback",
+      "App control support",
+      "Touch controls",
+      "Water-resistant design",
+      "Lightweight (40g total)",
+      "Plastic durable build",
+      "Compatible with phones, laptops, desktops, smartwatches, tablets",
+      "Supports multiple EQ profiles via app",
+      "Includes charging case and eartips"
+    ],
+    "pricing": {
+      "price": 1751,
+      "currency": "INR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 50
+    },
+    "specifications": {
+      "general": {
+        "productName": "Redmi Buds 6 Play",
+        "brandName": "Xiaomi",
+        "colors": "Blue",
+        "material": "Plastic",
+        "weight": "40g",
+        "sizeMm": "100 × 100 × 31 mm",
+        "privateMold": "No",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.4",
+        "wirelessDelayTime": "Low latency",
+        "waterproofStandard": "Water Resistant (IP rating not specified)",
+        "chipset": "Not specified",
+        "batteryCapacity": "Not specified",
+        "useTime": "36 hours with case",
+        "standbyTime": "Not specified"
+      }
+    },
+    "imagesFolder": "/Techbar/redmibuds6",
+    "tags": [
+      "TWS",
+      "Wireless Earbuds",
+      "Xiaomi",
+      "Redmi Buds 6 Play",
+      "Bluetooth 5.4",
+      "AI Noise Cancellation",
+      "Fast Charging"
+    ]
+  },
+
+  {
+    "productName": "Samsung Galaxy Tab A9 4G LTE (4GB RAM, 128GB Storage) 8.7\" Android Tablet",
+    "brand": "Samsung",
+    "model": "Galaxy Tab A9 X115",
+    "categories": ["Electronics", "Tablet"],
+    "subCategory": "Android Tablet",
+    "description": "The Samsung Galaxy Tab A9 4G LTE features an 8.7-inch WXGA+ display, MediaTek Helio G99 octa-core processor, 4GB RAM, 128GB storage, dual speakers, and Android 13 with One UI 5.1. With 4G LTE support, Bluetooth 5.3, a 5100mAh battery, and international carrier compatibility, it is designed for productivity, entertainment, and on-the-go usage.",
+    "features": [
+      "8.7-inch (1340 × 800) WXGA+ TFT display",
+      "Android 13 with One UI 5.1",
+      "MediaTek Helio G99 (6nm) octa-core processor",
+      "4GB RAM and 128GB internal storage",
+      "Expandable storage (microSD card support)",
+      "Rear camera: 8MP AF",
+      "Front camera: 2MP",
+      "5100mAh battery",
+      "Bluetooth 5.3",
+      "USB Type-C 2.0",
+      "Dual speakers",
+      "4G LTE connectivity",
+      "Wi-Fi 802.11 a/b/g/n/ac",
+      "Lightweight 480g design"
+    ],
+    "pricing": {
+      "price": 14430,
+      "currency": "INR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 20
+    },
+    "specifications": {
+      "general": {
+        "productName": "Samsung Galaxy Tab A9",
+        "brandName": "Samsung",
+        "colors": "Graphite",
+        "material": "Metal + Plastic",
+        "weight": "480g",
+        "sizeMm": "152.4 × 127 × 25.4 mm",
+        "privateMold": "No",
+        "certificate": ["CE", "FCC", "ROHS"]
+      },
+      "technical": {
+        "bluetoothVersion": "5.3",
+        "wirelessDelayTime": "Low latency",
+        "waterproofStandard": "Not specified",
+        "chipset": "MediaTek Helio G99 (6nm)",
+        "batteryCapacity": "5100mAh",
+        "useTime": "Varies by usage",
+        "standbyTime": "Not specified"
+      }
+    },
+    "imagesFolder": "/Techbar/samsungtaba9",
+    "tags": [
+      "Tablet",
+      "Samsung",
+      "Galaxy Tab A9",
+      "Android 13",
+      "4G LTE",
+      "Helio G99",
+      "8.7 inch"
+    ]
+  }
+]
