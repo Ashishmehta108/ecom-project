@@ -1,54 +1,3 @@
-// "use client";
-
-// import { useState } from "react";
-// import userCartState from "@/lib/states/cart.state";
-// import { addItemToCart } from "@/lib/actions/cart-actions";
-// import { toast } from "sonner";
-// import { authClient } from "@/lib/auth-client";
-
-// export default function AddToCartButton({ productId }: { productId: string }) {
-//   const { data } = authClient.useSession();
-//   const userId = data?.user?.id;
-
-//   const [loading, setLoading] = useState(false);
-//   const { addOrReplaceItem } = userCartState();
-
-//   const handleAdd = async () => {
-//     if (!userId) {
-//       toast.error("Please login to continue");
-//       return;
-//     }
-
-//     try {
-//       setLoading(true);
-
-//       const res = await addItemToCart(userId, productId, 1);
-
-//       if (res?.success) {
-//         addOrReplaceItem(res.data);
-//         toast.success("Added to cart");
-//       } else {
-//         toast.error(res.error?.message || "Failed to add to cart");
-//       }
-//     } catch (err) {
-//       toast.error("Something went wrong");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <button
-//       disabled={loading}
-//       onClick={handleAdd}
-//       className="w-full py-3 text-sm font-semibold rounded-xl
-//                  bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
-//     >
-//       {loading ? "Adding..." : "Add to Cart"}
-//     </button>
-//   );
-// }
-
 "use client";
 
 import { useState } from "react";
@@ -67,9 +16,6 @@ export default function AddToCartButton({ productId }: { productId: string }) {
   const cartItem = items.find((i) => i.productId === productId);
   const [loading, setLoading] = useState(false);
 
-  // --------------------------
-  // Add to Cart
-  // --------------------------
   const handleAdd = async () => {
     if (!userId) return toast.error("Please login to continue");
     try {
@@ -87,9 +33,6 @@ export default function AddToCartButton({ productId }: { productId: string }) {
     }
   };
 
-  // --------------------------
-  // Update Quantity (+ or -)
-  // --------------------------
   const handleQtyChange = async (newQty: number) => {
     if (!cartItem || !userId) return;
 
@@ -112,9 +55,6 @@ export default function AddToCartButton({ productId }: { productId: string }) {
     }
   };
 
-  // ------------------------------------------------------
-  // UI — If NOT in cart → Add button
-  // ------------------------------------------------------
   if (!cartItem) {
     return (
       <button
@@ -130,9 +70,6 @@ export default function AddToCartButton({ productId }: { productId: string }) {
     );
   }
 
-  // ------------------------------------------------------
-  // UI — If IN cart → +/- buttons + qty
-  // ------------------------------------------------------
   return (
     <div
       className="flex items-center gap-3 w-full md:w-max 

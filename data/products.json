@@ -45,9 +45,24 @@
       }
     },
     "imagesFolder": "/Techbar/hocoew30",
-    "tags": ["Bluetooth Earphone", "TWS", "Hoco", "EW30"]
+    "tags": [
+      "Bluetooth Earphone",
+      "Earphone",
+      "Wireless Earphone",
+      "TWS Earbuds",
+      "Earbuds",
+      "Hoco EW30",
+      "Low Latency Earbuds",
+      "Gaming Earbuds",
+      "Bluetooth 5.3 Earphone",
+      "Waterproof Earbuds",
+      "Budget TWS",
+      "LED Indicator Earbuds",
+      "Electronics",
+      "Audio Device",
+      "Wireless Audio"
+    ]
   },
-
   {
     "productName": "Hoco EQ20 True Wireless ANC+ENC Noise Reduction Bluetooth Earphone",
     "brand": "Hoco",
@@ -92,7 +107,22 @@
       }
     },
     "imagesFolder": "/Techbar/hocoeq20",
-    "tags": ["Bluetooth Earphone", "ANC", "ENC", "Hoco", "EQ20", "TWS"]
+    "tags": [
+      "ANC Earbuds",
+      "ENC Earbuds",
+      "Noise Cancelling Earphones",
+      "Earphone",
+      "Wireless Earphone",
+      "TWS Earbuds",
+      "Earbuds",
+      "Hoco EQ20",
+      "Bluetooth 5.4 Earbuds",
+      "Dual Device Connection",
+      "Premium TWS",
+      "Long Battery Earbuds",
+      "Electronics",
+      "Audio Device"
+    ]
   },
 
   {
@@ -147,13 +177,18 @@
     "imagesFolder": "/Techbar/hocoy23watch",
     "tags": [
       "Smart Watch",
-      "Hoco",
-      "Y23",
-      "Bluetooth 5.3",
-      "2.02 inch display",
-      "IP67",
+      "Smartwatch",
       "Wearable",
-      "Fitness Tracker"
+      "Hoco Y23",
+      "Bluetooth Watch",
+      "Fitness Tracker",
+      "Health Tracker",
+      "Sleep Tracker",
+      "Sports Watch",
+      "IP67 Smartwatch",
+      "HD Display Watch",
+      "Electronics",
+      "Activity Tracker"
     ]
   },
   {
@@ -202,11 +237,18 @@
     "imagesFolder": "/Techbar/hocods61speaker",
     "tags": [
       "Bluetooth Speaker",
-      "Retro Speaker",
+      "Speaker",
       "Wireless Speaker",
-      "Hoco",
-      "DS61",
-      "Leather Speaker"
+      "Portable Speaker",
+      "Hoco DS61",
+      "Retro Speaker",
+      "Leather Speaker",
+      "Bass Speaker",
+      "14W Speaker",
+      "Home Audio",
+      "Vintage Style Speaker",
+      "Electronics",
+      "Audio Device"
     ]
   },
 
@@ -261,14 +303,19 @@
     },
     "imagesFolder": "/Techbar/hocotablet",
     "tags": [
-      "Tablet",
       "Android Tablet",
-      "Hoco",
-      "A10 Max",
-      "10.1 Inch",
+      "Tablet",
+      "Hoco A10 Max",
+      "10.1 Inch Tablet",
       "5G Tablet",
-      "8GB RAM",
-      "256GB Storage"
+      "8GB RAM Tablet",
+      "256GB Tablet",
+      "Study Tablet",
+      "Gaming Tablet",
+      "Dual SIM Tablet",
+      "HD Display Tablet",
+      "Electronics",
+      "Portable Device"
     ]
   },
 
@@ -321,12 +368,20 @@
     },
     "imagesFolder": "/Techbar/hocoew81",
     "tags": [
-      "TWS",
-      "Bluetooth Earbuds",
-      "Hoco",
-      "EW81",
-      "Touch Screen Case",
-      "Wireless Earphone"
+      "TWS Earbuds",
+      "Wireless Earbuds",
+      "Earbuds",
+      "Earphone",
+      "Bluetooth Earphone",
+      "Hoco EW81",
+      "Touch Screen Case Earbuds",
+      "Bluetooth 5.4 Earbuds",
+      "Smart Display Earbuds",
+      "Daily Use TWS",
+      "Premium TWS Earbuds",
+      "LED Case Earphones",
+      "Electronics",
+      "Wireless Audio"
     ]
   },
   {
@@ -381,12 +436,18 @@
     "imagesFolder": "/Techbar/hocow60",
     "tags": [
       "Kids Headphones",
-      "Bluetooth Headphones",
-      "Hoco",
-      "W60",
+      "Headphones",
+      "Wireless Headphones",
+      "Bluetooth Kids Headset",
+      "Hoco W60",
+      "Child Safe Headphones",
+      "Kids Gaming Headphones",
+      "Study Headphones",
       "Wireless Headband",
-      "Hi-Fi Sound",
-      "Child Safe Headphones"
+      "AUX Support Headphones",
+      "Durable Kids Earphones",
+      "Electronics",
+      "Audio Device"
     ]
   },
 
@@ -440,12 +501,18 @@
     "imagesFolder": "/Techbar/hocowatchy24",
     "tags": [
       "Smart Watch",
-      "Hoco",
-      "Y24",
-      "1.43 inch display",
-      "IP67",
-      "Bluetooth 5.3",
-      "Wearable"
+      "Smartwatch",
+      "Wearable",
+      "Hoco Y24",
+      "1.43 inch Smartwatch",
+      "Round Display Watch",
+      "Bluetooth 5.3 Watch",
+      "Fitness Watch",
+      "Health Tracker",
+      "Sports Mode Watch",
+      "IP67 Watch",
+      "Electronics",
+      "Activity Tracker"
     ]
   },
 
@@ -503,12 +570,17 @@
     "imagesFolder": "/Techbar/hocoywatchy26",
     "tags": [
       "Smart Watch",
-      "Hoco",
-      "Y26",
-      "Bluetooth 5.0",
-      "1.81 inch display",
-      "IPX4",
+      "Smartwatch",
       "Wearable",
+      "Hoco Y26",
+      "Bluetooth Calling Watch",
+      "IPX4 Smartwatch",
+      "1.81 inch Display Watch",
+      "Fitness Tracker",
+      "Sleep Tracker",
+      "Daily Use Smartwatch",
+      "Long Battery Watch",
+      "Electronics",
       "Activity Tracker"
     ]
   },
@@ -571,12 +643,18 @@
     "imagesFolder": "/Techbar/hocoy30",
     "tags": [
       "Smart Watch",
-      "Hoco",
-      "Y30",
-      "Bluetooth Calling",
-      "Health Tracker",
-      "IP67",
-      "Wearable"
+      "Smartwatch",
+      "Wearable",
+      "Hoco Y30",
+      "Bluetooth Calling Smartwatch",
+      "2.0 inch Display Watch",
+      "IP67 Smartwatch",
+      "Health Monitoring Watch",
+      "Sports Watch",
+      "HD Display Watch",
+      "Waterproof Smartwatch",
+      "Electronics",
+      "Activity Tracker"
     ]
   },
 
@@ -632,13 +710,21 @@
     },
     "imagesFolder": "/Techbar/redmibuds6",
     "tags": [
-      "TWS",
+      "TWS Earbuds",
       "Wireless Earbuds",
-      "Xiaomi",
+      "Earbuds",
+      "Bluetooth Earphone",
+      "Earphone",
       "Redmi Buds 6 Play",
-      "Bluetooth 5.4",
+      "Xiaomi Earbuds",
+      "Bluetooth 5.4 Earbuds",
       "AI Noise Cancellation",
-      "Fast Charging"
+      "36 Hours Battery Earbuds",
+      "Fast Charging Earbuds",
+      "Lightweight TWS",
+      "Budget Wireless Earbuds",
+      "Electronics",
+      "Audio Device"
     ]
   },
 
@@ -695,13 +781,19 @@
     },
     "imagesFolder": "/Techbar/samsungtaba9",
     "tags": [
+      "Android Tablet",
       "Tablet",
-      "Samsung",
-      "Galaxy Tab A9",
-      "Android 13",
-      "4G LTE",
-      "Helio G99",
-      "8.7 inch"
+      "Samsung Tab A9",
+      "8.7 inch Tablet",
+      "4G LTE Tablet",
+      "Helio G99 Tablet",
+      "128GB Tablet",
+      "Samsung Tablet",
+      "Study Tablet",
+      "Kids Tablet",
+      "Entertainment Tablet",
+      "Electronics",
+      "Portable Device"
     ]
   }
 ]

@@ -13,6 +13,7 @@ import { User } from "lucide-react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { usePathname } from "next/navigation";
+import CategoriesBar from "./CategoriesBar";
 
 export default function Navbar() {
   const { data, isPending } = authClient.useSession();
@@ -77,6 +78,9 @@ export default function Navbar() {
               <LinksDropdown />
             )}
           </div>
+          {/* <div>
+   <CategoriesBar/>
+          </div> */}
         </div>
       </Container>
     </nav>

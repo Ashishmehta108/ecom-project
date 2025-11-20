@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
+    await   db.delete(product)
     const data = await seedProds();
     return NextResponse.json(
       {
@@ -22,7 +23,6 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
-    // const data = await seedProds();
     const data = await db.query.product.findMany({
       with: {
         productCategories: {
@@ -34,7 +34,6 @@ export async function GET(req: Request) {
         productImages: true
       },
     });
-    // const data=await db.delete(product)
     return NextResponse.json(
       {
         data: data,

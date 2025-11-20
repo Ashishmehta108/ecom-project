@@ -1,7 +1,7 @@
 "use server";
 import { eq, and } from "drizzle-orm";
 import { db } from "../db";
-import { cart, cartItem, product, productImage } from "../db/schema";
+import { cart, cartItem, productImage } from "../db/schema";
 import { nanoid } from "nanoid";
 
 export const createCartIfNotExists = async (userId: string) => {
@@ -88,11 +88,7 @@ export const addItemToCart = async (
     };
   }
 
-  // Optional: fetch product name for cart display
-  // const [prod] = await db
-  //   .select()
-  //   .from(product)
-  //   .where(eq(product.id, productId));
+
   const prod = await db.query.product.findFirst({
     where: (table, { eq }) => eq(table.id, productId),
     with: {
