@@ -4,6 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import Container from "../giobal/Container";
 import { ChevronRight } from "lucide-react";
+import { Merriweather } from "next/font/google";
+
+const merriweather = Merriweather({
+  variable: "--font-merriweather",
+  subsets: ["latin"],
+  weight: ["400"],
+});
 
 type Category = {
   id: string;
@@ -17,39 +24,49 @@ export default function TopCategoriesSection({
   categories: Category[];
 }) {
   return (
-    <section className="w-full py-16 sm:py-24 bg-white dark:bg-neutral-950">
+    <section className="w-full py-10 bg-white dark:bg-neutral-950">
       <Container>
-        <div className="flex flex-row justify-between items-center gap-6 mb-12 sm:mb-16">
-          <div>
-            <h2 className="text-[26px] sm:text-[32px] font-[550] text-neutral-900 dark:text-neutral-50 leading-tight tracking-[-0.02em]">
-              <span className="text-neutral-800 font-bold">
-                 Categories
+        {/* HEADER */}
+        <div className="flex justify-between items-center gap-6 mb-12 sm:mb-16">
+          <div className="group w-fit">
+            <h2 className="text-[26px] sm:text-5xl font-[550] leading-tight tracking-[-0.02em] text-neutral-900 dark:text-neutral-50">
+              <span className={`${merriweather.className} text-neutral-800 dark:text-neutral-200`}>
+                Categories
               </span>
             </h2>
 
-            <div className="mt-3 w-12 h-[1.5px] bg-neutral-900/20 dark:bg-neutral-100/20" />
+            {/* UNIFIED UNDERLINE */}
+            <div
+              className="
+                mt-2 h-[3px] w-full
+                rounded-full
+                bg-gradient-to-r
+                from-lime-400/90 via-lime-500 to-lime-400/90
+                dark:from-neutral-200/30 dark:via-neutral-300/30 dark:to-neutral-200/30
+                transition-all duration-500
+                group-hover:w-[115%]
+              "
+            />
           </div>
+
           <Link
             href="/products?sort=featured"
-            className="
-              inline-flex items-center gap-2 text-sm text-neutral-500
-            "
+            className="flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors"
           >
             See All
-            <div className="bg-gray-100 w-8 h-8 text-neutral-900 flex items-center rounded-full  justify-center">
-              <ChevronRight className="w-4 h-4  " strokeWidth={2.6} />
+            <div className="bg-neutral-100 dark:bg-neutral-800 w-8 h-8 flex items-center justify-center rounded-full">
+              <ChevronRight className="w-4 h-4" strokeWidth={2.6} />
             </div>
           </Link>
         </div>
 
+        {/* CATEGORY GRID */}
         <div className="flex flex-wrap justify-center gap-12 sm:gap-16">
           {categories.map((cat) => (
             <Link
               href={`/products?category=${cat.id}`}
               key={cat.id}
-              className="
-                group flex flex-col items-center cursor-pointer
-              "
+              className="group flex flex-col items-center cursor-pointer"
             >
               <div
                 className="
@@ -61,13 +78,10 @@ export default function TopCategoriesSection({
                   flex items-center justify-center
                   overflow-hidden
                   transition-all duration-300 ease-out
-                  group-hover:border-neutral-300/60 dark:group-hover:border-neutral-700/60
-                  group-hover:bg-neutral-100/50 dark:group-hover:bg-neutral-800/50
-                  group-hover:scale-[1.02]
+                  group-hover:border-neutral-300 dark:group-hover:border-neutral-700
+                  group-hover:bg-neutral-100 dark:group-hover:bg-neutral-800
+                  group-hover:scale-[1.03]
                 "
-                style={{
-                  boxShadow: "inset 0 1px 2px rgba(0, 0, 0, 0.03)",
-                }}
               >
                 <Image
                   src={cat.imageUrl}
@@ -77,9 +91,9 @@ export default function TopCategoriesSection({
                   alt={cat.name}
                   className="
                     object-contain w-[65%] h-[65%]
-                    transition-all duration-300 ease-out
-                    group-hover:scale-105
+                    transition-all duration-300
                     opacity-90 group-hover:opacity-100
+                    group-hover:scale-105
                   "
                 />
               </div>
@@ -88,9 +102,8 @@ export default function TopCategoriesSection({
                 className="
                   mt-4 text-[13px] sm:text-[14px] font-[500]
                   text-neutral-600 dark:text-neutral-400
-                  tracking-[-0.01em]
-                  transition-colors duration-200
                   group-hover:text-neutral-900 dark:group-hover:text-neutral-200
+                  transition-colors
                 "
               >
                 {cat.name}

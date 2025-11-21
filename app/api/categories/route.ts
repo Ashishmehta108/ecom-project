@@ -2,12 +2,12 @@ import { db } from "@/lib/db";
 import { category } from "@/lib/db/schema";
 import { seedCategory } from "@/seed/categories.seed";
 import { NextResponse } from "next/server";
-
+                        
 export async function POST(req: Request) {
   try {
-    await db.delete(category);
+    await db.delete(category);                                                
     const c = await seedCategory();
-    return NextResponse.json(
+    return NextResponse.json(                                           
       {
         data: c,
       },

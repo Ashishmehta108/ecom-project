@@ -39,7 +39,7 @@ export type Product = {
     };
   };
 
-  images: {
+  productImages: {
     url: string;
     fileId?: string;
   }[];

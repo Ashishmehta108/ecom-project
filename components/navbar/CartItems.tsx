@@ -12,7 +12,7 @@ function CartButton(props: { items: number }) {
       <Link href="/cart">
         <ShoppingCart className="size-5" />
         {props.items > 0 && (
-          <span className="absolute -top-2 -right-2 bg-blue-800 text-white rounded-full h-5  w-5  flex items-center justify-center text-[10px]">
+          <span className="absolute -top-2 -right-2 bg-lime-500 text-white rounded-full h-5  w-5  flex items-center justify-center text-[12px] font-bold ">
             {props.items}
           </span>
         )}

@@ -1,7 +1,3 @@
-// import Stripe from "stripe";
-
-// export const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
 // lib/stripe-client.ts
 "use client";
 
@@ -12,5 +8,5 @@ if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
 }
 
 export const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );

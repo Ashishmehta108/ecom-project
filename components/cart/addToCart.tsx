@@ -26,6 +26,7 @@ export default function AddToCartButton({ productId }: { productId: string }) {
         addOrReplaceItem(res.data);
         toast.success("Added to cart");
       } else {
+        //@ts-ignore
         toast.error(res.error?.message || "Failed to add");
       }
     } finally {

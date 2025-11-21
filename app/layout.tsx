@@ -6,7 +6,10 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import { Toaster } from "sonner";
+import { Playfair } from "next/font/google";
 
+
+// export const playfair=Playfair({variable:'--font-playfair',subsets:["latin"],weight:["400"]})
 const sans = Open_Sans({
   variable: "--font-sans",
   subsets: ["latin"],

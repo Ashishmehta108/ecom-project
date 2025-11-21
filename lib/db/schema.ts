@@ -81,7 +81,7 @@ export const verification = pgTable("verification", {
 
 /*
 
-Cart Item schema 
+Cart Item schema
 */
 
 export const cart = pgTable(
@@ -99,7 +99,7 @@ export const cart = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => [index("idx_cart_user_id").on(table.userId)]
+  (table) => [index("idx_cart_user_id").on(table.userId)],
 );
 /*
 Cart item schema
@@ -127,7 +127,7 @@ export const cartItem = pgTable(
   (table) => [
     index("idx_cart_item_cart_id").on(table.cartId),
     unique("uq_cart_product").on(table.cartId, table.productId),
-  ]
+  ],
 );
 
 /*
@@ -216,7 +216,7 @@ export const productCategory = pgTable(
         onUpdate: "cascade",
       }),
   },
-  (table) => [primaryKey({ columns: [table.productId, table.categoryId] })]
+  (table) => [primaryKey({ columns: [table.productId, table.categoryId] })],
 );
 
 export const productImage = pgTable("product_image", {
@@ -260,7 +260,7 @@ export const productCategoryRelations = relations(
       fields: [productCategory.categoryId],
       references: [category.id],
     }),
-  })
+  }),
 );
 
 export const categoryRelations = relations(category, ({ many }) => ({
@@ -304,6 +304,20 @@ export const review = pgTable("review", {
 export const userReviewRelation = relations(user, ({ one, many }) => ({
   reviews: many(review),
 }));
+
+import { varchar } from "drizzle-orm/pg-core";
+
+export const payments = pgTable("payments", {
+  id: text("id").primaryKey(), // could also be uuid
+  userId: text("user_id").notNull(), // Better Auth user.id
+  stripePaymentIntentId: text("stripe_payment_intent_id").notNull(),
+  amount: integer("amount").notNull(), // in smallest unit (e.g. paise)
+  currency: varchar("currency", { length: 10 }).notNull().default("inr"),
+  status: varchar("status", { length: 50 })
+    .notNull()
+    .default("requires_payment_method"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
 
 // export const address = pgTable("address", {
 //   id: text("addressid").primaryKey(),
