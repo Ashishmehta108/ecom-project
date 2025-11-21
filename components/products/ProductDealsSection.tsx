@@ -6,14 +6,11 @@ import Container from "../giobal/Container";
 import { ChevronRight } from "lucide-react";
 import { Merriweather } from "next/font/google";
 
-
-
 const merriweather = Merriweather({
   variable: "--font-merriweather",
   subsets: ["latin"],
   weight: ["400"],
 });
-
 
 export default function ProductDealsSection() {
   const products = [
@@ -65,11 +62,10 @@ export default function ProductDealsSection() {
         {/* HEADER */}
         <div className="flex justify-between items-center mb-12 sm:mb-16">
           <div className="group w-fit">
-            <h2 className={`text-2xl sm:text-5xl font-[550] leading-tight tracking-[-0.02em] text-neutral-900 dark:text-neutral-50 ${merriweather.className} `}>
-              Best Deals on{" "}
-              <span className="text-lime-600 dark:text-blue-400 font-bold">
-                Smartphones
-              </span>
+            <h2
+              className={`text-2xl sm:text-5xl font-[550] leading-tight tracking-[-0.02em] text-neutral-900 dark:text-neutral-50  `}
+            >
+              Best Deals on Smartphones
             </h2>
 
             {/* SAME UNDERLINE */}

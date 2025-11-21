@@ -47,7 +47,8 @@ export default function TopCategorySection() {
   const dragging = useRef(false);
 
   const next = () => setIndex((p) => (p + 1) % categories.length);
-  const prev = () => setIndex((p) => (p - 1 + categories.length) % categories.length);
+  const prev = () =>
+    setIndex((p) => (p - 1 + categories.length) % categories.length);
 
   const startAuto = () => {
     stopAuto();
@@ -87,30 +88,21 @@ export default function TopCategorySection() {
       <Container>
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4 px-2 sm:px-0">
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">
-            Top <span className="text-blue-600 dark:text-blue-400">Electronics Brands</span>
+            Top Electronics Brands
           </h2>
 
           <Link
             href="/products?category=smartphones"
-            className="
-              bg-blue-600 dark:bg-blue-500
-              text-white
-              px-3 py-1.5
-              rounded-full
-              text-xs sm:text-sm
-              font-medium
-              shadow-md
-              hover:bg-blue-700 dark:hover:bg-blue-600
-              transition
-              w-auto              
-              self-start          
-            "
+            className="flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors whitespace-nowrap"
           >
-            View All →
+            View All
+            <div className="bg-neutral-100 dark:bg-neutral-800 w-8 h-8 flex items-center justify-center rounded-full">
+              <ChevronRight className="w-4 h-4" strokeWidth={2.5} />
+            </div>
           </Link>
         </div>
 
-        <div className="w-24 h-1 bg-blue-600 rounded-full mb-8 mx-2 sm:mx-0"></div>
+        <div className="w-24 h-1 bg-lime-600 rounded-full mb-8 mx-2 sm:mx-0"></div>
 
         <div
           className="relative overflow-hidden"
@@ -151,14 +143,20 @@ export default function TopCategorySection() {
                     </span>
 
                     <div className="bg-white dark:bg-gray-700 p-2 rounded-md shadow w-12 h-12 flex items-center justify-center">
-                      <img src={c.logo} className="w-full h-full object-contain" />
+                      <img
+                        src={c.logo}
+                        className="w-full h-full object-contain"
+                      />
                     </div>
 
                     <p className="text-lg font-bold">UP to 80% OFF</p>
                   </div>
 
                   <div className="w-full sm:w-1/2 flex justify-center relative">
-                    <img src={c.image} className="max-h-52 sm:max-h-64 object-contain rounded-xl shadow" />
+                    <img
+                      src={c.image}
+                      className="max-h-52 sm:max-h-64 object-contain rounded-xl shadow"
+                    />
                   </div>
                 </div>
               </div>
@@ -170,7 +168,11 @@ export default function TopCategorySection() {
               <button
                 key={i}
                 onClick={() => setIndex(i)}
-                className={`h-2 rounded-full transition-all ${index === i ? "w-6 bg-blue-600" : "w-2 bg-gray-400 dark:bg-gray-600"}`}
+                className={`h-2 rounded-full transition-all ${
+                  index === i
+                    ? "w-6 bg-blue-600"
+                    : "w-2 bg-gray-400 dark:bg-gray-600"
+                }`}
               />
             ))}
           </div>

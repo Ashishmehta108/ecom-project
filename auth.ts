@@ -102,6 +102,12 @@ export const auth = betterAuth({
       clientId: GITHUB_CLIENT_ID as string,
       clientSecret: GITHUB_CLIENT_SECRET as string,
     },
+    google: {
+        clientId: process.env.GOOGLE_CLIENT_ID as string,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+        accessType: "offline", 
+        prompt: "select_account consent", 
+    },
   },
 
   advanced: {

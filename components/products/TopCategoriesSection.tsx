@@ -29,8 +29,8 @@ export default function TopCategoriesSection({
         {/* HEADER */}
         <div className="flex justify-between items-center gap-6 mb-12 sm:mb-16">
           <div className="group w-fit">
-            <h2 className="text-[26px] sm:text-5xl font-[550] leading-tight tracking-[-0.02em] text-neutral-900 dark:text-neutral-50">
-              <span className={`${merriweather.className} text-neutral-800 dark:text-neutral-200`}>
+            <h2 className="text-[26px] sm:text-5xl  leading-tight tracking-[-0.02em] text-neutral-900 dark:text-neutral-50">
+              <span className={` text-neutral-700 font-semibold dark:text-neutral-200`}>
                 Categories
               </span>
             </h2>
