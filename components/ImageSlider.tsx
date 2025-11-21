@@ -4,70 +4,85 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
+
 export default function PromoSlider({ slides }: { slides: any[] }) {
   const [index, setIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const timer = useRef<NodeJS.Timeout | null>(null);
 
-  // Touch refs
   const startX = useRef(0);
   const currentX = useRef(0);
   const isDragging = useRef(false);
+  const dragOffset = useRef(0);
 
   const next = useCallback(() => {
-    setIndex(prev => (prev === slides.length - 1 ? 0 : prev + 1));
-  }, [slides.length]);
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    setTimeout(() => setIsAnimating(false), 400);
+  }, [slides.length, isAnimating]);
 
   const prev = useCallback(() => {
-    setIndex(prev => (prev === 0 ? slides.length - 1 : prev - 1));
-  }, [slides.length]);
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    setTimeout(() => setIsAnimating(false), 400);
+  }, [slides.length, isAnimating]);
 
-  // Auto slide
   useEffect(() => {
-    if (!hovered) timer.current = setTimeout(next, 1800);
-    return () => timer.current && clearTimeout(timer.current);
-  }, [hovered, next, index]);
+    if (!hovered && slides.length > 1) {
+      timer.current = setTimeout(next, 4000);
+    }
+    return () => {
+      timer.current && clearTimeout(timer.current);
+    };
+  }, [hovered, next, index, slides.length]);
 
-  // Touch handlers
-  const handleTouchStart = (e: any) => {
+  const handleTouchStart = (e: React.TouchEvent) => {
     startX.current = e.touches[0].clientX;
+    currentX.current = startX.current;
     isDragging.current = true;
   };
 
-  const handleTouchMove = (e: any) => {
+  const handleTouchMove = (e: React.TouchEvent) => {
     if (!isDragging.current) return;
     currentX.current = e.touches[0].clientX;
+    dragOffset.current = startX.current - currentX.current;
   };
 
   const handleTouchEnd = () => {
     if (!isDragging.current) return;
 
-    const diff = startX.current - currentX.current;
-
-    if (Math.abs(diff) > 0) {
-      if (diff > 0) next(); // swipe left
-      else prev(); // swipe right
+    if (Math.abs(dragOffset.current) > 40) {
+      dragOffset.current > 0 ? next() : prev();
     }
 
     isDragging.current = false;
+    dragOffset.current = 0;
   };
+
+  if (!slides || slides.length === 0) return null;
+
 
   return (
     <div
-      className="w-full py-6 relative flex flex-col items-center justify-center"
+      className="w-full  relative flex flex-col items-center justify-center"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative w-[95%] md:w-[90%] lg:w-[85%] rounded-2xl overflow-hidden">
+      <div className="relative w-[100%] md:w-[100%] lg:w-[100%] overflow-hidden">
         <div
-          className="
-            rounded-[28px] shadow-xl overflow-hidden
+          className="sm:rounded-none sm:m-0 rounded-2xl m-4
+             shadow-xl overflow-hidden
+             md:py-20 py-12 
+             
             bg-[#141621] border border-white/10 dark:border-white/5
-            min-h-[320px] xs:min-h-[340px] sm:min-h-[360px] 
-            md:min-h-[390px] lg:min-h-[440px] xl:min-h-[480px]
+            min-h-[320px] xs:min-h-[340px] sm:min-h-[360px]
+            md:min-h-[390px] lg:min-h-[440px] xl:min-h-[500px]
             relative
           "
         >
@@ -82,11 +97,11 @@ export default function PromoSlider({ slides }: { slides: any[] }) {
               <div
                 key={i}
                 className="
-                  w-full flex-shrink-0 flex 
-                  flex-col-reverse md:flex-row 
+                  w-full flex-shrink-0 flex
+                  flex-col-reverse md:flex-row
                   items-center justify-between
                   px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20
-                  pt-4 sm:pt-6 md:pt-10 
+                  pt-4 sm:pt-6 md:pt-10
                   pb-4 sm:pb-8
                   gap-4 sm:gap-6 md:gap-10
                   text-center md:text-left
@@ -113,10 +128,10 @@ export default function PromoSlider({ slides }: { slides: any[] }) {
                       className="
                         mt-3 sm:mt-4
                         block max-w-[200px]
-                        bg-white text-neutral-800 
+                        bg-white text-neutral-800
                         px-5 py-2 sm:px-7 sm:py-3 md:px-8 md:py-4
                         rounded-xl text-sm sm:text-base font-semibold
-                        shadow-md transition 
+                        shadow-md transition
                         mx-auto md:mx-0
                       "
                     >
@@ -132,7 +147,7 @@ export default function PromoSlider({ slides }: { slides: any[] }) {
                     alt=""
                     className="
                       object-contain select-none drop-shadow-2xl
-                      h-[180px] xs:h-[200px] sm:h-[220px] 
+                      h-[180px] xs:h-[200px] sm:h-[220px]
                       md:h-[260px] lg:h-[300px] xl:h-[320px]
                       max-w-[95%] md:max-w-none
                       transition-all duration-500
@@ -145,48 +160,136 @@ export default function PromoSlider({ slides }: { slides: any[] }) {
         </div>
       </div>
 
-      {/* ARROWS */}
-      <button
-        onClick={prev}
-        className="
-          hidden sm:flex absolute left-4 md:left-10 top-1/2 -translate-y-1/2
-          w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 
-          rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md 
-          border border-black/5 dark:border-white/10 shadow-lg
-          items-center justify-center hover:scale-110 transition z-20
-        "
-      >
-        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-200" />
-      </button>
+           {slides.length > 1 && (
+        <>
+          <button
+            onClick={prev}
+            className="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white backdrop-blur-sm items-center justify-center"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
 
-      <button
-        onClick={next}
-        className="
-          hidden sm:flex absolute right-4 md:right-10 top-1/2 -translate-y-1/2
-          w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 
-          rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md 
-          border border-black/5 dark:border-white/10 shadow-lg
-          items-center justify-center hover:scale-110 transition z-20
-        "
-      >
-        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-200" />
-      </button>
-
-      {/* DOTS */}
-      <div className="flex items-center gap-2 mt-4 sm:mt-6">
-        {slides.map((_, dot) => (
-          <div
+          <button
+            onClick={next}
+            className="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white backdrop-blur-sm items-center justify-center"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </>
+      )}
+           <div className="absolute bottom-10 left-0 right-0 flex justify-center gap-2">
+       {slides.map((_, dot) => (
+          <button
             key={dot}
             onClick={() => setIndex(dot)}
-            className={`
-              h-2 rounded-full cursor-pointer transition-all
-              ${dot === index 
-                ? "w-7 bg-blue-600 dark:bg-blue-400" 
-                : "w-2 bg-gray-400 dark:bg-gray-600"}
-            `}
+            className={`h-2.5 rounded-full transition-all duration-400 ${
+              dot === index ? "w-8 bg-white" : "w-2.5 bg-white/40"
+            }`}
           />
         ))}
       </div>
     </div>
   );
 }
+
+// "use client";
+
+// import { useState, useEffect, useCallback, useRef } from "react";
+// import { ChevronLeft, ChevronRight } from "lucide-react";
+// import Link from "next/link";
+
+// export default function PromoSlider({ slides }: { slides: any[] }) {
+
+//   return (
+//     <div
+//       className="relative w-full h-[600px]  overflow-hidden bg-[#0f1117]"
+//       onTouchStart={handleTouchStart}
+//       onTouchMove={handleTouchMove}
+//       onTouchEnd={handleTouchEnd}
+//     >
+//       {/* Slide Track */}
+//       <div
+//         className="flex h-full transition-transform duration-500 ease-out"
+//         style={{
+//           width: `${slides.length * 100}%`,
+//           transform: `translateX(-${index * (100 / slides.length)}%)`,
+//         }}
+//       >
+//         {slides.map((slide, i) => (
+//           <div
+//             key={i}
+//             className="w-full h-full flex-shrink-0 flex items-center justify-center px-6 md:px-20"
+//             style={{ width: `${100 / slides.length}%` }}
+//           >
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full items-center">
+//               {/* Text */}
+//               <div className="flex flex-col gap-4 text-center md:text-left">
+//                 <p className="text-white/70 text-sm md:text-base tracking-wide uppercase">
+//                   {slide.subtitle}
+//                 </p>
+
+//                 <h1 className="text-white font-extrabold leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+//                   {slide.title}
+//                 </h1>
+
+//                 <p className="text-white text-xl md:text-2xl font-semibold">
+//                   {slide.discount}
+//                 </p>
+
+//                 {slide.buttonText && (
+//                   <Link
+//                     href={slide.buttonLink || "#"}
+//                     className="mt-4 inline-flex items-center justify-center bg-white text-black px-6 py-3 rounded-xl font-semibold text-base"
+//                   >
+//                     {slide.buttonText}
+//                   </Link>
+//                 )}
+//               </div>
+
+//               {/* Image */}
+//               <div className="flex items-center justify-center">
+//                 <img
+//                   src={slide.image}
+//                   alt={slide.title}
+//                   className="w-full max-h-[400px] object-contain select-none pointer-events-none"
+//                 />
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* Minimal Arrows */}
+//       {slides.length > 1 && (
+//         <>
+//           <button
+//             onClick={prev}
+//             className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white backdrop-blur-sm items-center justify-center"
+//           >
+//             <ChevronLeft className="w-6 h-6" />
+//           </button>
+
+//           <button
+//             onClick={next}
+//             className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white backdrop-blur-sm items-center justify-center"
+//           >
+//             <ChevronRight className="w-6 h-6" />
+//           </button>
+//         </>
+//       )}
+
+//       {/* Minimal Dots */}
+//       <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2">
+//         {slides.map((_, dot) => (
+//           <button
+//             key={dot}
+//             onClick={() => setIndex(dot)}
+//             className={`h-2.5 rounded-full transition-all ${
+//               dot === index ? "w-8 bg-white" : "w-2.5 bg-white/40"
+//             }`}
+//           />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }

@@ -1,8 +1,10 @@
+// Clean, single-color, minimal, perfectly aligned version
 "use client";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Container from "../giobal/Container";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function TopCategorySection() {
   const categories = [
@@ -11,216 +13,167 @@ export default function TopCategorySection() {
       name: "IPHONE",
       logo: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
       image: "https://m.media-amazon.com/images/I/71geVdy6-OS._SX679_.jpg",
-      bgColor: "bg-neutral-800 dark:bg-neutral-700",
-      textColor: "text-white",
-      discountText: "UP to 80% OFF",
     },
     {
       id: 2,
       name: "REALME",
       logo: "https://upload.wikimedia.org/wikipedia/commons/7/72/Realme_logo.svg",
       image: "https://m.media-amazon.com/images/I/71iNwni9TsL._SX679_.jpg",
-      bgColor: "bg-neutral-100 dark:bg-neutral-800",
-      textColor: "text-neutral-900 dark:text-white",
-      discountText: "UP to 80% OFF",
     },
     {
       id: 3,
       name: "XIAOMI",
       logo: "https://upload.wikimedia.org/wikipedia/commons/2/29/Xiaomi_logo.svg",
       image: "https://m.media-amazon.com/images/I/61kFL7ywsZS._SX522_.jpg",
-      bgColor: "bg-neutral-100 dark:bg-neutral-800",
-      textColor: "text-neutral-900 dark:text-white",
-      discountText: "UP to 80% OFF",
     },
     {
       id: 4,
       name: "SAMSUNG",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Samsung_Logo.svg",
       image: "https://m.media-amazon.com/images/I/81vdN55Sr9L._SX679_.jpg",
-      bgColor: "bg-neutral-100 dark:bg-neutral-800",
-      textColor: "text-neutral-900 dark:text-white",
-      discountText: "UP to 80% OFF",
     },
     {
       id: 5,
       name: "ONEPLUS",
       logo: "https://upload.wikimedia.org/wikipedia/commons/1/12/OnePlus_logo.svg",
       image: "https://m.media-amazon.com/images/I/61sG-uZMoLL._SX679_.jpg",
-      bgColor: "bg-neutral-100 dark:bg-neutral-800",
-      textColor: "text-neutral-900 dark:text-white",
-      discountText: "UP to 80% OFF",
     },
   ];
 
   const [index, setIndex] = useState(0);
-  const autoSlideRef = useRef(null);
-
-  // ⬇ Swipe refs
+  const autoRef = useRef(null);
   const startX = useRef(0);
-  const currentX = useRef(0);
-  const isDragging = useRef(false);
+  const endX = useRef(0);
+  const dragging = useRef(false);
 
-  const nextSlide = () => {
-    setIndex((prev) => (prev === categories.length - 1 ? 0 : prev + 1));
+  const next = () => setIndex((p) => (p + 1) % categories.length);
+  const prev = () =>
+    setIndex((p) => (p - 1 + categories.length) % categories.length);
+
+  const startAuto = () => {
+    stopAuto();
+    autoRef.current = setInterval(next, 4000);
   };
 
-  const prevSlide = () => {
-    setIndex((prev) => (prev === 0 ? categories.length - 1 : prev - 1));
+  const stopAuto = () => {
+    if (autoRef.current) clearInterval(autoRef.current);
   };
 
   useEffect(() => {
-    autoSlideRef.current = setInterval(nextSlide, 2000);
-    return () => clearInterval(autoSlideRef.current);
+    startAuto();
+    return stopAuto;
   }, []);
 
-  const stopAuto = () => clearInterval(autoSlideRef.current);
-  const startAuto = () => {
-    autoSlideRef.current = setInterval(nextSlide, 3000);
-  };
-
-  // ⬇ Touch handlers for swipe
-  const handleTouchStart = (e) => {
+  const touchStart = (e) => {
     startX.current = e.touches[0].clientX;
-    isDragging.current = true;
+    dragging.current = true;
     stopAuto();
   };
 
-  const handleTouchMove = (e) => {
-    if (!isDragging.current) return;
-    currentX.current = e.touches[0].clientX;
+  const touchMove = (e) => {
+    if (!dragging.current) return;
+    endX.current = e.touches[0].clientX;
   };
 
-  const handleTouchEnd = () => {
-    if (!isDragging.current) return;
-
-    const diff = startX.current - currentX.current;
-
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) nextSlide(); // swipe left
-      else prevSlide(); // swipe right
-    }
-
-    isDragging.current = false;
+  const touchEnd = () => {
+    if (!dragging.current) return;
+    const diff = startX.current - endX.current;
+    if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
+    dragging.current = false;
     startAuto();
   };
 
   return (
-    <div className="w-full mt-25 mb-25">
+    <div className="w-full my-16">
       <Container>
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
-          <h2 className="text-[22px] sm:text-[26px] font-semibold text-neutral-800 dark:text-neutral-100">
-            Top{" "}
-            <span className="text-blue-600 dark:text-blue-400">
-              Electronic Brands
-            </span>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4 px-2 sm:px-0">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">
+            Top Electronics Brands
           </h2>
 
           <Link
             href="/products?category=smartphones"
-            className="bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-md hover:bg-blue-700 dark:hover:bg-blue-600 transition"
+            className="flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors whitespace-nowrap"
           >
-            View All →
+            View All
+            <div className="bg-neutral-100 dark:bg-neutral-800 w-8 h-8 flex items-center justify-center rounded-full">
+              <ChevronRight className="w-4 h-4" strokeWidth={2.5} />
+            </div>
           </Link>
         </div>
 
-        <div className="w-[150px] h-[3px] bg-blue-600 rounded-full mb-8"></div>
+        <div className="w-24 h-1 bg-lime-600 rounded-full mb-8 mx-2 sm:mx-0"></div>
 
-        {/* Slider */}
         <div
           className="relative overflow-hidden"
+          onTouchStart={touchStart}
+          onTouchMove={touchMove}
+          onTouchEnd={touchEnd}
           onMouseEnter={stopAuto}
           onMouseLeave={startAuto}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
         >
+          {/* --- LEFT BUTTON (Desktop Only) --- */}
+          <button
+            onClick={prev}
+            className="hidden sm:flex absolute left-2 top-1/2 -translate-y-1/2 
+            bg-white dark:bg-gray-700 shadow-md rounded-full p-2 hover:scale-110 transition z-20"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          {/* --- RIGHT BUTTON (Desktop Only) --- */}
+          <button
+            onClick={next}
+            className="hidden sm:flex absolute right-2 top-1/2 -translate-y-1/2 
+            bg-white dark:bg-gray-700 shadow-md rounded-full p-2 hover:scale-110 transition z-20"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
           <div
-            className="flex transition-transform duration-500"
+            className="flex transition-transform duration-700 ease-out"
             style={{ transform: `translateX(-${index * 100}%)` }}
           >
             {categories.map((c) => (
-              <div
-                key={c.id}
-                className="min-w-full flex justify-center px-2 h-[320px] sm:h-[380px] lg:h-[420px]"
-              >
-                <div
-                  className={`${c.bgColor} rounded-3xl
-                    p-6 sm:p-8 lg:p-10
-                    w-full sm:w-[90%] lg:w-[70%] xl:w-[65%]
-                    flex flex-col sm:flex-row
-                    items-center justify-between
-                    gap-6 shadow-xl`}
-                >
-                  {/* Left text section */}
-                  <div className="flex flex-col gap-4 sm:gap-6 text-center sm:text-left">
-                    <span
-                      className={`uppercase text-sm sm:text-base font-semibold tracking-widest px-4 py-2 rounded-md max-w-max mx-auto sm:mx-0 ${
-                        c.bgColor.includes("bg-neutral-800")
-                          ? "bg-neutral-700 dark:bg-neutral-600 text-white"
-                          : "bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white"
-                      }`}
-                    >
+              <div key={c.id} className="min-w-full px-2 flex justify-center">
+                <div className="w-full max-w-5xl rounded-2xl shadow-md p-6 sm:p-10 flex flex-col sm:flex-row items-center gap-8 bg-gray-100 dark:bg-gray-800">
+                  <div className="flex flex-col gap-4 w-full sm:w-1/2 items-start text-gray-900 dark:text-gray-100">
+                    <span className="text-xs uppercase px-3 py-1 rounded-md font-semibold bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
                       {c.name}
                     </span>
 
-                    <img
-                      src={c.logo}
-                      alt={c.name}
-                      className="h-8 sm:h-10 lg:h-12 w-auto object-contain mx-auto sm:mx-0"
-                    />
+                    <div className="bg-white dark:bg-gray-700 p-2 rounded-md shadow w-12 h-12 flex items-center justify-center">
+                      <img
+                        src={c.logo}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
 
-                    <p
-                      className={`${c.textColor} font-semibold text-base sm:text-lg lg:text-xl`}
-                    >
-                      {c.discountText}
-                    </p>
+                    <p className="text-lg font-bold">UP to 80% OFF</p>
                   </div>
 
-                  {/* Right phone image */}
-                  <img
-                    src={c.image}
-                    alt={c.name}
-                    className="h-[150px] sm:h-[200px] lg:h-[240px] object-contain rounded-xl shadow-lg"
-                  />
+                  <div className="w-full sm:w-1/2 flex justify-center relative">
+                    <img
+                      src={c.image}
+                      className="max-h-52 sm:max-h-64 object-contain rounded-xl shadow"
+                    />
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Prev Button */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 
-              text-3xl bg-white dark:bg-neutral-800 text-neutral-800 dark:text-white 
-              shadow-md p-3 rounded-full hover:scale-110 transition"
-          >
-            ‹
-          </button>
-
-          {/* Next Button */}
-          <button
-            onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 
-              text-3xl bg-white dark:bg-neutral-800 text-neutral-800 dark:text-white 
-              shadow-md p-3 rounded-full hover:scale-110 transition"
-          >
-            ›
-          </button>
-
-          {/* Dots */}
           <div className="flex justify-center mt-5 gap-2">
             {categories.map((_, i) => (
-              <div
+              <button
                 key={i}
                 onClick={() => setIndex(i)}
-                className={`h-3 rounded-full cursor-pointer transition-all ${
+                className={`h-2 rounded-full transition-all ${
                   index === i
-                    ? "w-8 bg-blue-600 dark:bg-blue-400"
-                    : "w-3 bg-neutral-300 dark:bg-neutral-600"
+                    ? "w-6 bg-blue-600"
+                    : "w-2 bg-gray-400 dark:bg-gray-600"
                 }`}
-              ></div>
+              />
             ))}
           </div>
         </div>

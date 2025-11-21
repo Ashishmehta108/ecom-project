@@ -3,6 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import Container from "../giobal/Container";
+import { ChevronRight } from "lucide-react";
+import { Merriweather } from "next/font/google";
+
+const merriweather = Merriweather({
+  variable: "--font-merriweather",
+  subsets: ["latin"],
+  weight: ["400"],
+});
 
 export default function ProductDealsSection() {
   const products = [
@@ -23,7 +31,7 @@ export default function ProductDealsSection() {
         "https://m.media-amazon.com/images/I/41Z3zn7d+JL._SY300_SX300_QL70_FMwebp_.jpg",
       price: 10499,
       oldPrice: 14999,
-      discount: 56,
+      discount: 30,
       savings: 4500,
     },
     {
@@ -33,7 +41,7 @@ export default function ProductDealsSection() {
         "https://m.media-amazon.com/images/I/41amrp7gg7L._SX342_SY445_QL70_FMwebp_.jpg",
       price: 16999,
       oldPrice: 24999,
-      discount: 56,
+      discount: 32,
       savings: 8000,
     },
     {
@@ -43,163 +51,120 @@ export default function ProductDealsSection() {
         "https://m.media-amazon.com/images/I/41XfwBsC7wL._SY300_SX300_QL70_FMwebp_.jpg",
       price: 31999,
       oldPrice: 40999,
-      discount: 56,
+      discount: 22,
       savings: 9000,
     },
   ];
 
   return (
-    <div className="w-full mt-25">
+    <section className="w-full py-16 sm:py-24 bg-white dark:bg-neutral-950">
       <Container>
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
-          <h2 className="text-[22px] sm:text-[26px] font-semibold text-neutral-800 dark:text-neutral-100">
-            Grab the best deal on{" "}
-            <span className="text-blue-600 dark:text-blue-400">
-              Smartphones
-            </span>
-          </h2>
+        {/* HEADER */}
+        <div className="flex justify-between items-center mb-12 sm:mb-16">
+          <div className="group w-fit">
+            <h2
+              className={`text-2xl sm:text-5xl font-[550] leading-tight tracking-[-0.02em] text-neutral-900 dark:text-neutral-50  `}
+            >
+              Best Deals on Smartphones
+            </h2>
+
+            {/* SAME UNDERLINE */}
+            <div
+              className="
+                mt-2 h-[3px] w-full
+                rounded-full
+                bg-lime-500
+                
+               
+              "
+            />
+          </div>
 
           <Link
             href="/products?category=smartphones"
-            className="
-    bg-blue-600 dark:bg-blue-500
-    text-white
-    px-3 py-1.5
-    rounded-full
-    text-xs sm:text-sm
-    font-medium
-    shadow-md
-    hover:bg-blue-700 dark:hover:bg-blue-600
-    transition
-    w-auto              
-    self-start          
-  "
+            className="flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors whitespace-nowrap"
           >
-            View All →
+            View All
+            <div className="bg-neutral-100 dark:bg-neutral-800 w-8 h-8 flex items-center justify-center rounded-full">
+              <ChevronRight className="w-4 h-4" strokeWidth={2.5} />
+            </div>
           </Link>
         </div>
 
-        <div className="w-full h-[2px] bg-blue-500/70 dark:bg-blue-400/60 rounded-full mb-6"></div>
-
+        {/* CARD SLIDER */}
         <div
           className="
-            flex gap-4 sm:gap-6
-            overflow-x-auto hide-scrollbar pb-4
-pt-5
-            justify-start
-            
+            flex gap-5 
+            overflow-x-auto 
+            snap-x snap-mandatory 
+            hide-scrollbar 
+            pb-4
           "
         >
           {products.map((p) => (
-            <div
+            <Link
+              href={`/product/${p.id}`}
               key={p.id}
               className="
-            min-w-[200px] sm:min-w-[240px]
-            cursor-pointer
-            transition-all duration-300 ease-out
-            overflow-visible select-none
-        
-            hover:scale-[1.03]
-            hover:-translate-y-1
-            hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.25)]
-          "
+                group
+                w-[190px] sm:w-[220px]
+                flex-shrink-0
+                snap-start
+                rounded-2xl
+                border border-neutral-200 dark:border-neutral-800
+                bg-neutral-50 dark:bg-neutral-900
+                overflow-hidden
+                transition-all duration-300
+                hover:border-neutral-300 dark:hover:border-neutral-700
+                hover:bg-neutral-100 dark:hover:bg-neutral-800
+              "
             >
-              <div
-                className="
-              rounded-2xl border
-              bg-white/95 backdrop-blur-sm 
-              border-neutral-200/70
-              dark:bg-neutral-900/90 dark:border-neutral-700/70
-              shadow-sm
-              transition-all duration-300
-              overflow-hidden
-            "
-              >
-                {/* Image */}
+              {/* IMAGE */}
+              <div className="relative w-full h-[170px] sm:h-[190px] bg-white dark:bg-neutral-900 flex items-center justify-center">
+                <Image
+                  src={p.image}
+                  alt={p.name}
+                  width={200}
+                  height={200}
+                  unoptimized
+                  className="object-contain max-h-full transition group-hover:scale-105"
+                />
                 <div
                   className="
-                relative w-full 
-                h-[170px] sm:h-[200px] 
-                flex items-center justify-center 
-                bg-neutral-50 dark:bg-neutral-800/60
-                rounded-t-2xl
-                overflow-hidden
-              "
+                    absolute top-2 right-2
+                    bg-green-600 dark:bg-blue-500
+                    text-white text-[11px] sm:text-xs 
+                    px-2.5 py-1 
+                    rounded-full
+                  "
                 >
-                  <Image
-                    src={p.image}
-                    alt={p.name}
-                    width={220}
-                    height={220}
-                    unoptimized
-                    className="
-                  object-contain max-h-full transition-transform duration-300
-                  group-hover:scale-110
-                "
-                  />
-
-                  {/* Badge */}
-                  <div
-                    className="
-                  absolute top-2 right-2 
-                  bg-blue-600 dark:bg-blue-500
-                  text-white 
-                  text-[11px] sm:text-xs font-semibold
-                  px-2.5 py-1 rounded-full
-                  shadow-md
-                "
-                  >
-                    {p.discount}% OFF
-                  </div>
-                </div>
-
-                {/* Details */}
-                <div className="px-3.5 sm:px-4 py-3.5">
-                  <h3
-                    className="
-                font-medium mb-1 line-clamp-1 
-                text-[13px] sm:text-[15px]
-                text-neutral-900 dark:text-neutral-200
-              "
-                  >
-                    {p.name}
-                  </h3>
-
-                  <div className="flex items-center gap-2 mb-1">
-                    <span
-                      className="
-                  font-semibold 
-                  text-neutral-900 dark:text-white
-                  text-[14px] sm:text-[15px]
-                "
-                    >
-                      ₹{p.price}
-                    </span>
-
-                    <span
-                      className="
-                  line-through text-neutral-400 dark:text-neutral-500
-                  text-[11px] sm:text-[12px]
-                "
-                    >
-                      ₹{p.oldPrice}
-                    </span>
-                  </div>
-
-                  <p
-                    className="
-                text-green-600 dark:text-green-400 
-                font-medium text-[12px] sm:text-[13px]
-              "
-                  >
-                    Save ₹{p.savings}
-                  </p>
+                  {p.discount}% OFF
                 </div>
               </div>
-            </div>
+
+              {/* CONTENT */}
+              <div className="px-4 py-4">
+                <h3 className="text-[14px] sm:text-[15px] font-[500] text-neutral-900 dark:text-neutral-200 line-clamp-1">
+                  {p.name}
+                </h3>
+
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-[15px] font-semibold text-neutral-900 dark:text-neutral-100">
+                    ₹{p.price}
+                  </span>
+                  <span className="line-through text-neutral-400 dark:text-neutral-600 text-[12px]">
+                    ₹{p.oldPrice}
+                  </span>
+                </div>
+
+                <p className="text-green-600 dark:text-green-400 text-[12px] mt-1 font-medium">
+                  Save ₹{p.savings}
+                </p>
+              </div>
+            </Link>
           ))}
         </div>
       </Container>
-    </div>
+    </section>
   );
 }

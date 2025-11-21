@@ -34,7 +34,7 @@ import {
 import { admin } from "better-auth/plugins";
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "./lib/loadEnv";
 import { sendEmail } from "./lib/sendemail";
-import { stripeClient } from "./lib/stripe";
+import { stripePromise } from "./lib/stripe";
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -102,6 +102,12 @@ export const auth = betterAuth({
       clientId: GITHUB_CLIENT_ID as string,
       clientSecret: GITHUB_CLIENT_SECRET as string,
     },
+    google: {
+        clientId: process.env.GOOGLE_CLIENT_ID as string,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+        accessType: "offline", 
+        prompt: "select_account consent", 
+    },
   },
 
   advanced: {
@@ -117,7 +123,7 @@ export const auth = betterAuth({
   plugins: [
     admin(),
     stripe({
-      stripeClient: stripeClient,
+      stripeClient: (await stripePromise)!,
       createCustomerOnSignUp: true,
       stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
     }),
@@ -130,4 +136,7 @@ export const auth = betterAuth({
       },
     },
   },
+  // hooks:{
+  //   after
+  // }
 });

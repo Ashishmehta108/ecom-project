@@ -1,426 +1,3 @@
-// // "use client";
-
-// // import { useState, useMemo } from "react";
-// // import Image from "next/image";
-// // import { Badge } from "@/components/ui/badge";
-// // import { Button } from "@/components/ui/button";
-// // import ReviewPage from "@/components/reviews/page";
-// // import { useParams } from "next/navigation";
-// // import { Product } from "@/lib/types/product.types";
-
-// // const FALLBACK_IMG = "https://via.placeholder.com/500x500.png?text=No+Image";
-
-// // export default function ProductPage({ product }: { product: Product }) {
-// //   const params = useParams();
-
-// //   const images =
-// //     Array.isArray(product.images) && product.images.length > 0
-// //       ? product.images.map((i) => i.url)
-// //       : [FALLBACK_IMG];
-
-// //   const [selectedImage, setSelectedImage] = useState(images[0]);
-
-// //   const price = Number(product.pricing?.price ?? 0);
-// //   const discount = Number(product.pricing?.discount ?? 0);
-
-// //   const discountedPrice = useMemo(() => {
-// //     if (discount > 0 && discount <= 100) {
-// //       return price - (price * discount) / 100;
-// //     }
-// //     return price;
-// //   }, [price, discount]);
-
-// //   return (
-// //     <div className="mx-auto max-w-6xl px-4 py-10 text-neutral-900 dark:text-neutral-100">
-// //       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-// //         <div className="space-y-4">
-// //           <div className="relative group w-full h-80 md:h-[440px] border dark:border-neutral-800 rounded-lg bg-white dark:bg-neverflow-hidden">
-// //             <div className="flex items-center justify-center w-full h-full">
-// //               <div className="relative group w-60 h-60 md:w-80 md:h-80  bg-white dark:bg--900 overflow-hidden">
-// //                 <Image
-// //                   src={selectedImage}
-// //                   alt={product.productName || "Product"}
-// //                   width={300}
-// //                   height={300}
-// //                   className="object-contain p-3 transition-transform duration-300 group-hover:scale-110 cursor-zoom-in"
-// //                   onError={(e) => (e.currentTarget.src = FALLBACK_IMG)}
-// //                 />
-// //               </div>
-// //             </div>
-// //           </div>
-
-// //           <div className="flex gap-3 overflow-x-auto">
-// //             {images.map((url, idx) => (
-// //               <button
-// //                 key={idx}
-// //                 onClick={() => setSelectedImage(url)}
-// //                 className={`relative w-20 h-20 rounded-md border bg-white dark:bg-neutral-900 dark:border-neutral-700 transition
-// //                   ${
-// //                     selectedImage === url
-// //                       ? "border-neutral-500 dark:border-neutral-300"
-// //                       : "hover:ring-1 hover:ring-neutral-500 dark:hover:ring-neutral-300"
-// //                   }
-// //                 `}
-// //               >
-// //                 <Image
-// //                   src={url}
-// //                   alt="Thumbnail"
-// //                   fill
-// //                   className="object-contain p-1"
-// //                 />
-// //               </button>
-// //             ))}
-// //           </div>
-// //         </div>
-
-// //         <div className="flex flex-col space-y-5">
-// //           <div>
-// //             <h1 className="text-3xl font-semibold">
-// //               {product.productName || "Unnamed Product"}
-// //             </h1>
-// //             <p className="text-neutral-500 dark:text-neutral-400 mt-1">
-// //               {(product.brand || "") + " " + (product.model || "")}
-// //             </p>
-// //           </div>
-
-// //           <div className="flex items-center gap-3">
-// //             <p className="text-3xl font-bold">₹{discountedPrice.toFixed(2)}</p>
-
-// //             {discount > 0 && (
-// //               <>
-// //                 <p className="line-through text-neutral-400 dark:text-neutral-600">
-// //                   ₹{price.toFixed(2)}
-// //                 </p>
-// //                 <Badge variant="secondary">{discount}% OFF</Badge>
-// //               </>
-// //             )}
-// //           </div>
-
-// //           {product.pricing?.inStock ? (
-// //             <Badge className="w-max bg-green-600 text-white">In Stock</Badge>
-// //           ) : (
-// //             <Badge className="w-max bg-red-600 text-white">Out of Stock</Badge>
-// //           )}
-
-// //           <Button
-// //             className="w-full md:w-max px-10 py-6 text-base shadow-sm bg-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600 hover:bg-blue-900 dark:bg-blue-700 dark:text-white"
-// //             disabled={!product.pricing?.inStock}
-// //           >
-// //             Add to Cart
-// //           </Button>
-
-// //           <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">
-// //             {product.description || "No description available."}
-// //           </p>
-
-// //           {/* FEATURES */}
-// //           <div>
-// //             <h3 className="text-lg font-semibold mb-2">Features</h3>
-// //             <ul className="list-disc pl-5 space-y-1 text-neutral-700 dark:text-neutral-300 text-sm">
-// //               {product.features?.length > 0 ? (
-// //                 product.features.map((f, i) => <li key={i}>{f}</li>)
-// //               ) : (
-// //                 <li>No features listed.</li>
-// //               )}
-// //             </ul>
-// //           </div>
-
-// //           <div className="flex gap-2 flex-wrap mt-3">
-// //             {product.tags?.map((tag, i) => (
-// //               <Badge
-// //                 key={i}
-// //                 variant="outline"
-// //                 className="text-neutral-600 dark:text-neutral-300 border-neutral-400 dark:border-neutral-600"
-// //               >
-// //                 {tag}
-// //               </Badge>
-// //             ))}
-// //           </div>
-// //         </div>
-// //       </div>
-
-// //       <div className="mt-16">
-// //         <h2 className="text-2xl font-bold mb-4">Specifications</h2>
-
-// //         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-// //           {Object.entries(product.specifications || {}).map(
-// //             ([section, items]: any) => (
-// //               <div
-// //                 key={section}
-// //                 className="bg-neutral-50 dark:bg-neutral-900 rounded-lg p-5 shadow-sm border dark:border-neutral-800"
-// //               >
-// //                 <h3 className="font-semibold text-lg mb-3 capitalize">
-// //                   {section}
-// //                 </h3>
-
-// //                 <div className="space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
-// //                   {Object.entries(items || {}).map(([k, v]: any) => (
-// //                     <div
-// //                       key={k}
-// //                       className="flex justify-between border-b border-neutral-200 dark:border-neutral-700 py-1 last:border-none"
-// //                     >
-// //                       <span className="font-medium capitalize">{k}</span>
-// //                       <span className="text-right">
-// //                         {Array.isArray(v) ? v.join(", ") : String(v)}
-// //                       </span>
-// //                     </div>
-// //                   ))}
-// //                 </div>
-// //               </div>
-// //             )
-// //           )}
-// //         </div>
-// //       </div>
-// //       <ReviewPage />
-// //     </div>
-// //   );
-// // }
-
-// "use client";
-
-// import { product } from "@/lib/constants/product.dummy";
-// // import ProductPage from "./test";
-// import { getProductById } from "@/lib/actions/product-actions";
-// import { Product } from "@/lib/types/product.types";
-
-// import { useState, useMemo } from "react";
-// import Image from "next/image";
-// import { Badge } from "@/components/ui/badge";
-// import { Button } from "@/components/ui/button";
-// import ReviewPage from "@/components/reviews/page";
-// import { useParams } from "next/navigation";
-
-// const FALLBACK_IMG = "https://via.placeholder.com/500x500.png?text=No+Image";
-
-// export default function ProductPage({ product }: { product: Product }) {
-//   const params = useParams();
-
-//   // const product = {
-//   //   id: "",
-//   //   productName: "Hoco EW30 Intelligent True Wireless Bluetooth Earphone",
-//   //   brand: "Hoco",
-//   //   model: "EW30",
-//   //   category: "Earphone & Headset",
-//   //   subCategory: "Bluetooth Earphone",
-//   //   description:
-//   //     "Hoco EW30 is a true wireless Bluetooth 5.3 headset with low latency, long standby time, LED indicators, and ergonomic design.",
-//   //   features: [
-//   //     "Bluetooth 5.3",
-//   //     "41–50ms low-latency wireless audio",
-//   //     "Charging case 300mAh, Earbuds 25mAh",
-//   //     "3.5 hours use time",
-//   //     "150 hours standby",
-//   //     "Leader–follower switching",
-//   //     "Summon Siri",
-//   //     "LED battery indicator",
-//   //     "IPX-3 waterproof rating",
-//   //   ],
-//   //   pricing: {
-//   //     price: 660,
-//   //     currency: "INR",
-//   //     discount: 0,
-//   //     inStock: true,
-//   //     stockQuantity: 10,
-//   //   },
-//   //   specifications: {
-//   //     general: {
-//   //       productName: "EW30 Intelligent True Wireless Bluetooth Headset",
-//   //       brandName: "Hoco",
-//   //       colors: "White",
-//   //       material: "ABS",
-//   //       weight: "37g",
-//   //       sizeMm: "51 x 44 x 21 mm",
-//   //       privateMold: "Yes",
-//   //       certificate: ["CE", "FCC", "ROHS"],
-//   //     },
-//   //     technical: {
-//   //       bluetoothVersion: "5.3",
-//   //       wirelessDelayTime: "41-50 ms",
-//   //       waterproofStandard: "IPX-3",
-//   //       chipset: "JL AC6983D2",
-//   //       batteryCapacity: "300mAh, 25mAh",
-//   //       useTime: "3.5 hours",
-//   //       standbyTime: "150 hours",
-//   //     },
-//   //   },
-//   //   images: [
-//   //     {
-//   //       url: "https://ik.imagekit.io/wxwtesflu/hoco_0_A9W4w_AaN.jpeg",
-//   //     },
-//   //     {
-//   //       url: "https://ik.imagekit.io/wxwtesflu/hoco_2_2mJc_07BL.jpeg",
-//   //     },
-//   //   ],
-//   //   tags: ["Bluetooth Earphone", "TWS", "Hoco", "EW30"],
-//   // };
-
-//   const images =
-//     Array.isArray(product.images) && product.images.length > 0
-//       ? product.images.map((i) => i.url)
-//       : [FALLBACK_IMG];
-
-//   const [selectedImage, setSelectedImage] = useState(images[0]);
-
-//   const price = Number(product.pricing?.price ?? 0);
-//   const discount = Number(product.pricing?.discount ?? 0);
-
-//   const discountedPrice = useMemo(() => {
-//     if (discount > 0 && discount <= 100) {
-//       return price - (price * discount) / 100;
-//     }
-//     return price;
-//   }, [price, discount]);
-
-//   return (
-//     <div className="mx-auto max-w-6xl px-4 py-10 text-neutral-900 dark:text-neutral-100">
-//       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-//         <div className="space-y-4">
-//           <div className="relative group w-full h-80 md:h-[440px] border dark:border-neutral-800 rounded-lg bg-white dark:bg-neverflow-hidden">
-//             <div className="flex items-center justify-center w-full h-full">
-//               <div className="relative group w-60 h-60 md:w-80 md:h-80  bg-white dark:bg--900 overflow-hidden">
-//                 <Image
-//                   src={selectedImage}
-//                   alt={product.productName || "Product"}
-//                   width={300}
-//                   height={300}
-//                   className="object-contain p-3 transition-transform duration-300 group-hover:scale-110 cursor-zoom-in"
-//                   onError={(e) => (e.currentTarget.src = FALLBACK_IMG)}
-//                 />
-//               </div>
-//             </div>
-//           </div>
-//           <div className="flex gap-3 overflow-x-auto">
-//             {images.map((url, idx) => (
-//               <button
-//                 key={idx}
-//                 onClick={() => setSelectedImage(url)}
-//                 className={`relative w-20 h-20 rounded-md border bg-white dark:bg-neutral-900 dark:border-neutral-700 transition
-//                   ${
-//                     selectedImage === url
-//                       ? "border-neutral-500 dark:border-neutral-300"
-//                       : "hover:ring-1 hover:ring-neutral-500 dark:hover:ring-neutral-300"
-//                   }
-//                 `}
-//               >
-//                 <Image
-//                   src={url}
-//                   alt="Thumbnail"
-//                   fill
-//                   className="object-contain p-1"
-//                 />
-//               </button>
-//             ))}
-//           </div>
-//         </div>
-
-//         <div className="flex flex-col space-y-5">
-//           <div>
-//             <h1 className="text-3xl font-semibold">
-//               {product.productName || "Unnamed Product"}
-//             </h1>
-//             <p className="text-neutral-500 dark:text-neutral-400 mt-1">
-//               {(product.brand || "") + " " + (product.model || "")}
-//             </p>
-//           </div>
-
-//           <div className="flex items-center gap-3">
-//             <p className="text-3xl font-bold">₹{discountedPrice.toFixed(2)}</p>
-
-//             {discount > 0 && (
-//               <>
-//                 <p className="line-through text-neutral-400 dark:text-neutral-600">
-//                   ₹{price.toFixed(2)}
-//                 </p>
-//                 <Badge variant="secondary">{discount}% OFF</Badge>
-//               </>
-//             )}
-//           </div>
-
-//           {product.pricing?.inStock ? (
-//             <Badge className="w-max bg-green-600 text-white">In Stock</Badge>
-//           ) : (
-//             <Badge className="w-max bg-red-600 text-white">Out of Stock</Badge>
-//           )}
-
-//           <Button
-//             className="w-full md:w-max px-10 py-6 text-base shadow-sm bg-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600 hover:bg-blue-900 dark:bg-blue-700 dark:text-white"
-//             disabled={!product.pricing?.inStock}
-//           >
-//             Add to Cart
-//           </Button>
-
-//           <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">
-//             {product.description || "No description available."}
-//           </p>
-
-//           {/* FEATURES */}
-//           <div>
-//             <h3 className="text-lg font-semibold mb-2">Features</h3>
-//             <ul className="list-disc pl-5 space-y-1 text-neutral-700 dark:text-neutral-300 text-sm">
-//               {product.features?.length > 0 ? (
-//                 product.features.map((f, i) => <li key={i}>{f}</li>)
-//               ) : (
-//                 <li>No features listed.</li>
-//               )}
-//             </ul>
-//           </div>
-
-//           <div className="flex gap-2 flex-wrap mt-3">
-//             {product.tags?.map((tag, i) => (
-//               <Badge
-//                 key={i}
-//                 variant="outline"
-//                 className="text-neutral-600 dark:text-neutral-300 border-neutral-400 dark:border-neutral-600"
-//               >
-//                 {tag}
-//               </Badge>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="mt-16">
-//         <h2 className="text-2xl font-bold mb-4">Specifications</h2>
-
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-//           {Object.entries(product.specifications || {}).map(
-//             ([section, items]: any) => (
-//               <div
-//                 key={section}
-//                 className="bg-neutral-50 dark:bg-neutral-900 rounded-lg p-5 shadow-sm border dark:border-neutral-800"
-//               >
-//                 <h3 className="font-semibold text-lg mb-3 capitalize">
-//                   {section}
-//                 </h3>
-
-//                 <div className="space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
-//                   {Object.entries(items || {}).map(([k, v]: any) => (
-//                     <div
-//                       key={k}
-//                       className="flex justify-between border-b border-neutral-200 dark:border-neutral-700 py-1 last:border-none"
-//                     >
-//                       <span className="font-medium capitalize">{k}</span>
-//                       <span className="text-right">
-//                         {Array.isArray(v) ? v.join(", ") : String(v)}
-//                       </span>
-//                     </div>
-//                   ))}
-//                 </div>
-//               </div>
-//             )
-//           )}
-//         </div>
-//       </div>
-//       <ReviewPage />
-//     </div>
-//   );
-// }
-
-// // export async function Product({ id }: { id: string }) {
-// //   const p: Product = await getProductById(id);
-// //   return <ProductPage product={product} />;
-// // }
-
 "use client";
 
 import { useState, useMemo } from "react";
@@ -436,6 +13,7 @@ import userCartState from "@/lib/states/cart.state";
 const FALLBACK_IMG = "https://via.placeholder.com/500x500.png?text=No+Image";
 
 export default function ProductPage({ product }: { product: Product }) {
+  console.log(product);
   const { items } = userCartState();
   const user = authClient.useSession();
   const images =
@@ -456,166 +34,202 @@ export default function ProductPage({ product }: { product: Product }) {
   }, [price, discount]);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 text-neutral-900 dark:text-neutral-100">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12 text-neutral-900 dark:text-neutral-100">
       {/* TOP GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
         {/* LEFT — IMAGE GALLERY */}
-        <div className="space-y-4">
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* Thumbnails - Side on Desktop, Top on Mobile */}
+          {images.length > 1 && (
+            <div className="flex lg:flex-col gap-2.5 overflow-x-auto lg:overflow-y-auto pb-1 lg:pb-0 order-2 lg:order-1 scrollbar-thin">
+              {images.map((url, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedImage(url)}
+                  className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden transition-all duration-200
+                    ${
+                      selectedImage === url
+                        ? "ring-2 ring-neutral-900 dark:ring-neutral-100 bg-neutral-100 dark:bg-neutral-800"
+                        : "bg-neutral-50 dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    }
+                  `}
+                >
+                  <Image
+                    src={url}
+                    alt={`Thumbnail ${idx + 1}`}
+                    fill
+                    className="object-contain p-2"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Main Image */}
-          <div className="rounded-lg border bg-white dark:bg-neutral-900 dark:border-neutral-800 p-4 flex items-center justify-center">
-            <div className="relative w-full h-80 md:h-[430px]">
+          <div className="flex-1 rounded-xl bg-neutral-50 dark:bg-neutral-900 overflow-hidden order-1 lg:order-2">
+            <div className="relative w-full aspect-square">
               <Image
                 src={selectedImage}
                 alt={product.productName}
                 fill
-                className="object-contain transition-transform duration-300 hover:scale-105"
+                className="object-contain p-8 transition-opacity duration-200"
               />
             </div>
-          </div>
-
-          {/* Thumbnails */}
-          <div className="flex gap-3 overflow-x-auto pb-2">
-            {images.map((url, idx) => (
-              <button
-                key={idx}
-                onClick={() => setSelectedImage(url)}
-                className={`relative w-20 h-20 rounded-md border transition bg-white dark:bg-neutral-900
-                  ${
-                    selectedImage === url
-                      ? "border-neutral-700 dark:border-neutral-300"
-                      : "border-neutral-300 dark:border-neutral-700 hover:border-neutral-500"
-                  }
-                `}
-              >
-                <Image
-                  src={url}
-                  alt="Thumbnail"
-                  fill
-                  className="object-contain p-1"
-                />
-              </button>
-            ))}
           </div>
         </div>
 
         {/* RIGHT — PRODUCT INFO */}
-        <div className="flex flex-col space-y-6">
-          {/* Title */}
-          <div>
-            <h1 className="text-3xl font-semibold leading-tight">
+        <div className="flex flex-col space-y-6 lg:space-y-7">
+          {/* Brand & Model */}
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
+              {product.brand}
+            </p>
+            <h1 className="text-3xl md:text-4xl font-bold leading-tight tracking-tight">
               {product.productName}
             </h1>
-            <p className="text-neutral-500 dark:text-neutral-400 mt-1">
-              {product.brand} • {product.model}
-            </p>
-          </div>
-
-          {/* Price */}
-          <div className="flex items-center gap-3">
-            <p className="text-3xl font-bold">₹{discountedPrice}</p>
-
-            {discount > 0 && (
-              <>
-                <p className="line-through text-neutral-400 dark:text-neutral-600 text-lg">
-                  ₹{price}
-                </p>
-                <Badge className="bg-green-600 text-white">
-                  {discount}% OFF
-                </Badge>
-              </>
+            {product.model && (
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-2">
+                Model: {product.model}
+              </p>
             )}
           </div>
 
-          {/* Stock */}
-          {product.pricing?.inStock ? (
-            <Badge className="w-max bg-green-600 text-white">In Stock</Badge>
-          ) : (
-            <Badge className="w-max bg-red-600 text-white">Out of Stock</Badge>
-          )}
+          {/* Price & Stock */}
+          <div className="space-y-3 pb-6 border-b border-neutral-200 dark:border-neutral-800">
+            <div className="flex items-baseline gap-3 flex-wrap">
+              <p className="text-4xl font-bold tracking-tight">
+                ₹{discountedPrice.toLocaleString()}
+              </p>
+
+              {discount > 0 && (
+                <>
+                  <p className="text-lg text-neutral-400 dark:text-neutral-600 line-through">
+                    ₹{price.toLocaleString()}
+                  </p>
+                  <Badge className="bg-green-600 hover:bg-green-600 text-white text-xs font-semibold px-2 py-0.5">
+                    {discount}% OFF
+                  </Badge>
+                </>
+              )}
+            </div>
+
+            {/* Stock Status */}
+            {product.pricing?.inStock ? (
+              <Badge className="bg-green-600 hover:bg-green-600 text-white text-xs font-medium px-2.5 py-1">
+                In Stock
+              </Badge>
+            ) : (
+              <Badge className="bg-red-600 hover:bg-red-600 text-white text-xs font-medium px-2.5 py-1">
+                Out of Stock
+              </Badge>
+            )}
+          </div>
 
           {/* Add to Cart */}
-          {/* <Button
-            className="w-full md:w-max px-10 py-6 text-base shadow-sm bg-blue-700 hover:bg-blue-800 text-white"
-            disabled={!product.pricing?.inStock}
-          >
-            Add to Cart
-          </Button> */}
-          {/* <AddToCartButton
-            productId={product.id}
-            userId={user.data?.user.id!}
-          /> */}
-          <AddToCartButton
-            productId={product.id}
-            // userId={user.data?.user.id!}
-          />
+          <div className="pt-2">
+            <AddToCartButton productId={product.id} />
+          </div>
 
           {/* Description */}
-          <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-sm md:text-base">
-            {product.description}
-          </p>
-
-          {/* Tags */}
-          <div className="flex gap-2 flex-wrap mt-3">
-            {product.tags?.map((tag, i) => (
-              <Badge
-                key={i}
-                variant="outline"
-                className="border-neutral-400 dark:border-neutral-600 text-neutral-700 dark:text-neutral-200"
-              >
-                {tag}
-              </Badge>
-            ))}
-          </div>
+          {product.description && (
+            <div className="space-y-2">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-700 dark:text-neutral-300">
+                Description
+              </h3>
+              <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                {product.description}
+              </p>
+            </div>
+          )}
 
           {/* Features */}
-          <div>
-            <h3 className="text-lg font-semibold mb-3">Features</h3>
-            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-700 dark:text-neutral-300">
-              {product.features?.map((f, i) => (
-                <li key={i}>{f}</li>
+          {product.features && product.features.length > 0 && (
+            <div className="space-y-3 pt-2">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-700 dark:text-neutral-300">
+                Key Features
+              </h3>
+              <ul className="space-y-2">
+                {product.features.map((f, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-400"
+                  >
+                    <span className="text-neutral-400 dark:text-neutral-600 mt-0.5">
+                      •
+                    </span>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Tags */}
+          {product.tags && product.tags.length > 0 && (
+            <div className="flex gap-2 flex-wrap pt-2">
+              {product.tags.map((tag, i) => (
+                <Badge
+                  key={i}
+                  variant="outline"
+                  className="border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 text-xs font-normal px-3 py-1 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
+                >
+                  {tag}
+                </Badge>
               ))}
-            </ul>
-          </div>
+            </div>
+          )}
         </div>
       </div>
 
       {/* SPECIFICATIONS SECTION */}
-      <div className="mt-14">
-        <h2 className="text-2xl font-bold mb-5">Specifications</h2>
+      {product.specifications &&
+        Object.keys(product.specifications).length > 0 && (
+          <div className="mt-16 md:mt-20">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8">
+              Technical Specifications
+            </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-          {Object.entries(product.specifications || {}).map(
-            ([section, items]: any) => (
-              <div
-                key={section}
-                className="rounded-lg p-5 border bg-white dark:bg-neutral-900 dark:border-neutral-800 shadow-sm"
-              >
-                <h3 className="font-semibold text-lg mb-3 capitalize">
-                  {section}
-                </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {Object.entries(product.specifications || {}).map(
+                ([section, items]: any) => (
+                  <div
+                    key={section}
+                    className="rounded-xl bg-neutral-50 dark:bg-neutral-900 p-6"
+                  >
+                    <h3 className="font-semibold text-base mb-4 capitalize text-neutral-900 dark:text-neutral-100">
+                      {section.replace(/([A-Z])/g, " $1").trim()}
+                    </h3>
 
-                <div className="space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
-                  {Object.entries(items).map(([k, v]) => (
-                    <div
-                      key={k}
-                      className="flex justify-between py-1 border-b border-neutral-200 dark:border-neutral-700 last:border-none"
-                    >
-                      <span className="font-medium capitalize">{k}</span>
-                      <span className="text-right">
-                        {Array.isArray(v) ? v.join(", ") : String(v)}
-                      </span>
+                    <div className="space-y-0">
+                      {Object.entries(items).map(([k, v], idx) => (
+                        <div
+                          key={k}
+                          className={`flex justify-between py-3 text-sm ${
+                            idx !== Object.entries(items).length - 1
+                              ? "border-b border-neutral-200 dark:border-neutral-800"
+                              : ""
+                          }`}
+                        >
+                          <span className="font-medium text-neutral-600 dark:text-neutral-400 capitalize">
+                            {k.replace(/([A-Z])/g, " $1").trim()}
+                          </span>
+                          <span className="text-right text-neutral-900 dark:text-neutral-100 font-medium">
+                            {Array.isArray(v) ? v.join(", ") : String(v)}
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
-            )
-          )}
-        </div>
-      </div>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        )}
 
       {/* REVIEWS */}
-      <div className="mt-16">
-        <ReviewPage productId={product.id}  />
+      <div className="mt-16 md:mt-20">
+        <ReviewPage productId={product.id} />
       </div>
     </div>
   );

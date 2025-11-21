@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type CartItem = {
-  id: string; // cartItem.id from DB
+  id: string;
   productId: string;
   name: string;
   price: number | string;

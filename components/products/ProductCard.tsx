@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { addItemToCart } from "@/lib/actions/cart-actions";
+import { toast } from "sonner";
+import { isInCart } from "@/lib/helper/cart/cart.helper";
 
 type ProductCardProps = {
   product: {
@@ -24,15 +26,22 @@ type ProductCardProps = {
       position: string;
     }>;
   };
+  userId: string;
 };
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, userId }: ProductCardProps) {
   const mainImage = product.productImages.find((img) => img.position === "0");
   const formattedPrice = `₹${product.pricing.price.toLocaleString("en-IN")}`;
 
+  const addToCart = async (userId: string, productId: string) => {
+    const data = await addItemToCart(userId, productId, 1);
+    if (data.success) {
+      toast.success(`${data.data.name} added to cart successfully`);
+    }
+  };
+  const inCart = isInCart(product.id);
   return (
     <article className="group flex h-[600px] flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900">
-      {/* Image */}
       <Link
         href={`/products/${product.id}`}
         className="relative block overflow-hidden bg-white dark:bg-neutral-800"
@@ -48,7 +57,6 @@ export function ProductCard({ product }: ProductCardProps) {
           />
         </div>
 
-        {/* Stock badge */}
         {!product.pricing.inStock && (
           <span className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-medium text-neutral-700 shadow-sm backdrop-blur-sm dark:bg-neutral-900/95 dark:text-neutral-300">
             Out of stock
@@ -56,26 +64,17 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
       </Link>
 
-      {/* Content */}
       <div className="flex flex-1 flex-col p-5">
-        {/* Category */}
         <p className="text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
           {product.subCategory}
         </p>
 
-        {/* Title */}
         <Link href={`/products/${product.id}`}>
           <h3 className="mt-2 line-clamp-2 text-base font-semibold leading-snug text-neutral-900 transition-colors hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300">
             {product.productName}
           </h3>
         </Link>
 
-        {/* Description - hidden on mobile, visible on larger screens */}
-        {/* <p className="mt-2 hidden line-clamp-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 md:block">
-          {product.description}
-        </p> */}
-
-        {/* Features pills - top 2 only */}
         <div className="mt-3 flex flex-wrap gap-2">
           {product.features.slice(0, 2).map((feature, idx) => (
             <span
@@ -87,10 +86,8 @@ export function ProductCard({ product }: ProductCardProps) {
           ))}
         </div>
 
-        {/* Spacer */}
         <div className="flex-1" />
 
-     
         <div className="mt-5 flex items-center justify-between gap-3">
           <div>
             <p className="text-lg font-semibold tracking-tight text-neutral-600 dark:text-neutral-100">
@@ -102,13 +99,25 @@ export function ProductCard({ product }: ProductCardProps) {
               </p>
             )}
           </div>
-          <Button
-            size="sm"
-            className="rounded-full bg-neutral-900 px-5 text-xs font-medium hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
-            disabled={!product.pricing.inStock}
-          >
-            {product.pricing.inStock ? "Add to cart" : "Notify me"}
-          </Button>
+          {inCart ? (
+            <Button
+              size="sm"
+              variant="outline"
+              className="rounded-full px-5 text-xs font-medium flex items-center gap-2 border-green-600 text-green-700 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-950"
+            >
+              <span className="h-2 w-2 rounded-full bg-green-600 dark:bg-green-300" />
+              In Cart
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              className="rounded-full bg-neutral-900 px-5 text-xs font-medium hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
+              disabled={!product.pricing.inStock}
+              onClick={() => addToCart(userId, product.id)}
+            >
+              {product.pricing.inStock ? "Add to cart" : "Notify me"}
+            </Button>
+          )}
         </div>
       </div>
     </article>
