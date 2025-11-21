@@ -64,8 +64,6 @@ const saleBanners = [
 
 export default async function App() {
   const categories = await getAllCategories();
-  const data = await fetch("http://localhost:3000/api/categories");
-  console.log(await data.json());
   return (
     <div className="min-h-screen bg-background">
       <div className="w-full">
@@ -73,7 +71,7 @@ export default async function App() {
         <TopCategoriesSection categories={categories} />
         <ProductDealsSection />
         <ElectronicsBrandSlider />
-      </div>
+      </div>  
     </div>
   );
 }

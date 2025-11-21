@@ -15,7 +15,9 @@ const uploadFilesToCloudinary = async (files: File[]) => {
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("/api/cloudinary/upload/single", {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+    const res = await fetch(`${baseUrl}/api/cloudinary/upload/single`, {
       method: "POST",
       body: formData,
     });

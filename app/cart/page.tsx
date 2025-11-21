@@ -54,7 +54,9 @@ export default function CartPage() {
     clear();
   };
   async function handleCheckout() {
-    const res = await fetch("/api/stripe/checkout", {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+    const res = await fetch(`${baseUrl}/api/stripe/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

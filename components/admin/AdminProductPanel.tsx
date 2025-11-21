@@ -480,10 +480,13 @@ export default function AdminProductPanel({
     try {
       const fd = new FormData();
       fd.append("file", file);
-      const res = await fetch("/api/imagekit/upload", {
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+      const res = await fetch(`${baseUrl}/api/imagekit/upload`, {
         method: "POST",
         body: fd,
       });
+
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || "upload failed");
       return { url: data.url as string, fileId: data.fileId as string };
@@ -564,9 +567,11 @@ export default function AdminProductPanel({
 
         // Save via REST endpoints (you can replace with server action)
         const method = isNew ? "POST" : "PUT";
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+
         const url = isNew
-          ? "/api/admin/products"
-          : `/api/admin/products/${product.id}`;
+          ? `${baseUrl}/api/admin/products`
+          : `${baseUrl}/api/admin/products/${product.id}`;
 
         const res = await fetch(url, {
           method,

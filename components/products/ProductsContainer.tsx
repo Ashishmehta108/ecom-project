@@ -93,8 +93,12 @@ function ProductsContainer({
   const [products, setProducts] = useState<Product[]>([]);
   useEffect(() => {
     (async () => {
-      console.log(search);
-      const res = await fetch(`/api/prods?search=${search}`);
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+      const res = await fetch(
+        `${baseUrl}/api/prods?search=${encodeURIComponent(search)}`
+      );
+
       const data = await res.json();
       console.log(data);
       setProducts(data);

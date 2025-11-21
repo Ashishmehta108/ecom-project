@@ -22,7 +22,10 @@ export default function CheckoutClient({ amount }: Props) {
   useEffect(() => {
     const createIntent = async () => {
       setLoading(true);
-      const res = await fetch("/api/payments/create-intent", {
+      const baseUrl =process.env.NEXT_PUBLIC_APP_URL
+
+
+      const res = await fetch(`${baseUrl}/api/payments/create-intent`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount }),
