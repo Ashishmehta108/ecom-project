@@ -182,7 +182,7 @@ export async function seedProds() {
   const productsDir = path.join(process.cwd(), "data");
 
   const p = JSON.parse(
-    await fs.readFile(path.join(productsDir, "/p1.json"), "utf8")
+    await fs.readFile(path.join(productsDir, "/products.json"), "utf8")
   );
   let data;
   if (Array.isArray(p)) {
