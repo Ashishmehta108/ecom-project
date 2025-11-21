@@ -1,16 +1,12 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Button } from "../ui/button";
-import { Icon } from "iconsax-reactjs";
+import techbar from "@/public/Tech Bar (4).svg"
 
-function Logo() {
+export default function Logo() {
   return (
-    <Button size="icon" className="" asChild>
-      <Link href="/">
-        <Icon />
-      </Link>
-      
-    </Button>
+    <Link href="/" className="flex items-center gap-2">
+      <Image src={techbar} alt="TechBar Logo" width={36} height={36} priority />
+      <span className="text-lg font-semibold">TechBar</span>
+    </Link>
   );
 }
-
-export default Logo;
