@@ -23,8 +23,10 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ["lucide-react"],
-    serverActions: {
-      allowedOrigins: ["*"],
+    serverActions: { allowedOrigins: [
+      "https://xtt5m66l-3000.inc1.devtunnels.ms",
+      "http://localhost:3000"
+    ],
     },
   },
 };
