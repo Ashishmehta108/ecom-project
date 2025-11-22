@@ -8,6 +8,7 @@ import Footer from "@/components/footer/Footer";
 import techbar from "@/public/Tech Bar (4).svg";
 import { Toaster } from "sonner";
 import { Playfair } from "next/font/google";
+import SmoothScroll from "@/components/global/smoothScroll";
 
 // export const playfair=Playfair({variable:'--font-playfair',subsets:["latin"],weight:["400"]})
 const sans = Open_Sans({
@@ -33,6 +34,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`antialiased ${sans.className}`}>
+        <SmoothScroll>
+
         {/* <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -44,6 +47,7 @@ export default function RootLayout({
         <main className="min-h-screen">{children}</main>
         <Footer />
         {/* </ThemeProvider> */}
+        </SmoothScroll>
       </body>
     </html>
   );
