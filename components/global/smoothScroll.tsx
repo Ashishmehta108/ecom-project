@@ -10,14 +10,13 @@ export default function SmoothScroll({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    // IMPORTANT → dynamically import, avoids SSR execution
     import("locomotive-scroll").then((locomotiveModule) => {
       const LocomotiveScroll = locomotiveModule.default;
 
       const scroll = new LocomotiveScroll({
         el: document.querySelector("[data-scroll-container]") as HTMLElement,
         smooth: true,
-        multiplier: 0.6,
+        multiplier: 1.1,
       });
 
       return () => scroll.destroy();
