@@ -34,7 +34,7 @@ import {
 import { admin } from "better-auth/plugins";
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "./lib/loadEnv";
 import { sendEmail } from "./lib/sendemail";
-import { stripePromise } from "./lib/stripe";
+import { stripeClient } from "./lib/stripe";
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -123,7 +123,7 @@ export const auth = betterAuth({
   plugins: [
     admin(),
     stripe({
-      stripeClient: (await stripePromise)!,
+      stripeClient:stripeClient,
       createCustomerOnSignUp: true,
       stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
     }),

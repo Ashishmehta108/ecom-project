@@ -8,8 +8,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
-import { X, Plus, Upload, Loader2, Package } from "lucide-react";
+import { X, Plus, Upload, Loader2, Package, ArrowLeft } from "lucide-react";
 import clsx from "clsx";
+import { nanoid } from "nanoid";
+import Link from "next/link";
+
+// ============================================================================
+// TYPES
+// ============================================================================
 
 type Product = {
   id: string;
@@ -204,58 +210,70 @@ export default function AdminProductPanel({
   isNew = false,
 }: Props) {
   // ==================== STATE ====================
-
+  
   // Main product state with safe defaults
-  const [product, setProduct] = useState<Partial<Product>>({
-    id: initialProduct.id ?? "",
-    productName: initialProduct.productName ?? "",
-    brand: initialProduct.brand ?? "",
-    model: initialProduct.model ?? "",
-    subCategory: initialProduct.subCategory ?? "",
-    description: initialProduct.description ?? "",
-    features: initialProduct.features ?? [],
-    pricing: initialProduct.pricing ?? {
-      price: 0,
-      currency: "INR",
-      discount: 0,
-      inStock: true,
-      stockQuantity: 0,
-    },
-    specifications: initialProduct.specifications ?? {
-      general: {},
-      technical: {},
-    },
-    tags: initialProduct.tags ?? [],
-    variants: initialProduct.variants ?? [],
-    productImages: initialProduct.productImages ?? [],
-    productCategories: initialProduct.productCategories ?? [],
-    slug: initialProduct.slug ?? "", // Fixed: was using tags instead of slug
-  });
+  const safeInitial = initialProduct ?? {};
+
+const [product, setProduct] = useState<Partial<Product>>({
+  id: safeInitial.id ?? "",
+  productName: safeInitial.productName ?? "",
+  brand: safeInitial.brand ?? "",
+  model: safeInitial.model ?? "",
+  subCategory: safeInitial.subCategory ?? "",
+  description: safeInitial.description ?? "",
+  features: safeInitial.features ?? [],
+  pricing: safeInitial.pricing ?? {
+    price: 0,
+    currency: "INR",
+    discount: 0,
+    inStock: true,
+    stockQuantity: 0,
+  },
+  specifications: safeInitial.specifications ?? { general: {}, technical: {} },
+  tags: safeInitial.tags ?? [],
+  variants: safeInitial.variants ?? [],
+  productImages: safeInitial.productImages ?? [],
+  productCategories: safeInitial.productCategories ?? [],
+  slug: safeInitial.slug ?? "",
+});
+
+  // const [product, setProduct] = useState<Partial<Product>>({
+  //   id: initialProduct.id ?? "",
+  //   productName: initialProduct.productName ?? "",
+  //   brand: initialProduct.brand ?? "",
+  //   model: initialProduct.model ?? "",
+  //   subCategory: initialProduct.subCategory ?? "",
+  //   description: initialProduct.description ?? "",
+  //   features: initialProduct.features ?? [],
+  //   pricing: initialProduct.pricing ?? {
+  //     price: 0,
+  //     currency: "INR",
+  //     discount: 0,
+  //     inStock: true,
+  //     stockQuantity: 0,
+  //   },
+  //   specifications: initialProduct.specifications ?? { general: {}, technical: {} },
+  //   tags: initialProduct.tags ?? [],
+  //   variants: initialProduct.variants ?? [],
+  //   productImages: initialProduct.productImages ?? [],
+  //   productCategories: initialProduct.productCategories ?? [],
+  //   slug: initialProduct.slug ?? "", // Fixed: was using tags instead of slug
+  // });
 
   // Selected category IDs for multi-select
-  const initialSelected = (initialProduct.productCategories ?? []).map(
-    (pc) => pc.categoryId
-  );
-  const [selectedCategoryIds, setSelectedCategoryIds] =
-    useState<string[]>(initialSelected);
+const initialSelected = ((initialProduct ?? {}).productCategories ?? []).map(
+  (pc) => pc.categoryId
+);
 
-  // Loading states
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>(initialSelected);
+
   const [isPending, startTransition] = useTransition();
   const [uploadingImage, setUploadingImage] = useState(false);
 
-  // ==================== HELPERS ====================
-
-  /**
-   * Type-safe field updater for top-level fields
-   */
   const setField = <K extends keyof Product>(key: K, value: Product[K]) => {
     setProduct((prev) => ({ ...prev, [key]: value }));
   };
 
-  /**
-   * Type-safe nested updater with proper error handling
-   * Supports dot notation like "pricing.price" or "specifications.general.color"
-   */
   const updateNested = (path: string, value: any) => {
     setProduct((prev) => {
       const clone = JSON.parse(JSON.stringify(prev)); // Deep clone to avoid mutations
@@ -344,9 +362,7 @@ export default function AdminProductPanel({
   /**
    * ImageKit upload with loading state
    */
-  const uploadToImageKit = async (
-    file: File
-  ): Promise<{ url: string; fileId: string } | null> => {
+  const uploadToImageKit = async (file: File): Promise<{ url: string; fileId: string } | null> => {
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -456,14 +472,12 @@ export default function AdminProductPanel({
         }));
 
         // Clean up image data
-        payload.productImages = (product.productImages ?? []).map(
-          (img, idx) => ({
-            id: img.id,
-            url: img.url,
-            fileId: img.fileId,
-            position: img.position ?? idx,
-          })
-        );
+        payload.productImages = (product.productImages ?? []).map((img, idx) => ({
+          id: img.id,
+          url: img.url,
+          fileId: img.fileId,
+          position: img.position ?? idx,
+        }));
 
         const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
         const url = isNew
@@ -498,40 +512,62 @@ export default function AdminProductPanel({
   // ==================== RENDER ====================
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-start justify-between gap-6">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              {isNew ? "Create Product" : "Edit Product"}
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              Manage product details, pricing, images, and variants
-            </p>
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+      <div className="max-w-7xl mx-auto p-6 sm:p-8 lg:p-10 space-y-6">
+        
+        {/* Header with Back Button */}
+        <div className="flex items-start justify-between gap-4 sm:gap-6">
+          <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
+            {/* Back Button */}
+            <Link href="/admin/products">
+              <Button
+                variant="outline"
+                size="icon"
+                className="shrink-0 border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
+            </Link>
+            
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-semibold text-neutral-900 dark:text-neutral-100 truncate">
+                {isNew ? "Create New Product" : "Edit Product"}
+              </h1>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+                {isNew 
+                  ? "Fill in the details to create a new product listing" 
+                  : "Update product details, pricing, images, and variants"
+                }
+              </p>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <Button
               onClick={generateSlug}
               variant="outline"
               disabled={isPending || !product.productName}
-              className="gap-2"
+              className="hidden sm:flex gap-2 border-neutral-200 dark:border-neutral-800"
             >
               Generate Slug
             </Button>
             <Button
               onClick={handleSave}
               disabled={isPending}
-              className="gap-2 min-w-[120px]"
+              className="gap-2 min-w-[100px] sm:min-w-[120px] bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-neutral-200 text-white dark:text-neutral-900"
             >
               {isPending ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Saving...
+                  <span className="hidden sm:inline">Saving...</span>
+                  <span className="sm:hidden">Save</span>
                 </>
               ) : (
-                "Save Product"
+                <>
+                  <span className="hidden sm:inline">{isNew ? "Create Product" : "Save Changes"}</span>
+                  <span className="sm:hidden">Save</span>
+                </>
               )}
             </Button>
           </div>
@@ -542,57 +578,34 @@ export default function AdminProductPanel({
           <CardHeader className="border-b border-muted/20">
             <CardTitle className="text-xl">Product Configuration</CardTitle>
           </CardHeader>
-
+          
           <CardContent className="p-6">
             <Tabs defaultValue="general" className="space-y-6">
+              
               {/* Tab Navigation */}
               <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-2 h-auto p-1 bg-muted/50">
-                <TabsTrigger
-                  value="general"
-                  className="data-[state=active]:bg-background"
-                >
+                <TabsTrigger value="general" className="data-[state=active]:bg-background">
                   General
                 </TabsTrigger>
-                <TabsTrigger
-                  value="pricing"
-                  className="data-[state=active]:bg-background"
-                >
+                <TabsTrigger value="pricing" className="data-[state=active]:bg-background">
                   Pricing
                 </TabsTrigger>
-                <TabsTrigger
-                  value="specs"
-                  className="data-[state=active]:bg-background"
-                >
+                <TabsTrigger value="specs" className="data-[state=active]:bg-background">
                   Specs
                 </TabsTrigger>
-                <TabsTrigger
-                  value="images"
-                  className="data-[state=active]:bg-background"
-                >
+                <TabsTrigger value="images" className="data-[state=active]:bg-background">
                   Images
                 </TabsTrigger>
-                <TabsTrigger
-                  value="features"
-                  className="data-[state=active]:bg-background"
-                >
+                <TabsTrigger value="features" className="data-[state=active]:bg-background">
                   Features
                 </TabsTrigger>
-                <TabsTrigger
-                  value="variants"
-                  className="data-[state=active]:bg-background"
-                >
+                <TabsTrigger value="variants" className="data-[state=active]:bg-background">
                   Variants
                 </TabsTrigger>
-                <TabsTrigger
-                  value="categories"
-                  className="data-[state=active]:bg-background"
-                >
+                <TabsTrigger value="categories" className="data-[state=active]:bg-background">
                   Categories
                 </TabsTrigger>
-                <TabsTrigger
-                  value="tags"
-                  className="data-[state=active]:bg-background"
-                >
+                <TabsTrigger value="tags" className="data-[state=active]:bg-background">
                   Tags
                 </TabsTrigger>
               </TabsList>
@@ -601,9 +614,7 @@ export default function AdminProductPanel({
               <TabsContent value="general" className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">
-                      Product Name *
-                    </label>
+                    <label className="text-sm font-medium">Product Name *</label>
                     <Input
                       value={product.productName ?? ""}
                       onChange={(e) => setField("productName", e.target.value)}
@@ -648,7 +659,7 @@ export default function AdminProductPanel({
                     />
                   </div>
                 </div>
-
+                
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Description</label>
                   <Textarea
@@ -670,9 +681,7 @@ export default function AdminProductPanel({
                     <Input
                       type="number"
                       value={product.pricing?.price?.toString() ?? "0"}
-                      onChange={(e) =>
-                        updateNested("pricing.price", Number(e.target.value))
-                      }
+                      onChange={(e) => updateNested("pricing.price", Number(e.target.value))}
                       placeholder="0.00"
                       disabled={isPending}
                       min="0"
@@ -684,9 +693,7 @@ export default function AdminProductPanel({
                     <Input
                       type="number"
                       value={product.pricing?.discount?.toString() ?? "0"}
-                      onChange={(e) =>
-                        updateNested("pricing.discount", Number(e.target.value))
-                      }
+                      onChange={(e) => updateNested("pricing.discount", Number(e.target.value))}
                       placeholder="0"
                       disabled={isPending}
                       min="0"
@@ -694,18 +701,11 @@ export default function AdminProductPanel({
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">
-                      Stock Quantity
-                    </label>
+                    <label className="text-sm font-medium">Stock Quantity</label>
                     <Input
                       type="number"
                       value={product.pricing?.stockQuantity?.toString() ?? "0"}
-                      onChange={(e) =>
-                        updateNested(
-                          "pricing.stockQuantity",
-                          Number(e.target.value)
-                        )
-                      }
+                      onChange={(e) => updateNested("pricing.stockQuantity", Number(e.target.value))}
                       placeholder="0"
                       disabled={isPending}
                       min="0"
@@ -717,56 +717,34 @@ export default function AdminProductPanel({
               {/* Specifications Tab */}
               <TabsContent value="specs" className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">
-                    General Specifications
-                  </h3>
+                  <h3 className="text-lg font-semibold mb-4">General Specifications</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {Object.entries(product.specifications?.general ?? {}).map(
-                      ([key, value]) => (
-                        <div key={key} className="space-y-2">
-                          <label className="text-sm font-medium capitalize">
-                            {key.replace(/([A-Z])/g, " $1")}
-                          </label>
-                          <Input
-                            value={
-                              Array.isArray(value)
-                                ? value.join(", ")
-                                : String(value)
-                            }
-                            onChange={(e) =>
-                              updateNested(
-                                `specifications.general.${key}`,
-                                e.target.value
-                              )
-                            }
-                            disabled={isPending}
-                          />
-                        </div>
-                      )
-                    )}
+                    {Object.entries(product.specifications?.general ?? {}).map(([key, value]) => (
+                      <div key={key} className="space-y-2">
+                        <label className="text-sm font-medium capitalize">
+                          {key.replace(/([A-Z])/g, " $1")}
+                        </label>
+                        <Input
+                          value={Array.isArray(value) ? value.join(", ") : String(value)}
+                          onChange={(e) => updateNested(`specifications.general.${key}`, e.target.value)}
+                          disabled={isPending}
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">
-                    Technical Specifications
-                  </h3>
+                  <h3 className="text-lg font-semibold mb-4">Technical Specifications</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {Object.entries(
-                      product.specifications?.technical ?? {}
-                    ).map(([key, value]) => (
+                    {Object.entries(product.specifications?.technical ?? {}).map(([key, value]) => (
                       <div key={key} className="space-y-2">
                         <label className="text-sm font-medium capitalize">
                           {key.replace(/([A-Z])/g, " $1")}
                         </label>
                         <Input
                           value={String(value)}
-                          onChange={(e) =>
-                            updateNested(
-                              `specifications.technical.${key}`,
-                              e.target.value
-                            )
-                          }
+                          onChange={(e) => updateNested(`specifications.technical.${key}`, e.target.value)}
                           disabled={isPending}
                         />
                       </div>
@@ -777,8 +755,7 @@ export default function AdminProductPanel({
 
               {/* Images Tab */}
               <TabsContent value="images" className="space-y-4">
-                {(product.productImages?.length ?? 0) === 0 &&
-                !uploadingImage ? (
+                {(product.productImages?.length ?? 0) === 0 && !uploadingImage ? (
                   <EmptyState
                     icon={<Package className="w-6 h-6 text-muted-foreground" />}
                     message="No images added yet. Upload your first product image."
@@ -793,7 +770,7 @@ export default function AdminProductPanel({
                         disabled={isPending}
                       />
                     ))}
-
+                    
                     {/* Show loading skeleton during upload */}
                     {uploadingImage && <ImageLoadingSkeleton />}
                   </div>
@@ -839,7 +816,7 @@ export default function AdminProductPanel({
                     ))}
                   </div>
                 )}
-
+                
                 <Button
                   onClick={addFeature}
                   variant="outline"
@@ -871,7 +848,7 @@ export default function AdminProductPanel({
                     ))}
                   </div>
                 )}
-
+                
                 <Button
                   onClick={addVariant}
                   variant="outline"
@@ -893,9 +870,7 @@ export default function AdminProductPanel({
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {categories.map((category) => {
-                      const isSelected = selectedCategoryIds.includes(
-                        category.id
-                      );
+                      const isSelected = selectedCategoryIds.includes(category.id);
                       return (
                         <label
                           key={category.id}
@@ -914,9 +889,7 @@ export default function AdminProductPanel({
                             className="w-4 h-4"
                           />
                           <div className="flex-1 min-w-0">
-                            <div className="font-medium truncate">
-                              {category.name}
-                            </div>
+                            <div className="font-medium truncate">{category.name}</div>
                             <div className="text-xs text-muted-foreground truncate">
                               {category.id}
                             </div>
@@ -949,7 +922,7 @@ export default function AdminProductPanel({
                     ))}
                   </div>
                 )}
-
+                
                 <Button
                   onClick={addTag}
                   variant="outline"
@@ -960,6 +933,7 @@ export default function AdminProductPanel({
                   Add Tag
                 </Button>
               </TabsContent>
+
             </Tabs>
           </CardContent>
         </Card>
@@ -969,6 +943,7 @@ export default function AdminProductPanel({
           <p>All changes are saved to the database</p>
           <p>Last updated: {new Date().toLocaleDateString()}</p>
         </div>
+
       </div>
     </div>
   );
