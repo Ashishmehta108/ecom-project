@@ -20,6 +20,9 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import apple from "./../public/apple.svg";
+import google from "./../public/google.svg";
+import Image from "next/image";
 
 const formViaEmailSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -98,22 +101,24 @@ export default function SignUpForm() {
       <div className="relative w-full max-w-sm">
         <div className="flex w-full justify-center gap-2">
           <Button
-            variant="outline"
-            className="flex w-1/2 items-center cursor-pointer justify-center gap-2"
-            onClick={() =>
-              authClient.signIn.social({
-                provider: "github",
-                disableRedirect: false,
-                callbackURL: callbackUrl,
-              })
-            }
-          >
-            <Github className="h-5 w-5" />
-            GitHub
-          </Button>
+              variant="outline"
+              className="flex-1 h-11 gap-2"
+              onClick={async () =>
+                await authClient.signIn.social({ provider: "apple" })
+              }
+            >
+              <Image
+              src={apple.src}
+              alt="hi"
+              width={19}
+              height={19}
+             />
+              Apple
+            </Button>
 
           <Button
             variant="outline"
+            
             className="flex w-1/2 items-center cursor-pointer justify-center gap-2"
             onClick={() =>
               authClient.signIn.social({
@@ -123,8 +128,13 @@ export default function SignUpForm() {
               })
             }
           >
-            <Google className="w-5 h-5" />
-            Google
+           <Image
+              src={google.src}
+              alt="hi"
+              width={18}
+              height={18}
+             />
+              Google
           </Button>
         </div>
 

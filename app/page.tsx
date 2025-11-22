@@ -3,6 +3,8 @@ import ProductDealsSection from "@/components/products/ProductDealsSection";
 import TopCategoriesSection from "@/components/products/TopCategoriesSection";
 import ElectronicsBrandSlider from "@/components/products/ElectronicsBrandSlider";
 import { getAllCategories } from "@/lib/actions/categories.actions";
+import TopEarbudsSection from "@/components/products/TopEarbuds";
+import TopEarbudsSectionServer from "@/components/home/TopEarbudsSectionServer";
 
 const saleBanners = [
   {
@@ -67,10 +69,14 @@ export default async function App() {
   return (
     <div className="min-h-screen bg-background">
       <div className="w-full">
-        <ImageSlider slides={saleBanners} />
+        <ImageSlider/>
         <TopCategoriesSection categories={categories} />
+        <TopEarbudsSectionServer/>
         <ProductDealsSection />
-        <ElectronicsBrandSlider />
+       {/* <TopEarbudsSection/>
+        */}
+        
+        {/* <ElectronicsBrandSlider /> */}
       </div>  
     </div>
   );

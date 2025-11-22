@@ -68,34 +68,34 @@ export const auth = betterAuth({
     },
   }),
 
-  emailVerification: {
-    sendOnSignUp: true,
+  // emailVerification: {
+  //   sendOnSignUp: true,
 
-    sendVerificationEmail: async ({ user, url }) => {
-      try {
-        await sendEmail({
-          to: user.email,
-          subject: "Verify your email address",
-          html: `<div>Click the link to verify your email: ${url}</div>`,
-        });
-      } catch (err) {
-        console.error("EMAIL ERROR:", err);
-      }
-    },
-  },
+  //   sendVerificationEmail: async ({ user, url }) => {
+  //     try {
+  //       await sendEmail({
+  //         to: user.email,
+  //         subject: "Verify your email address",
+  //         html: `<div>Click the link to verify your email: ${url}</div>`,
+  //       });
+  //     } catch (err) {
+  //       console.error("EMAIL ERROR:", err);
+  //     }
+  //   },
+  // },
 
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,
     maxPasswordLength: 128,
-    requireEmailVerification: true,
-    sendResetPassword: async ({ user, url }) => {
-      await sendEmail({
-        to: user.email,
-        subject: "Reset your password",
-        html: `<div>Click the link to reset your password: ${url}</div>`,
-      });
-    },
+    // requireEmailVerification: true,
+    // sendResetPassword: async ({ user, url }) => {
+    //   await sendEmail({
+    //     to: user.email,
+    //     subject: "Reset your password",
+    //     html: `<div>Click the link to reset your password: ${url}</div>`,
+    //   });
+    // },
   },
   socialProviders: {
     github: {

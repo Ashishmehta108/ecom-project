@@ -86,23 +86,25 @@ export default function TopCategorySection() {
   return (
     <div className="w-full my-16">
       <Container>
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4 px-2 sm:px-0">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">
-            Top Electronics Brands
-          </h2>
-
+         <div className="flex items-end justify-between mb-8 md:mb-10">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-semibold text-neutral-900 dark:text-neutral-50 tracking-tight">
+             Top Electronic Brands
+            </h2>
+            <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+              Explore our curated collections
+            </p>
+          </div>
+          
           <Link
-            href="/products?category=smartphones"
-            className="flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors whitespace-nowrap"
+            href="/categories"
+            className="text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors flex items-center gap-1 group"
           >
             View All
-            <div className="bg-neutral-100 dark:bg-neutral-800 w-8 h-8 flex items-center justify-center rounded-full">
-              <ChevronRight className="w-4 h-4" strokeWidth={2.5} />
-            </div>
+            <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
-
-        <div className="w-24 h-1 bg-lime-600 rounded-full mb-8 mx-2 sm:mx-0"></div>
+       
 
         <div
           className="relative overflow-hidden"
