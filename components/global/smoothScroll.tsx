@@ -17,6 +17,13 @@ export default function SmoothScroll({
         el: document.querySelector("[data-scroll-container]") as HTMLElement,
         smooth: true,
         multiplier: 1.1,
+        smartphone: {
+          smooth: true,
+        },
+        tablet: {
+          smooth: true,
+          breakpoint: 1024,
+        },
       });
 
       return () => scroll.destroy();
