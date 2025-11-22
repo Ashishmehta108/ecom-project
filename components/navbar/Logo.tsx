@@ -25,9 +25,7 @@ function Logo() {
       aria-label="TechBar - Go to homepage"
     >
       <Image src={techbar} alt="" width={36} height={36} priority />
-      <span className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-        TechBar
-      </span>
+     
     </Link>
   );
 }

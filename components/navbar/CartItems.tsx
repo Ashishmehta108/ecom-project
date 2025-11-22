@@ -23,7 +23,8 @@
 // export default CartButton;
 
 
-import { ShoppingCart } from "lucide-react";
+// import { ShoppingBag, ShoppingCart } from "lucide-react";
+import { ShoppingBag } from "iconsax-reactjs";
 import Link from "next/link";
 import { memo } from "react";
 
@@ -38,9 +39,9 @@ function CartButton({ items }: CartButtonProps) {
       className="relative p-2 rounded-full hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-colors duration-200"
       aria-label={`Shopping cart, ${items} ${items === 1 ? "item" : "items"}`}
     >
-      <ShoppingCart size={22} className="text-neutral-600 dark:text-neutral-400" />
+      <ShoppingBag size={22} className="text-neutral-600 dark:text-neutral-400" />
       {items > 0 && (
-        <span className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-xs font-semibold rounded-full">
+        <span className="absolute -top-1.5 -right-1.5 h-5 w-5 flex items-center justify-center bg-indigo-500 dark:bg-neutral-100 text-white dark:text-neutral-900 text-xs font-semibold rounded-full">
           {items > 99 ? "99+" : items}
         </span>
       )}

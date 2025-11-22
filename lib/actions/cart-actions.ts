@@ -22,16 +22,25 @@ export const createCartIfNotExists = async (userId: string) => {
   return newCart;
 };
 
-export const getCart = async (userId: string) => {
+import {
+  CartItem as TCartItem,
+  CartData,
+  GetCartResponse,
+} from "@/lib/types/cart.types";
+
+export const getCart = async (userId: string): Promise<GetCartResponse> => {
   if (!userId) {
     return {
       success: false,
-      data: {},
-      error: "userid not found",
+      data: null,
+      error: "User ID not found",
     };
   }
-  const cartData = await createCartIfNotExists(userId);
 
+  // Create cart if not exists (typed)
+  const cartData = (await createCartIfNotExists(userId)) as CartData;
+
+  // Fetch items
   const items = await db
     .select({
       id: cartItem.id,
@@ -51,9 +60,12 @@ export const getCart = async (userId: string) => {
     )
     .where(eq(cartItem.cartId, cartData.id));
 
+  // Cast output items to type
+  const typedItems = items as TCartItem[];
+
   return {
     success: true,
-    data: { cart: cartData, items },
+    data: { cart: cartData, items: typedItems },
     error: null,
   };
 };
@@ -87,7 +99,6 @@ export const addItemToCart = async (
       message: "Item quantity updated",
     };
   }
-
 
   const prod = await db.query.product.findFirst({
     where: (table, { eq }) => eq(table.id, productId),

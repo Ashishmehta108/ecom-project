@@ -33,7 +33,7 @@ export function CategoryFilter({
         className={[
           "rounded-full border px-4 py-2 text-sm font-medium transition-all",
           activeCategory === "all"
-            ? "border-neutral-900 bg-neutral-900 text-white dark:border-neutral-100 dark:bg-neutral-100 dark:text-neutral-900"
+            ? "border-indigo-500 bg-indigo-500 text-white dark:border-neutral-100 dark:bg-neutral-100 dark:text-neutral-900"
             : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:border-neutral-600",
         ].join(" ")}
       >
@@ -48,7 +48,7 @@ export function CategoryFilter({
             className={[
               "rounded-full border px-4 py-2 text-sm font-medium transition-all",
               isActive
-                ? "border-neutral-900 bg-neutral-900 text-white dark:border-neutral-100 dark:bg-neutral-100 dark:text-neutral-900"
+                ? "border-indigo-900 bg-indigo-900 text-black dark:border-neutral-100 dark:bg-neutral-100 dark:text-neutral-900"
                 : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:border-neutral-600",
             ].join(" ")}
           >
@@ -105,7 +105,7 @@ export function SortFilter({ activeSort }: SortFilterProps) {
               className={[
                 "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all",
                 isActive
-                  ? "border-neutral-900 bg-neutral-900 text-white dark:border-neutral-100 dark:bg-neutral-100 dark:text-neutral-900"
+                  ? "border-indigo-500 bg-indigo-500 text-white dark:border-neutral-100 dark:bg-neutral-100 dark:text-neutral-900"
                   : "border-neutral-300 bg-white text-neutral-600 hover:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:border-neutral-600",
               ].join(" ")}
             >
