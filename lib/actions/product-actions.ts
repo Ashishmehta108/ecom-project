@@ -13,10 +13,49 @@ export const getProducts = async () => {
   const products = await db.select().from(product);
   return products;
 };
+export const getEarbuds = async () => {
+  const earbuds = await db.query.product.findMany({
+    where: (product, { exists, eq, and }) =>
+      exists(
+        db
+          .select()
+          .from(productCategory)
+          .where(
+            and(
+              eq(productCategory.productId, product.id),
+              // correlate category.id with productCategory.categoryId
+              exists(
+                db
+                  .select()
+                  .from(category)
+                  .where(
+                    and(
+                      eq(category.id, productCategory.categoryId), // <--- added correlation
+                      eq(category.name, "Earphones")
+                    )
+                  )
+              )
+            )
+          )
+      ),
+    with: {
+      productImages: true,
+      productCategories: {
+        with: {
+          category: true,
+        },
+      },
+    },
+  });
+
+  // optional: remove or adjust logging in production
+  console.log(earbuds);
+  return earbuds;
+};
 
 export const getProductById = async (id: string) => {
   const prod = await db.query.product.findFirst({
-    where: eq(product.id, id),
+    where: eq(product.id, id),  
     with: {
       productImages: true,
       productCategories: {
@@ -115,8 +154,8 @@ export const createProduct = async (p: Partial<Product>) => {
   // -------------------------------
   // 4. PRODUCT IMAGES
   // -------------------------------
-  if (p.images && p.images.length > 0) {
-    const imgs = p.images.map((img, idx) => ({
+  if (p.productImages && p.productImages.length > 0) {
+    const imgs = p.productImages.map((img, idx) => ({
       id: nanoid(),
       productId: id,
       url: img.url,

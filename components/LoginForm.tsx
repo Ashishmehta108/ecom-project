@@ -17,12 +17,15 @@ import { Github, Eye, EyeOff } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Google } from "iconsax-reactjs";
+// import { Google } from "iconsax-reactjs";
+import google from "./../public/google.svg";
+import apple from "./../public/apple.svg";
 import { useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
+import { Apple } from "iconsax-reactjs";
 
 const formViaEmailSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -30,8 +33,6 @@ const formViaEmailSchema = z.object({
 });
 
 export default function LoginForm() {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
   const form = useForm<z.infer<typeof formViaEmailSchema>>({
     resolver: zodResolver(formViaEmailSchema),
@@ -81,15 +82,20 @@ export default function LoginForm() {
         <CardContent className="space-y-8">
           {/* SIGN IN WITH PROVIDERS */}
           <div className="flex w-full gap-3">
-            <Button
+             <Button
               variant="outline"
               className="flex-1 h-11 gap-2"
-              onClick={async () => {
-                await authClient.signIn.social({ provider: "github" });
-              }}
+              onClick={async () =>
+                await authClient.signIn.social({ provider: "apple" })
+              }
             >
-              <Github className="h-5 w-5" />
-              GitHub
+              <Image
+              src={apple.src}
+              alt="hi"
+              width={19}
+              height={19}
+             />
+              Apple
             </Button>
 
             <Button
@@ -99,7 +105,12 @@ export default function LoginForm() {
                 await authClient.signIn.social({ provider: "google" })
               }
             >
-              <Google className="w-5 h-5 dark:text-neutral-100" />
+              <Image
+              src={google.src}
+              alt="hi"
+              width={18}
+              height={18}
+             />
               Google
             </Button>
           </div>
@@ -184,8 +195,8 @@ export default function LoginForm() {
               {/* SUBMIT BUTTON */}
               <Button
                 type="submit"
-                disabled={!form.formState.isValid || isSubmitting}
-                className="w-full h-11 text-base"
+                disabled={isSubmitting}
+                className="w-full h-11 text-base cursor-pointer"
               >
                 {isSubmitting ? (
                   <Skeleton className="h-4 w-24 rounded" />
