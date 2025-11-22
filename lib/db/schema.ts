@@ -229,11 +229,6 @@ export const productImage = pgTable("product_image", {
   position: numeric("position").default("0"),
 });
 
-/* -------------------------------------------------------------------------- */
-/*                                RELATIONS FIX                                */
-/* -------------------------------------------------------------------------- */
-
-/* Product relations */
 export const productRelations = relations(product, ({ many }) => ({
   productImages: many(productImage),
   productCategories: many(productCategory),
@@ -342,31 +337,8 @@ export const payments = pgTable("payments", {
 //     .references(() => user.id, { onDelete: "cascade" }),
 // });
 
-// export const productInventory = pgTable("productinventory", {
-//   id: text("inventoryid").primaryKey(),
-//   quantity: text("quantity").notNull(),
-//   productId: text("product_id")
-//     .notNull()
-//     .references(() => product.id, { onDelete: "cascade" }),
-// });
 
-// export const discount = pgTable("discount", {
-//   id: text("discountid").primaryKey(),
-//   code: text("code").notNull(),
-//   description: text("description").notNull(),
-//   percentage: text("percentage").notNull(),
-//   validFrom: timestamp("valid_from").notNull(),
-//   validTo: timestamp("valid_to").notNull(),
-// });
 
-// export const productDiscount = pgTable("productdiscount", {
-//   productId: text("product_id")
-//     .notNull()
-//     .references(() => product.id, { onDelete: "cascade" }),
-//   discountId: text("discount_id")
-//     .notNull()
-//     .references(() => discount.id, { onDelete: "cascade" }),
-// });
 
 // export const wishlist = pgTable("wishlist", {
 //   id: text("wishlistid").primaryKey(),
@@ -419,15 +391,15 @@ export const payments = pgTable("payments", {
 //     .references(() => orders.id, { onDelete: "cascade" }),
 // });
 
-// export const notification = pgTable("notification", {
-//   id: text("notificationid").primaryKey(),
-//   type: text("type").notNull(),
-//   message: text("message").notNull(),
-//   isRead: boolean("is_read").default(false).notNull(),
-//   userId: text("user_id")
-//     .notNull()
-//     .references(() => user.id, { onDelete: "cascade" }),
-// });
+export const notification = pgTable("notification", {
+  id: text("notificationid").primaryKey(),
+  type: text("type").notNull(),
+  message: text("message").notNull(),
+  isRead: boolean("is_read").default(false).notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+});
 
 // export const orderItem = pgTable("orderitem", {
 //   id: text("orderitemid").primaryKey(),

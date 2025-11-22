@@ -144,7 +144,7 @@ if(data?.session){
                 <NavSearch />
               </div>
 
-              <NotificationBell />
+              {/* <NotificationBell /> */}
 
               <CartButton items={itemsCount} />
 

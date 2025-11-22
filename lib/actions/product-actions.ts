@@ -100,7 +100,7 @@ export const createProduct = async (p: Partial<Product>) => {
       discount: 0,
       inStock: true,
       stockQuantity: 0,
-    },
+    },  
     specifications: p.specifications ?? { general: {}, technical: {} },
     tags: p.tags ?? [],
   };

@@ -1,13 +1,11 @@
-import { cn } from "@/lib/utils"
+import React from "react";
+import "@/app/globals.css"
 
-function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="skeleton"
-      className={cn("bg-accent animate-pulse rounded-md", className)}
-      {...props}
-    />
-  )
+interface SkeletonProps {
+  className?: string;
+  children?: React.ReactNode;
 }
 
-export { Skeleton }
+export function Skeleton({ className = "", children }: SkeletonProps) {
+  return <div className={`skeleton ${className}`}>{children}</div>;
+}
