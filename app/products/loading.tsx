@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function LoadingProductsPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-neutral-950">
+    <div className=" bg-white dark:bg-neutral-950">
       <Container className="py-8 md:py-12">
 
         {/* HEADER */}

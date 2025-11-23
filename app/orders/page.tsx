@@ -59,8 +59,8 @@ export default function OrdersPage() {
   ]);
 
   // 👉 Format INR with commas
-  const formatINR = (amount: number) => {
-    return "₹" + amount.toLocaleString("en-IN");
+  const formatEuro = (amount: number) => {
+    return "€" + amount.toLocaleString("en");
   };
 
   const statusColor = (status: string) => {

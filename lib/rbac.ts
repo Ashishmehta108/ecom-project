@@ -1,7 +1,7 @@
 import { User } from "better-auth";
 
 interface UserT extends User {
-  role: "admin" | "user";
+  role: string;
 }
 
 export async function isAdmin(user: UserT) {
@@ -10,6 +10,7 @@ export async function isAdmin(user: UserT) {
       if (user.role == "admin") {
         return true;
       }
+      throw new Error("user is not admin");
     }
     throw new Error("user doesnt exists");
   } catch (error: any) {

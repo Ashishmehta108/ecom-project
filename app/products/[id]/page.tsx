@@ -8,6 +8,7 @@ export default async function Product({
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
+  //@ts-ignore
   const p: Product = await getProductById(id); 
   return <ProductPage product={p} />;
 }
