@@ -4,7 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { ArrowLeft, MapPin, Package, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 type Address = {
   id: string;
@@ -42,7 +42,15 @@ const MOCK_ITEMS: CartItem[] = [
   { id: "2", name: "Phone Case", price: 24.99, quantity: 2 },
 ];
 
-export default function PaymentPage() {
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PaymentPage />
+    </Suspense>
+  );
+}
+
+export function PaymentPage() {
   const params = useSearchParams();
   const router = useRouter();
   const [loading, setLoading] = useState(false);

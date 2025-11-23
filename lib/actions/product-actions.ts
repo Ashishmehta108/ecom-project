@@ -69,14 +69,12 @@ export async function getEarbuds() {
   });
 }
 
-// =====================================================================================
-// CREATE PRODUCT
-// =====================================================================================
+
+
 
 export async function createProduct(p: Partial<Product>) {
   const id = nanoid();
 
-  // Insert product
   await db.insert(product).values({
     id,
     productName: p.productName!,
@@ -85,7 +83,7 @@ export async function createProduct(p: Partial<Product>) {
     subCategory: p.subCategory ?? "",
     description: p.description ?? "",
     features: p.features ?? [],
-    pricing: p.pricing,
+    pricing: p.pricing ?? { price: 0, currency: "eur", discount: 0, inStock: true, stockQuantity: 10 },
     specifications: p.specifications,
     tags: p.tags ?? [],
   });
