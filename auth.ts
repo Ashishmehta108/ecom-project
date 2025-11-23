@@ -1,71 +1,14 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./lib/db";
-import { stripe } from "@better-auth/stripe";
-import {
-  user,
-  account,
-  // address,
-  cartItem,
-  category,
-  // discount,
-  favorites,
-  // notification,
-  // orderItem,
-  // orders,
-  // payment,
-  // paymentMethod,
-  product,
-  productCategory,
-  // productDiscount,
-  productImage,
-  // productInventory,
-  // refund,
-  // review,
-  // reviewHelpful,
-  // reviewImage,
-  session,
-  // shipment,
-  verification,
-  // wishlistItem,
-  // wishlist,
-} from "@/lib/db/schema";
-
+import { schema } from "@/lib/db/schema";
 import { admin } from "better-auth/plugins";
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "./lib/loadEnv";
 import { sendEmail } from "./lib/sendemail";
-import { stripeClient } from "./lib/stripe";
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
-    schema: {
-      user: user,
-      account,
-      // address,
-      cartItem,
-      category,
-      // discount,
-      favorites,
-      // notification,
-      // orderItem,
-      // orders,
-      // payment,
-      // paymentMethod,
-      product,
-      productCategory,
-      // productDiscount,
-      productImage,
-      // productInventory,
-      // refund,
-      // review,
-      // reviewHelpful,
-      // reviewImage,
-      session,
-      // shipment,
-      verification,
-      // wishlistItem,
-      // wishlist,
-    },
+    schema: schema,
   }),
 
   // emailVerification: {
@@ -103,10 +46,10 @@ export const auth = betterAuth({
       clientSecret: GITHUB_CLIENT_SECRET as string,
     },
     google: {
-        clientId: process.env.GOOGLE_CLIENT_ID as string,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-        accessType: "offline", 
-        prompt: "select_account consent", 
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      accessType: "offline",
+      prompt: "select_account consent",
     },
   },
 
@@ -120,14 +63,7 @@ export const auth = betterAuth({
     max: 100,
     message: "Too many requests from this IP, please try again later.",
   },
-  plugins: [
-    admin(),
-    stripe({
-      stripeClient:stripeClient,
-      createCustomerOnSignUp: true,
-      stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
-    }),
-  ],
+  plugins: [admin()],
   user: {
     additionalFields: {
       role: {
@@ -136,7 +72,4 @@ export const auth = betterAuth({
       },
     },
   },
-  // hooks:{
-  //   after
-  // }
 });

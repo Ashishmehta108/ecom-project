@@ -33,7 +33,7 @@ export default async function ProductPage({
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-950">
       <Container className="py-8 md:py-12">
-        <div className="mb-8 space-y-6">
+        <div className="mb-8 space-y-2s">
           <div className="flex items-baseline justify-between">
             <div>
               <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
@@ -90,6 +90,8 @@ export default async function ProductPage({
                   description: product.description,
                   features: product.features,
                   pricing: product.pricing,
+
+                  //@ts-ignore
                   productImages: product.productImages
                     .filter((img) => img.position !== null)
                     .map((img) => ({

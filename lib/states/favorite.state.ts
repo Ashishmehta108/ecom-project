@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { toast } from "sonner";
+import { toggleFavouriteAction } from "../actions/favourite-actions";
 
 export type ProductInFavourite = {
   productId: string;
@@ -9,37 +11,29 @@ export type ProductInFavourite = {
 
 type FavouriteState = {
   items: ProductInFavourite[];
-  addFavourite: (item: ProductInFavourite) => void;
-  removeFavourite: (productId: string) => void;
   toggleFavourite: (item: ProductInFavourite) => void;
-  clearFavourites: () => void;
 };
 
-export const useFavouriteState = create<FavouriteState>((set) => ({
+export const useFavouriteState = create<FavouriteState>((set, get) => ({
   items: [],
 
-  addFavourite: (item) =>
-    set((state) => {
-      if (state.items.some((i) => i.productId === item.productId)) return state;
-      return { items: [...state.items, item] };
-    }),
+  toggleFavourite: async (item) => {
+    const exists = get().items.some((i) => i.productId === item.productId);
 
-  removeFavourite: (productId) =>
-    set((state) => ({
-      items: state.items.filter((item) => item.productId !== productId),
-    })),
+    if (exists) {
+      set((state) => ({
+        items: state.items.filter((x) => x.productId !== item.productId),
+      }));
+      toast("Removed from favorites");
+    } else {
+      set((state) => ({ items: [...state.items, item] }));
+      toast.success("Added to favorites ❤️");
+    }
 
-  toggleFavourite: (item) =>
-    set((state) => {
-      const exists = state.items.some((i) => i.productId === item.productId);
-      if (exists) {
-        return {
-          items: state.items.filter((i) => i.productId !== item.productId),
-        };
-      } else {
-        return { items: [...state.items, item] };
-      }
-    }),
+    const res = await toggleFavouriteAction(item.productId, item.image);
 
-  clearFavourites: () => set({ items: [] }),
+    if (!res.success) {
+      toast.error("Something went wrong");
+    }
+  },
 }));

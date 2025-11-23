@@ -181,13 +181,6 @@ export default function TopCategoriesSection({
     setIsDragging(false);
   };
 
-  const handleWheel = (e: React.WheelEvent) => {
-    if (!scrollRef.current) return;
-    e.preventDefault();
-    scrollRef.current.scrollLeft += e.deltaY;
-    checkScrollButtons();
-  };
-
   if (!categories || categories.length === 0) {
     return null;
   }
@@ -199,24 +192,23 @@ export default function TopCategoriesSection({
         <div className="flex items-end justify-between mb-8 md:mb-10">
           <div>
             <h2 className="text-2xl md:text-3xl font-semibold text-neutral-900 dark:text-neutral-50 tracking-tight">
-              Shop by Category
+              Category
             </h2>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
-              Explore our curated collections
-            </p>
           </div>
-          
+
           <Link
-            href="/categories"
+            href="/products"
             className="text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors flex items-center gap-1 group"
           >
-            View All
-            <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+            See All
+            <div className="flex items-center justify-center w-6 h-6  rounded-xl bg-neutral-100">
+              <ChevronRight className="w-4 h-4 bg-neutral-100 transition-transform group-hover:translate-x-0.5" />
+            </div>
           </Link>
         </div>
 
         {/* SCROLLABLE CAROUSEL */}
-        <div className="relative group/carousel">
+        <div className="relative  group/carousel">
           {/* LEFT ARROW */}
           {showLeftArrow && (
             <button
@@ -270,13 +262,14 @@ export default function TopCategoriesSection({
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
-            onWheel={handleWheel}
             onScroll={checkScrollButtons}
             className="
               flex gap-4 md:gap-5
               overflow-x-auto
               scrollbar-hide
               scroll-smooth
+              
+              
               cursor-grab active:cursor-grabbing
               pb-2
             "
@@ -292,60 +285,60 @@ export default function TopCategoriesSection({
                 className="group/card flex-shrink-0"
                 draggable={false}
               >
-               <div className="w-[140px] md:w-[160px] flex flex-col items-center">
-  {/* IMAGE CONTAINER */}
-  <div
-    className="
-      relative
-      w-full
-      h-[180px] md:h-[200px]
-      rounded-xl
-      overflow-hidden
-      bg-neutral-100 dark:bg-neutral-900
-      border border-neutral-200 dark:border-neutral-800
-      mb-2
-      p-2                             /* padding added */
-      transition-all duration-200
-      group-hover/card:border-neutral-300 dark:group-hover/card:border-neutral-700
+                <div className="w-[120px] h-[180px] mx-1 flex flex-col items-center">
+                  {/* IMAGE CONTAINER */}
+                  <div
+                    className="
+    relative w-full
+              h-[180px]
+    rounded-lg
+    overflow-hidden
+    bg-neutral-50 dark:bg-neutral-900
+    border border-neutral-200 dark:border-neutral-800
+    shadow-sm
+    p-3
+    transition-all duration-300
+    
+    hover:border-neutral-300 dark:hover:border-neutral-700
+  "
+                  >
+                    <div className="relative w-full h-full bg-transparent flex items-center justify-center">
+                      <Image
+                        src={cat.imageUrl}
+                        alt={cat.name}
+                        width={120}
+                        height={120}
+                        draggable={false}
+                        className="object-contain mix-blend-multiply bg-transparent"
+                      />
+                    </div>
+
+                    <div
+                      className="
+      absolute inset-0
+      bg-gradient-to-t from-black/10 to-transparent
+      opacity-0
+      group-hover/card:opacity-100
+      transition-opacity duration-300 pointer-events-none
     "
-  >
-    <div className="relative w-full h-full rounded-lg overflow-hidden">
-      <Image
-        src={cat.imageUrl}
-        alt={cat.name}
-        fill
-        className="object-contain transition-transform duration-300 group-hover/card:scale-105"
-        draggable={false}
-      />
-    </div>
+                    />
+                  </div>
 
-    {/* Subtle overlay on hover */}
-    <div
-      className="
-        absolute inset-0
-        bg-gradient-to-t from-black/5 to-transparent
-        opacity-0 group-hover/card:opacity-100
-        transition-opacity duration-200 pointer-events-none
-      "
-    />
-  </div>
-
-  {/* CATEGORY NAME */}
-  <h3
-    className="
+                  {/* CATEGORY NAME */}
+                  <h3
+                    className="
+                    mt-2
       text-xs md:text-sm
       font-normal
       text-neutral-900 dark:text-neutral-50
       text-center
       leading-tight
-      transition-colors
-      group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400
+    
     "
-  >
-    {cat.name}
-  </h3>
-</div>
-
+                  >
+                    {cat.name}
+                  </h3>
+                </div>
               </Link>
             ))}
           </div>

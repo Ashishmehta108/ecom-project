@@ -309,12 +309,12 @@ export default function TopEarbudsSection() {
 
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-[15px] font-bold text-neutral-900 dark:text-neutral-50">
-                    ₹{e.price}
+                    €{e.price}
                   </span>
                 </div>
 
                 <span className="line-through text-neutral-400 dark:text-neutral-600 text-[12px]">
-                  ₹{e.oldPrice}
+                  €{e.oldPrice}
                 </span>
               </div>
             </Link>

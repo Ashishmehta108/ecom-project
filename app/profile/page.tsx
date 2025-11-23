@@ -5,11 +5,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
+import userCartState from "@/lib/states/cart.state";
 
 export default function Profile() {
   const { data, isPending } = authClient.useSession();
   const user = data?.user;
-
+  const clearCart = userCartState((state) => state.clear);
+  const logout = async () => {
+    clearCart();
+    authClient.signOut();
+  };
   if (isPending) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -61,7 +66,7 @@ export default function Profile() {
           </Button>
         </CardContent>
 
-        <Button onClick={() => authClient.signOut()}>logout</Button>
+        <Button onClick={logout}>logout</Button>
       </Card>
     </div>
   );

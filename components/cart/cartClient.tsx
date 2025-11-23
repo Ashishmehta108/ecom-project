@@ -58,16 +58,17 @@ const [isLoading,setisLoading]=useState(true)
   }
 
   async function handleCheckout() {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+    // const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
 
-    const res = await fetch(`${baseUrl}/api/stripe/checkout`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items, userId }),
-    });
+    // const res = await fetch(`${baseUrl}/api/stripe/checkout`, {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ items, userId }),
+    // });
 
-    const data = await res.json();
-    if (data.url) window.location.href = data.url;
+    // const data = await res.json();
+    window.location.href="/checkout"
+    // if (data.url) window.location.href = data.url;
   }
 
   // LOADING STATE
@@ -84,13 +85,12 @@ const [isLoading,setisLoading]=useState(true)
         {/* Header */}
         <header className="mb-8 lg:mb-12">
           <div className="flex items-center gap-3 mb-2">
-            <ShoppingBag className="w-7 h-7 text-neutral-700 dark:text-neutral-300" />
-            <h1 className="text-3xl lg:text-4xl font-semibold text-neutral-900 dark:text-neutral-100">
+            <h1 className="text-2xl lg:text-4xl font-semibold text-neutral-900 dark:text-neutral-100">
               Shopping Cart
             </h1>
           </div>
-          <p className="text-neutral-500 dark:text-neutral-400 ml-10">
-            {items.length} {items.length === 1 ? "item" : "items"}
+          <p className="text-neutral-500 dark:text-neutral-400 ml-1">
+            {items.length} {items.length === 1 ? "item" : "items"} in your cart
           </p>
         </header>
 
@@ -122,7 +122,7 @@ const [isLoading,setisLoading]=useState(true)
                         {item.name}
                       </h2>
                       <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                        ₹{Number(item.price).toLocaleString("en-IN")} each
+                        €{Number(item.price).toLocaleString("en-IN")} each
                       </p>
                     </div>
 
@@ -153,7 +153,7 @@ const [isLoading,setisLoading]=useState(true)
                       {/* SUBTOTAL + REMOVE */}
                       <div className="flex items-center gap-4">
                         <p className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-                          ₹{(Number(item.price) * item.quantity).toLocaleString("en-IN")}
+                          €{(Number(item.price) * item.quantity).toLocaleString("en-IN")}
                         </p>
 
                         <button
@@ -187,7 +187,7 @@ const [isLoading,setisLoading]=useState(true)
                     Subtotal ({items.length} items)
                   </span>
                   <span className="font-medium text-neutral-900 dark:text-neutral-100">
-                    ₹{formattedTotal}
+                    €{formattedTotal}
                   </span>
                 </div>
 
@@ -209,8 +209,8 @@ const [isLoading,setisLoading]=useState(true)
                 <span className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
                   Total
                 </span>
-                <span className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-                  ₹{formattedTotal}
+                <span className="text-sm sm:text-md font-thin text-neutral-900 dark:text-neutral-100">
+                  €{formattedTotal}
                 </span>
               </div>
 

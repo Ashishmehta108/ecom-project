@@ -29,6 +29,27 @@
       "when": 1763814804537,
       "tag": "0003_dark_mephistopheles",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1763845146099,
+      "tag": "0004_short_mesmero",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1763852793641,
+      "tag": "0005_abandoned_dark_beast",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1763885996712,
+      "tag": "0006_graceful_the_hunter",
+      "breakpoints": true
     }
   ]
 }
