@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-// Category Filter Component
 type CategoryFilterProps = {
   categories: Array<{ id: string; name: string; count: number }>;
   activeCategory: string;
@@ -16,12 +15,16 @@ export function CategoryFilter({
   const searchParams = useSearchParams();
 
   const createHref = (categoryId: string) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.delete("page");
+
     if (categoryId === "all") {
       params.delete("category");
     } else {
       params.set("category", categoryId);
     }
+
     const query = params.toString();
     return query ? `/products?${query}` : "/products";
   };
@@ -30,6 +33,7 @@ export function CategoryFilter({
     <div className="flex flex-wrap gap-2">
       <Link
         href={createHref("all")}
+        aria-current={activeCategory === "all" ? "page" : undefined}
         className={[
           "rounded-full border px-4 py-2 text-sm font-medium transition-all",
           activeCategory === "all"
@@ -39,16 +43,19 @@ export function CategoryFilter({
       >
         All
       </Link>
+
       {categories.map((category) => {
         const isActive = activeCategory === category.id;
+
         return (
           <Link
             key={category.id}
             href={createHref(category.id)}
+            aria-current={isActive ? "page" : undefined}
             className={[
               "rounded-full border px-4 py-2 text-sm font-medium transition-all",
               isActive
-                ? "border-indigo-900 bg-indigo-900 text-black dark:border-neutral-100 dark:bg-neutral-100 dark:text-neutral-900"
+                ? "border-indigo-500 bg-indigo-500 text-white dark:border-neutral-100 dark:bg-neutral-100 dark:text-neutral-900"
                 : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:border-neutral-600",
             ].join(" ")}
           >
@@ -63,7 +70,6 @@ export function CategoryFilter({
   );
 }
 
-// Sort Filter Component
 type SortFilterProps = {
   activeSort: string;
 };
@@ -80,12 +86,16 @@ export function SortFilter({ activeSort }: SortFilterProps) {
   const searchParams = useSearchParams();
 
   const createHref = (sortValue: string) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.delete("page");
+
     if (sortValue === "featured") {
       params.delete("sort");
     } else {
       params.set("sort", sortValue);
     }
+
     const query = params.toString();
     return query ? `/products?${query}` : "/products";
   };
@@ -95,13 +105,16 @@ export function SortFilter({ activeSort }: SortFilterProps) {
       <span className="text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
         Sort
       </span>
+
       <div className="flex flex-wrap gap-2">
         {sortOptions.map((option) => {
           const isActive = activeSort === option.value;
+
           return (
             <Link
               key={option.value}
               href={createHref(option.value)}
+              aria-current={isActive ? "page" : undefined}
               className={[
                 "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all",
                 isActive

@@ -1,8 +1,14 @@
 "use server";
+
 import { eq, and } from "drizzle-orm";
 import { db } from "../db";
 import { cart, cartItem, productImage } from "../db/schema";
 import { nanoid } from "nanoid";
+import {
+  CartItem as TCartItem,
+  CartData,
+  GetCartResponse,
+} from "@/lib/types/cart.types";
 
 export const createCartIfNotExists = async (userId: string) => {
   const existing = await db.query.cart.findFirst({
@@ -15,32 +21,23 @@ export const createCartIfNotExists = async (userId: string) => {
     .insert(cart)
     .values({
       id: nanoid(),
-      userId: userId,
+      userId,
     })
     .returning();
 
   return newCart;
 };
 
-import {
-  CartItem as TCartItem,
-  CartData,
-  GetCartResponse,
-} from "@/lib/types/cart.types";
-
 export const getCart = async (userId: string): Promise<GetCartResponse> => {
-  if (!userId) {
+  if (!userId)
     return {
       success: false,
       data: null,
-      error: "User ID not found",
+      error: "User ID missing",
     };
-  }
 
-  // Create cart if not exists (typed)
   const cartData = (await createCartIfNotExists(userId)) as CartData;
 
-  // Fetch items
   const items = await db
     .select({
       id: cartItem.id,
@@ -60,12 +57,9 @@ export const getCart = async (userId: string): Promise<GetCartResponse> => {
     )
     .where(eq(cartItem.cartId, cartData.id));
 
-  // Cast output items to type
-  const typedItems = items as TCartItem[];
-
   return {
     success: true,
-    data: { cart: cartData, items: typedItems },
+    data: { cart: cartData, items: items as TCartItem[] },
     error: null,
   };
 };
@@ -73,44 +67,33 @@ export const getCart = async (userId: string): Promise<GetCartResponse> => {
 export const addItemToCart = async (
   userId: string,
   productId: string,
-  quantity: number
+  qty: number
 ) => {
   const cartData = await createCartIfNotExists(userId);
-  const cartId = cartData.id;
 
-  const [existingItem] = await db
+  const [existing] = await db
     .select()
     .from(cartItem)
-    .where(and(eq(cartItem.cartId, cartId), eq(cartItem.productId, productId)));
+    .where(
+      and(eq(cartItem.cartId, cartData.id), eq(cartItem.productId, productId))
+    );
 
-  if (existingItem) {
-    const updated = await db
+  if (existing) {
+    const [updated] = await db
       .update(cartItem)
-      .set({
-        quantity: existingItem.quantity + quantity,
-      })
-      .where(eq(cartItem.id, existingItem.id))
+      .set({ quantity: existing.quantity + qty })
+      .where(eq(cartItem.id, existing.id))
       .returning();
 
-    return {
-      success: true,
-      data: updated[0],
-      error: null,
-      message: "Item quantity updated",
-    };
+    return { success: true, data: updated, error: null };
   }
 
   const prod = await db.query.product.findFirst({
-    where: (table, { eq }) => eq(table.id, productId),
+    where: (t, { eq }) => eq(t.id, productId),
     with: {
-      productCategories: {
-        with: {
-          category: true,
-        },
-      },
       productImages: {
         limit: 1,
-        orderBy: (table, { asc }) => [asc(table.position)],
+        orderBy: (t, { asc }) => [asc(t.position)],
       },
     },
   });
@@ -119,42 +102,27 @@ export const addItemToCart = async (
     .insert(cartItem)
     .values({
       id: nanoid(),
-      cartId,
+      cartId: cartData.id,
       productId,
-      quantity,
+      quantity: qty,
       name: prod?.productName || "Product",
       price: String(prod?.pricing.price),
     })
     .returning();
 
-  return {
-    success: true,
-    data: created,
-    error: null,
-    message: "Item added to cart",
-  };
+  return { success: true, data: created, error: null };
 };
 
-export const updateItemQuantity = async (
-  cartItemId: string,
-  newQuantity: number
-) => {
+export const updateItemQuantity = async (cartItemId: string, qty: number) => {
   const [updated] = await db
     .update(cartItem)
-    .set({ quantity: newQuantity })
+    .set({ quantity: qty })
     .where(eq(cartItem.id, cartItemId))
     .returning();
 
-  if (!updated) {
-    return { success: false, error: { message: "Item not found" }, data: {} };
-  }
-
-  return {
-    success: true,
-    data: updated,
-    error: null,
-    message: "Item quantity updated",
-  };
+  return updated
+    ? { success: true, data: updated, error: null }
+    : { success: false, data: null, error: "Item not found" };
 };
 
 export const removeItemFromCart = async (cartItemId: string) => {
@@ -163,27 +131,13 @@ export const removeItemFromCart = async (cartItemId: string) => {
     .where(eq(cartItem.id, cartItemId))
     .returning();
 
-  return {
-    success: true,
-    data: removed,
-    error: null,
-    message: "Item removed from cart",
-  };
+  return { success: true, data: removed, error: null };
 };
 
 export const clearCart = async (userId: string) => {
-  const existing = await db.query.cart.findFirst({
-    where: (table, { eq }) => eq(table.userId, userId),
-  });
-
-  if (!existing) {
-    return { success: true, message: "Cart already empty" };
-  }
+  const existing = await createCartIfNotExists(userId);
 
   await db.delete(cartItem).where(eq(cartItem.cartId, existing.id));
 
-  return {
-    success: true,
-    message: "Cart cleared",
-  };
+  return { success: true, message: "Cart cleared" };
 };

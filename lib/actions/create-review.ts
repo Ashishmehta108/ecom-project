@@ -22,21 +22,31 @@ async function requireUser() {
   return { error: null, userId: session.user.id };
 }
 
-export async function createReview(
-  productId: string,
-  comment: string,
-  rating: string
-) {
-  try {
-    const { error, userId } = await requireUser();
-    if (error) return response(false, null, error);
+/* --------------------------------------------------------
+   CREATE REVIEW
+-------------------------------------------------------- */
+export async function createReview({
+  productId,
+  comment,
+  rating,
 
-    const numericRating = Number(rating);
+  userId: clientUserId,
+}: {
+  productId: string;
+  comment: string;
+  rating: string;
+
+  userId?: string;
+}) {
+  try {
+    const session = await requireUser();
+    const userId = clientUserId || session.userId;
+    if (session.error) return response(false, null, session.error);
 
     if (!productId) return response(false, null, "Product ID required.");
     if (!comment || comment.trim().length < 3)
       return response(false, null, "Review comment is too short.");
-    if (!numericRating || numericRating < 1 || numericRating > 5)
+    if (!rating || Number(rating) < 1 || Number(rating) > 5)
       return response(false, null, "Invalid rating (1-5).");
 
     const existing = await db
@@ -54,7 +64,7 @@ export async function createReview(
         userId: userId!,
         productId,
         comment,
-        rating: String(numericRating),
+        rating,
       })
       .returning();
 
@@ -64,21 +74,62 @@ export async function createReview(
   }
 }
 
-export async function getReviewsByProduct(productId: string) {
+/* --------------------------------------------------------
+   GET REVIEWS FOR PRODUCT
+-------------------------------------------------------- */
+export async function getReviews(productId: string) {
   try {
     if (!productId) return response(false, null, "Product ID required.");
+    const r1 = await db.query.review.findMany({
+      where: eq(review.productId, productId),
+      with: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+      },
+    });
+    console.log(r1);
 
-    const r = await db
-      .select()
-      .from(review)
-      .where(eq(review.productId, productId));
+    /*[
+  {
+    id: 'pA-dFyOssVjyUuVfDqAiM',     
+    rating: '4',
+    comment: 'hsh',
+    userId: '2Az5TmLr6LcLa0vsaTjPa8OiEZH6gasl',
+    productId: 'xDZtjg573a59E31Ow2ed8',
+    user: {
+      id: '2Az5TmLr6LcLa0vsaTjPa8OiEZH6gasl',
+      name: 'devaccount',
+      email: 'autoplot108@gmail.com',
+      emailVerified: true,
+      image: null,
+      createdAt: 2025-11-16T08:48:27.338Z,
+      updatedAt: 2025-11-23T11:57:28.521Z,
+      role: 'user',
+      banned: false,
+      banReason: null,
+      banExpires: null
+    }
+  }
+] */
+    // const r = await db
+    //   .select()
+    //   .from(review)
+    //   .where(eq(review.productId, productId));
 
-    return response(true, r);
+    return response(true, r1);
   } catch (e: any) {
     return response(false, null, e.message);
   }
 }
 
+/* --------------------------------------------------------
+   GET REVIEWS BY USER
+-------------------------------------------------------- */
 export async function getReviewsByUser() {
   try {
     const { error, userId } = await requireUser();
@@ -92,21 +143,23 @@ export async function getReviewsByUser() {
   }
 }
 
-export async function updateReview(
-  reviewId: string,
-  comment: string,
-  rating: string
-) {
+export async function updateReview({
+  reviewId,
+  comment,
+  rating,
+}: {
+  reviewId: string;
+  comment: string;
+  rating: string;
+}) {
   try {
     const { error, userId } = await requireUser();
     if (error) return response(false, null, error);
 
-    const numericRating = Number(rating);
-
     if (!reviewId) return response(false, null, "Review ID required.");
     if (!comment || comment.trim().length < 3)
       return response(false, null, "Review comment too short.");
-    if (!numericRating || numericRating < 1 || numericRating > 5)
+    if (!rating || Number(rating) < 1 || Number(rating) > 5)
       return response(false, null, "Invalid rating.");
 
     const existing = await db
@@ -120,7 +173,10 @@ export async function updateReview(
 
     const updated = await db
       .update(review)
-      .set({ comment, rating: String(numericRating) })
+      .set({
+        comment,
+        rating,
+      })
       .where(eq(review.id, reviewId))
       .returning();
 
@@ -130,7 +186,10 @@ export async function updateReview(
   }
 }
 
-export async function deleteReview(reviewId: string) {
+/* --------------------------------------------------------
+   DELETE REVIEW
+-------------------------------------------------------- */
+export async function deleteReview({ reviewId }: { reviewId: string }) {
   try {
     const { error, userId } = await requireUser();
     if (error) return response(false, null, error);
