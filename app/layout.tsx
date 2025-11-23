@@ -34,8 +34,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`antialiased ${sans.className}`}>
-        <SmoothScroll>
-
         {/* <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -47,7 +45,6 @@ export default function RootLayout({
         <main className="min-h-screen">{children}</main>
         <Footer />
         {/* </ThemeProvider> */}
-        </SmoothScroll>
       </body>
     </html>
   );

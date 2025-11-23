@@ -4,6 +4,7 @@ import TopEarbudsSectionClient from "./TopEarbudsSectionClient";
 export default async function TopEarbudsSectionServer() {
   const earbuds = await getEarbuds();
 
+  console.log(earbuds)
   const formatted = earbuds.map((item) => ({
     id: item.id,
     name: item.productName,
