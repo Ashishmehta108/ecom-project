@@ -1,206 +1,57 @@
-// "use client";
-
-// import { useState } from "react";
-// import userCartState from "@/lib/states/cart.state";
-// import { addItemToCart, updateItemQuantity } from "@/lib/actions/cart-actions";
-// import { toast } from "sonner";
-// import { authClient } from "@/lib/auth-client";
-// import { Plus, Minus } from "lucide-react";
-
-// export default function AddToCartButton({ productId }: { productId: string }) {
-//   const { data } = authClient.useSession();
-//   const userId = data?.user?.id;
-
-//   const { items, addOrReplaceItem, updateQty, removeItem } = userCartState();
-//   const cartItem = items.find((i) => i.productId === productId);
-
-//   const [loading, setLoading] = useState(false);
-
-//   const handleAdd = async () => {
-//     if (!userId) return toast.error("Please login to continue");
-//     try {
-//       setLoading(true);
-//       const res = await addItemToCart(userId, productId, 1);
-
-//       if (res?.success) {
-//         addOrReplaceItem(res.data);
-//         toast.success("Added to cart");
-//       } else {
-//         //@ts-ignore
-//         toast.error(res.error?.message || "Failed to add");
-//       }
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleQtyChange = async (newQty: number) => {
-//     if (!cartItem || !userId) return;
-
-//     // removing
-//     if (newQty <= 0) {
-//       removeItem(cartItem.id);
-//       return;
-//     }
-
-//     setLoading(true);
-//     try {
-//       const res = await updateItemQuantity(cartItem.id, newQty);
-
-//       if (res?.success) {
-//         updateQty(cartItem.id, newQty);
-//       } else {
-//         toast.error("Failed to update");
-//       }
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // -------------------------- UI BELOW -----------------------------
-
-//   // Not in cart → show compact modern Add button
-//   if (!cartItem) {
-//     return (
-//       <button
-//         disabled={loading}
-//         onClick={handleAdd}
-//         className="
-//           w-full max-w-xs
-//           py-2.5 px-4
-//           text-sm font-semibold
-//           rounded-xl
-//           bg-neutral-900 dark:bg-neutral-100
-//           text-white dark:text-neutral-900
-//           shadow-sm
-//           hover:opacity-90
-//           active:scale-[0.98]
-//           disabled:opacity-50
-//           transition-all
-//         "
-//       >
-//         {loading ? "Adding..." : "Add to Cart"}
-//       </button>
-//     );
-//   }
-
-//   // In cart → show modern small quantity pill controller
-//   return (
-//     <div
-//       className="
-//         flex items-center gap-3
-//         w-fit
-//         rounded-full
-//         bg-neutral-100 dark:bg-neutral-900
-//         border border-neutral-300 dark:border-neutral-700
-//         px-3 py-1.5
-//         shadow-sm
-//         transition-all
-//       "
-//     >
-//       {/* Minus */}
-//       <button
-//         disabled={loading}
-//         onClick={() => handleQtyChange(cartItem.quantity - 1)}
-//         className="
-//           p-1.5
-//           rounded-full
-//           hover:bg-neutral-200 dark:hover:bg-neutral-800
-//           transition
-//           active:scale-90
-//         "
-//       >
-//         <Minus className="w-4 h-4" />
-//       </button>
-
-//       {/* Qty */}
-//       <span className="w-6 text-center font-semibold text-neutral-900 dark:text-neutral-100">
-//         {cartItem.quantity}
-//       </span>
-
-//       {/* Plus */}
-//       <button
-//         disabled={loading}
-//         onClick={() => handleQtyChange(cartItem.quantity + 1)}
-//         className="
-//           p-1.5
-//           rounded-full
-//           hover:bg-neutral-200 dark:hover:bg-neutral-800
-//           transition
-//           active:scale-90
-//         "
-//       >
-//         <Plus className="w-4 h-4" />
-//       </button>
-//     </div>
-//   );
-// }
-
 "use client";
 
 import { useState } from "react";
 import userCartState from "@/lib/states/cart.state";
-import { addItemToCart, updateItemQuantity } from "@/lib/actions/cart-actions";
-import { toast } from "sonner";
+import {
+  addItemToCart,
+  updateItemQuantity,
+  removeItemFromCart,
+} from "@/lib/actions/cart-actions";
+import { syncCart } from "@/lib/syncCart";
 import { authClient } from "@/lib/auth-client";
 import { Plus, Minus } from "lucide-react";
 import LoginModal from "../auth/loginModal";
+import { toast } from "sonner";
 
 export default function AddToCartButton({ productId }: { productId: string }) {
   const { data } = authClient.useSession();
   const userId = data?.user?.id;
 
-  const { items, addOrReplaceItem, updateQty, removeItem } = userCartState();
+  const { items } = userCartState();
   const cartItem = items.find((i) => i.productId === productId);
 
   const [loading, setLoading] = useState(false);
-
   const [showLogin, setShowLogin] = useState(false);
 
   const handleAdd = async () => {
-    if (!userId) {
-      setShowLogin(true);
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const res = await addItemToCart(userId, productId, 1);
-
-      if (res?.success) {
-        addOrReplaceItem(res.data);
-        toast.success("Added to cart");
-      } else {
-        //@ts-ignore
-        toast.error(res.error?.message || "Failed to add");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleQtyChange = async (newQty: number) => {
-    if (!cartItem || !userId) {
-      setShowLogin(true);
-      return;
-    }
-
-    if (newQty <= 0) {
-      removeItem(cartItem.id);
-      return;
-    }
+    if (!userId) return setShowLogin(true);
 
     setLoading(true);
-    try {
-      const res = await updateItemQuantity(cartItem.id, newQty);
-      if (res?.success) {
-        updateQty(cartItem.id, newQty);
-      } else {
-        toast.error("Failed to update");
-      }
-    } finally {
+    const res = await addItemToCart(userId, productId, 1);
+
+    await syncCart(userId);
+    setLoading(false);
+
+    if (res.success) toast.success("Added to Cart");
+  };
+
+  const handleQty = async (newQty: number) => {
+    if (!userId) return setShowLogin(true);
+    if (!cartItem) return;
+
+    setLoading(true);
+
+    if (newQty <= 0) {
+      await removeItemFromCart(cartItem.id);
+      await syncCart(userId);
       setLoading(false);
+      return;
     }
+
+    await updateItemQuantity(cartItem.id, newQty);
+    await syncCart(userId);
+
+    setLoading(false);
   };
 
   return (
@@ -211,30 +62,26 @@ export default function AddToCartButton({ productId }: { productId: string }) {
         <button
           disabled={loading}
           onClick={handleAdd}
-          className="w-full max-w-xs py-2.5 px-4 text-sm font-semibold rounded-xl bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 shadow-sm hover:opacity-90 active:scale-[0.98] disabled:opacity-50 transition-all"
+          className="w-full py-2 bg-neutral-900 text-white rounded-lg"
         >
           {loading ? "Adding..." : "Add to Cart"}
         </button>
       ) : (
-        <div className="flex items-center gap-3 w-fit rounded-full bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 px-3 py-1.5 shadow-sm transition-all">
+        <div className="flex items-center gap-3 bg-neutral-100 px-3 py-1.5 rounded-full">
           <button
             disabled={loading}
-            onClick={() => handleQtyChange(cartItem.quantity - 1)}
-            className="p-1.5 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-800 transition active:scale-90"
+            onClick={() => handleQty(cartItem.quantity - 1)}
           >
-            <Minus className="w-4 h-4" />
+            <Minus size={16} />
           </button>
 
-          <span className="w-6 text-center font-semibold text-neutral-900 dark:text-neutral-100">
-            {cartItem.quantity}
-          </span>
+          <span className="font-medium">{cartItem.quantity}</span>
 
           <button
             disabled={loading}
-            onClick={() => handleQtyChange(cartItem.quantity + 1)}
-            className="p-1.5 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-800 transition active:scale-90"
+            onClick={() => handleQty(cartItem.quantity + 1)}
           >
-            <Plus className="w-4 h-4" />
+            <Plus size={16} />
           </button>
         </div>
       )}

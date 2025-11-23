@@ -230,7 +230,7 @@ export default function ProductPage({ product }: { product: Product }) {
 
       {/* REVIEWS */}
       <div className="mt-16 md:mt-20">
-        <ReviewPage productId={product.id} />
+        <ReviewPage  productId={product.id} />
       </div>
     </div>
   );
