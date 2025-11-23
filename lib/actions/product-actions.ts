@@ -57,20 +57,45 @@ export async function getProducts() {
   });
 }
 
-export async function getEarbuds() {
-  return await db.query.product.findMany({
-    where: eq(product.subCategory, "earbuds"),
+export const getEarbuds = async () => {
+  const earbuds = await db.query.product.findMany({
+    where: (product, { exists, eq, and }) =>
+      exists(
+        db
+          .select()
+          .from(productCategory)
+          .where(
+            and(
+              eq(productCategory.productId, product.id),
+              // correlate category.id with productCategory.categoryId
+              exists(
+                db
+                  .select()
+                  .from(category)
+                  .where(
+                    and(
+                      eq(category.id, productCategory.categoryId), // <--- added correlation
+                      eq(category.name, "Earphones")
+                    )
+                  )
+              )
+            )
+          )
+      ),
     with: {
       productImages: true,
       productCategories: {
-        with: { category: true },
+        with: {
+          category: true,
+        },
       },
     },
   });
-}
 
-
-
+  // optional: remove or adjust logging in production
+  console.log(earbuds);
+  return earbuds;
+};
 
 export async function createProduct(p: Partial<Product>) {
   const id = nanoid();
@@ -83,7 +108,13 @@ export async function createProduct(p: Partial<Product>) {
     subCategory: p.subCategory ?? "",
     description: p.description ?? "",
     features: p.features ?? [],
-    pricing: p.pricing ?? { price: 0, currency: "eur", discount: 0, inStock: true, stockQuantity: 10 },
+    pricing: p.pricing ?? {
+      price: 0,
+      currency: "eur",
+      discount: 0,
+      inStock: true,
+      stockQuantity: 10,
+    },
     specifications: p.specifications,
     tags: p.tags ?? [],
   });
