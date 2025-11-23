@@ -31,7 +31,7 @@ type ProductCardProps = {
 
 export function ProductCard({ product, userId }: ProductCardProps) {
   const mainImage = product.productImages.find((img) => img.position === "0");
-  const formattedPrice = `₹${product.pricing.price.toLocaleString("en-IN")}`;
+  const formattedPrice = `€${product.pricing.price.toLocaleString("en-IN")}`;
 
   const addToCart = async (userId: string, productId: string) => {
     const data = await addItemToCart(userId, productId, 1);
@@ -41,7 +41,7 @@ export function ProductCard({ product, userId }: ProductCardProps) {
   };
   const inCart = isInCart(product.id);
   return (
-    <article className="group flex h-[600px] flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900">
+    <article className="group flex h-[540px] flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900">
       <Link
         href={`/products/${product.id}`}
         className="relative block overflow-hidden bg-white dark:bg-neutral-800"

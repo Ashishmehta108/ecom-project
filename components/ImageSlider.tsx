@@ -4,7 +4,6 @@
 // import { ChevronLeft, ChevronRight } from "lucide-react";
 // import Link from "next/link";
 
-
 // export default function PromoSlider({ slides }: { slides: any[] }) {
 //   const [index, setIndex] = useState(0);
 //   const [hovered, setHovered] = useState(false);
@@ -64,7 +63,6 @@
 
 //   if (!slides || slides.length === 0) return null;
 
-
 //   return (
 //     <div
 //       className="w-full  relative flex flex-col items-center justify-center"
@@ -78,8 +76,8 @@
 //         <div
 //           className="sm:rounded-none sm:m-0 rounded-2xl m-4
 //              shadow-xl overflow-hidden
-//              md:py-20 py-12 
-             
+//              md:py-20 py-12
+
 //             bg-[#141621] border border-white/10 dark:border-white/5
 //             min-h-[320px] xs:min-h-[340px] sm:min-h-[360px]
 //             md:min-h-[390px] lg:min-h-[440px] xl:min-h-[500px]
@@ -294,7 +292,6 @@
 //   );
 // }
 
-
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
@@ -307,48 +304,53 @@ const Link = ({ href, children, className, ...props }: any) => (
   </a>
 );
 
-
-
 const AUTOPLAY_DURATION = 5000; // ms
 
 // Sample slides data (kept for fallback/demo)
 const DEMO_SLIDES = [
+
   {
     subtitle: "SUMMER COLLECTION",
     title: "New Arrivals",
     discount: "Up to 50% Off",
+    shortText: "Fresh designs made for comfort and everyday style.",
     buttonText: "Shop Now",
-    buttonLink: "/shop",
+    buttonLink: "/products?category=4cLPvcx8OSJFq2ip0Duix",
     image:
       "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80",
   },
+
   {
     subtitle: "EXCLUSIVE DEAL",
     title: "Premium Headphones",
     discount: "Limited Time Offer",
+    shortText: "Experience rich sound, deep bass, and all-day comfort.",
     buttonText: "View Details",
-    buttonLink: "/products",
+    buttonLink: "/products?category=UJC5MstDEmoMXfzgQsLuG",
     image:
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
   },
+
   {
     subtitle: "TECH ESSENTIALS",
     title: "Smart Watches",
     discount: "Starting at $199",
+    shortText: "Track your health, stay connected, and move smarter.",
     buttonText: "Explore",
-    buttonLink: "/watches",
+    buttonLink: "/products?category=UJC5MstDEmoMXfzgQsLuG",
     image:
       "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=500&q=80",
   },
 ];
 
-
-
-export default function PromoSlider({ slides = DEMO_SLIDES }: { slides?: any[] }) {
+export default function PromoSlider({
+  slides = DEMO_SLIDES,
+}: {
+  slides?: any[];
+}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  // refs for autoplay/progress
   const rafRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
   const elapsedRef = useRef(0);
@@ -363,7 +365,6 @@ export default function PromoSlider({ slides = DEMO_SLIDES }: { slides?: any[] }
   const goToSlide = useCallback(
     (index: number) => {
       if (index === activeIndex) {
-        // still reset progress when user taps current dot
         resetProgress(true);
         return;
       }
@@ -386,7 +387,6 @@ export default function PromoSlider({ slides = DEMO_SLIDES }: { slides?: any[] }
     resetProgress(true);
   }, [totalSlides]);
 
-  // ---------- PROGRESS / RAF CONTROL ----------
   function setProgressWidth(percent: number) {
     const el = progressBarRef.current;
     if (!el) return;
@@ -611,8 +611,9 @@ export default function PromoSlider({ slides = DEMO_SLIDES }: { slides?: any[] }
           className="
             relative overflow-hidden
            bg-[#141621]
-            rounded-none sm:rounded-2xl
+            rounded-none
             shadow-2xl
+            pb-10
             min-h-[400px] sm:min-h-[450px] md:min-h-[500px] lg:min-h-[550px]
           "
         >
@@ -670,16 +671,18 @@ export default function PromoSlider({ slides = DEMO_SLIDES }: { slides?: any[] }
 
                     <h2
                       className="
-                        text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl
+                        text-3xl sm:text-4xl md:text-5xl lg:text-6xl 
                         font-black leading-[1.1] tracking-tight text-white animate-slide-up
                       "
                     >
                       {slide.title}
                     </h2>
-
+                    <p className="text-base  text-neutral-100">
+                      {slide.shortText}
+                    </p>
                     <p
                       className="
-                        text-base sm:text-lg md:text-xl lg:text-2xl
+                        text-base sm:text-lg md:text-xl 
                         font-semibold text-slate-200 animate-fade-in
                       "
                     >
@@ -692,16 +695,15 @@ export default function PromoSlider({ slides = DEMO_SLIDES }: { slides?: any[] }
                         className="
                           inline-flex items-center justify-center
                           mt-1 sm:mt-2 md:mt-4
-                          px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4
+                          px-5 sm:px-6 md:px-8 py-2.5 sm:py-3
                           bg-white text-slate-900
                           rounded-xl sm:rounded-2xl text-sm sm:text-base font-bold
-                          shadow-lg shadow-black/20 hover:bg-blue-50 hover:scale-105 active:scale-95
+                          shadow-lg shadow-black/20 hover:bg-blue-50 hover:scale-101 active:scale-95
                           transition-all duration-200 max-w-[180px] sm:max-w-[200px]
                           mx-auto sm:mx-0
                         "
                         aria-label={`${slide.buttonText} - ${slide.title}`}
                         onClick={() => {
-                          // reset progress on CTA click
                           resetProgress(true);
                         }}
                       >
@@ -716,7 +718,6 @@ export default function PromoSlider({ slides = DEMO_SLIDES }: { slides?: any[] }
         </div>
       </div>
 
-      {/* Navigation Arrows */}
       {hasMultipleSlides && (
         <>
           <button
@@ -811,3 +812,4 @@ export default function PromoSlider({ slides = DEMO_SLIDES }: { slides?: any[] }
     </div>
   );
 }
+

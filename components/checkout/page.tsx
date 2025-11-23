@@ -231,7 +231,7 @@ function CheckoutForm({
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       <Button type="submit" disabled={!stripe || submitting} className="w-full">
-        {submitting ? "Processing..." : `Pay ₹${amount / 100}`}
+        {submitting ? "Processing..." : `Pay €${amount / 100}`}
       </Button>
     </form>
   );

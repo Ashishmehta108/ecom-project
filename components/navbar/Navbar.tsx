@@ -147,6 +147,7 @@ if(data?.session){
               {/* <NotificationBell /> */}
 
               <CartButton items={itemsCount} />
+              
 
               {isLoading ? (
                 <div

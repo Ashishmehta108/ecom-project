@@ -17,15 +17,18 @@ interface CartPageClientProps {
   initialItems: any[];
 }
 
-export default function CartPageClient({ userId, initialItems }: CartPageClientProps) {
+export default function CartPageClient({
+  userId,
+  initialItems,
+}: CartPageClientProps) {
   const { items, setItems, updateQty, removeItem, clear } = userCartState();
 
-const [isLoading,setisLoading]=useState(true)
+  const [isLoading, setisLoading] = useState(true);
 
   // Load items that came from the server only once
   useEffect(() => {
     if (initialItems) {
-        setisLoading(false)
+      setisLoading(false);
       setItems(initialItems);
     }
   }, [initialItems, setItems]);
@@ -58,16 +61,17 @@ const [isLoading,setisLoading]=useState(true)
   }
 
   async function handleCheckout() {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+    // const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
 
-    const res = await fetch(`${baseUrl}/api/stripe/checkout`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items, userId }),
-    });
+    // const res = await fetch(`${baseUrl}/api/stripe/checkout`, {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ items, userId }),
+    // });
 
-    const data = await res.json();
-    if (data.url) window.location.href = data.url;
+    // const data = await res.json();
+    window.location.href="/checkout"
+    // if (data.url) window.location.href = data.url;
   }
 
   // LOADING STATE
@@ -80,23 +84,20 @@ const [isLoading,setisLoading]=useState(true)
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-
         {/* Header */}
         <header className="mb-8 lg:mb-12">
           <div className="flex items-center gap-3 mb-2">
-            <ShoppingBag className="w-7 h-7 text-neutral-700 dark:text-neutral-300" />
-            <h1 className="text-3xl lg:text-4xl font-semibold text-neutral-900 dark:text-neutral-100">
+            <h1 className="text-2xl lg:text-4xl font-semibold text-neutral-900 dark:text-neutral-100">
               Shopping Cart
             </h1>
           </div>
-          <p className="text-neutral-500 dark:text-neutral-400 ml-10">
-            {items.length} {items.length === 1 ? "item" : "items"}
+          <p className="text-neutral-500 dark:text-neutral-400 ml-1">
+            {items.length} {items.length === 1 ? "item" : "items"} in your cart
           </p>
         </header>
 
         {/* GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-
           {/* ========== LEFT — ITEMS ========== */}
           <section className="lg:col-span-7 xl:col-span-8 space-y-4">
             {items.map((item) => (
@@ -105,7 +106,6 @@ const [isLoading,setisLoading]=useState(true)
                 className="bg-white dark:bg-neutral-900 rounded-lg p-5 lg:p-6 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition-colors"
               >
                 <div className="flex gap-5 lg:gap-6">
-
                   {/* IMAGE */}
                   <div className="flex-shrink-0">
                     <img
@@ -122,16 +122,17 @@ const [isLoading,setisLoading]=useState(true)
                         {item.name}
                       </h2>
                       <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                        ₹{Number(item.price).toLocaleString("en-IN")} each
+                        €{Number(item.price).toLocaleString("en-IN")} each
                       </p>
                     </div>
 
                     <div className="flex flex-wrap items-center justify-between gap-4 mt-4">
-
                       {/* QTY BUTTONS */}
                       <div className="flex items-center gap-3">
                         <button
-                          onClick={() => handleQtyChange(item.id, item.quantity - 1)}
+                          onClick={() =>
+                            handleQtyChange(item.id, item.quantity - 1)
+                          }
                           disabled={item.quantity <= 1}
                           className="w-8 h-8 flex items-center justify-center rounded-md bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 disabled:opacity-40 text-neutral-700 dark:text-neutral-300 transition-colors"
                         >
@@ -143,7 +144,9 @@ const [isLoading,setisLoading]=useState(true)
                         </span>
 
                         <button
-                          onClick={() => handleQtyChange(item.id, item.quantity + 1)}
+                          onClick={() =>
+                            handleQtyChange(item.id, item.quantity + 1)
+                          }
                           className="w-8 h-8 flex items-center justify-center rounded-md bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 transition-colors"
                         >
                           +
@@ -153,7 +156,7 @@ const [isLoading,setisLoading]=useState(true)
                       {/* SUBTOTAL + REMOVE */}
                       <div className="flex items-center gap-4">
                         <p className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-                          ₹{(Number(item.price) * item.quantity).toLocaleString("en-IN")}
+                          €{(Number(item.price) * item.quantity).toLocaleString("en-IN")}
                         </p>
 
                         <button
@@ -164,10 +167,8 @@ const [isLoading,setisLoading]=useState(true)
                           <span className="hidden sm:inline">Remove</span>
                         </button>
                       </div>
-
                     </div>
                   </div>
-
                 </div>
               </article>
             ))}
@@ -176,7 +177,6 @@ const [isLoading,setisLoading]=useState(true)
           {/* ========== RIGHT — SUMMARY ========== */}
           <aside className="lg:col-span-5 xl:col-span-4">
             <div className="lg:sticky lg:top-6 bg-white dark:bg-neutral-900 rounded-lg p-6 border border-neutral-200 dark:border-neutral-800">
-
               <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-6">
                 Order Summary
               </h3>
@@ -187,18 +187,26 @@ const [isLoading,setisLoading]=useState(true)
                     Subtotal ({items.length} items)
                   </span>
                   <span className="font-medium text-neutral-900 dark:text-neutral-100">
-                    ₹{formattedTotal}
+                    €{formattedTotal}
                   </span>
                 </div>
 
                 <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600 dark:text-neutral-400">Shipping</span>
-                  <span className="font-medium text-green-600 dark:text-green-500">Free</span>
+                  <span className="text-neutral-600 dark:text-neutral-400">
+                    Shipping
+                  </span>
+                  <span className="font-medium text-green-600 dark:text-green-500">
+                    Free
+                  </span>
                 </div>
 
                 <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600 dark:text-neutral-400">Tax</span>
-                  <span className="text-neutral-600 dark:text-neutral-400">At checkout</span>
+                  <span className="text-neutral-600 dark:text-neutral-400">
+                    Tax
+                  </span>
+                  <span className="text-neutral-600 dark:text-neutral-400">
+                    At checkout
+                  </span>
                 </div>
               </div>
 
@@ -209,8 +217,8 @@ const [isLoading,setisLoading]=useState(true)
                 <span className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
                   Total
                 </span>
-                <span className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-                  ₹{formattedTotal}
+                <span className="text-sm sm:text-md font-thin text-neutral-900 dark:text-neutral-100">
+                  €{formattedTotal}
                 </span>
               </div>
 
@@ -242,10 +250,8 @@ const [isLoading,setisLoading]=useState(true)
                   <span>Secure Checkout</span>
                 </div>
               </div>
-
             </div>
           </aside>
-
         </div>
       </div>
     </div>

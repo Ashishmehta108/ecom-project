@@ -59,8 +59,8 @@ export default function OrdersPage() {
   ]);
 
   // 👉 Format INR with commas
-  const formatINR = (amount: number) => {
-    return "₹" + amount.toLocaleString("en-IN");
+  const formatEuro = (amount: number) => {
+    return "€" + amount.toLocaleString("en");
   };
 
   const statusColor = (status: string) => {
@@ -124,7 +124,7 @@ export default function OrdersPage() {
 
                 {/* Desktop price */}
                 <p className="hidden md:block font-medium mt-2 text-gray-800 dark:text-gray-200">
-                  {formatINR(order.total)}
+                  {order.total}
                 </p>
               </div>
             </div>
@@ -141,7 +141,7 @@ export default function OrdersPage() {
             <div className="text-left md:text-right md:w-1/3 text-sm text-gray-700 dark:text-gray-300 space-y-1">
               {/* Mobile price */}
               <p className="md:hidden font-medium text-gray-800 dark:text-gray-200 text-lg">
-                {formatINR(order.total)}
+                {order.total}
               </p>
 
               <p>Method: {order.method}</p>

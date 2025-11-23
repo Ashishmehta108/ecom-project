@@ -10,6 +10,7 @@ export default async function TopEarbudsSectionServer() {
     price: item.pricing.price,
     oldPrice: item.pricing.price,
     discount: item.pricing.discount,
+    //@ts-ignore
     image: item.productImages?.[0]?.url || "/placeholder.png",
   }));
 

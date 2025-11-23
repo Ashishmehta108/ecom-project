@@ -1,3 +1,5 @@
+"use server";
+
 import {
   category,
   product,
@@ -5,187 +7,266 @@ import {
   productImage,
 } from "@/lib/db/schema";
 import { db } from "@/lib/db";
-import { eq, inArray } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { Product } from "../types/product.types";
 
-export const getProducts = async () => {
-  const products = await db.select().from(product);
-  return products;
-};
-export const getEarbuds = async () => {
-  const earbuds = await db.query.product.findMany({
-    where: (product, { exists, eq, and }) =>
-      exists(
-        db
-          .select()
-          .from(productCategory)
-          .where(
-            and(
-              eq(productCategory.productId, product.id),
-              // correlate category.id with productCategory.categoryId
-              exists(
-                db
-                  .select()
-                  .from(category)
-                  .where(
-                    and(
-                      eq(category.id, productCategory.categoryId), // <--- added correlation
-                      eq(category.name, "Earphones")
-                    )
-                  )
-              )
-            )
-          )
-      ),
+// =====================================================================================
+// HELPERS
+// =====================================================================================
+
+// Create a category only if it doesn't exist already
+async function createCategoryIfNotExists(name: string) {
+  const existing = await db.query.category.findFirst({
+    where: (c, { eq }) => eq(c.name, name),
+  });
+
+  if (existing) return existing;
+
+  const newCat = {
+    id: nanoid(),
+    name,
+    imageUrl: "default",
+  };
+
+  await db.insert(category).values(newCat);
+  return newCat;
+}
+
+// Get full product with relations
+export async function getProductById(id: string) {
+  return await db.query.product.findFirst({
+    where: eq(product.id, id),
     with: {
       productImages: true,
       productCategories: {
-        with: {
-          category: true,
-        },
+        with: { category: true },
       },
     },
   });
+}
 
-  // optional: remove or adjust logging in production
-  console.log(earbuds);
-  return earbuds;
-};
-
-export const getProductById = async (id: string) => {
-  const prod = await db.query.product.findFirst({
-    where: eq(product.id, id),  
+export async function getProducts() {
+  return await db.query.product.findMany({
     with: {
       productImages: true,
       productCategories: {
-        with: {
-          category: true,
-        },
+        with: { category: true },
       },
     },
   });
-  console.log(prod)
+}
 
-  // if (!prod) {
-  //   throw new Error(`Product with ID "${id}" not found`);
-  // }
+export async function getEarbuds() {
+  return await db.query.product.findMany({
+    where: eq(product.subCategory, "earbuds"),
+    with: {
+      productImages: true,
+      productCategories: {
+        with: { category: true },
+      },
+    },
+  });
+}
 
-  return prod;
-};
 
-export const createProduct = async (p: Partial<Product>) => {
-  const id = p.id ?? nanoid();
 
-  // -------------------------------
-  // 1. VALIDATION
-  // -------------------------------
-  if (!p.productName) throw new Error("productName is required");
-  if (!p.brand) throw new Error("brand is required");
 
-  // -------------------------------
-  // 2. INSERT INTO PRODUCT TABLE
-  // -------------------------------
-  const insertPayload = {
+export async function createProduct(p: Partial<Product>) {
+  const id = nanoid();
+
+  await db.insert(product).values({
     id,
-    productName: p.productName,
-    brand: p.brand,
+    productName: p.productName!,
+    brand: p.brand!,
     model: p.model ?? "",
     subCategory: p.subCategory ?? "",
     description: p.description ?? "",
     features: p.features ?? [],
-    pricing: p.pricing ?? {
-      price: 0,
-      currency: "INR",
-      discount: 0,
-      inStock: true,
-      stockQuantity: 0,
-    },  
-    specifications: p.specifications ?? { general: {}, technical: {} },
+    pricing: p.pricing ?? { price: 0, currency: "eur", discount: 0, inStock: true, stockQuantity: 10 },
+    specifications: p.specifications,
     tags: p.tags ?? [],
-  };
+  });
 
-  await db.insert(product).values(insertPayload);
+  // Categories
+  const categoriesToInsert = [];
+  for (const name of p.categories ?? []) {
+    categoriesToInsert.push(await createCategoryIfNotExists(name));
+  }
 
-  // -------------------------------
-  // 3. CATEGORY RELATIONS
-  // -------------------------------
-  if (p.categories && p.categories.length > 0) {
-    // Fetch existing categories by name
-    const existing = await db
-      .select()
-      .from(category)
-      .where(inArray(category.name, p.categories));
+  if (categoriesToInsert.length) {
+    await db.insert(productCategory).values(
+      categoriesToInsert.map((c) => ({
+        productId: id,
+        categoryId: c.id,
+      }))
+    );
+  }
 
-    // Map category name → id
-    const existingMap = new Map(existing.map((c) => [c.name, c.id]));
-
-    let missingNames: string[] = [];
-
-    // find categories that do not exist yet
-    for (const catName of p.categories) {
-      if (!existingMap.has(catName)) missingNames.push(catName);
-    }
-
-    // OPTIONAL: Auto-create missing categories
-    if (missingNames.length > 0) {
-      const newCatsData = missingNames.map((name) => ({
+  // Images
+  if (p.productImages?.length) {
+    await db.insert(productImage).values(
+      p.productImages.map((img, index) => ({
         id: nanoid(),
-        name,
-        imageUrl: "default",
-      }));
+        productId: id,
+        url: img.url,
+        fileId: img.fileId!,
+        position: String(index),
+      }))
+    );
+  }
 
-      const newCats = await db.insert(category).values(newCatsData).returning();
+  return getProductById(id);
+}
 
-      for (const c of newCats) {
-        existingMap.set(c.name, c.id);
+// =====================================================================================
+// UPDATE PRODUCT — FULLY OPTIMIZED WITH DIFF
+// =====================================================================================
+
+export async function updateProduct(id: string, p: Partial<Product>) {
+  // 1. Update base product fields
+  await db
+    .update(product)
+    .set({
+      productName: p.productName,
+      brand: p.brand,
+      model: p.model,
+      subCategory: p.subCategory,
+      description: p.description,
+      features: p.features ?? [],
+      pricing: p.pricing,
+      specifications: p.specifications,
+      tags: p.tags ?? [],
+    })
+    .where(eq(product.id, id));
+
+  // ============================================================================
+  // 2. CATEGORY DIFF
+  // ============================================================================
+
+  // Existing categories
+  const existingCategoryLinks = await db.query.productCategory.findMany({
+    where: eq(productCategory.productId, id),
+  });
+
+  const existingIds = new Set(existingCategoryLinks.map((c) => c.categoryId));
+
+  // Incoming categories (create if missing)
+  const incomingCats = [];
+  for (const name of p.categories ?? []) {
+    incomingCats.push(await createCategoryIfNotExists(name));
+  }
+  const incomingIds = new Set(incomingCats.map((c) => c.id));
+
+  // Compute diff
+  const toAdd = [...incomingIds].filter((cid) => !existingIds.has(cid));
+  const toRemove = [...existingIds].filter((cid) => !incomingIds.has(cid));
+
+  // Add new category relations
+  if (toAdd.length) {
+    await db.insert(productCategory).values(
+      toAdd.map((categoryId) => ({
+        productId: id,
+        categoryId,
+      }))
+    );
+  }
+
+  // Remove outdated category relations
+  if (toRemove.length) {
+    await db
+      .delete(productCategory)
+      .where(
+        and(
+          eq(productCategory.productId, id),
+          inArray(productCategory.categoryId, toRemove)
+        )
+      );
+  }
+
+  // ============================================================================
+  // 3. IMAGE DIFF UPDATE
+  // ============================================================================
+
+  const existingImages = await db.query.productImage.findMany({
+    where: eq(productImage.productId, id),
+  });
+
+  const existingMap = new Map(existingImages.map((img) => [img.fileId, img]));
+  const incomingMap = new Map(
+    (p.productImages ?? []).map((img, idx) => [
+      img.fileId!,
+      { ...img, position: String(idx) },
+    ])
+  );
+
+  const imagesToAdd: any[] = [];
+  const imagesToUpdate: any[] = [];
+  const imagesToRemove: string[] = [];
+
+  // Determine images to add or update
+  for (const [fileId, newImg] of incomingMap) {
+    if (!existingMap.has(fileId)) {
+      imagesToAdd.push(newImg);
+    } else {
+      const oldImg = existingMap.get(fileId)!;
+      if (oldImg.position !== newImg.position) {
+        imagesToUpdate.push({ oldImg, newImg });
       }
     }
-
-    // Insert into productCategory table
-    const inserts = p.categories.map((catName) => ({
-      productId: id,
-      categoryId: existingMap.get(catName)!,
-    }));
-
-    await db.insert(productCategory).values(inserts);
   }
 
-  // -------------------------------
-  // 4. PRODUCT IMAGES
-  // -------------------------------
-  if (p.productImages && p.productImages.length > 0) {
-    const imgs = p.productImages.map((img, idx) => ({
-      id: nanoid(),
-      productId: id,
-      url: img.url,
-      fileId: img.fileId!,
-      position: String(idx),
-    }));
-
-    await db.insert(productImage).values(imgs);
+  // Determine images to remove
+  for (const [fileId, oldImg] of existingMap) {
+    if (!incomingMap.has(fileId)) {
+      imagesToRemove.push(oldImg.fileId);
+    }
   }
 
-  return await getProductById(id);
-};
+  // Apply removals
+  if (imagesToRemove.length) {
+    await db
+      .delete(productImage)
+      .where(
+        and(
+          eq(productImage.productId, id),
+          inArray(productImage.fileId, imagesToRemove)
+        )
+      );
+  }
 
-export const updateProduct = async (
-  id: string,
-  p: typeof product.$inferInsert
-) => {
-  const [updatedProduct] = await db
-    .update(product)
-    .set(p)
-    .where(eq(product.id, id))
-    .returning();
+  // Apply additions
+  if (imagesToAdd.length) {
+    await db.insert(productImage).values(
+      imagesToAdd.map((img) => ({
+        id: nanoid(),
+        productId: id,
+        url: img.url,
+        fileId: img.fileId!,
+        position: img.position,
+      }))
+    );
+  }
 
-  return updatedProduct;
-};
+  // Apply updates (position)
+  for (const { oldImg, newImg } of imagesToUpdate) {
+    await db
+      .update(productImage)
+      .set({ position: newImg.position })
+      .where(eq(productImage.id, oldImg.id));
+  }
 
-export const deleteProduct = async (id: string) => {
-  const [deletedProduct] = await db
-    .delete(product)
-    .where(eq(product.id, id))
-    .returning();
-  return deletedProduct;
-};
+  // ============================================================================
+  // Return updated product
+  // ============================================================================
+  return getProductById(id);
+}
+
+// =====================================================================================
+// DELETE PRODUCT
+// =====================================================================================
+
+export async function deleteProduct(id: string) {
+  await db.delete(product).where(eq(product.id, id));
+  return { success: true };
+}

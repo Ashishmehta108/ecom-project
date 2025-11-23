@@ -287,6 +287,7 @@
 //   );
 // }
 import { getProducts } from "@/lib/actions/product-actions";
+// import getProducts
 import Link from "next/link";
 import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -477,7 +478,7 @@ export default async function AdminProductsPage() {
                   {/* Price - if available */}
                   {product.pricing?.price && (
                     <p className="text-sm sm:text-base font-medium text-neutral-700 dark:text-neutral-300 pt-1 sm:pt-2">
-                      ₹{product.pricing.price.toLocaleString('en-IN')}
+                      €{product.pricing.price.toLocaleString('en-IN')}
                     </p>
                   )}
                 </CardContent>

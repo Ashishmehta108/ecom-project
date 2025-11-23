@@ -14,7 +14,7 @@ const FALLBACK_IMG = "https://via.placeholder.com/500x500.png?text=No+Image";
 
 export default function ProductPage({ product }: { product: Product }) {
   console.log(product);
-  const { items } = userCartState();
+
   const user = authClient.useSession();
   const images =
     Array.isArray(product.productImages) && product.productImages.length > 0
@@ -49,8 +49,8 @@ export default function ProductPage({ product }: { product: Product }) {
                   className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden transition-all duration-200
                     ${
                       selectedImage === url
-                        ? "ring-2 ring-neutral-900 dark:ring-neutral-100 bg-neutral-100 dark:bg-neutral-800"
-                        : "bg-neutral-50 dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                        ? "bg-white border border-neutral-200"
+                        : ""
                     }
                   `}
                 >
@@ -58,7 +58,7 @@ export default function ProductPage({ product }: { product: Product }) {
                     src={url}
                     alt={`Thumbnail ${idx + 1}`}
                     fill
-                    className="object-contain p-2"
+                    className="object-contain  p-2"
                   />
                 </button>
               ))}
@@ -66,12 +66,13 @@ export default function ProductPage({ product }: { product: Product }) {
           )}
 
           {/* Main Image */}
-          <div className="flex-1 rounded-xl bg-neutral-50 dark:bg-neutral-900 overflow-hidden order-1 lg:order-2">
-            <div className="relative w-full aspect-square">
+          <div className="flex-1 rounded-xl bg-white dark:bg-neutral-900 overflow-hidden order-1 lg:order-2">
+            <div className="relative w-full aspect-square flex items-center justify-center">
               <Image
                 src={selectedImage}
                 alt={product.productName}
-                fill
+                width={400}
+                height={400}
                 className="object-contain p-8 transition-opacity duration-200"
               />
             </div>
@@ -82,14 +83,14 @@ export default function ProductPage({ product }: { product: Product }) {
         <div className="flex flex-col space-y-6 lg:space-y-7">
           {/* Brand & Model */}
           <div className="space-y-1">
-            <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
+            <p className="text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
               {product.brand}
             </p>
-            <h1 className="text-3xl md:text-4xl font-bold leading-tight tracking-tight">
+            <h1 className="text-2xl md:text-4xl font-semibold leading-tight tracking-tight">
               {product.productName}
             </h1>
             {product.model && (
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-2">
+              <p className=" text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 mt-2">
                 Model: {product.model}
               </p>
             )}
@@ -98,14 +99,14 @@ export default function ProductPage({ product }: { product: Product }) {
           {/* Price & Stock */}
           <div className="space-y-3 pb-6 border-b border-neutral-200 dark:border-neutral-800">
             <div className="flex items-baseline gap-3 flex-wrap">
-              <p className="text-4xl font-bold tracking-tight">
-                ₹{discountedPrice.toLocaleString()}
+              <p className="text-xl sm:text-2xl font-normal tracking-tight">
+                €{discountedPrice.toLocaleString()}
               </p>
 
               {discount > 0 && (
                 <>
-                  <p className="text-lg text-neutral-400 dark:text-neutral-600 line-through">
-                    ₹{price.toLocaleString()}
+                  <p className="text-sm sm:text-lg text-neutral-400 dark:text-neutral-600 line-through">
+                    €{price.toLocaleString()}
                   </p>
                   <Badge className="bg-green-600 hover:bg-green-600 text-white text-xs font-semibold px-2 py-0.5">
                     {discount}% OFF
