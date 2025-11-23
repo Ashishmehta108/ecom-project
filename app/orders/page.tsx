@@ -124,7 +124,7 @@ export default function OrdersPage() {
 
                 {/* Desktop price */}
                 <p className="hidden md:block font-medium mt-2 text-gray-800 dark:text-gray-200">
-                  {formatINR(order.total)}
+                  {order.total}
                 </p>
               </div>
             </div>
