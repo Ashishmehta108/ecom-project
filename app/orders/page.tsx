@@ -141,7 +141,7 @@ export default function OrdersPage() {
             <div className="text-left md:text-right md:w-1/3 text-sm text-gray-700 dark:text-gray-300 space-y-1">
               {/* Mobile price */}
               <p className="md:hidden font-medium text-gray-800 dark:text-gray-200 text-lg">
-                {formatINR(order.total)}
+                {order.total}
               </p>
 
               <p>Method: {order.method}</p>
