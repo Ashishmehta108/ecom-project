@@ -424,6 +424,7 @@ const favoriteItem = pgTable("favorite_item", {
     .references(() => product.id, { onDelete: "cascade", onUpdate: "cascade" }),
   imageUrl: text("image_url").notNull(),
 });
+
 export const favoritesRelations = relations(favorites, ({ many }) => ({
   items: many(favoriteItem),
 }));
