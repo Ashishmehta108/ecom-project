@@ -4,32 +4,22 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function CancelPage() {
-  const lineVariants = {
-    hidden: { pathLength: 0, opacity: 0 },
-    visible: (i: number) => ({
-      pathLength: 1,
-      opacity: 1,
-      transition: {
-        delay: i * 0.2,
-        duration: 0.9,
-        ease: "easeInOut",
-      },
-    }),
-  };
-
   return (
     <main className="min-h-screen flex items-center justify-center bg-neutral-50 p-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.6 }}
         className="w-full max-w-lg bg-white border border-neutral-200 rounded-2xl p-8 text-center shadow-sm"
       >
         {/* Animated Icon */}
         <motion.div
-          initial={{ scale: 0.7, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
           className="mx-auto w-28 h-28 flex items-center justify-center rounded-full bg-neutral-100"
         >
           <svg
@@ -39,26 +29,40 @@ export default function CancelPage() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
+            {/* Infinite Line Draw Animation */}
             <motion.path
-              custom={0}
-              variants={lineVariants}
-              initial="hidden"
-              animate="visible"
               d="M20 20 L44 44"
               stroke="#C04B4B"
               strokeWidth="6"
               strokeLinecap="round"
+              initial={{ pathLength: 0 }}
+              animate={{
+                pathLength: [0, 1, 0],
+                opacity: [0.2, 1, 0.2],
+              }}
+              transition={{
+                duration: 2.2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             />
 
             <motion.path
-              custom={1}
-              variants={lineVariants}
-              initial="hidden"
-              animate="visible"
               d="M44 20 L20 44"
               stroke="#C04B4B"
               strokeWidth="6"
               strokeLinecap="round"
+              initial={{ pathLength: 0 }}
+              animate={{
+                pathLength: [0, 1, 0],
+                opacity: [0.2, 1, 0.2],
+              }}
+              transition={{
+                duration: 2.2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.3,
+              }}
             />
           </svg>
         </motion.div>
