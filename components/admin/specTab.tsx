@@ -14,8 +14,9 @@ import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/admin/AdminProductPanel";
 import { ProductFormValues } from "@/lib/validations/product-schema";
 
-export const TSpecsTab: React.FC = () => {
+export const SpecsTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
+
   const { control } = form;
 
   const generalPairs = useFieldArray({
@@ -28,14 +29,16 @@ export const TSpecsTab: React.FC = () => {
     name: "specifications.technical",
   });
 
+  // Renders any dynamic KEY–VALUE pair array (general/technical)
   const renderPairBlock = (
-    fields: any[],
+    fields: { id: string }[],
     remove: (i: number) => void,
     nameBase: string
   ) =>
     fields.map((f, idx) => (
       <Card key={f.id} className="p-4 shadow-sm border rounded-xl">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+          
           {/* KEY */}
           <FormField
             control={control}
@@ -44,7 +47,7 @@ export const TSpecsTab: React.FC = () => {
               <FormItem>
                 <FormLabel>Key</FormLabel>
                 <FormControl>
-                  <Input {...field} className="h-9" />
+                  <Input {...field} className="h-9" placeholder="e.g. Brand" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -59,7 +62,7 @@ export const TSpecsTab: React.FC = () => {
               <FormItem>
                 <FormLabel>Value</FormLabel>
                 <FormControl>
-                  <Input {...field} className="h-9" />
+                  <Input {...field} className="h-9" placeholder="e.g. Apple" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -87,7 +90,7 @@ export const TSpecsTab: React.FC = () => {
         description="Add all specification fields for this product"
       />
 
-      {/* ------------------------------ GENERAL ------------------------------ */}
+      {/* GENERAL SPECIFICATIONS */}
       <div className="space-y-4">
         <h3 className="font-semibold text-lg">General Specifications</h3>
 
@@ -107,7 +110,7 @@ export const TSpecsTab: React.FC = () => {
         </Button>
       </div>
 
-      {/* ------------------------------ TECHNICAL ------------------------------ */}
+      {/* TECHNICAL SPECIFICATIONS */}
       <div className="space-y-4">
         <h3 className="font-semibold text-lg">Technical Specifications</h3>
 

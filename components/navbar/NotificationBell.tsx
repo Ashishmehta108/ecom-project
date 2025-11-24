@@ -1,40 +1,28 @@
+"use client";
 
 import { NotificationBing } from "iconsax-reactjs";
-import NotificationServer from "../notification/notificationserver";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+} from "@/components/ui/dropdown-menu";
+import NotificationList from "../notification/notificationclient";
 
-// import { Notification, NotificationBing } from "iconsax-reactjs";
-// import NotificationServer from "../notification/notificationserver";
-
-// export default function NotificationBell() {
-//   return (
-//     <button
-//       className="
-//         flex items-center justify-center
-//         p-2 rounded-full
-//         bg-transparent hover:bg-neutral-100 dark:hover:bg-white/10
-//         transition-all duration-200 cursor-pointer
-//       "
-//       aria-label="Notifications"
-//     >
-//       <NotificationBing className="size-[22px]" />
-//       {/* <NotificationServer /> */}
-//     </button>
-//   );
-// }
-
-export default async function NotificationBell() {
+export default function NotificationBell({ notifications }) {
   return (
-    <button
-      className="
-            flex items-center justify-center 
-            p-2 rounded-full   
-            bg-transparent hover:bg-neutral-100 dark:hover:bg-white/10 
-            transition-all duration-200 cursor-pointer
-          "
-      aria-label="Notifications"
-    >
-      <NotificationBing className="size-[22px]" />
-      <NotificationServer />
-    </button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-white/10 transition">
+          <NotificationBing className="size-[22px]" />
+        </button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent
+        align="end"
+        className="w-80 max-h-[400px] overflow-y-auto"
+      >
+        <NotificationList notifications={notifications} />
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

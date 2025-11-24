@@ -5,11 +5,14 @@ import Container from "../giobal/Container";
 import Logo from "./Logo";
 import NavSearch from "./NavSearch";
 import LinksDropdown from "./LinksDropdown";
-import { CartButton  } from "./CartItems";
+import { CartButton } from "./CartItems";
 import userCartState from "@/lib/states/cart.state";
 import { User } from "lucide-react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+
+// ✅ Use the wrapper (Server Component)
+import NotificationBellWrapper from "./notificationBellWrapper";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -29,6 +32,7 @@ export default function Navbar() {
     >
       <Container>
         <div className="flex items-center justify-between py-3.5 md:py-4 gap-3 md:gap-4">
+          
           {/* Logo */}
           <div className="flex items-center gap-3 flex-shrink-0">
             <Logo />
@@ -41,10 +45,13 @@ export default function Navbar() {
 
           {/* Right Side */}
           <div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
+            
             {/* Mobile Search */}
             <div className="md:hidden">
               <NavSearch />
             </div>
+
+            {/* <NotificationBellWrapper /> */}
 
             {/* Cart */}
             <CartButton items={itemsCount} />
@@ -64,8 +71,12 @@ export default function Navbar() {
                 />
               </Link>
             ) : (
-              <LinksDropdown />
+              <User
+                size={22}
+                className="text-neutral-600 dark:text-neutral-400"
+              />
             )}
+            <LinksDropdown />
           </div>
         </div>
       </Container>

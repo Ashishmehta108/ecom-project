@@ -8,7 +8,6 @@ import {
 } from "@/lib/queries/admin-cart";
 import { revalidatePath } from "next/cache";
 
-// 1. Add product to customer cart
 export async function addToCustomerCartAction(
   customerId: string,
   productId: string
@@ -17,7 +16,6 @@ export async function addToCustomerCartAction(
   revalidatePath(`/admin/customers/${customerId}/order`);
 }
 
-// 2. Update quantity
 export async function updateCartItemQtyAction(
   customerId: string,
   itemId: string,
@@ -27,7 +25,6 @@ export async function updateCartItemQtyAction(
   revalidatePath(`/admin/customers/${customerId}/order`);
 }
 
-// 3. Remove item
 export async function removeCartItemAction(customerId: string, itemId: string) {
   await removeCartItem(itemId);
   revalidatePath(`/admin/customers/${customerId}/order`);

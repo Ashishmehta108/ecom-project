@@ -3,5 +3,6 @@ import { getAllCategories } from "@/lib/actions/categories.actions";
 
 export default async function NewProductPage() {
     const categories = await getAllCategories();
+    console.log(categories)
     return <AdminProductPanel isNew={true} categories={categories} />
 }

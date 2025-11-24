@@ -11,11 +11,7 @@ import { and, eq, inArray } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { Product } from "../types/product.types";
 
-// =====================================================================================
-// HELPERS
-// =====================================================================================
 
-// Create a category only if it doesn't exist already
 async function createCategoryIfNotExists(name: string) {
   const existing = await db.query.category.findFirst({
     where: (c, { eq }) => eq(c.name, name),
@@ -35,18 +31,30 @@ async function createCategoryIfNotExists(name: string) {
 
 // Get full product with relations
 export async function getProductById(id: string) {
-  return await db.query.product.findFirst({
+  const result = await db.query.product.findFirst({
     where: eq(product.id, id),
     with: {
       productImages: true,
       productCategories: {
         with: {
-          category: true, // ⭐ IMPORTANT: include name + id
+          category: true,
         },
       },
     },
   });
+
+  if (!result) return null;
+
+  return {
+    ...result,
+    categories: result.productCategories.map((pc) => ({
+      id: pc.category.id,
+      name: pc.category.name,
+    })),
+  };
 }
+
+
 
 export async function getProducts() {
   return await db.query.product.findMany({
@@ -92,7 +100,6 @@ export const getEarbuds = async () => {
     },
   });
 
-  // optional: remove or adjust logging in production
   console.log(earbuds);
   return earbuds;
 };
@@ -169,11 +176,7 @@ export async function updateProduct(id: string, p: Partial<Product>) {
     })
     .where(eq(product.id, id));
 
-  // ============================================================================
-  // 2. CATEGORY DIFF
-  // ============================================================================
 
-  // Existing categories
   const existingCategoryLinks = await db.query.productCategory.findMany({
     where: eq(productCategory.productId, id),
   });

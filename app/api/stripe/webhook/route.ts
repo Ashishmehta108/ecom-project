@@ -140,7 +140,7 @@ export async function POST(req: NextRequest) {
     await db.insert(orders).values({
       id: orderId,
       userId,
-      status: "successful",
+      status: "successful", // your order-level status
       subtotal: ((session.amount_subtotal ?? 0) / 100).toString(),
       tax: "0",
       shippingFee: "0",

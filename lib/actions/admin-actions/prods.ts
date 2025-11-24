@@ -20,6 +20,7 @@ export async function createProductAction(data: ProductFormValues) {
       ...img,
       position: idx,
     })),
+    //@ts-ignore
     specifications: data.specifications,
   });
   revalidatePath("/admin/products");
