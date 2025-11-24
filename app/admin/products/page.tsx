@@ -1,3 +1,4 @@
+
 import { getProducts } from "@/lib/actions/product-actions";
 // import getProducts
 import Link from "next/link";
@@ -10,7 +11,10 @@ import { deleteProductAction } from "@/lib/actions/admin-actions/prods";
 export default async function AdminProductsPage() {
   const products = await getProducts();
 
-  const displayProducts = products;
+  //
+
+  // Use real products if available, otherwise use demo
+  const displayProducts = products
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">

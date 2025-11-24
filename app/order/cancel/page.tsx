@@ -1,93 +1,176 @@
+// "use client";
+
+// import Link from "next/link";
+
+// export default function CancelPage() {
+//   return (
+//     <main className="min-h-screen flex items-center justify-center bg-neutral-50 p-6">
+//       <div className="w-full max-w-lg bg-white border border-neutral-200 rounded-2xl p-8 text-center">
+        
+//         {/* Icon wrapper */}
+//         <div className="mx-auto w-28 h-28 flex items-center justify-center rounded-full bg-neutral-100">
+//           <svg
+//             width="72"
+//             height="72"
+//             viewBox="0 0 64 64"
+//             fill="none"
+//             xmlns="http://www.w3.org/2000/svg"
+//             aria-hidden="true"
+//             role="img"
+//           >
+//             <title>Payment cancelled</title>
+//             <g stroke="#C04B4B" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round">
+//               <path
+//                 className="line line1"
+//                 d="M20 20 L44 44"
+//                 stroke="#C04B4B"
+//                 fill="none"
+//               />
+//               <path
+//                 className="line line2"
+//                 d="M44 20 L20 44"
+//                 stroke="#C04B4B"
+//                 fill="none"
+//               />
+//             </g>
+//           </svg>
+//         </div>
+
+//         <h1 className="mt-6 text-2xl font-semibold text-neutral-800">Payment cancelled</h1>
+
+//         <p className="mt-2 text-sm text-neutral-500">
+//           Your payment process was cancelled. No charges were made. Come back anytime and try again.
+//         </p>
+
+//         <div className="mt-6 flex items-center justify-center gap-3">
+//           <Link
+//             href="/"
+//             className="inline-block px-5 py-2 rounded-lg border border-neutral-200 text-sm text-neutral-700 bg-white"
+//           >
+//             Return to store
+//           </Link>
+
+//           <Link
+//             href="/checkout"
+//             className="inline-block px-5 py-2 rounded-lg border border-neutral-200 text-sm text-neutral-700 bg-white"
+//           >
+//             Try again
+//           </Link>
+//         </div>
+//       </div>
+
+//       {/* Infinite Animation */}
+//       <style>{`
+//         .line {
+//           stroke-dasharray: 40;
+//           stroke-dashoffset: 40;
+//           opacity: 0.95;
+//         }
+
+//         .line1 {
+//           animation: draw 2s cubic-bezier(.2,.9,.3,1) infinite;
+//         }
+
+//         .line2 {
+//           animation: draw 1s cubic-bezier(.2,.9,.3,1) infinite 2s;
+//         }
+
+//         @keyframes draw {
+//           0%   { stroke-dashoffset: 40; }
+//           50%  { stroke-dashoffset: 0; }
+//           100% { stroke-dashoffset: 40; }
+//         }
+//       `}</style>
+//     </main>
+//   );
+// }
+
+
+
+
 "use client";
 
 import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function CancelPage() {
-  const lineVariants = {
-    hidden: { pathLength: 0, opacity: 0 },
-    visible: (i: number) => ({
-      pathLength: 1,
-      opacity: 1,
-      transition: {
-        delay: i * 0.2,
-        duration: 0.9,
-        ease: "easeInOut",
-      },
-    }),
-  };
-
   return (
     <main className="min-h-screen flex items-center justify-center bg-neutral-50 p-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-lg bg-white border border-neutral-200 rounded-2xl p-8 text-center shadow-sm"
-      >
-        {/* Animated Icon */}
-        <motion.div
-          initial={{ scale: 0.7, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="mx-auto w-28 h-28 flex items-center justify-center rounded-full bg-neutral-100"
-        >
-          <svg
-            width="74"
-            height="74"
+      <div className="w-full max-w-lg bg-white border border-neutral-200 rounded-2xl p-8 text-center">
+        
+        {/* Icon wrapper */}
+        <div className="mx-auto w-28 h-28 flex items-center justify-center rounded-full bg-neutral-100">
+          
+          <motion.svg
+            width="72"
+            height="72"
             viewBox="0 0 64 64"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <motion.path
-              custom={0}
-              variants={lineVariants}
-              initial="hidden"
-              animate="visible"
               d="M20 20 L44 44"
               stroke="#C04B4B"
-              strokeWidth="6"
+              strokeWidth="5"
               strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{
+                duration: 1.6,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "mirror",
+              }}
             />
 
             <motion.path
-              custom={1}
-              variants={lineVariants}
-              initial="hidden"
-              animate="visible"
               d="M44 20 L20 44"
               stroke="#C04B4B"
-              strokeWidth="6"
+              strokeWidth="5"
               strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{
+                duration: 1.6,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "mirror",
+                delay: 0.2,
+              }}
             />
-          </svg>
-        </motion.div>
+          </motion.svg>
+
+        </div>
 
         <h1 className="mt-6 text-2xl font-semibold text-neutral-800">
-          Payment Cancelled
+          Payment cancelled
         </h1>
 
         <p className="mt-2 text-sm text-neutral-500">
-          Your payment was cancelled. No charges were made. You can try again
-          anytime.
+          Your payment was cancelled before completion. No money was charged.
         </p>
 
         <div className="mt-6 flex items-center justify-center gap-3">
           <Link
             href="/"
-            className="inline-block px-5 py-2 rounded-lg border border-neutral-200 text-sm text-neutral-700 bg-white hover:bg-neutral-100 transition"
+            className="inline-block px-5 py-2 rounded-lg border border-neutral-200 text-sm text-neutral-700 bg-white"
           >
             Return to store
           </Link>
 
           <Link
             href="/checkout"
-            className="inline-block px-5 py-2 rounded-lg border border-neutral-200 text-sm text-neutral-700 bg-white hover:bg-neutral-100 transition"
+            className="inline-block px-5 py-2 rounded-lg border border-neutral-200 text-sm text-neutral-700 bg-white"
           >
             Try again
           </Link>
         </div>
-      </motion.div>
+      </div>
     </main>
   );
 }
