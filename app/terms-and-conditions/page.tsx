@@ -53,7 +53,7 @@ export default function TermsAndConditions() {
           {/* Pricing */}
           <section className="space-y-4">
             <h2 className="text-2xl font-bold text-black">Pricing & Payments</h2>
-            <p>All prices are in INR. We support UPI, cards, wallets, net banking, and Cash on Delivery (where available). Payments are processed securely by third-party gateways.</p>
+            <p>All prices are in EURO. We support Visa, MasterCard, MBway, MultiBanco,Klarana, cards,net banking, (where available). Payments are processed securely by Stripe Payment gateways.</p>
           </section>
 
           {/* Orders */}
@@ -72,8 +72,8 @@ export default function TermsAndConditions() {
           {/* Returns */}
           <section className="space-y-4">
             <h2 className="text-2xl font-bold text-black">Returns, Refunds & Replacements</h2>
-            <p>Return and replacement eligibility depends on the product category. Some items (like hygiene or perishable items) may not be returnable.</p>
-            <p>Refunds are processed only after a successful quality check of the returned item.</p>
+            <p>Returns, refunds, and replacements are accepted only in cases where the delivered product is found to be defective, damaged, or incorrect, and customers must submit a return request within 7 days of delivery. All items must be returned in their original packaging with the box, manuals, accessories, and invoice; products with signs of misuse, physical damage, or liquid damage caused by the customer are not eligible. Once the returned item passes quality inspection, a refund will be initiated to the original payment method within the standard processing timeline, and if the item fails inspection, it will be returned to the customer without refund. Replacements are provided only when stock is available and strictly for qualifying cases, with a maximum of one replacement per order.</p>
+           
           </section>
 
           {/* IP */}
@@ -94,11 +94,7 @@ export default function TermsAndConditions() {
             <p>We are not liable for indirect losses, courier delays, incorrect user information, or unauthorized access caused by weak passwords.</p>
           </section>
 
-          {/* Indemnification */}
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold text-black">Indemnification</h2>
-            <p>You agree to protect TechBar from any claims or damages arising from misuse of our Services or violation of these terms.</p>
-          </section>
+         
 
           {/* Updates */}
           <section className="space-y-4">
@@ -106,21 +102,9 @@ export default function TermsAndConditions() {
             <p>We may update these Terms from time to time. Continued use of TechBar means you accept the updated terms.</p>
           </section>
 
-          {/* Law */}
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold text-black">Governing Law</h2>
-            <p>These Terms are governed by Indian law. Legal matters will be handled in the courts of your state or city.</p>
-          </section>
+          
 
-          {/* Contact */}
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold text-black">Contact Information</h2>
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 space-y-2">
-              <p><span className="font-semibold">Email:</span> support@techbar.store</p>
-              <p><span className="font-semibold">Phone:</span> [Your Number]</p>
-              <p><span className="font-semibold">Address:</span> [Your Business Address]</p>
-            </div>
-          </section>
+        
 
         </div>
       </main>

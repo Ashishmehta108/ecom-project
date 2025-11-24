@@ -19,9 +19,6 @@ export default async function App() {
         <TopEarbudsSectionServer/>
         <ProductDealsSection />
         <TechbarCTA/>
-       
-        
-    
       </div>  
     </div>
   );
