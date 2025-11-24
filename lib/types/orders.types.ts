@@ -37,6 +37,7 @@ export type Order = {
   currency: string;
   createdAt: string;
   updatedAt: string;
+  orderStatus: string;
 
   shippingAddressId: string | null;
   shippingAddress: OrderAddress | null;

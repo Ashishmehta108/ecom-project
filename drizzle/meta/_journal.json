@@ -50,6 +50,13 @@
       "when": 1763885996712,
       "tag": "0006_graceful_the_hunter",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1763991783015,
+      "tag": "0007_noisy_scalphunter",
+      "breakpoints": true
     }
   ]
 }

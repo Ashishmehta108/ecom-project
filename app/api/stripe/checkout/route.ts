@@ -1,20 +1,37 @@
+// app/api/checkout/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { stripeClient as stripe } from "@/lib/stripe";
 import { getUserSession } from "@/server";
-import { user } from "@/auth-schema";
 
 export async function POST(req: NextRequest) {
   try {
-    let body;
+    // Ensure Stripe is initialized
+    if (!stripe) {
+      console.error("Stripe client not initialized");
+      return NextResponse.json(
+        { error: "Stripe client not initialized" },
+        { status: 500 }
+      );
+    }
+
+    // Parse body safely
+    let body: any;
     try {
       body = await req.json();
     } catch {
       return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
     }
-    const data = await getUserSession();
+
+    const sessionData = await getUserSession();
+    const userId = sessionData?.user?.id;
+
+    if (!userId) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    }
 
     const { items, addressId } = body;
 
+    // Basic validations
     if (!addressId) {
       return NextResponse.json({ error: "Address required" }, { status: 400 });
     }
@@ -26,8 +43,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const line_items = [];
-    console.log(items);
+    const line_items: any[] = [];
+
     for (const item of items) {
       if (
         !item ||
@@ -54,7 +71,7 @@ export async function POST(req: NextRequest) {
 
       line_items.push({
         price_data: {
-          currency: "eur",
+          currency: "eur", // <-- your shop currency
           product_data: {
             name: item.name,
             images:
@@ -62,7 +79,7 @@ export async function POST(req: NextRequest) {
                 ? [item.images[0]]
                 : [],
           },
-          unit_amount: Math.round(item.price * 100),
+          unit_amount: Math.round(Number(item.price) * 100), // cents
         },
         quantity,
       });
@@ -75,21 +92,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!process.env.NEXT_PUBLIC_APP_URL) {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    if (!appUrl) {
+      console.error("Missing NEXT_PUBLIC_APP_URL env variable");
       return NextResponse.json(
         { error: "Missing NEXT_PUBLIC_APP_URL env variable" },
-        { status: 500 }
-      );
-    }
-    if (!stripe) {
-      return NextResponse.json(
-        { error: "Stripe client not initialized" },
         { status: 500 }
       );
     }
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
+      ui_mode: "hosted",
       payment_method_types: [
         "card",
         "klarna",
@@ -99,12 +113,11 @@ export async function POST(req: NextRequest) {
         "amazon_pay",
         "paypal",
       ],
-      ui_mode: "hosted",
       line_items,
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
+      success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${appUrl}/cancel`,
       metadata: {
-        userId: data?.user.id!,
+        userId,
         addressId,
       },
     });
@@ -112,7 +125,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: session.url });
   } catch (error: any) {
     console.error("Checkout Error:", error);
-
     return NextResponse.json(
       { error: "Failed to create checkout session" },
       { status: 500 }
