@@ -37,7 +37,10 @@ export type Order = {
   currency: string;
   createdAt: string;
   updatedAt: string;
+<<<<<<< HEAD
   orderStatus: string;
+=======
+>>>>>>> main
 
   shippingAddressId: string | null;
   shippingAddress: OrderAddress | null;

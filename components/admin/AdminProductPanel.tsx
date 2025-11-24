@@ -804,7 +804,7 @@ const CategoriesTab: React.FC<{ categories: Category[] }> = ({
 };
 
 export default function AdminProductPanel({
-  initialProduct = {},
+  initialProduct={},
   categories = [],
   isNew = false,
 }: Props) {
@@ -819,20 +819,18 @@ export default function AdminProductPanel({
   React.useEffect(() => setLastUpdated(new Date().toLocaleDateString()), []);
   console.log(categories, initialProduct);
   const defaultValues: ProductFormValues = {
-    id: initialProduct.id ?? undefined,
-
-    productName: initialProduct.productName ?? "",
-    brand: initialProduct.brand ?? "",
-    model: initialProduct.model ?? "",
-    subCategory: initialProduct.subCategory ?? "",
-    description: initialProduct.description ?? "",
-
-    features: initialProduct.features ?? [],
-    tags: initialProduct.tags ?? [],
-    categories:
-    //@ts-ignore
-      initialProduct.productCategories,
-    pricing: initialProduct.pricing ?? {
+    id: initialProduct?.id ?? undefined, // Add ? after initialProduct
+    productName: initialProduct?.productName ?? "", // Add ?
+    brand: initialProduct?.brand ?? "", // Add ?
+    model: initialProduct?.model ?? "", // Add ?
+    subCategory: initialProduct?.subCategory ?? "", // Add ?
+    description: initialProduct?.description ?? "", // Add ?
+    slug: initialProduct?.slug ?? "", // Add ?
+    features: initialProduct?.features ?? [], // Add ?
+    tags: initialProduct?.tags ?? [], // Add ?
+    categories: initialProduct?.categories ?? [], // Add ?
+    pricing: initialProduct?.pricing ?? {
+      // Add ?
       price: 0,
       currency: "INR",
       discount: 0,
@@ -905,14 +903,34 @@ export default function AdminProductPanel({
               </p>
             </div>
           </div>
+
+          <Button
+            type="submit"
+            form="product-form"
+            disabled={isPending}
+            size="lg"
+            className="w-full sm:w-auto h-12 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <CheckCircle2 className="w-5 h-5 mr-2" />
+                {isNew ? "Create Product" : "Save Changes"}
+              </>
+            )}
+          </Button>
         </div>
 
         {/* Main Card */}
         <Card className="rounded-2xl border-2 border-neutral-200 dark:border-neutral-800 shadow-xl overflow-hidden">
           <CardHeader className="border-b-2 border-neutral-200 dark:border-neutral-800 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-900 dark:to-neutral-950 p-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                <Package className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <Package className="w-5 h-5 text-indigo-600 dark:text-blue-400" />
               </div>
               <div>
                 <CardTitle className="text-xl font-semibold">
