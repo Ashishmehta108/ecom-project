@@ -6,9 +6,9 @@ import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Package, Plus } from "lucide-react";
+import { deleteProductAction } from "@/lib/actions/admin-actions/prods";
 
 export default async function AdminProductsPage() {
-  // Fetch real products from database
   const products = await getProducts();
 
   //
@@ -20,7 +20,6 @@ export default async function AdminProductsPage() {
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
       {/* Container with consistent spacing */}
       <div className="p-10 max-w-[1100px] mx-auto space-y-8">
-        
         {/* Header Section with Add Button */}
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-2">
@@ -28,14 +27,13 @@ export default async function AdminProductsPage() {
               All Products
             </h1>
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              Manage your product catalog · {displayProducts.length} {displayProducts.length === 1 ? 'product' : 'products'}
+              Manage your product catalog · {displayProducts.length}{" "}
+              {displayProducts.length === 1 ? "product" : "products"}
             </p>
           </div>
-          
+
           <Link href="/admin/products/new">
-            <Button 
-              className="gap-2 bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-neutral-200 text-white dark:text-neutral-900 shadow-sm transition-colors"
-            >
+            <Button className="gap-2 bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-neutral-200 text-white dark:text-neutral-900 shadow-sm transition-colors">
               <Plus className="w-4 h-4" />
               <span className="hidden sm:inline">Add Product</span>
               <span className="sm:hidden">Add</span>
@@ -45,12 +43,8 @@ export default async function AdminProductsPage() {
 
         {/* Products Grid - Optimized for mobile and desktop */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
-          
           {/* Add New Product Card - Always first */}
-          <Link 
-            href="/admin/products/new"
-            className="group block"
-          >
+          <Link href="/admin/products/new" className="group block">
             <Card className="h-full border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl shadow-sm transition-all duration-200 hover:border-neutral-400 dark:hover:border-neutral-600 hover:bg-neutral-50/50 dark:hover:bg-neutral-900/50 cursor-pointer overflow-hidden">
               <div className="flex flex-col items-center justify-center h-44 sm:h-48 lg:h-52 bg-neutral-50/50 dark:bg-neutral-900/50">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center mb-3 group-hover:bg-neutral-300 dark:group-hover:bg-neutral-700 transition-colors">
@@ -68,13 +62,18 @@ export default async function AdminProductsPage() {
 
           {/* Existing Products */}
           {displayProducts.map((product) => (
-            <Link 
-              key={product.id} 
+            <div
+            key={product.id}
+            className="group block relative"
+          >
+
+          
+            <Link
+              key={product.id}
               href={`/admin/products/${product.id}`}
               className="group block"
             >
               <Card className="h-full border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-sm transition-all duration-200 hover:bg-neutral-50/50 dark:hover:bg-neutral-900/50 hover:border-neutral-300 dark:hover:border-neutral-700 cursor-pointer overflow-hidden">
-                
                 {/* Product Image - Responsive sizing */}
                 {product.productImages?.[0]?.url ? (
                   <div className="relative w-full h-44 sm:h-48 lg:h-52 bg-neutral-100 dark:bg-neutral-900 overflow-hidden">
@@ -106,7 +105,7 @@ export default async function AdminProductsPage() {
                       {product.brand}
                     </p>
                   )}
-                  
+
                   {/* Model */}
                   {product.model && (
                     <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-500">
@@ -117,16 +116,32 @@ export default async function AdminProductsPage() {
                   {/* Price - if available */}
                   {product.pricing?.price && (
                     <p className="text-sm sm:text-base font-medium text-neutral-700 dark:text-neutral-300 pt-1 sm:pt-2">
-                      €{product.pricing.price.toLocaleString('en-IN')}
+                      €{product.pricing.price.toLocaleString("en-IN")}
                     </p>
                   )}
                 </CardContent>
               </Card>
             </Link>
+             <form
+             action={async () => {
+               "use server";
+               await deleteProductAction(product.id);
+             }}
+             className="absolute top-3 right-3"
+           >
+             <Button
+               type="submit"
+               size="icon"
+               variant="destructive"
+               className="w-8 h-8 rounded-full shadow-md"
+             >
+               ✕
+             </Button>
+           </form>
+           </div>
           ))}
         </div>
 
-        {/* Empty State */}
         {displayProducts.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 sm:py-24 space-y-4">
             <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center">
@@ -137,7 +152,8 @@ export default async function AdminProductsPage() {
                 No products yet
               </h3>
               <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 max-w-sm mx-auto">
-                Start by creating your first product to begin managing your catalog
+                Start by creating your first product to begin managing your
+                catalog
               </p>
               <Link href="/admin/products/new">
                 <Button className="gap-2 bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:hover:bg-neutral-200 text-white dark:text-neutral-900 mt-4">

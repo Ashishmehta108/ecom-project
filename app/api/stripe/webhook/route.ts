@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
 
   let event: Stripe.Event;
 
+  // Verify signature
   try {
     event = stripe.webhooks.constructEvent(rawBody, signature, endpointSecret);
   } catch (err: any) {
@@ -42,7 +43,45 @@ export async function POST(req: NextRequest) {
   console.log(`Stripe Event: ${event.type}`);
 
   // ------------------------------------------------------------------
-  // 1️⃣ Handle Checkout Session Completed (main flow)
+  // 1️⃣ PAYMENT INTENT SUCCEEDED
+  // ------------------------------------------------------------------
+  if (event.type === "payment_intent.succeeded") {
+    const intent = event.data.object as Stripe.PaymentIntent;
+    console.log("PaymentIntent succeeded:", intent.id);
+
+    const userId = intent.metadata?.userId;
+    if (!userId) return new Response("OK", { status: 200 });
+
+    const existingPayment = await db.query.payments.findFirst({
+      where: (table, { eq }) => eq(table.stripePaymentIntentId, intent.id),
+    });
+
+    if (existingPayment) {
+      await db
+        .update(payments)
+        .set({ status: "succeeded" })
+        .where(eq(payments.stripePaymentIntentId, intent.id));
+
+      return new Response("OK", { status: 200 });
+    }
+
+    await db.insert(payments).values({
+      id: nanoid(),
+      userId,
+      orderId: null,
+      stripePaymentIntentId: intent.id,
+      stripeCheckoutSessionId: intent.metadata?.checkoutSessionId ?? "",
+      amount: intent.amount_received ?? 0,
+      currency: intent.currency ?? "INR",
+      status: "succeeded",
+    });
+
+    console.log("Payment created successfully");
+    return new Response("OK", { status: 200 });
+  }
+
+  // ------------------------------------------------------------------
+  // 2️⃣ CHECKOUT SESSION COMPLETED
   // ------------------------------------------------------------------
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
@@ -53,18 +92,15 @@ export async function POST(req: NextRequest) {
     const addressId = session.metadata?.addressId ?? null;
     const checkoutSessionId = session.id;
 
-    if (!userId) {
-      console.error("Missing userId in session metadata");
-      return new Response("OK", { status: 200 });
-    }
+    if (!userId) return new Response("OK", { status: 200 });
 
-    // Extract payment_intent id (string)
+    // Extract paymentIntentId
     const paymentIntentId =
       typeof session.payment_intent === "string"
         ? session.payment_intent
         : session.payment_intent?.id ?? "";
 
-    // 1. Ensure PAYMENT row exists (idempotent)
+    // Create/Update PAYMENT (Idempotent)
     if (paymentIntentId) {
       const existingPayment = await db.query.payments.findFirst({
         where: (table, { eq }) =>
@@ -78,35 +114,29 @@ export async function POST(req: NextRequest) {
           orderId: null,
           stripePaymentIntentId: paymentIntentId,
           stripeCheckoutSessionId: checkoutSessionId,
-          amount: session.amount_total ?? 0, // in smallest unit (cents)
-          currency: (session.currency ?? "eur").toLowerCase(),
+          amount: session.amount_total ?? 0,
+          currency: (session.currency ?? "INR").toLowerCase(),
           status: "succeeded",
         });
-
-        console.log("Payment created from Checkout session");
       } else if (existingPayment.status !== "succeeded") {
         await db
           .update(payments)
           .set({ status: "succeeded" })
           .where(eq(payments.id, existingPayment.id));
-
-        console.log("Payment status updated from Checkout session");
       }
     }
 
-    // 2. Ensure ORDER does not already exist (idempotency)
+    // Idempotency: Skip if order already exists
     const existingOrder = await db.query.orders.findFirst({
       where: (table, { eq }) =>
         eq(table.stripeCheckoutSessionId, checkoutSessionId),
     });
 
-    if (existingOrder) {
-      console.log("Order already exists, skipping order creation.");
-      return new Response("OK", { status: 200 });
-    }
+    if (existingOrder) return new Response("OK", { status: 200 });
 
     const orderId = nanoid();
 
+    // Create ORDER
     await db.insert(orders).values({
       id: orderId,
       userId,
@@ -118,12 +148,12 @@ export async function POST(req: NextRequest) {
       currency: (session.currency ?? "INR").toUpperCase(),
       shippingAddressId: addressId,
       stripePaymentIntentId: paymentIntentId,
-      stripeCheckoutSessionId: session.id,
+      stripeCheckoutSessionId: checkoutSessionId,
     });
 
     console.log("Order created:", orderId);
 
-    // 3. Attach ORDER_ID back to payment (so relation is connected)
+    // Attach orderId to payment
     if (paymentIntentId) {
       await db
         .update(payments)
@@ -131,23 +161,16 @@ export async function POST(req: NextRequest) {
         .where(eq(payments.stripePaymentIntentId, paymentIntentId));
     }
 
-    // 4. Move CART → ORDER ITEMS and clear cart
+    // Move cart → order items
     const userCart = await db.query.cart.findFirst({
       where: (table, { eq }) => eq(table.userId, userId),
     });
 
-    if (!userCart) {
-      console.log("No cart found for user");
-      return new Response("OK", { status: 200 });
-    }
+    if (userCart) {
+      const userCartItems = await db.query.cartItem.findMany({
+        where: (table, { eq }) => eq(table.cartId, userCart.id),
+      });
 
-    const userCartItems = await db.query.cartItem.findMany({
-      where: (table, { eq }) => eq(table.cartId, userCart.id),
-    });
-
-    if (userCartItems.length === 0) {
-      console.log("Cart empty, nothing to move to order items");
-    } else {
       for (const item of userCartItems) {
         await db.insert(orderItem).values({
           id: nanoid(),
@@ -158,28 +181,26 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      console.log("Order items added:", userCartItems.length);
-
       await db.delete(cartItem).where(eq(cartItem.cartId, userCart.id));
 
-      console.log("Cart cleared");
+      console.log("Cart moved to order items and cleared");
     }
 
     return new Response("OK", { status: 200 });
   }
 
   // ------------------------------------------------------------------
-  // 2️⃣ (Optional) Handle PaymentIntent Failure – mainly for tracking
+  // 3️⃣ PAYMENT FAILED
   // ------------------------------------------------------------------
   if (event.type === "payment_intent.payment_failed") {
     const intent = event.data.object as Stripe.PaymentIntent;
-    console.log("PaymentIntent failed:", intent.id);
 
     await db
       .update(payments)
       .set({ status: "failed" })
       .where(eq(payments.stripePaymentIntentId, intent.id));
 
+    console.log("Payment failed:", intent.id);
     return new Response("OK", { status: 200 });
   }
 
