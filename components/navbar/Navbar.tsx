@@ -5,7 +5,7 @@ import Container from "../giobal/Container";
 import Logo from "./Logo";
 import NavSearch from "./NavSearch";
 import LinksDropdown from "./LinksDropdown";
-import { CartButton } from "./CartItems";
+import { CartButton  } from "./CartItems";
 import userCartState from "@/lib/states/cart.state";
 import { User } from "lucide-react";
 import Link from "next/link";
@@ -49,17 +49,6 @@ export default function Navbar() {
             {/* Cart */}
             <CartButton items={itemsCount} />
 
-<<<<<<< HEAD
-              {/* <NotificationBell /> */}
-
-              <CartButton items={itemsCount} />
-              
-
-              {isLoading ? (
-                <div
-                  className="h-9 w-9 rounded-full bg-neutral-200 dark:bg-neutral-800 animate-pulse"
-                  aria-label="Loading user information"
-=======
             {/* User / Login */}
             {isPending ? (
               <div className="h-9 w-9 rounded-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
@@ -72,7 +61,6 @@ export default function Navbar() {
                 <User
                   size={22}
                   className="text-neutral-600 dark:text-neutral-400"
->>>>>>> 91dec43c76c25d78f2573e53a3923563b62fcb66
                 />
               </Link>
             ) : (
