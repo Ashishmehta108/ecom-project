@@ -1,25 +1,8 @@
 import { z } from "zod";
 
-export const generalSpecsSchema = z.object({
-  productName: z.string().default(""),
-  brandName: z.string().default(""),
-  colors: z.string().default(""),
-  material: z.string().default(""),
-  weight: z.string().default(""),
-  sizeMm: z.string().default(""),
-  privateMold: z.string().default(""),
-  certificate: z.array(z.string()).default([]),
-});
-
-export const technicalSpecsSchema = z.object({
-  bluetoothVersion: z.string().default(""),
-  wirelessDelayTime: z.string().default(""),
-  waterproofStandard: z.string().default(""),
-  chipset: z.string().default(""),
-  batteryCapacity: z.string().default(""),
-  useTime: z.string().default(""),
-  standbyTime: z.string().default(""),
-});
+const specPair = z.object({ key: z.string().min(1), value: z.string().min(1) });
+export const generalSpecsSchema = z.array(specPair).default([]);
+export const technicalSpecsSchema = z.array(specPair).default([]);
 
 export const pricingSchema = z.object({
   price: z.coerce.number().min(0),
@@ -34,28 +17,26 @@ export const productImageSchema = z.object({
   fileId: z.string().optional(),
 });
 
+export const productSchema = z.object({
+  id: z.string().optional(),
+});
 export const productFormSchema = z.object({
   id: z.string().optional(),
   productName: z.string().min(1),
   brand: z.string().min(1),
-  model: z.string().optional().default(""),
-
+  model: z.string().default(""),
+  subCategory: z.string().default(""),
+  description: z.string().default(""),
   categories: z.array(z.string()).default([]),
-
-  subCategory: z.string().optional().default(""),
-  description: z.string().optional().default(""),
   features: z.array(z.string()).default([]),
-
   pricing: pricingSchema,
-
   specifications: z.object({
     general: generalSpecsSchema,
     technical: technicalSpecsSchema,
   }),
-
   productImages: z.array(productImageSchema).default([]),
-
   tags: z.array(z.string()).default([]),
 });
-
 export type ProductFormValues = z.infer<typeof productFormSchema>;
+export type ProductFormFormValues = z.input<typeof productFormSchema> &
+  ProductFormValues;
