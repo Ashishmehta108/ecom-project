@@ -40,7 +40,9 @@ export async function getProductById(id: string) {
     with: {
       productImages: true,
       productCategories: {
-        with: { category: true },
+        with: {
+          category: true, // ⭐ IMPORTANT: include name + id
+        },
       },
     },
   });
@@ -50,9 +52,7 @@ export async function getProducts() {
   return await db.query.product.findMany({
     with: {
       productImages: true,
-      productCategories: {
-        with: { category: true },
-      },
+      productCategories: true,
     },
   });
 }
@@ -119,7 +119,6 @@ export async function createProduct(p: Partial<Product>) {
     tags: p.tags ?? [],
   });
 
-  // Categories
   const categoriesToInsert = [];
   for (const name of p.categories ?? []) {
     categoriesToInsert.push(await createCategoryIfNotExists(name));
@@ -134,7 +133,6 @@ export async function createProduct(p: Partial<Product>) {
     );
   }
 
-  // Images
   if (p.productImages?.length) {
     await db.insert(productImage).values(
       p.productImages.map((img, index) => ({
@@ -189,11 +187,9 @@ export async function updateProduct(id: string, p: Partial<Product>) {
   }
   const incomingIds = new Set(incomingCats.map((c) => c.id));
 
-  // Compute diff
   const toAdd = [...incomingIds].filter((cid) => !existingIds.has(cid));
   const toRemove = [...existingIds].filter((cid) => !incomingIds.has(cid));
 
-  // Add new category relations
   if (toAdd.length) {
     await db.insert(productCategory).values(
       toAdd.map((categoryId) => ({
@@ -203,7 +199,6 @@ export async function updateProduct(id: string, p: Partial<Product>) {
     );
   }
 
-  // Remove outdated category relations
   if (toRemove.length) {
     await db
       .delete(productCategory)
@@ -231,7 +226,6 @@ export async function updateProduct(id: string, p: Partial<Product>) {
   const imagesToUpdate: any[] = [];
   const imagesToRemove: string[] = [];
 
-  // Determine images to add or update
   for (const [fileId, newImg] of incomingMap) {
     if (!existingMap.has(fileId)) {
       imagesToAdd.push(newImg);
@@ -243,14 +237,12 @@ export async function updateProduct(id: string, p: Partial<Product>) {
     }
   }
 
-  // Determine images to remove
   for (const [fileId, oldImg] of existingMap) {
     if (!incomingMap.has(fileId)) {
       imagesToRemove.push(oldImg.fileId);
     }
   }
 
-  // Apply removals
   if (imagesToRemove.length) {
     await db
       .delete(productImage)
@@ -262,7 +254,6 @@ export async function updateProduct(id: string, p: Partial<Product>) {
       );
   }
 
-  // Apply additions
   if (imagesToAdd.length) {
     await db.insert(productImage).values(
       imagesToAdd.map((img) => ({
@@ -275,7 +266,6 @@ export async function updateProduct(id: string, p: Partial<Product>) {
     );
   }
 
-  // Apply updates (position)
   for (const { oldImg, newImg } of imagesToUpdate) {
     await db
       .update(productImage)
@@ -288,11 +278,6 @@ export async function updateProduct(id: string, p: Partial<Product>) {
   // ============================================================================
   return getProductById(id);
 }
-
-// =====================================================================================
-// DELETE PRODUCT
-// =====================================================================================
-
 export async function deleteProduct(id: string) {
   await db.delete(product).where(eq(product.id, id));
   return { success: true };

@@ -1,5 +1,4 @@
 "use client";
-
 export type AdminAnalytics = {
   kpis: {
     totalRevenue: number;

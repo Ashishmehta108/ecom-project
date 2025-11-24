@@ -8,13 +8,13 @@ export default async function ProductEditorPage({
 }) {
   const p = await params;
   const product = await getProductById((await params).id);
-
+console.log(product)
   return (
     <div className="p-8">
-
       <AdminProductPanel
-      //@ts-ignore
-      initialProduct={product} />
+        //@ts-ignore
+        initialProduct={product}
+      />
     </div>
   );
 }
