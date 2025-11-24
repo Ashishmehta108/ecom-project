@@ -186,7 +186,6 @@ export async function seedProds() {
   );
   let data;
   if (Array.isArray(p)) {
-    // MULTIPLE products
     console.log(`Found ${p.length} products. Seeding all...`);
     for (const prod of p) {
       data = await insertProduct(prod);

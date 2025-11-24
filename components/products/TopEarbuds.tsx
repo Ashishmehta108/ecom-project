@@ -162,8 +162,6 @@
 //   );
 // }
 
-
-
 "use client";
 
 import Image from "next/image";
@@ -285,7 +283,7 @@ export default function TopEarbudsSection() {
                 </div>
 
                 {/* DISCOUNT BADGE */}
-                {e.discount && (
+                {e.discount && e.discount !== 0 && (
                   <span
                     className="
                       absolute bottom-2 left-2
@@ -296,7 +294,7 @@ export default function TopEarbudsSection() {
                       rounded-full
                     "
                   >
-                    {e.discount}% OFF
+                    {e.discount}% off
                   </span>
                 )}
               </div>
