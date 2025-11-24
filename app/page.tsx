@@ -1,10 +1,11 @@
 import ImageSlider from "@/components/ImageSlider";
 import ProductDealsSection from "@/components/products/ProductDealsSection";
 import TopCategoriesSection from "@/components/products/TopCategoriesSection";
-import ElectronicsBrandSlider from "@/components/products/ElectronicsBrandSlider";
 import { getAllCategories } from "@/lib/actions/categories.actions";
+import TechbarCTA from "@/components/CTA/TechbarCTA";
 
 import TopEarbudsSectionServer from "@/components/home/TopEarbudsSectionServer";
+
 
 
 
@@ -17,10 +18,10 @@ export default async function App() {
         <TopCategoriesSection categories={categories} />
         <TopEarbudsSectionServer/>
         <ProductDealsSection />
-       {/* <TopEarbudsSection/>
-        */}
+        <TechbarCTA/>
+       
         
-        {/* <ElectronicsBrandSlider /> */}
+    
       </div>  
     </div>
   );
