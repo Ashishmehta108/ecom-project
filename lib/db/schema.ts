@@ -329,6 +329,7 @@ const orders = pgTable("orders", {
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
+  orderStatus: text("order_status").default("pending"),
 });
 
 const orderItem = pgTable("order_item", {
