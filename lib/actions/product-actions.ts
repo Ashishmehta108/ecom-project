@@ -215,10 +215,6 @@ export async function updateProduct(id: string, p: Partial<Product>) {
       );
   }
 
-  // ============================================================================
-  // 3. IMAGE DIFF UPDATE
-  // ============================================================================
-
   const existingImages = await db.query.productImage.findMany({
     where: eq(productImage.productId, id),
   });

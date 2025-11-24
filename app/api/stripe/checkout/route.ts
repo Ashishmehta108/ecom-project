@@ -1,139 +1,24 @@
-// // import { NextRequest, NextResponse } from "next/server";
-// // import { stripeClient as stripe } from "@/lib/stripe";
-
-// // export async function POST(req: NextRequest) {
-// //   try {
-// //     const { items, userId } = await req.json();
-
-// //     if (!items || items.length === 0) {
-// //       return NextResponse.json({ error: "No items provided" }, { status: 400 });
-// //     }
-
-// //     // Convert items → Stripe line_items
-// //     const line_items = items.map((item: any) => ({
-// //       price_data: {
-// //         currency: "inr",
-// //         product_data: {
-// //           name: item.name,
-// //           images: item.images ? [item.images[0]] : [],
-// //         },
-// //         unit_amount: Math.round(item.price * 100), // ₹ → paise
-// //       },
-// //       quantity: item.quantity,
-// //     }));
-
-// //     // Create the checkout session
-// //     const session = await stripe.checkout.sessions.create({
-// //       mode: "payment",
-// //       payment_method_types: [
-// //         "card",
-// //         "klarna",
-// //         "giropay",
-// //         "mb_way",
-// //         "multibanco",
-// //         "amazon_pay",
-// //         "paypal",
-// //       ],
-// //       line_items,
-// //       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-// //       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
-// //       metadata: {
-// //         userId: userId || "guest",
-// //       },
-// //       ui_mode: "hosted",
-// //       //   return_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-// //     });
-
-// //     console.log(session.id);
-
-// //     return NextResponse.json({ url: session.url });
-// //   } catch (error: any) {
-// //     console.error("Checkout Error:", error);
-// //     return NextResponse.json({ error: error.message }, { status: 500 });
-// //   }
-// // }
-
-// import { NextRequest, NextResponse } from "next/server";
-// import { stripeClient as stripe } from "@/lib/stripe";
-
-// export async function POST(req: NextRequest) {
-//   try {
-//     const { items, userId } = await req.json();
-
-//     if (!items || items.length === 0) {
-//       return NextResponse.json({ error: "No items provided" }, { status: 400 });
-//     }
-
-//     // Convert cart to Stripe line items
-//     const line_items = items.map((item: any) => ({
-//       price_data: {
-//         currency: "eur",
-//         product_data: {
-//           name: item.name,
-//           images: item.images ? [item.images[0]] : [],
-//         },
-//         unit_amount: Math.round(item.price * 100),
-//       },
-//       quantity: item.quantity,
-//     }));
-
-//     const session = await stripe.checkout.sessions.create({
-//       mode: "payment",
-
-//       payment_method_types: [
-//         "card",
-//         "klarna",
-//         "giropay",
-//         "mb_way",
-//         "multibanco",
-//         "amazon_pay",
-//         "paypal",
-//       ],
-
-//       // Payment Methods list is NOT required
-//       // Checkout finds the best ones automatically.
-
-//       line_items,
-
-//       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-//       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
-
-//       // Hosted UI
-//       ui_mode: "hosted",
-
-//       metadata: {
-//         userId: userId || "guest",
-//       },
-//     });
-
-//     return NextResponse.json({ url: session.url });
-//   } catch (error: any) {
-//     console.error("Checkout Error:", error);
-//     return NextResponse.json({ error: error.message }, { status: 500 });
-//   }
-// }
-
-// app/api/stripe/checkout/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { stripeClient as stripe } from "@/lib/stripe";
+import { getUserSession } from "@/server";
+import { user } from "@/auth-schema";
 
 export async function POST(req: NextRequest) {
   try {
-    // ---------- Parse Body Safely ----------
     let body;
     try {
       body = await req.json();
     } catch {
       return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
     }
+    const data = await getUserSession();
 
-    const { items, userId, addressId } = body;
+    const { items, addressId } = body;
 
     if (!addressId) {
       return NextResponse.json({ error: "Address required" }, { status: 400 });
     }
 
-    // ---------- Validate Items ----------
     if (!Array.isArray(items) || items.length === 0) {
       return NextResponse.json(
         { error: "Items must be a non-empty array" },
@@ -141,7 +26,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ---------- Build Line Items Safely ----------
     const line_items = [];
     console.log(items);
     for (const item of items) {
@@ -191,15 +75,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ---------- Validate APP URL ----------
     if (!process.env.NEXT_PUBLIC_APP_URL) {
       return NextResponse.json(
         { error: "Missing NEXT_PUBLIC_APP_URL env variable" },
         { status: 500 }
       );
     }
-
-    // ---------- Validate Stripe Client ----------
     if (!stripe) {
       return NextResponse.json(
         { error: "Stripe client not initialized" },
@@ -207,27 +88,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ---------- Allowed Payment Methods ----------
-    const paymentMethods = [
-      "card",
-      "klarna",
-      "giropay",
-      "mb_way",
-      "multibanco",
-      "amazon_pay",
-      "paypal",
-    ];
-
-    // ---------- Create Checkout Session ----------
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      payment_method_types: paymentMethods,
+      payment_method_types: [
+        "card",
+        "klarna",
+        "giropay",
+        "mb_way",
+        "multibanco",
+        "amazon_pay",
+        "paypal",
+      ],
       ui_mode: "hosted",
       line_items,
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
       metadata: {
-        userId: userId || "guest",
+        userId: data?.user.id!,
         addressId,
       },
     });
