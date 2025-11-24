@@ -26,14 +26,14 @@ import { authClient } from "@/lib/auth-client";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import { Apple } from "iconsax-reactjs";
+import { redirect } from "next/navigation";
 
 const formViaEmailSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-export default function LoginForm() {
-
+export default function LoginForm({ redirectUrl }: { redirectUrl?: string }) {
   const form = useForm<z.infer<typeof formViaEmailSchema>>({
     resolver: zodResolver(formViaEmailSchema),
     mode: "onChange",
@@ -62,6 +62,7 @@ export default function LoginForm() {
       }
 
       toast.success("Logged in successfully!");
+      redirect(`/${redirectUrl || ""}`);
     } catch (err: any) {
       console.error(err);
       toast.error(err.message || "Something went wrong.");
@@ -82,19 +83,14 @@ export default function LoginForm() {
         <CardContent className="space-y-8">
           {/* SIGN IN WITH PROVIDERS */}
           <div className="flex w-full gap-3">
-             <Button
+            <Button
               variant="outline"
               className="flex-1 h-11 gap-2"
               onClick={async () =>
                 await authClient.signIn.social({ provider: "apple" })
               }
             >
-              <Image
-              src={apple.src}
-              alt="hi"
-              width={19}
-              height={19}
-             />
+              <Image src={apple.src} alt="hi" width={19} height={19} />
               Apple
             </Button>
 
@@ -105,12 +101,7 @@ export default function LoginForm() {
                 await authClient.signIn.social({ provider: "google" })
               }
             >
-              <Image
-              src={google.src}
-              alt="hi"
-              width={18}
-              height={18}
-             />
+              <Image src={google.src} alt="hi" width={18} height={18} />
               Google
             </Button>
           </div>

@@ -21,6 +21,8 @@ export async function POST(req: Request) {
   }
 }
 
+
+
 export async function GET(req: Request) {
   try {
     const data = await db.query.product.findMany({

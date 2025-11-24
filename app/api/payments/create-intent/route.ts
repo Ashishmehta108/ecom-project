@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
   try {
-    // ---- Parse Body Safely ----
+    // -------------------- Parse Body --------------------
     let body;
     try {
       body = await req.json();
@@ -16,17 +16,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
     }
 
-    const { amount, currency = "eur" } = body;
+    const { total: amount, currency = "eur", method } = body;
+    console.log("Amount:", amount, "Currency:", currency, "Method:", method);
 
-    // ---- Validate Amount ----
-    if (typeof amount !== "number" || isNaN(amount) || amount <= 0) {
-      return NextResponse.json(
-        { error: "Amount must be a positive number" },
-        { status: 400 }
-      );
+    // -------------------- Validation --------------------
+    if (!amount || typeof amount !== "number" || amount <= 0) {
+      return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
     }
 
-    // ---- Validate Currency ----
     const allowedCurrencies = ["eur", "usd", "inr"];
     if (!allowedCurrencies.includes(currency.toLowerCase())) {
       return NextResponse.json(
@@ -35,9 +32,33 @@ export async function POST(req: Request) {
       );
     }
 
+    if (!method) {
+      return NextResponse.json(
+        { error: "Payment method required" },
+        { status: 400 }
+      );
+    }
+
+    const allowedMethods = [
+      "card",
+      "paypal",
+      "klarna",
+      "giropay",
+      "amazon_pay",
+      "mb_way",
+      "multibanco",
+    ];
+
+    if (!allowedMethods.includes(method)) {
+      return NextResponse.json(
+        { error: "Unsupported payment method" },
+        { status: 400 }
+      );
+    }
+
     if (!stripe) {
       return NextResponse.json(
-        { error: "Stripe client not initialized" },
+        { error: "Stripe not initialized" },
         { status: 500 }
       );
     }
@@ -50,19 +71,25 @@ export async function POST(req: Request) {
 
     const userId = session.user.id;
 
+    // -------------------- Create Payment Intent --------------------
     let paymentIntent;
     try {
       paymentIntent = await stripe.paymentIntents.create({
         amount,
         currency,
-        automatic_payment_methods: { enabled: true },
-        metadata: { userId },
+        // We ENABLE manual payment methods
+        automatic_payment_methods: { enabled: false },
+        payment_method: method,
+      
+        payment_method_types: [method],
+
+        metadata: { userId, selected_method: method },
       });
     } catch (stripeError: any) {
       console.error("Stripe PI Creation Error →", stripeError);
       return NextResponse.json(
-        { error: "Unable to create payment. Try again later." },
-        { status: 502 }
+        { error: stripeError.message || "Payment creation failed" },
+        { status: 500 }
       );
     }
 
@@ -73,19 +100,14 @@ export async function POST(req: Request) {
       .limit(1);
 
     if (existing.length === 0) {
-      await db
-        .insert(payments)
-        .values({
-          id: paymentIntent.id,
-          userId,
-          stripePaymentIntentId: paymentIntent.id,
-          amount,
-          currency,
-          status: paymentIntent.status,
-        })
-        .catch((dbError) => {
-          console.error("DB Insert Error →", dbError);
-        });
+      await db.insert(payments).values({
+        id: paymentIntent.id,
+        userId,
+        stripePaymentIntentId: paymentIntent.id,
+        amount,
+        currency,
+        status: paymentIntent.status,
+      });
     }
 
     return NextResponse.json({
@@ -93,9 +115,6 @@ export async function POST(req: Request) {
     });
   } catch (error: any) {
     console.error("Unexpected Error →", error);
-    return NextResponse.json(
-      { error: "Server error. Please try again later." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

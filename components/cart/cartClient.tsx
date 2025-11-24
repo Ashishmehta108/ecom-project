@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ShoppingBag, Trash2, Lock, Truck } from "lucide-react";
 import userCartState from "@/lib/states/cart.state";
 import {
   updateItemQuantity,
   removeItemFromCart,
   clearCart,
 } from "@/lib/actions/cart-actions";
-
-import EmptyCart from "@/components/cart/EmptyCart";
+import { syncCart } from "@/lib/syncCart";
+import EmptyCart from "./EmptyCart";
 import CartSkeleton from "./CartSkeleton";
 
 interface CartPageClientProps {
@@ -21,150 +20,122 @@ export default function CartPageClient({
   userId,
   initialItems,
 }: CartPageClientProps) {
-  const { items, setItems, updateQty, removeItem, clear } = userCartState();
+  const { items, setItems } = userCartState();
+  const [loading, setLoading] = useState(true);
 
-  const [isLoading, setisLoading] = useState(true);
-
-  // Load items that came from the server only once
   useEffect(() => {
-    if (initialItems) {
-      setisLoading(false);
+    if (initialItems && Array.isArray(initialItems)) {
       setItems(initialItems);
+      setLoading(false);
     }
   }, [initialItems, setItems]);
 
-  // Total pricing
-  const formattedTotal = useMemo(() => {
-    const total = items.reduce(
+  const handleRemove = async (productId: string) => {
+    const cartRow = items.find((x) => x.productId === productId);
+    if (!cartRow || !userId) return;
+
+    await removeItemFromCart(cartRow.id);
+    await syncCart(userId);
+  };
+
+  const handleQty = async (productId: string, qty: number) => {
+    const cartRow = items.find((x) => x.productId === productId);
+    if (!cartRow || !userId) return;
+    if (qty < 1) return;
+
+    await updateItemQuantity(cartRow.id, qty);
+    await syncCart(userId);
+  };
+
+  const handleClear = async () => {
+    if (!userId) return;
+    await clearCart(userId);
+    await syncCart(userId);
+  };
+
+  const total = useMemo(() => {
+    return items.reduce(
       (sum, item) => sum + Number(item.price) * item.quantity,
       0
     );
-    return total.toLocaleString("en-IN");
   }, [items]);
 
-  // Item actions
-  async function handleRemove(id: string) {
-    await removeItemFromCart(id);
-    removeItem(id);
-  }
-
-  async function handleQtyChange(id: string, qty: number) {
-    if (qty < 1) return;
-    await updateItemQuantity(id, qty);
-    updateQty(id, qty);
-  }
-
-  async function handleClear() {
-    if (!userId) return;
-    await clearCart(userId);
-    clear();
-  }
-
-  async function handleCheckout() {
-    // const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
-
-    // const res = await fetch(`${baseUrl}/api/stripe/checkout`, {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ items, userId }),
-    // });
-
-    // const data = await res.json();
-    window.location.href="/checkout"
-    // if (data.url) window.location.href = data.url;
-  }
-
-  // LOADING STATE
-  if (isLoading) return <CartSkeleton />;
-
-  // EMPTY STATE
+  if (loading) return <CartSkeleton />;
   if (items.length === 0) return <EmptyCart />;
 
-  // MAIN UI (unchanged)
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        {/* Header */}
         <header className="mb-8 lg:mb-12">
-          <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-2xl lg:text-4xl font-semibold text-neutral-900 dark:text-neutral-100">
-              Shopping Cart
-            </h1>
-          </div>
-          <p className="text-neutral-500 dark:text-neutral-400 ml-1">
+          <h1 className="text-2xl lg:text-4xl font-semibold text-neutral-900 dark:text-neutral-100">
+            Shopping Cart
+          </h1>
+          <p className="text-neutral-500 dark:text-neutral-400 mt-2">
             {items.length} {items.length === 1 ? "item" : "items"} in your cart
           </p>
         </header>
 
-        {/* GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          {/* ========== LEFT — ITEMS ========== */}
           <section className="lg:col-span-7 xl:col-span-8 space-y-4">
             {items.map((item) => (
               <article
-                key={item.id}
-                className="bg-white dark:bg-neutral-900 rounded-lg p-5 lg:p-6 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition-colors"
+                key={item.productId}
+                className="bg-white dark:bg-neutral-900 rounded-lg p-5 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition"
               >
-                <div className="flex gap-5 lg:gap-6">
-                  {/* IMAGE */}
-                  <div className="flex-shrink-0">
-                    <img
-                      src={item.imageUrl || "/placeholder.jpg"}
-                      alt={item.name}
-                      className="w-24 h-24 lg:w-28 lg:h-28 rounded-lg object-cover bg-neutral-100 dark:bg-neutral-800"
-                    />
-                  </div>
+                <div className="flex gap-5">
+                  <img
+                    src={item.imageUrl || "/placeholder.jpg"}
+                    alt={item.name}
+                    className="w-24 h-24 rounded-lg object-cover bg-neutral-100 dark:bg-neutral-800"
+                  />
 
-                  {/* CONTENT */}
-                  <div className="flex-1 min-w-0 flex flex-col justify-between">
+                  <div className="flex-1 flex flex-col justify-between">
                     <div>
-                      <h2 className="text-base lg:text-lg font-medium text-neutral-900 dark:text-neutral-100 leading-snug mb-2 line-clamp-2">
+                      <h2 className="text-lg font-medium text-neutral-900 dark:text-neutral-100 line-clamp-2">
                         {item.name}
                       </h2>
-                      <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                        €{Number(item.price).toLocaleString("en-IN")} each
+                      <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+                        ₹{Number(item.price).toLocaleString("en-IN")} each
                       </p>
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-between gap-4 mt-4">
-                      {/* QTY BUTTONS */}
+                    <div className="flex items-center justify-between mt-4">
                       <div className="flex items-center gap-3">
                         <button
-                          onClick={() =>
-                            handleQtyChange(item.id, item.quantity - 1)
-                          }
                           disabled={item.quantity <= 1}
-                          className="w-8 h-8 flex items-center justify-center rounded-md bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 disabled:opacity-40 text-neutral-700 dark:text-neutral-300 transition-colors"
+                          onClick={() =>
+                            handleQty(item.productId, item.quantity - 1)
+                          }
+                          className="w-8 h-8 flex items-center justify-center rounded-md bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 disabled:opacity-40"
                         >
                           −
                         </button>
 
-                        <span className="text-base font-medium min-w-[2rem] text-center text-neutral-900 dark:text-neutral-100">
+                        <span className="text-base font-medium min-w-[2rem] text-center">
                           {item.quantity}
                         </span>
 
                         <button
                           onClick={() =>
-                            handleQtyChange(item.id, item.quantity + 1)
+                            handleQty(item.productId, item.quantity + 1)
                           }
-                          className="w-8 h-8 flex items-center justify-center rounded-md bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 transition-colors"
+                          className="w-8 h-8 flex items-center justify-center rounded-md bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700"
                         >
                           +
                         </button>
                       </div>
 
-                      {/* SUBTOTAL + REMOVE */}
                       <div className="flex items-center gap-4">
                         <p className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-                          €{(Number(item.price) * item.quantity).toLocaleString("en-IN")}
+                          ₹
+                          {(item.price * item.quantity).toLocaleString("en-IN")}
                         </p>
 
                         <button
-                          onClick={() => handleRemove(item.id)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                          onClick={() => handleRemove(item.productId)}
+                          className="text-red-600 dark:text-red-400 hover:underline"
                         >
-                          <Trash2 size={15} />
-                          <span className="hidden sm:inline">Remove</span>
+                          Remove
                         </button>
                       </div>
                     </div>
@@ -174,82 +145,45 @@ export default function CartPageClient({
             ))}
           </section>
 
-          {/* ========== RIGHT — SUMMARY ========== */}
           <aside className="lg:col-span-5 xl:col-span-4">
-            <div className="lg:sticky lg:top-6 bg-white dark:bg-neutral-900 rounded-lg p-6 border border-neutral-200 dark:border-neutral-800">
+            <div className="sticky top-6 bg-white dark:bg-neutral-900 rounded-lg p-6 border border-neutral-200 dark:border-neutral-800">
               <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-6">
                 Order Summary
               </h3>
 
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600 dark:text-neutral-400">
-                    Subtotal ({items.length} items)
-                  </span>
-                  <span className="font-medium text-neutral-900 dark:text-neutral-100">
-                    €{formattedTotal}
+                  <span>Subtotal</span>
+                  <span className="font-medium">
+                    ₹{total.toLocaleString("en-IN")}
                   </span>
                 </div>
-
                 <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600 dark:text-neutral-400">
-                    Shipping
-                  </span>
-                  <span className="font-medium text-green-600 dark:text-green-500">
-                    Free
-                  </span>
-                </div>
-
-                <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600 dark:text-neutral-400">
-                    Tax
-                  </span>
-                  <span className="text-neutral-600 dark:text-neutral-400">
-                    At checkout
-                  </span>
+                  <span>Shipping</span>
+                  <span className="text-green-600">Free</span>
                 </div>
               </div>
 
-              <div className="border-t border-neutral-200 dark:border-neutral-800 my-6"></div>
-
-              {/* TOTAL */}
               <div className="flex justify-between items-baseline mb-6">
-                <span className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-                  Total
-                </span>
-                <span className="text-sm sm:text-md font-thin text-neutral-900 dark:text-neutral-100">
-                  €{formattedTotal}
+                <span className="text-lg font-semibold">Total</span>
+                <span className="text-xl font-bold">
+                  ₹{total.toLocaleString("en-IN")}
                 </span>
               </div>
 
-              {/* BUTTONS */}
-              <div className="space-y-3">
-                <button
-                  onClick={handleCheckout}
-                  className="w-full py-3.5 bg-neutral-900 dark:bg-neutral-100 hover:bg-neutral-800 dark:hover:bg-neutral-200 text-white dark:text-neutral-900 font-medium rounded-lg transition-colors"
-                >
-                  Proceed to Checkout
-                </button>
+              <button
+                className="w-full py-3.5 bg-neutral-900 dark:bg-neutral-100 hover:bg-neutral-800 dark:hover:bg-neutral-200 text-white dark:text-neutral-900 rounded-lg"
+                onClick={() => (window.location.href = "/checkout")}
+              >
+                Proceed to Checkout
+              </button>
 
-                <button
-                  onClick={handleClear}
-                  className="w-full py-3 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 font-medium rounded-lg border border-neutral-200 dark:border-neutral-800 transition-colors"
-                >
-                  Clear Cart
-                </button>
-              </div>
-
-              {/* TRUST BADGES */}
-              <div className="mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-center gap-6 text-xs text-neutral-500 dark:text-neutral-400">
-                <div className="flex items-center gap-1.5">
-                  <Truck size={14} />
-                  <span>Free Shipping</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Lock size={14} />
-                  <span>Secure Checkout</span>
-                </div>
-              </div>
+              <button
+                onClick={handleClear}
+                className="w-full mt-4 py-3 border border-neutral-300 dark:border-neutral-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              >
+                Clear Cart
+              </button>
             </div>
           </aside>
         </div>

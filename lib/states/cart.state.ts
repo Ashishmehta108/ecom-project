@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type CartItem = {
-  id: string;
+  id: string; // cartItem.id (DB)
   productId: string;
   name: string;
   price: number | string;
@@ -14,12 +14,10 @@ interface CartState {
   items: CartItem[];
 
   setItems: (items: CartItem[]) => void;
-  addOrReplaceItem: (item: CartItem) => void;
-  removeItem: (cartItemId: string) => void;
-
+  addOrUpdate: (item: CartItem) => void;
+  remove: (productId: string) => void;
   clear: () => void;
-
-  updateQty: (cartItemId: string, newQty: number) => void;
+  updateQty: (productId: string, qty: number) => void;
 }
 
 const userCartState = create<CartState>()(
@@ -29,37 +27,38 @@ const userCartState = create<CartState>()(
 
       setItems: (items) => set({ items }),
 
-      addOrReplaceItem: (item) =>
+      addOrUpdate: (item) =>
         set((state) => {
-          const exists = state.items.some((i) => i.id === item.id);
+          const exists = state.items.some(
+            (i) => i.productId === item.productId
+          );
 
           if (exists) {
             return {
-              items: state.items.map((i) => (i.id === item.id ? item : i)),
+              items: state.items.map((i) =>
+                i.productId === item.productId ? item : i
+              ),
             };
           }
 
           return { items: [...state.items, item] };
         }),
 
-      removeItem: (cartItemId) =>
+      remove: (productId) =>
         set((state) => ({
-          items: state.items.filter((item) => item.id !== cartItemId),
+          items: state.items.filter((i) => i.productId !== productId),
+        })),
+
+      updateQty: (productId, qty) =>
+        set((state) => ({
+          items: state.items.map((i) =>
+            i.productId === productId ? { ...i, quantity: qty } : i
+          ),
         })),
 
       clear: () => set({ items: [] }),
-
-      updateQty: (cartItemId, newQty) =>
-        set((state) => ({
-          items: state.items.map((item) =>
-            item.id === cartItemId ? { ...item, quantity: newQty } : item
-          ),
-        })),
     }),
-    {
-      name: "cart-storage", // localStorage key
-      version: 1,
-    }
+    { name: "cart-storage" }
   )
 );
 
