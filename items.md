@@ -17,3 +17,17 @@ y26
 y24
 ew81
 ds61
+
+
+fix the admin panel 
+payments add admin panel 
+admin panel better
+notifications user admin 
+make the ui better 
+resend account 
+emails passwoed forgot password
+signup  creation session 
+fix footer 
+<!-- cart page  -->
+user admin product checkout 
+make apis better 

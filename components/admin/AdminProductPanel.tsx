@@ -1,6 +1,4 @@
-
-
-  "use client";
+"use client";
 
 import React, { useTransition, useState } from "react";
 import {
@@ -9,6 +7,7 @@ import {
   useFormContext,
   useFieldArray,
   useWatch,
+  SubmitHandler,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -59,10 +58,7 @@ import {
 } from "@/components/ui/form";
 import clsx from "clsx";
 import { Category } from "@/lib/types/product.types";
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
+import { SpecsTab } from "./specTab";
 
 type ProductImage = {
   url: string;
@@ -100,10 +96,6 @@ type Props = {
   isNew?: boolean;
 };
 
-// ---------------------------------------------------------------------------
-// Utility Components
-// ---------------------------------------------------------------------------
-
 const EmptyState: React.FC<{
   icon: React.ReactNode;
   message: string;
@@ -124,7 +116,7 @@ const EmptyState: React.FC<{
   </div>
 );
 
-const SectionHeader: React.FC<{
+export const SectionHeader: React.FC<{
   title: string;
   description?: string;
 }> = ({ title, description }) => (
@@ -139,10 +131,6 @@ const SectionHeader: React.FC<{
     )}
   </div>
 );
-
-// ---------------------------------------------------------------------------
-// ImageKit Upload Helper
-// ---------------------------------------------------------------------------
 
 const uploadToImageKit = async (
   file: File
@@ -173,10 +161,6 @@ const uploadToImageKit = async (
     throw error;
   }
 };
-
-// ---------------------------------------------------------------------------
-// Tabs
-// ---------------------------------------------------------------------------
 
 const GeneralTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
@@ -344,7 +328,9 @@ const PricingTab: React.FC = () => {
           name="pricing.discount"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm font-medium">Discount (%)</FormLabel>
+              <FormLabel className="text-sm font-medium">
+                Discount (%)
+              </FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
@@ -391,9 +377,7 @@ const PricingTab: React.FC = () => {
                   value={field.value ?? ""}
                   onChange={(e) =>
                     field.onChange(
-                      e.target.value === ""
-                        ? undefined
-                        : Number(e.target.value)
+                      e.target.value === "" ? undefined : Number(e.target.value)
                     )
                   }
                 />
@@ -406,203 +390,6 @@ const PricingTab: React.FC = () => {
     </div>
   );
 };
-
-const SpecsTab: React.FC = () => {
-  const form = useFormContext<ProductFormValues>();
-
-  // Reactively watch the specifications object
-  const specs =
-    useWatch({
-      control: form.control,
-      name: "specifications",
-    }) ?? {
-      general: {},
-      technical: {},
-    };
-
-  const setSpecValue = (
-    section: "general" | "technical",
-    key: string,
-    value: string | string[]
-  ) => {
-    const next: any = {
-      ...specs,
-      [section]: {
-        ...(specs?.[section] || {}),
-        [key]: value,
-      },
-    };
-
-    form.setValue("specifications", next, {
-      shouldDirty: true,
-      shouldTouch: true,
-    });
-  };
-
-  const SpecInput: React.FC<{
-    label: string;
-    value: string;
-    onChange: (v: string) => void;
-    placeholder?: string;
-  }> = ({ label, value, onChange, placeholder }) => (
-    <div className="space-y-2">
-      <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-        {label}
-      </label>
-      <Input
-        value={value ?? ""}
-        onChange={(e) => onChange(e.target.value)}
-        className="h-11 rounded-xl"
-        placeholder={placeholder}
-      />
-    </div>
-  );
-
-  return (
-    <div className="space-y-10">
-      {/* General Specifications */}
-      <div>
-        <SectionHeader
-          title="General Specifications"
-          description="Basic product characteristics and attributes"
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <SpecInput
-            label="Product Name"
-            value={specs.general?.productName ?? ""}
-            onChange={(v) => setSpecValue("general", "productName", v)}
-            placeholder="Official product name"
-          />
-
-          <SpecInput
-            label="Brand Name"
-            value={specs.general?.brandName ?? ""}
-            onChange={(v) => setSpecValue("general", "brandName", v)}
-            placeholder="Manufacturer brand"
-          />
-
-          <SpecInput
-            label="Colors"
-            value={specs.general?.colors ?? ""}
-            onChange={(v) => setSpecValue("general", "colors", v)}
-            placeholder="Available colors"
-          />
-
-          <SpecInput
-            label="Material"
-            value={specs.general?.material ?? ""}
-            onChange={(v) => setSpecValue("general", "material", v)}
-            placeholder="e.g., Aluminum, Plastic"
-          />
-
-          <SpecInput
-            label="Weight"
-            value={specs.general?.weight ?? ""}
-            onChange={(v) => setSpecValue("general", "weight", v)}
-            placeholder="e.g., 50g"
-          />
-
-          <SpecInput
-            label="Size (mm)"
-            value={specs.general?.sizeMm ?? ""}
-            onChange={(v) => setSpecValue("general", "sizeMm", v)}
-            placeholder="e.g., 100x50x20"
-          />
-
-          <SpecInput
-            label="Private Mold"
-            value={specs.general?.privateMold ?? ""}
-            onChange={(v) => setSpecValue("general", "privateMold", v)}
-            placeholder="Yes/No"
-          />
-
-          <SpecInput
-            label="Certificates"
-            value={
-              Array.isArray(specs.general?.certificate)
-                ? specs.general.certificate.join(", ")
-                : specs.general?.certificate ?? ""
-            }
-            onChange={(v) =>
-              setSpecValue(
-                "general",
-                "certificate",
-                v
-                  .split(",")
-                  .map((s) => s.trim())
-                  .filter(Boolean)
-              )
-            }
-            placeholder="CE, FCC, RoHS (comma separated)"
-          />
-        </div>
-      </div>
-
-      {/* Technical Specifications */}
-      <div>
-        <SectionHeader
-          title="Technical Specifications"
-          description="Detailed technical information and performance metrics"
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <SpecInput
-            label="Bluetooth Version"
-            value={specs.technical?.bluetoothVersion ?? ""}
-            onChange={(v) => setSpecValue("technical", "bluetoothVersion", v)}
-            placeholder="e.g., 5.3"
-          />
-
-          <SpecInput
-            label="Wireless Delay Time"
-            value={specs.technical?.wirelessDelayTime ?? ""}
-            onChange={(v) => setSpecValue("technical", "wirelessDelayTime", v)}
-            placeholder="e.g., 65ms"
-          />
-
-          <SpecInput
-            label="Waterproof Standard"
-            value={specs.technical?.waterproofStandard ?? ""}
-            onChange={(v) =>
-              setSpecValue("technical", "waterproofStandard", v)
-            }
-            placeholder="e.g., IPX7"
-          />
-
-          <SpecInput
-            label="Chipset"
-            value={specs.technical?.chipset ?? ""}
-            onChange={(v) => setSpecValue("technical", "chipset", v)}
-            placeholder="e.g., Qualcomm QCC3040"
-          />
-
-          <SpecInput
-            label="Battery Capacity"
-            value={specs.technical?.batteryCapacity ?? ""}
-            onChange={(v) => setSpecValue("technical", "batteryCapacity", v)}
-            placeholder="e.g., 300mAh"
-          />
-
-          <SpecInput
-            label="Use Time"
-            value={specs.technical?.useTime ?? ""}
-            onChange={(v) => setSpecValue("technical", "useTime", v)}
-            placeholder="e.g., 6 hours"
-          />
-
-          <SpecInput
-            label="Standby Time"
-            value={specs.technical?.standbyTime ?? ""}
-            onChange={(v) => setSpecValue("technical", "standbyTime", v)}
-            placeholder="e.g., 120 hours"
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-
 
 const ImagesTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
@@ -1027,83 +814,100 @@ export default function AdminProductPanel({
   isNew = false,
 }: Props) {
   const [isPending, startTransition] = useTransition();
-
-  // Root-cause fix: normalize data going into the form
-  const defaultSpecifications = {
-    general: {
-      productName: "",
-      brandName: "",
-      colors: "",
-      material: "",
-      weight: "",
-      sizeMm: "",
-      privateMold: "",
-      certificate: [] as string[],
-    },
-    technical: {
-      bluetoothVersion: "",
-      wirelessDelayTime: "",
-      waterproofStandard: "",
-      chipset: "",
-      batteryCapacity: "",
-      useTime: "",
-      standbyTime: "",
-    },
+  const objectToArray = (
+    obj: Record<string, any>
+  ): Array<{ key: string; value: string }> => {
+    if (!obj || typeof obj !== "object") return [];
+    return Object.entries(obj).map(([key, value]) => ({
+      key,
+      value: Array.isArray(value) ? value.join(", ") : String(value ?? ""),
+    }));
+  };
+  // Helper: Convert array format to object format for form
+  const arrayToObject = (
+    arr: Array<{ key: string; value: string }> | undefined
+  ): Record<string, any> => {
+    if (!Array.isArray(arr)) return {};
+    const obj: Record<string, any> = {};
+    for (const item of arr) {
+      if (item.key && item.value !== undefined) {
+        if (item.key === "certificate" && item.value.includes(",")) {
+          obj[item.key] = item.value
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean);
+        } else {
+          obj[item.key] = item.value;
+        }
+      }
+    }
+    return obj;
   };
 
-  const mergedSpecifications =
-    initialProduct.specifications && Object.keys(initialProduct.specifications).length > 0
-      ? {
-          general: {
-            ...defaultSpecifications.general,
-            ...(initialProduct.specifications?.general ?? {}),
-          },
-          technical: {
-            ...defaultSpecifications.technical,
-            ...(initialProduct.specifications?.technical ?? {}),
-          },
-        }
-      : defaultSpecifications;
+  let mergedSpecifications: {
+    general: Record<string, any>;
+    technical: Record<string, any>;
+  };
+
+  const specs = initialProduct.specifications;
+  mergedSpecifications = {
+    general: Array.isArray(specs?.general) ? arrayToObject(specs?.general) : [],
+    technical: Array.isArray(specs?.technical)
+      ? arrayToObject(specs?.technical)
+      : [],
+  };
+
+  const categoryNames = Array.isArray(initialProduct?.categories)
+    ? initialProduct.categories.map((c: any) =>
+        typeof c === "string" ? c : c?.name || c
+      )
+    : [];
 
   const defaultValues: ProductFormValues = {
-    id: initialProduct?.id ?? undefined, // Add ? after initialProduct
-    productName: initialProduct?.productName ?? "", // Add ?
-    brand: initialProduct?.brand ?? "", // Add ?
-    model: initialProduct?.model ?? "", // Add ?
-    subCategory: initialProduct?.subCategory ?? "", // Add ?
-    description: initialProduct?.description ?? "", // Add ?
-    slug: initialProduct?.slug ?? "", // Add ?
-    features: initialProduct?.features ?? [], // Add ?
-    tags: initialProduct?.tags ?? [], // Add ?
-    categories: initialProduct?.categories ?? [], // Add ?
+    id: initialProduct?.id ?? undefined,
+    productName: initialProduct?.productName ?? "",
+    brand: initialProduct?.brand ?? "",
+    model: initialProduct?.model ?? "",
+    subCategory: initialProduct?.subCategory ?? "",
+    description: initialProduct?.description ?? "",
+
+    features: initialProduct?.features ?? [],
+    tags: initialProduct?.tags ?? [],
+    categories: categoryNames,
     pricing: initialProduct?.pricing ?? {
-      // Add ?
       price: 0,
       currency: "INR",
       discount: 0,
       inStock: true,
       stockQuantity: 0,
     },
-    specifications: mergedSpecifications,
+    specifications: {
+      general: objectToArray(mergedSpecifications.general),
+      technical: objectToArray(mergedSpecifications.technical),
+    },
     productImages: (initialProduct.productImages ?? []).map((img) => ({
       url: img.url,
       fileId: img.fileId ?? null,
     })),
   };
 
-  const form = useForm<ProductFormValues>({
+  const form = useForm({
     resolver: zodResolver(productFormSchema),
     defaultValues,
-    mode: "onBlur",
+    // mode: "onBlur",
   });
 
-  const onSubmit = (values: ProductFormValues) => {
+  const onSubmit: SubmitHandler<ProductFormValues> = (values) => {
+    console.log("hi");
+    console.log("Submitting form...", values);
     startTransition(() => {
       (async () => {
         try {
-          // root-cause: ensure payload is clean and ordered
+          console.log(values.specifications);
+
           const payload: ProductFormValues = {
             ...values,
+            specifications: values.specifications,
             productImages: (values.productImages ?? []).map((img) => ({
               url: img.url,
               fileId: img.fileId ?? null,
@@ -1155,26 +959,6 @@ export default function AdminProductPanel({
               </p>
             </div>
           </div>
-
-          <Button
-            type="submit"
-            form="product-form"
-            disabled={isPending}
-            size="lg"
-            className="w-full sm:w-auto h-12 px-8 rounded-xl bg-indigo-600 text-white 
-             hover:bg-indigo-500 transition-all 
-            
-             disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
-          >
-            {isPending ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                Saving...
-              </>
-            ) : (
-              <>{isNew ? "Create Product" : "Save Changes"}</>
-            )}
-          </Button>
         </div>
 
         {/* Main Card */}
@@ -1200,9 +984,30 @@ export default function AdminProductPanel({
               <Form {...form}>
                 <form
                   id="product-form"
-                  onSubmit={form.handleSubmit(onSubmit)}
+                  onError={(e) => console.log(e)}
+                  onSubmit={form.handleSubmit(onSubmit, (errors) => {
+                    console.log("❌ ZOD Validation Errors:", errors);
+                  })}
                   className="space-y-6"
                 >
+                  <Button
+                    type="submit"
+                    disabled={isPending}
+                    size="lg"
+                    className="w-full sm:w-auto h-12 px-8 rounded-xl bg-indigo-600 text-white 
+             hover:bg-indigo-500 transition-all 
+            
+             disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  >
+                    {isPending ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                        Saving...
+                      </>
+                    ) : (
+                      <>{isNew ? "Create Product" : "Save Changes"}</>
+                    )}
+                  </Button>
                   <Tabs defaultValue="general" className="space-y-8">
                     <TabsList className="grid w-full grid-cols-4 lg:grid-cols-7 gap-2 h-auto p-1.5 bg-neutral-100 dark:bg-neutral-900 rounded-xl">
                       <TabsTrigger

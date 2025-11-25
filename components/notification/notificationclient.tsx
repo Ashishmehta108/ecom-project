@@ -1,19 +1,30 @@
+"use client";
+
 import {
-  getUserNotifications,
   markNotificationRead,
   deleteNotification,
   clearNotifications,
 } from "@/lib/actions/notification-action"
 
-export default async function NotificationList() {
-  const notifications = await getUserNotifications();
+type Notification = {
+  id: string;
+  type: string;
+  message: string;
+  isRead: boolean;
+  userId: string;
+};
 
+interface NotificationListProps {
+  notifications: Notification[];
+}
+
+export default function NotificationList({ notifications }: NotificationListProps) {
   if (!notifications?.length) {
-    return <p className="text-sm text-muted-foreground">No notifications.</p>;
+    return <p className="text-sm text-muted-foreground p-4">No notifications.</p>;
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 p-4">
       <form action={clearNotifications}>
         <button type="submit" className="text-xs text-red-500 underline mb-3">
           Clear all
