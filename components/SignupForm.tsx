@@ -22,6 +22,7 @@ import { authClient } from "@/lib/auth-client";
 import apple from "./../public/apple.svg";
 import google from "./../public/google.svg";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 const formViaEmailSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -36,7 +37,7 @@ export default function SignUpForm() {
   // If already logged in → redirect
   useEffect(() => {
     if (data?.user) {
-      window.location.href = "/dashboard";
+      window.location.href = "/";
     }
   }, [data]);
 
@@ -79,12 +80,14 @@ export default function SignUpForm() {
 
       toast.success("Account created! Please check your email to verify.");
       form.reset();
+      
     } catch (err: any) {
       console.error("Signup error:", err);
-
+      
       toast.error(err?.message || "Failed to create account.");
     } finally {
       setIsSubmitting(false);
+      redirect("/verification?email=" + values.email);
     }
   }
 
@@ -98,24 +101,22 @@ export default function SignUpForm() {
       <div className="relative w-full max-w-sm">
         <div className="flex w-full justify-center gap-2">
           <Button
-              variant="outline"
-              className="flex-1 h-11 gap-2"
-              onClick={async () =>
-                await authClient.signIn.social({ provider: "apple" ,disableRedirect: false, callbackURL: "/"})
-              }
-            >
-              <Image
-              src={apple.src}
-              alt="hi"
-              width={19}
-              height={19}
-             />
-              Apple
-            </Button>
+            variant="outline"
+            className="flex-1 h-11 gap-2"
+            onClick={async () =>
+              await authClient.signIn.social({
+                provider: "apple",
+                disableRedirect: false,
+                callbackURL: "/",
+              })
+            }
+          >
+            <Image src={apple.src} alt="hi" width={19} height={19} />
+            Apple
+          </Button>
 
           <Button
             variant="outline"
-            
             className="flex w-1/2 items-center cursor-pointer justify-center gap-2"
             onClick={() =>
               authClient.signIn.social({
@@ -125,13 +126,8 @@ export default function SignUpForm() {
               })
             }
           >
-           <Image
-              src={google.src}
-              alt="hi"
-              width={18}
-              height={18}
-             />
-              Google
+            <Image src={google.src} alt="hi" width={18} height={18} />
+            Google
           </Button>
         </div>
 

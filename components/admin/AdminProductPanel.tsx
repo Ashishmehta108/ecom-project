@@ -298,7 +298,7 @@ const PricingTab: React.FC = () => {
               <FormControl>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500">
-                    ₹
+                    €
                   </span>
                   <Input
                     type="number"
@@ -850,11 +850,19 @@ export default function AdminProductPanel({
   };
 
   const specs = initialProduct.specifications;
+
   mergedSpecifications = {
-    general: Array.isArray(specs?.general) ? arrayToObject(specs?.general) : [],
+    general: Array.isArray(specs?.general)
+      ? arrayToObject(specs.general)
+      : typeof specs?.general === "object"
+      ? specs.general
+      : {},
+
     technical: Array.isArray(specs?.technical)
-      ? arrayToObject(specs?.technical)
-      : [],
+      ? arrayToObject(specs.technical)
+      : typeof specs?.technical === "object"
+      ? specs.technical
+      : {},
   };
 
   const categoryNames = Array.isArray(initialProduct?.categories)
@@ -903,11 +911,17 @@ export default function AdminProductPanel({
     startTransition(() => {
       (async () => {
         try {
-          console.log(values.specifications);
+          console.log(
+               arrayToObject(values.specifications.general),
+           arrayToObject(values.specifications.technical),
+            );
 
           const payload: ProductFormValues = {
             ...values,
-            specifications: values.specifications,
+            specifications: {
+              general: arrayToObject(values.specifications.general),
+              technical: arrayToObject(values.specifications.technical),
+            },
             productImages: (values.productImages ?? []).map((img) => ({
               url: img.url,
               fileId: img.fileId ?? null,

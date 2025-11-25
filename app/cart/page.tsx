@@ -125,7 +125,7 @@
 //                           {item.name}
 //                         </h2>
 //                         <p className="text-sm text-neutral-500 dark:text-neutral-400">
-//                           ₹{Number(item.price).toLocaleString("en-IN")} each
+//                           €{Number(item.price).toLocaleString("en-IN")} each
 //                         </p>
 //                       </div>
 
@@ -170,7 +170,7 @@
 //                         {/* Subtotal & Remove */}
 //                         <div className="flex items-center gap-4">
 //                           <p className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-//                             ₹
+//                             €
 //                             {(
 //                               Number(item.price) * item.quantity
 //                             ).toLocaleString("en-IN")}
@@ -213,7 +213,7 @@
 //                         {items.length === 1 ? "item" : "items"})
 //                       </span>
 //                       <span className="font-medium text-neutral-900 dark:text-neutral-100">
-//                         ₹{formattedTotal}
+//                         €{formattedTotal}
 //                       </span>
 //                     </div>
 
@@ -245,7 +245,7 @@
 //                       Total
 //                     </span>
 //                     <span className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-//                       ₹{formattedTotal}
+//                       €{formattedTotal}
 //                     </span>
 //                   </div>
 

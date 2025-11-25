@@ -52,7 +52,7 @@ export default function Topbar() {
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">New order received</p>
                       <p className="text-xs text-neutral-500 mt-0.5">
-                        Order #12345 - ₹2,450
+                        Order #12345 - €2,450
                       </p>
                       <p className="text-xs text-neutral-400 mt-1">
                         2 minutes ago

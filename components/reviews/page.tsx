@@ -199,9 +199,6 @@ function EditReviewForm({
   );
 }
 
-/* --------------------------------------------------------
-   MAIN PAGE
--------------------------------------------------------- */
 export default function ReviewPage({ productId }: { productId: string }) {
   const { data } = authClient.useSession();
   const userId = data?.user?.id;
@@ -211,21 +208,26 @@ export default function ReviewPage({ productId }: { productId: string }) {
 
   /* LOAD REVIEWS */
   useEffect(() => {
-    async function load() {
-      const res = await getReviews(productId);
-      if (res.success) setReviews(res.data);
-    }
-    load();
+    reloadReviews();
   }, [productId]);
 
-  /* ADD REVIEW */
-  const onAddReview = (rev: any) => setReviews((prev) => [rev, ...prev]);
+  async function reloadReviews() {
+    const res = await getReviews(productId);
+    if (res.success) setReviews(res.data);
+  }
 
-  /* DELETE */
+  const onAddReview = (rev: any) => {
+
+    setReviews((prev) => [rev, ...prev]);
+    reloadReviews()
+    
+  };
+
   const onDelete = async (id: string) => {
     const res = await deleteReview({ reviewId: id });
     if (!res.success) return toast.error(res.error);
     toast.success("Review deleted");
+    reloadReviews()
     setReviews((prev) => prev.filter((r) => r.id !== id));
   };
 
@@ -319,7 +321,7 @@ export default function ReviewPage({ productId }: { productId: string }) {
               <div className="flex justify-between items-start mb-3">
                 <div>
                   <p className="font-medium">
-                    {review.user.name || "Anonymous"}
+                    {review?.user?.name || "Anonymous"}
                   </p>
                 </div>
 

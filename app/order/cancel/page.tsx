@@ -1,8 +1,3 @@
-
-
-
-
-
 "use client";
 
 import Link from "next/link";
@@ -12,10 +7,8 @@ export default function CancelPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-neutral-50 p-6">
       <div className="w-full max-w-lg bg-white border border-neutral-200 rounded-2xl p-8 text-center">
-        
         {/* Icon wrapper */}
         <div className="mx-auto w-28 h-28 flex items-center justify-center rounded-full bg-neutral-100">
-          
           <motion.svg
             width="72"
             height="72"
@@ -60,7 +53,6 @@ export default function CancelPage() {
               }}
             />
           </motion.svg>
-
         </div>
 
         <h1 className="mt-6 text-2xl font-semibold text-neutral-800">

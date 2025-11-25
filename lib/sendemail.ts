@@ -14,7 +14,7 @@ export async function sendEmail({
   to,
   subject,
   html,
-  from = "Acme <onboarding@resend.dev>",
+  from = "Techbar.store <techbar.store@techbar.store>",
 }: SendEmailOptions) {
   try {
     const response = await resend.emails.send({

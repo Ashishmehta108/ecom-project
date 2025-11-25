@@ -113,7 +113,7 @@
 //         disabled={!stripe || submitting}
 //         className="w-full"
 //       >
-//         {submitting ? "Processing..." : `Pay ₹${amount / 100}`}
+//         {submitting ? "Processing..." : `Pay €${amount / 100}`}
 //       </Button>
 //     </form>
 //   );
