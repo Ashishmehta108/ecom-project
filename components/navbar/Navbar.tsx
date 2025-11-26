@@ -11,9 +11,6 @@ import { User } from "lucide-react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 
-// ✅ Use the wrapper (Server Component)
-import NotificationBellWrapper from "./notificationBellWrapper";
-
 export default function Navbar() {
   const pathname = usePathname();
   const { data, isPending } = authClient.useSession();
@@ -32,7 +29,6 @@ export default function Navbar() {
     >
       <Container>
         <div className="flex items-center justify-between py-3.5 md:py-4 gap-3 md:gap-4">
-          
           {/* Logo */}
           <div className="flex items-center gap-3 flex-shrink-0">
             <Logo />
@@ -45,21 +41,14 @@ export default function Navbar() {
 
           {/* Right Side */}
           <div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
-            
             {/* Mobile Search */}
             <div className="md:hidden">
               <NavSearch />
             </div>
-
             {/* <NotificationBellWrapper /> */}
-
             {/* Cart */}
             <CartButton items={itemsCount} />
-
-            {/* User / Login */}
-            {isPending ? (
-              <div className="h-9 w-9 rounded-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
-            ) : !isLoggedIn ? (
+            {!isLoggedIn && (
               <Link
                 href="/login"
                 className="p-2 rounded-full hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-colors duration-200"
@@ -70,11 +59,6 @@ export default function Navbar() {
                   className="text-neutral-600 dark:text-neutral-400"
                 />
               </Link>
-            ) : (
-              <User
-                size={22}
-                className="text-neutral-600 dark:text-neutral-400"
-              />
             )}
             <LinksDropdown />
           </div>

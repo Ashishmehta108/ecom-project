@@ -5,23 +5,25 @@ import Topbar from "./topbar/page";
 import { authClient } from "@/lib/auth-client";
 import { usePathname } from "next/navigation";
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }) {
   const { data, isPending } = authClient.useSession();
   const pathname = usePathname();
 
+  const isAuthPage = pathname.startsWith("/admin/login");
   const user = data?.user;
 
-  // Hide sidebar/topbar on login page
-  const isAuthPage = pathname.startsWith("/admin/login");
+  const isLoadingSession = isPending || data === undefined;
 
-  // While session is loading
-  if (isPending) return <div className="p-6 w-full">{children}</div>;
+  // Wait for session to fully resolve
+  if (isLoadingSession) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
 
-  // If logged out OR on login page → show only children
+  // If logged out or on login page
   if (!user || isAuthPage) {
     return <div className="p-6 w-full">{children}</div>;
   }
