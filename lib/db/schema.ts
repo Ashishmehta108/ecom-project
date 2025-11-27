@@ -83,51 +83,9 @@ const verification = pgTable("verification", {
 Cart Item schema
 */
 
-const cart = pgTable(
-  "cart",
-  {
-    id: text("id").primaryKey(),
-    userId: text("user_id")
-      .notNull()
-      .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
-    currency: text("currency").notNull().default("INR"),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true })
-      .defaultNow()
-      .notNull(),
-  },
-  (table) => [index("idx_cart_user_id").on(table.userId)]
-);
 /*
 Cart item schema
 */
-const cartItem = pgTable(
-  "cart_item",
-  {
-    id: text("id").primaryKey(),
-    cartId: text("cart_id")
-      .notNull()
-      .references(() => cart.id, { onDelete: "cascade", onUpdate: "cascade" }),
-    productId: text("product_id")
-      .notNull()
-      .references(() => product.id, {
-        onDelete: "cascade",
-        onUpdate: "cascade",
-      }),
-    name: text("name").notNull(),
-    price: numeric("price", { precision: 10, scale: 2 }).notNull(),
-    quantity: integer("quantity").notNull().default(1),
-    addedAt: timestamp("added_at", { withTimezone: true })
-      .defaultNow()
-      .notNull(),
-  },
-  (table) => [
-    index("idx_cart_item_cart_id").on(table.cartId),
-    unique("uq_cart_product").on(table.cartId, table.productId),
-  ]
-);
 
 /*
 Product schema
@@ -164,6 +122,23 @@ const product = pgTable("product", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
+const cart = pgTable(
+  "cart",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
+    currency: text("currency").notNull().default("INR"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [index("idx_cart_user_id").on(table.userId)]
+);
 
 const category = pgTable("category", {
   id: text("id").primaryKey(),
@@ -231,6 +206,31 @@ export const productCategoryRelations = relations(
 export const categoryRelations = relations(category, ({ many }) => ({
   productCategories: many(productCategory),
 }));
+const cartItem = pgTable(
+  "cart_item",
+  {
+    id: text("id").primaryKey(),
+    cartId: text("cart_id")
+      .notNull()
+      .references(() => cart.id, { onDelete: "cascade", onUpdate: "cascade" }),
+    productId: text("product_id")
+      .notNull()
+      .references(() => product.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    price: numeric("price", { precision: 10, scale: 2 }).notNull(),
+    quantity: integer("quantity").notNull().default(1),
+    addedAt: timestamp("added_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("idx_cart_item_cart_id").on(table.cartId),
+    unique("uq_cart_product").on(table.cartId, table.productId),
+  ]
+);
 
 const review = pgTable("review", {
   id: text("reviewid").primaryKey(),

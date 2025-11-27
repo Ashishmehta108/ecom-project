@@ -5,7 +5,7 @@ import Container from "../giobal/Container";
 import Logo from "./Logo";
 import NavSearch from "./NavSearch";
 import LinksDropdown from "./LinksDropdown";
-import { CartButton  } from "./CartItems";
+import { CartButton } from "./CartItems";
 import userCartState from "@/lib/states/cart.state";
 import { User } from "lucide-react";
 import Link from "next/link";
@@ -64,8 +64,12 @@ export default function Navbar() {
                 />
               </Link>
             ) : (
-              <LinksDropdown />
+              <User
+                size={22}
+                className="text-neutral-600 dark:text-neutral-400"
+              />
             )}
+            <LinksDropdown />
           </div>
         </div>
       </Container>

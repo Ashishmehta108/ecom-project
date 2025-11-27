@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import {
-  Lato,
-  Outfit,
-  Sansita_Swashed,
-  Open_Sans,
-  Arimo,
-} from "next/font/google";
+import { Poppins } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
@@ -15,7 +9,7 @@ import techbar from "@/public/Tech Bar (4).svg";
 import { Toaster } from "sonner";
 import { Playfair } from "next/font/google";
 // import SmoothScroll from "@/components/global/smoothScroll";
-export const arimo = Arimo({
+export const poppins = Poppins({
   variable: "--font-arimo",
   subsets: ["latin"],
   weight: ["400"],
@@ -44,7 +38,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`antialiased ${arimo.className}`}>
+      <body className={`antialiased ${poppins.className}`}>
         {/* <ThemeProvider
           attribute="class"
           defaultTheme="light"

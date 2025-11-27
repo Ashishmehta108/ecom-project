@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // app/api/checkout/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { stripeClient as stripe } from "@/lib/stripe";
@@ -17,29 +16,14 @@ export async function POST(req: NextRequest) {
 
     // Parse body safely
     let body: any;
-=======
-import { NextRequest, NextResponse } from "next/server";
-import { stripeClient as stripe } from "@/lib/stripe";
-import { getUserSession } from "@/server";
-import { user } from "@/auth-schema";
-
-export async function POST(req: NextRequest) {
-  try {
-    let body;
->>>>>>> main
     try {
       body = await req.json();
     } catch {
       return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
     }
-    const data = await getUserSession();
 
-<<<<<<< HEAD
     const sessionData = await getUserSession();
     const userId = sessionData?.user?.id;
-=======
-    const { items, addressId } = body;
->>>>>>> main
 
     if (!userId) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
@@ -59,13 +43,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-<<<<<<< HEAD
     const line_items: any[] = [];
 
-=======
-    const line_items = [];
-    console.log(items);
->>>>>>> main
     for (const item of items) {
       if (
         !item ||
@@ -113,42 +92,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-<<<<<<< HEAD
     const appUrl = process.env.NEXT_PUBLIC_APP_URL;
     if (!appUrl) {
       console.error("Missing NEXT_PUBLIC_APP_URL env variable");
-=======
-    if (!process.env.NEXT_PUBLIC_APP_URL) {
->>>>>>> main
       return NextResponse.json(
         { error: "Missing NEXT_PUBLIC_APP_URL env variable" },
         { status: 500 }
       );
     }
-<<<<<<< HEAD
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-=======
-    if (!stripe) {
-      return NextResponse.json(
-        { error: "Stripe client not initialized" },
-        { status: 500 }
-      );
-    }
-
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      payment_method_types: [
-        "card",
-        "klarna",
-        "giropay",
-        "mb_way",
-        "multibanco",
-        "amazon_pay",
-        "paypal",
-      ],
->>>>>>> main
       ui_mode: "hosted",
       payment_method_types: [
         "card",
@@ -163,11 +117,7 @@ export async function POST(req: NextRequest) {
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/cancel`,
       metadata: {
-<<<<<<< HEAD
         userId,
-=======
-        userId: data?.user.id!,
->>>>>>> main
         addressId,
       },
     });

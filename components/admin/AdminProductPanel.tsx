@@ -1,4 +1,6 @@
-"use client";
+
+
+  "use client";
 
 import React, { useTransition, useState, useEffect } from "react";
 import {
@@ -804,7 +806,7 @@ const CategoriesTab: React.FC<{ categories: Category[] }> = ({
 };
 
 export default function AdminProductPanel({
-  initialProduct={},
+  initialProduct = {},
   categories = [],
   isNew = false,
 }: Props) {
@@ -837,9 +839,7 @@ export default function AdminProductPanel({
       inStock: true,
       stockQuantity: 0,
     },
-
-    specifications:normalizeSpecs,
-
+    specifications: mergedSpecifications,
     productImages: (initialProduct.productImages ?? []).map((img) => ({
       url: img.url,
       fileId: img.fileId,
