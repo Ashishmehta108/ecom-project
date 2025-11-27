@@ -8,11 +8,13 @@ export default async function ProductEditorPage({
 }) {
   const p = await params;
   const product = await getProductById((await params).id);
-console.log(product)
+  console.log(product);
+
   return (
     <div className="p-8">
       <AdminProductPanel
         //@ts-ignore
+        categories={product.categories}
         initialProduct={product}
       />
     </div>

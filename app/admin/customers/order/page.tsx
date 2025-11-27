@@ -1,20 +1,23 @@
-
-import { getProductsForAdmin, getCustomerCart } from "@/lib/queries/admin-cart";
 import { AdminCustomerOrderClient } from "./client";
-import { getUserSession } from "@/server";
+import {
+  ensurePosCustomerAndCart,
+  clearPosCart,
+  getPosCart,
+  getProductsForAdmin,
+} from "@/lib/queries/admin-cart";
 
 export default async function AdminCustomerOrderPage() {
-  const user = await getUserSession();
-  const customerId = user?.user.id;
-
-  const [products, cartData] = await Promise.all([
+  const [products, { customer, cart }] = await Promise.all([
     getProductsForAdmin(),
-    getCustomerCart(customerId!),
+    ensurePosCustomerAndCart(),
   ]);
 
+  const cartData = await getPosCart(customer.id);
+console.log(cartData)
   return (
     <AdminCustomerOrderClient
-      customerId={customerId!}
+      customer={customer}
+      customerId={customer.id}
       products={products}
       cartData={cartData}
     />

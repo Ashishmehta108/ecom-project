@@ -131,7 +131,7 @@ export function PaymentPage({
                 >
                   <p>{item.name}</p>
                   <p>
-                    ₹{(Number(item.price) * Number(item.quantity)).toFixed(2)}
+                    €{(Number(item.price) * Number(item.quantity)).toFixed(2)}
                   </p>
                 </div>
               ))}
@@ -140,7 +140,7 @@ export function PaymentPage({
             <div className="pt-3 mt-3 space-y-1 text-sm sm:text-base">
               <div className="flex justify-between">
                 <span>Subtotal:</span>
-                <span>₹{total.toFixed(2)}</span>
+                <span>€{total.toFixed(2)}</span>
               </div>
               <div className="flex justify-between ">
                 <span>Shipping:</span>

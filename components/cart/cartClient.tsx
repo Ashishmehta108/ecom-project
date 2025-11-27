@@ -96,7 +96,7 @@
 //                         {item.name}
 //                       </h2>
 //                       <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
-//                         ₹{Number(item.price).toLocaleString("en-IN")} each
+//                         €{Number(item.price).toLocaleString("en-IN")} each
 //                       </p>
 //                     </div>
 
@@ -128,7 +128,7 @@
 
 //                       <div className="flex items-center gap-4">
 //                         <p className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-//                           ₹
+//                           €
 //                           {(item.price * item.quantity).toLocaleString("en-IN")}
 //                         </p>
 
@@ -156,7 +156,7 @@
 //                 <div className="flex justify-between text-sm">
 //                   <span>Subtotal</span>
 //                   <span className="font-medium">
-//                     ₹{total.toLocaleString("en-IN")}
+//                     €{total.toLocaleString("en-IN")}
 //                   </span>
 //                 </div>
 //                 <div className="flex justify-between text-sm">
@@ -168,7 +168,7 @@
 //               <div className="flex justify-between items-baseline mb-6">
 //                 <span className="text-lg font-semibold">Total</span>
 //                 <span className="text-xl font-bold">
-//                   ₹{total.toLocaleString("en-IN")}
+//                   €{total.toLocaleString("en-IN")}
 //                 </span>
 //               </div>
 
@@ -293,7 +293,7 @@ export default function CartPageClient({
                         {item.name}
                       </h2>
                       <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
-                        ₹{Number(item.price).toLocaleString("en-IN")} each
+                        €{Number(item.price).toLocaleString("en-IN")} each
                       </p>
                     </div>
 
@@ -321,7 +321,7 @@ export default function CartPageClient({
 
                       <div className="flex items-center gap-4">
                         <p className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-                          ₹{(item.price * item.quantity).toLocaleString("en-IN")}
+                          €{(item.price * item.quantity).toLocaleString("en-IN")}
                         </p>
 
                         <button
@@ -347,7 +347,7 @@ export default function CartPageClient({
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between text-sm">
                   <span>Subtotal</span>
-                  <span className="font-medium">₹{total.toLocaleString("en-IN")}</span>
+                  <span className="font-medium">€{total.toLocaleString("en-IN")}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Shipping</span>
@@ -357,7 +357,7 @@ export default function CartPageClient({
 
               <div className="flex justify-between items-baseline mb-6">
                 <span className="text-lg font-semibold">Total</span>
-                <span className="text-xl font-bold">₹{total.toLocaleString("en-IN")}</span>
+                <span className="text-xl font-bold">€{total.toLocaleString("en-IN")}</span>
               </div>
 
               <button

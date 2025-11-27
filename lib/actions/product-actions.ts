@@ -11,11 +11,6 @@ import { and, eq, inArray } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { Product } from "../types/product.types";
 
-// =====================================================================================
-// HELPERS
-// =====================================================================================
-
-// Create a category only if it doesn't exist already
 async function createCategoryIfNotExists(name: string) {
   const existing = await db.query.category.findFirst({
     where: (c, { eq }) => eq(c.name, name),
@@ -35,17 +30,28 @@ async function createCategoryIfNotExists(name: string) {
 
 // Get full product with relations
 export async function getProductById(id: string) {
-  return await db.query.product.findFirst({
+  const result = await db.query.product.findFirst({
     where: eq(product.id, id),
     with: {
       productImages: true,
       productCategories: {
         with: {
-          category: true, // ⭐ IMPORTANT: include name + id
+          category: true,
         },
       },
     },
   });
+
+  if (!result) return null;
+
+  return {
+    ...result,
+    //@ts-ignore
+    categories: result.productCategories?.map((pc) => ({
+      id: pc.category.id,
+      name: pc.category.name,
+    })),
+  };
 }
 
 export async function getProducts() {
@@ -74,7 +80,7 @@ export const getEarbuds = async () => {
                   .from(category)
                   .where(
                     and(
-                      eq(category.id, productCategory.categoryId), // <--- added correlation
+                      eq(category.id, productCategory.categoryId),
                       eq(category.name, "Earphones")
                     )
                   )
@@ -92,28 +98,30 @@ export const getEarbuds = async () => {
     },
   });
 
-  // optional: remove or adjust logging in production
   console.log(earbuds);
   return earbuds;
 };
 
 export async function createProduct(p: Partial<Product>) {
   const id = nanoid();
+  if (!p) {
+    throw new Error("Product is required");
+  }
 
   await db.insert(product).values({
-    id,
+    id: id,
     productName: p.productName!,
     brand: p.brand!,
     model: p.model ?? "",
     subCategory: p.subCategory ?? "",
     description: p.description ?? "",
     features: p.features ?? [],
-    pricing: p.pricing ?? {
-      price: 0,
+    pricing: {
+      price: p.pricing?.price,
       currency: "eur",
-      discount: 0,
-      inStock: true,
-      stockQuantity: 10,
+      discount: p.pricing?.discount,
+      inStock: p.pricing?.inStock ?? true,
+      stockQuantity: p.pricing?.stockQuantity,
     },
     specifications: p.specifications,
     tags: p.tags ?? [],
@@ -148,10 +156,6 @@ export async function createProduct(p: Partial<Product>) {
   return getProductById(id);
 }
 
-// =====================================================================================
-// UPDATE PRODUCT — FULLY OPTIMIZED WITH DIFF
-// =====================================================================================
-
 export async function updateProduct(id: string, p: Partial<Product>) {
   // 1. Update base product fields
   await db
@@ -169,11 +173,6 @@ export async function updateProduct(id: string, p: Partial<Product>) {
     })
     .where(eq(product.id, id));
 
-  // ============================================================================
-  // 2. CATEGORY DIFF
-  // ============================================================================
-
-  // Existing categories
   const existingCategoryLinks = await db.query.productCategory.findMany({
     where: eq(productCategory.productId, id),
   });

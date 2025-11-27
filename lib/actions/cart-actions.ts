@@ -2,7 +2,7 @@
 
 import { eq, and } from "drizzle-orm";
 import { db } from "../db";
-import { cart, cartItem, productImage } from "../db/schema";
+import { cart, cartItem, product, productImage } from "../db/schema";
 import { nanoid } from "nanoid";
 import {
   CartItem as TCartItem,
@@ -79,9 +79,26 @@ export const addItemToCart = async (
     );
 
   if (existing) {
+    const products = await db
+      .select()
+      .from(product)
+      .where(eq(product.id, productId));
+    if (!products)
+      return { success: false, data: null, error: "Product not found" };
+    const p = products[0];
+    if (!p) return { success: false, data: null, error: "Product not found" };
+    if (
+      p.pricing?.stockQuantity &&
+      p.pricing?.stockQuantity < existing.quantity + qty
+    )
+      return { success: false, data: null, error: "Product out of stock" };
+
     const [updated] = await db
       .update(cartItem)
-      .set({ quantity: existing.quantity + qty })
+      .set({
+        quantity: existing.quantity + qty,
+        price: String(p.pricing.price),
+      })
       .where(eq(cartItem.id, existing.id))
       .returning();
 
@@ -126,6 +143,18 @@ export const updateItemQuantity = async (cartItemId: string, qty: number) => {
 };
 
 export const removeItemFromCart = async (cartItemId: string) => {
+  const existing = await db.query.cartItem.findFirst({
+    where: (t, { eq }) => eq(t.id, cartItemId),
+  });
+  if (!existing) return { success: false, data: null, error: "Item not found" };
+  if (existing.quantity > 1) {
+    const [updated] = await db
+      .update(cartItem)
+      .set({ quantity: existing.quantity - 1 })
+      .where(eq(cartItem.id, cartItemId))
+      .returning();
+    return { success: true, data: updated, error: null };
+  }
   const [removed] = await db
     .delete(cartItem)
     .where(eq(cartItem.id, cartItemId))

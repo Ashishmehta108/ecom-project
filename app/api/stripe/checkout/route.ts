@@ -5,7 +5,7 @@ import { getUserSession } from "@/server";
 
 export async function POST(req: NextRequest) {
   try {
-    // Ensure Stripe is initialized
+    
     if (!stripe) {
       console.error("Stripe client not initialized");
       return NextResponse.json(
@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Parse body safely
     let body: any;
     try {
       body = await req.json();

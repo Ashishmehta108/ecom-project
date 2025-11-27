@@ -1,6 +1,4 @@
-
-
-  "use client";
+"use client";
 
 import React, { useTransition, useState, useEffect } from "react";
 import {
@@ -8,6 +6,7 @@ import {
   FormProvider,
   useFormContext,
   useFieldArray,
+  useWatch,
   SubmitHandler,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,7 +59,7 @@ import {
 } from "@/components/ui/form";
 import clsx from "clsx";
 import { Category } from "@/lib/types/product.types";
-import { TSpecsTab } from "./specTab";
+import { SpecsTab } from "./specTab";
 
 type ProductImage = {
   url: string;
@@ -277,7 +276,6 @@ const GeneralTab: React.FC = () => {
     </div>
   );
 };
-
 const PricingTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
 
@@ -289,6 +287,8 @@ const PricingTab: React.FC = () => {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        {/* PRICE */}
         <FormField
           control={form.control}
           name="pricing.price"
@@ -300,20 +300,16 @@ const PricingTab: React.FC = () => {
               <FormControl>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500">
-                    ₹
+                    €
                   </span>
                   <Input
                     type="text"
-                    min={0}
-                    value={field.value?.toString() ?? ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (/^\d*\.?\d*$/.test(value)) {
-                        field.onChange(Number(value));
-                      }
-                    }}
-                    className="h-11 rounded-xl pl-8"
+                    inputMode="decimal"
                     placeholder="0.00"
+                    className="h-11 rounded-xl pl-8"
+                    {...field}
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(e.target.value)}
                   />
                 </div>
               </FormControl>
@@ -328,23 +324,18 @@ const PricingTab: React.FC = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm font-medium">
-                Discount (%)
+                Discount (%) <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
-                    type="number"
-                    min={0}
-                    max={100}
-                    value={field.value?.toString() ?? ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (/^\d*\.?\d*$/.test(value)) {
-                        field.onChange(Number(value));
-                      }
-                    }}
-                    className="h-11 rounded-xl pr-8"
+                    type="text"
+                    inputMode="numeric"
                     placeholder="0"
+                    className="h-11 rounded-xl pr-8"
+                    {...field}
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(e.target.value)}
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500">
                     %
@@ -356,37 +347,36 @@ const PricingTab: React.FC = () => {
           )}
         />
 
+        {/* STOCK */}
         <FormField
           control={form.control}
           name="pricing.stockQuantity"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm font-medium">
-                Stock Quantity
+                Stock Quantity <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
                 <Input
-                  type="number"
-                  min={0}
-                  value={field.value?.toString() ?? ""}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (/^\d*$/.test(value)) {
-                      field.onChange(Number(value));
-                    }
-                  }}
-                  className="h-11 rounded-xl"
+                  type="text"
+                  inputMode="numeric"
                   placeholder="0"
+                  className="h-11 rounded-xl"
+                  {...field}
+                  value={field.value || ""}
+                  onChange={(e) => field.onChange(e.target.value)}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
       </div>
     </div>
   );
 };
+
 
 const ImagesTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
@@ -805,59 +795,127 @@ const CategoriesTab: React.FC<{ categories: Category[] }> = ({
   );
 };
 
+
 export default function AdminProductPanel({
   initialProduct = {},
   categories = [],
   isNew = false,
 }: Props) {
   const [isPending, startTransition] = useTransition();
-  const normalizeSpecs = (specObj?: Record<string, unknown>) =>
-    Object.entries(specObj ?? {}).map(([key, value]) => ({
+  const objectToArray = (
+    obj: Record<string, any>
+  ): Array<{ key: string; value: string }> => {
+    if (!obj || typeof obj !== "object") return [];
+    return Object.entries(obj).map(([key, value]) => ({
       key,
       value: Array.isArray(value) ? value.join(", ") : String(value ?? ""),
     }));
-    console.log(normalizeSpecs)
-  const [lastUpdated, setLastUpdated] = useState("");
-  React.useEffect(() => setLastUpdated(new Date().toLocaleDateString()), []);
-  console.log(categories, initialProduct);
+  };
+  // Helper: Convert array format to object format for form
+  const arrayToObject = (
+    arr: Array<{ key: string; value: string }> | undefined
+  ): Record<string, any> => {
+    if (!Array.isArray(arr)) return {};
+    const obj: Record<string, any> = {};
+    for (const item of arr) {
+      if (item.key && item.value !== undefined) {
+        if (item.key === "certificate" && item.value.includes(",")) {
+          obj[item.key] = item.value
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean);
+        } else {
+          obj[item.key] = item.value;
+        }
+      }
+    }
+    return obj;
+  };
+
+  let mergedSpecifications: {
+    general: Record<string, any>;
+    technical: Record<string, any>;
+  };
+
+  const specs = initialProduct.specifications;
+
+  mergedSpecifications = {
+    general: Array.isArray(specs?.general)
+      ? arrayToObject(specs.general)
+      : typeof specs?.general === "object"
+      ? specs.general
+      : {},
+
+    technical: Array.isArray(specs?.technical)
+      ? arrayToObject(specs.technical)
+      : typeof specs?.technical === "object"
+      ? specs.technical
+      : {},
+  };
+
+  const categoryNames = Array.isArray(initialProduct?.categories)
+    ? initialProduct.categories.map((c: any) =>
+        typeof c === "string" ? c : c?.name || c
+      )
+    : [];
+
   const defaultValues: ProductFormValues = {
-    id: initialProduct?.id ?? undefined, // Add ? after initialProduct
-    productName: initialProduct?.productName ?? "", // Add ?
-    brand: initialProduct?.brand ?? "", // Add ?
-    model: initialProduct?.model ?? "", // Add ?
-    subCategory: initialProduct?.subCategory ?? "", // Add ?
-    description: initialProduct?.description ?? "", // Add ?
-    slug: initialProduct?.slug ?? "", // Add ?
-    features: initialProduct?.features ?? [], // Add ?
-    tags: initialProduct?.tags ?? [], // Add ?
-    categories: initialProduct?.categories ?? [], // Add ?
+    id: initialProduct?.id ?? undefined,
+    productName: initialProduct?.productName ?? "",
+    brand: initialProduct?.brand ?? "",
+    model: initialProduct?.model ?? "",
+    subCategory: initialProduct?.subCategory ?? "",
+    description: initialProduct?.description ?? "",
+
+    features: initialProduct?.features ?? [],
+    tags: initialProduct?.tags ?? [],
+    categories: categoryNames,
     pricing: initialProduct?.pricing ?? {
-      // Add ?
       price: 0,
       currency: "INR",
       discount: 0,
       inStock: true,
       stockQuantity: 0,
     },
-    specifications: mergedSpecifications,
+    specifications: {
+      general: objectToArray(mergedSpecifications.general),
+      technical: objectToArray(mergedSpecifications.technical),
+    },
     productImages: (initialProduct.productImages ?? []).map((img) => ({
       url: img.url,
       fileId: img.fileId,
     })),
   };
 
-  console.log(defaultValues.categories);
   const form = useForm({
     resolver: zodResolver(productFormSchema),
     defaultValues,
+    // mode: "onBlur",
   });
 
   const onSubmit: SubmitHandler<ProductFormValues> = (values) => {
+    console.log("hi");
+    console.log("Submitting form...", values);
     startTransition(() => {
       (async () => {
         try {
-          const payload = { ...values };
-          console.log(isNew);
+          console.log(
+               arrayToObject(values.specifications.general),
+           arrayToObject(values.specifications.technical),
+            );
+
+          const payload: ProductFormValues = {
+            ...values,
+            specifications: {
+              general: arrayToObject(values.specifications.general),
+              technical: arrayToObject(values.specifications.technical),
+            },
+            productImages: (values.productImages ?? []).map((img) => ({
+              url: img.url,
+              fileId: img.fileId ?? null,
+            })),
+          };
+
           if (isNew) {
             const saved = await createProductAction(payload);
             alert("✅ Product created successfully!");
@@ -903,26 +961,6 @@ export default function AdminProductPanel({
               </p>
             </div>
           </div>
-
-          <Button
-            type="submit"
-            form="product-form"
-            disabled={isPending}
-            size="lg"
-            className="w-full sm:w-auto h-12 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-          >
-            {isPending ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <CheckCircle2 className="w-5 h-5 mr-2" />
-                {isNew ? "Create Product" : "Save Changes"}
-              </>
-            )}
-          </Button>
         </div>
 
         {/* Main Card */}
@@ -948,14 +986,20 @@ export default function AdminProductPanel({
               <Form {...form}>
                 <form
                   id="product-form"
-                  onSubmit={form.handleSubmit(onSubmit)}
+                  onError={(e) => console.log(e)}
+                  onSubmit={form.handleSubmit(onSubmit, (errors) => {
+                    console.log("❌ ZOD Validation Errors:", errors);
+                  })}
                   className="space-y-6"
                 >
                   <Button
                     type="submit"
                     disabled={isPending}
                     size="lg"
-                    className="w-full sm:w-auto h-12 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    className="w-full sm:w-auto h-12 px-8 rounded-xl bg-indigo-600 text-white 
+             hover:bg-indigo-500 transition-all 
+            
+             disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     {isPending ? (
                       <>
@@ -963,10 +1007,7 @@ export default function AdminProductPanel({
                         Saving...
                       </>
                     ) : (
-                      <>
-                        <CheckCircle2 className="w-5 h-5 mr-2" />
-                        {isNew ? "Create Product" : "Save Changes"}
-                      </>
+                      <>{isNew ? "Create Product" : "Save Changes"}</>
                     )}
                   </Button>
                   <Tabs defaultValue="general" className="space-y-8">

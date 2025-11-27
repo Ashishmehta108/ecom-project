@@ -16,27 +16,10 @@ export type Product = {
     stockQuantity: number;
   };
 
-  specifications: {
-    general: {
-      productName: string;
-      brandName: string;
-      colors: string;
-      material: string;
-      weight: string;
-      sizeMm: string;
-      privateMold: string;
-      certificate: string[];
-    };
 
-    technical: {
-      bluetoothVersion: string;
-      wirelessDelayTime: string;
-      waterproofStandard: string;
-      chipset: string;
-      batteryCapacity: string;
-      useTime: string;
-      standbyTime: string;
-    };
+  specifications: {
+    general: Record<string, any>;
+    technical: Record<string, any>;
   };
 
   productImages: {
