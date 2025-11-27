@@ -10,6 +10,8 @@ import userCartState from "@/lib/states/cart.state";
 import { User } from "lucide-react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+;
+
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -32,7 +34,11 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center gap-3 flex-shrink-0">
             <Logo />
+
+           
           </div>
+         
+
 
           {/* Search - Desktop */}
           <div className="hidden md:block flex-1 max-w-xl">
