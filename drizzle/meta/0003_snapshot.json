@@ -131,7 +131,7 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "'INR'"
+          "default": "'EUR'"
         },
         "created_at": {
           "name": "created_at",
@@ -515,7 +515,7 @@
           "type": "varchar(10)",
           "primaryKey": false,
           "notNull": true,
-          "default": "'inr'"
+          "default": "'EUR'"
         },
         "status": {
           "name": "status",

@@ -6,7 +6,7 @@ export const technicalSpecsSchema = z.array(specPair).default([]);
 
 export const pricingSchema = z.object({
   price: z.coerce.number().min(0),
-  currency: z.string().default("INR"),
+  currency: z.string().default("EUR"),
   discount: z.coerce.number().min(0).max(100).default(0),
   inStock: z.boolean().default(true),
   stockQuantity: z.coerce.number().min(0).default(0),

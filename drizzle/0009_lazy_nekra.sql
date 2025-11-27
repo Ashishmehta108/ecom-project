@@ -1,7 +1,7 @@
 CREATE TABLE "pos_cart" (
 	"id" text PRIMARY KEY NOT NULL,
 	"customer_id" text NOT NULL,
-	"currency" text DEFAULT 'INR' NOT NULL,
+	"currency" text DEFAULT 'EUR' NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
 );
@@ -32,7 +32,7 @@ CREATE TABLE "pos_order" (
 	"subtotal" numeric(10, 2) NOT NULL,
 	"tax" numeric(10, 2) DEFAULT '0' NOT NULL,
 	"total" numeric(10, 2) NOT NULL,
-	"currency" text DEFAULT 'INR',
+	"currency" text DEFAULT 'EUR',
 	"status" text DEFAULT 'pending',
 	"order_status" text DEFAULT 'pending',
 	"stripe_checkout_session_id" text,
@@ -56,7 +56,7 @@ CREATE TABLE "pos_payment" (
 	"id" text PRIMARY KEY NOT NULL,
 	"order_id" text,
 	"amount" integer NOT NULL,
-	"currency" text DEFAULT 'INR' NOT NULL,
+	"currency" text DEFAULT 'EUR' NOT NULL,
 	"stripe_payment_intent_id" text,
 	"stripe_checkout_session_id" text,
 	"status" text DEFAULT 'requires_payment_method',

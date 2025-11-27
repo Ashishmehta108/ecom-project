@@ -29,7 +29,7 @@ CREATE TABLE "orders" (
 	"tax" numeric(10, 2) DEFAULT '0' NOT NULL,
 	"shipping_fee" numeric(10, 2) DEFAULT '0' NOT NULL,
 	"total" numeric(10, 2) NOT NULL,
-	"currency" varchar(8) DEFAULT 'INR',
+	"currency" varchar(8) DEFAULT 'EUR',
 	"shipping_address_id" text,
 	"stripe_payment_intent_id" text,
 	"stripe_checkout_session_id" text,

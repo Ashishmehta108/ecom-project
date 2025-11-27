@@ -77,7 +77,7 @@ export async function ensurePosCustomerAndCart() {
     .values({
       id: cartId,
       customerId,
-      currency: "INR",
+      currency: "EUR",
     })
     .returning();
 

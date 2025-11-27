@@ -20,8 +20,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-
-
+import Logo from "@/components/navbar/Logo";
 
 export default function Sidebar() {
   const [open, setOpen] = useState(true);
@@ -40,7 +39,11 @@ export default function Sidebar() {
     { name: "Categories", icon: Tag, href: "/admin/categories" },
     { name: "Payments", icon: CreditCard, href: "/admin/payments" },
     { name: "Settings", icon: Settings, href: "/admin/settings" },
-    { name: "Buy for customer", icon: ShoppingCart, href: "/admin/customers/order" },
+    {
+      name: "Buy for customer",
+      icon: ShoppingCart,
+      href: "/admin/customers/order",
+    },
   ];
 
   const isActive = (href: string) =>
@@ -56,9 +59,10 @@ export default function Sidebar() {
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800">
         <div className="flex items-center gap-3 overflow-hidden">
-          <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
+          {/* <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
             <Store className="w-5 h-5 text-white" />
-          </div>
+          </div> */}
+          <Logo size={50} />
           {open && (
             <h1 className="text-lg font-semibold truncate">Store Admin</h1>
           )}
