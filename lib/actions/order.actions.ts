@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { orders } from "@/lib/db/schema";
+import { getUserSession } from "@/server";
 import { eq } from "drizzle-orm";
 
 /**
@@ -54,10 +55,15 @@ export async function getOrderDetails(orderId: string) {
   return order;
 }
 
-/**
- * UPDATE ORDER STATUS
- */
+
 export async function updateOrderStatus(orderId: string, status: string) {
+  const user = await getUserSession();
+  if (user?.user.role !== "admin")
+    return { success: false, error: "Unauthorized" };
+  const order = await db.query.orders.findFirst({
+    where: eq(orders.id, orderId),
+  });
+  if (!order) return { success: false, error: "Order not found" };
   await db
     .update(orders)
     .set({ orderStatus: status })

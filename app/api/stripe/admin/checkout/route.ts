@@ -1,12 +1,22 @@
+// app/api/stripe/admin/checkout/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import { stripeClient as stripe } from "@/lib/stripe";
-import { getCustomerCart, clearCustomerCart } from "@/lib/queries/admin-cart";
 import { db } from "@/lib/db";
-import { orders, orderItem, payments } from "@/lib/db/schema";
+import {
+  posCart,
+  posCartItem,
+  posCustomer,
+  posOrder,
+  posOrderItem,
+  posPayment,
+  product,
+} from "@/lib/db/schema";
+import { getPosCart, clearPosCart } from "@/lib/queries/pos-cart";
 import { nanoid } from "nanoid";
 
 export async function POST(req: NextRequest) {
-  console.log("🔥 /api/stripe/checkout HIT");
+  console.log("🔥 /api/stripe/admin/checkout HIT");
 
   try {
     let body;
@@ -19,7 +29,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { customerId } = body;
-    console.log("🧍 customerId:", customerId);
+    console.log("🧍 POS customerId:", customerId);
 
     if (!customerId) {
       console.error("❌ Missing customerId");
@@ -30,9 +40,9 @@ export async function POST(req: NextRequest) {
     }
 
     // 1. Get cart
-    console.log("🛒 Fetching cart for:", customerId);
-    const cartData = await getCustomerCart(customerId);
-    console.log("🛒 Cart Data:", cartData);
+    console.log("🛒 Fetching POS cart for:", customerId);
+    const cartData = await getPosCart(customerId);
+    console.log("🛒 POS Cart Data:", cartData);
 
     if (!cartData || cartData.items.length === 0) {
       console.error("❌ Cart is empty");
@@ -43,16 +53,15 @@ export async function POST(req: NextRequest) {
     const total = subtotal;
     console.log("💰 Totals → subtotal:", subtotal, " total:", total);
 
-    // 2. Create order
-    console.log("📦 Creating order…");
+    // 2. Create POS order
+    console.log("📦 Creating POS order…");
     const [order] = await db
-      .insert(orders)
+      .insert(posOrder)
       .values({
         id: nanoid(),
-        userId: customerId,
+        customerId,
         subtotal: subtotal.toString(),
         tax: "0",
-        shippingFee: "0",
         total: total.toString(),
         currency: "INR",
         status: "pending",
@@ -60,28 +69,26 @@ export async function POST(req: NextRequest) {
       })
       .returning();
 
-    console.log("📦 Order Created:", order);
+    console.log("📦 POS Order Created:", order);
 
     // 3. Order items
-    console.log("📦 Creating order items:", cartData.items);
-    await db.insert(orderItem).values(
+    console.log("📦 Creating POS order items:", cartData.items);
+    await db.insert(posOrderItem).values(
       cartData.items.map((i) => ({
         id: nanoid(),
         orderId: order.id,
         productId: i.productId,
         quantity: i.quantity,
         price: i.price.toString(),
+        name: i.productName,
+        brand: i.brand,
+        model: i.model,
       }))
     );
-    console.log("📦 Order Items inserted");
+    console.log("📦 POS Order Items inserted");
 
-    // 4. Stripe
+    // 4. Stripe Checkout
     console.log("💳 Creating Stripe Checkout Session…");
-    console.log("➡ Stripe Payload:", {
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/order/success?orderId=${order.id}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/order/cancel`,
-      line_items: cartData.items,
-    });
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -95,7 +102,7 @@ export async function POST(req: NextRequest) {
       line_items: cartData.items.map((item) => ({
         quantity: item.quantity,
         price_data: {
-          currency: "EUR", // ⚠ You set EUR here — leave it or change back to INR
+          currency: "INR", // or "EUR" if you prefer
           product_data: {
             name: item.productName,
             description: `${item.brand} ${item.model}`,
@@ -107,11 +114,10 @@ export async function POST(req: NextRequest) {
 
     console.log("💳 Stripe Session CREATED:", session.id);
 
-    // 5. Add payment
-    console.log("💾 Storing payment info…");
-    await db.insert(payments).values({
+    // 5. POS payment record
+    console.log("💾 Storing POS payment info…");
+    await db.insert(posPayment).values({
       id: nanoid(),
-      userId: customerId,
       orderId: order.id,
       amount: Math.round(total),
       currency: "INR",
@@ -119,11 +125,11 @@ export async function POST(req: NextRequest) {
       stripeCheckoutSessionId: session.id,
     });
 
-    console.log("💾 Payment saved");
+    console.log("💾 POS Payment saved");
 
-    // 6. Clear cart
-    console.log("🧹 Clearing cart...");
-    await clearCustomerCart(customerId);
+    // 6. Clear POS cart
+    console.log("🧹 Clearing POS cart...");
+    await clearPosCart(customerId);
 
     console.log("✅ All done. Returning session URL:", session.url);
     return NextResponse.json({ url: session.url });

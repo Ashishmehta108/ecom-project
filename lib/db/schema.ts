@@ -93,11 +93,9 @@ Product schema
 
 const product = pgTable("product", {
   id: text("id").primaryKey(),
-
   productName: text("product_name").notNull(),
   brand: text("brand").notNull(),
   model: text("model").notNull(),
-
   subCategory: text("sub_category").notNull(),
   description: text("description").notNull(),
 
@@ -122,6 +120,9 @@ const product = pgTable("product", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
+
+
+
 const cart = pgTable(
   "cart",
   {
@@ -347,12 +348,96 @@ const orders = pgTable("orders", {
   orderStatus: text("order_status").default("pending"),
 });
 
-const adminCustomer = pgTable("admin_customer", {
-  id: text("id").primaryKey(),
+export const posCustomer = pgTable("pos_customer", {
+  id: text("id").primaryKey(), // nanoid()
   name: text("name"),
   email: text("email"),
   phone: text("phone"),
   address: text("address"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const posCart = pgTable("pos_cart", {
+  id: text("id").primaryKey(),
+  customerId: text("customer_id")
+    .notNull()
+    .references(() => posCustomer.id, { onDelete: "cascade" }),
+
+  currency: text("currency").notNull().default("INR"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
+export const posCartItem = pgTable("pos_cart_item", {
+  id: text("id").primaryKey(),
+  cartId: text("cart_id")
+    .notNull()
+    .references(() => posCart.id, { onDelete: "cascade" }),
+
+  productId: text("product_id").notNull(),
+  name: text("name"),
+  brand: text("brand"),
+  model: text("model"),
+
+  quantity: integer("quantity").notNull().default(1),
+  price: numeric("price", { precision: 10, scale: 2 }).notNull(),
+});
+
+export const posOrder = pgTable("pos_order", {
+  id: text("id").primaryKey(), // orderId = nanoid()
+  customerId: text("customer_id")
+    .notNull()
+    .references(() => posCustomer.id),
+
+  subtotal: numeric("subtotal", { precision: 10, scale: 2 }).notNull(),
+  tax: numeric("tax", { precision: 10, scale: 2 }).notNull().default("0"),
+  total: numeric("total", { precision: 10, scale: 2 }).notNull(),
+  currency: text("currency").default("INR"),
+
+  status: text("status").default("pending"),
+  orderStatus: text("order_status").default("pending"),
+
+  stripeCheckoutSessionId: text("stripe_checkout_session_id"),
+  stripePaymentIntentId: text("stripe_payment_intent_id"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
+export const posOrderItem = pgTable("pos_order_item", {
+  id: text("id").primaryKey(),
+  orderId: text("order_id")
+    .notNull()
+    .references(() => posOrder.id, { onDelete: "cascade" }),
+
+  productId: text("product_id").notNull(),
+  quantity: integer("quantity").notNull(),
+  price: numeric("price", { precision: 10, scale: 2 }).notNull(),
+
+  name: text("name"),
+  brand: text("brand"),
+  model: text("model"),
+});
+
+export const posPayment = pgTable("pos_payment", {
+  id: text("id").primaryKey(),
+  orderId: text("order_id").references(() => posOrder.id, {
+    onDelete: "set null",
+  }),
+
+  amount: integer("amount").notNull(),
+  currency: text("currency").notNull().default("INR"),
+
+  stripePaymentIntentId: text("stripe_payment_intent_id"),
+  stripeCheckoutSessionId: text("stripe_checkout_session_id"),
+
+  status: text("status").default("requires_payment_method"),
+
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -362,7 +447,6 @@ export const adminCustomerCart = pgTable("admin_customer_cart", {
   // This cart belongs to no user — admin creates it
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
-
 
 export const adminCustomerCartItem = pgTable("admin_customer_cart_item", {
   id: text("id").primaryKey(),
@@ -381,7 +465,6 @@ export const adminCustomerCartItem = pgTable("admin_customer_cart_item", {
 
   addedAt: timestamp("added_at").defaultNow().notNull(),
 });
-
 
 export const adminCustomerOrder = pgTable("admin_customer_order", {
   id: text("id").primaryKey(),

@@ -243,6 +243,7 @@ export default function ReviewPage({ productId }: { productId: string }) {
 
   const ratingCounts = [5, 4, 3, 2, 1].map((star) => ({
     star,
+    
     count: reviews.filter((r) => Number(r.rating) === star).length,
   }));
 
