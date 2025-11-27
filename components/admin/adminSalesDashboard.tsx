@@ -78,7 +78,7 @@ export default function AdminSalesDashboard({ analytics }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-neutral-950 p-6 md:p-8 lg:p-10">
+    <div className=" bg-white dark:bg-neutral-950 p-6 md:p-8 lg:p-10">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="mb-10">
@@ -318,7 +318,6 @@ export default function AdminSalesDashboard({ analytics }: Props) {
           </Card>
         </div>
 
-        {/* Recent Orders Table */}
         <Card className="border bg-white dark:bg-neutral-900">
           <CardHeader>
             <CardTitle className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -395,49 +394,7 @@ export default function AdminSalesDashboard({ analytics }: Props) {
           </CardContent>
         </Card>
 
-        {/* Top Customers */}
-        <Card className="border bg-white dark:bg-neutral-900">
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold text-gray-900 dark:text-white">
-              Top Customers
-            </CardTitle>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              Your most valuable customers by total spend
-            </p>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {analytics.topCustomers.slice(0, 5).map((customer, idx) => (
-                <div
-                  key={customer.userId}
-                  className="flex items-center justify-between p-5 rounded bg-gray-50 dark:bg-neutral-800/50"
-                >
-                  <div className="flex items-center gap-4 flex-1 min-w-0">
-                    <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-neutral-700 flex items-center justify-center flex-shrink-0">
-                      <span className="text-gray-700 dark:text-gray-300 font-bold text-lg">
-                        {(customer.name || "G")[0].toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-900 dark:text-white truncate">
-                        {customer.name || "Guest"}
-                      </p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
-                        {customer.email}
-                      </p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                        {formatNumber(customer.ordersCount)} orders
-                      </p>
-                    </div>
-                  </div>
-                  <span className="font-bold text-xl text-gray-900 dark:text-white ml-4 whitespace-nowrap">
-                    {formatCurrency(customer.totalSpent)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      
       </div>
     </div>
   );

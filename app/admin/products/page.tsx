@@ -1,6 +1,6 @@
 
 import { getProducts } from "@/lib/actions/product-actions";
-// import getProducts
+
 import Link from "next/link";
 import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -11,9 +11,6 @@ import { deleteProductAction } from "@/lib/actions/admin-actions/prods";
 export default async function AdminProductsPage() {
   const products = await getProducts();
 
-  //
-
-  // Use real products if available, otherwise use demo
   const displayProducts = products
 
   return (

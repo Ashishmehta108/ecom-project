@@ -448,6 +448,25 @@ export const adminCustomerCart = pgTable("admin_customer_cart", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+
+export const appointment = pgTable("appointment", {
+  id: text("id").primaryKey(),
+
+  customerId: text("customer_id").notNull(),
+  customerName: varchar("customer_name", { length: 120 }).notNull(),
+  customerEmail: varchar("customer_email", { length: 160 }).notNull(),
+  customerPhone: varchar("customer_phone", { length: 20 }).notNull(),
+
+  deviceType: varchar("device_type", { length: 120 }).notNull(), // Laptop / Mobile / Tablet
+  issueDescription: text("issue_description").notNull(),
+
+  scheduledDate: timestamp("scheduled_date").notNull(), // appointment date & time
+  status: varchar("status", { length: 40 }).default("pending"), 
+  // pending | confirmed | completed | cancelled
+
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const adminCustomerCartItem = pgTable("admin_customer_cart_item", {
   id: text("id").primaryKey(),
 

@@ -20,6 +20,7 @@ type ProductCardProps = {
       inStock: boolean;
       currency: string;
       discount: number;
+      stockQuantity?: number;
     };
     productImages: Array<{
       url: string;
@@ -31,7 +32,13 @@ type ProductCardProps = {
 
 export function ProductCard({ product, userId }: ProductCardProps) {
   const mainImage = product.productImages.find((img) => img.position === "0");
-  const formattedPrice = `€${product.pricing.price.toLocaleString("en-IN")}`;
+
+  const outOfStock =
+    product.pricing.stockQuantity !== undefined
+      ? product.pricing.stockQuantity <= 0
+      : !product.pricing.inStock;
+
+  const formattedPrice = `₹${product.pricing.price.toLocaleString("en-IN")}`;
 
   const addToCart = async (userId: string, productId: string) => {
     const data = await addItemToCart(userId, productId, 1);
@@ -39,29 +46,39 @@ export function ProductCard({ product, userId }: ProductCardProps) {
       toast.success(`${data.data.name} added to cart successfully`);
     }
   };
+
   const inCart = isInCart(product.id);
+console.log("----------product",product)
   return (
-    <article className="group flex h-[540px] flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900">
+    <article className="group relative flex h-[600px] flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900">
+      {/* Dim overlay when out of stock */}
+      {outOfStock && (
+        <div className="absolute inset-0 z-20 bg-black/10  pointer-events-none" />
+      )}
+
       <Link
         href={`/products/${product.id}`}
-        className="relative block overflow-hidden bg-white dark:bg-neutral-800"
+        className="relative block overflow-hidden"
       >
-        <div className="aspect-square flex items-center justify-center bg-muted/10 rounded-lg">
+        <div className="aspect-square flex items-center justify-center bg-muted/10 rounded-lg relative">
+          {/* Out of stock badge */}
+          {outOfStock && (
+            <span className="absolute right-3 top-3 z-30 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-red-600 shadow-sm backdrop-blur-sm dark:bg-neutral-900/95 dark:text-red-400">
+              Out of stock
+            </span>
+          )}
+
           <Image
             src={mainImage?.url || "/placeholder.jpg"}
             alt={product.productName}
             width={280}
             height={280}
-            className="object-contain transition-transform duration-500 group-hover:scale-105"
+            className={`object-contain transition-transform duration-500 group-hover:scale-105 ${
+              outOfStock ? "opacity-60 grayscale" : ""
+            }`}
             loading="lazy"
           />
         </div>
-
-        {!product.pricing.inStock && (
-          <span className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-medium text-neutral-700 shadow-sm backdrop-blur-sm dark:bg-neutral-900/95 dark:text-neutral-300">
-            Out of stock
-          </span>
-        )}
       </Link>
 
       <div className="flex flex-1 flex-col p-5">
@@ -99,6 +116,8 @@ export function ProductCard({ product, userId }: ProductCardProps) {
               </p>
             )}
           </div>
+
+          {/* Button logic */}
           {inCart ? (
             <Button
               size="sm"
@@ -111,11 +130,15 @@ export function ProductCard({ product, userId }: ProductCardProps) {
           ) : (
             <Button
               size="sm"
-              className="rounded-full bg-neutral-900 px-5 text-xs font-medium hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
-              disabled={!product.pricing.inStock}
+              disabled={outOfStock}
               onClick={() => addToCart(userId, product.id)}
+              className={`rounded-full px-5 text-xs font-medium ${
+                outOfStock
+                  ? "bg-neutral-300 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-400 cursor-not-allowed"
+                  : "bg-neutral-900 text-white hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
+              }`}
             >
-              {product.pricing.inStock ? "Add to cart" : "Notify me"}
+              {outOfStock ? "Coming Soon" : "Add to cart"}
             </Button>
           )}
         </div>

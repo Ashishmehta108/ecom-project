@@ -275,7 +275,6 @@ const GeneralTab: React.FC = () => {
     </div>
   );
 };
-
 const PricingTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
 
@@ -287,6 +286,8 @@ const PricingTab: React.FC = () => {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        {/* PRICE */}
         <FormField
           control={form.control}
           name="pricing.price"
@@ -301,20 +302,13 @@ const PricingTab: React.FC = () => {
                     €
                   </span>
                   <Input
-                    type="number"
-                    min={0}
-                    step="0.01"
-                    className="h-11 rounded-xl pl-8"
+                    type="text"
+                    inputMode="decimal"
                     placeholder="0.00"
+                    className="h-11 rounded-xl pl-8"
                     {...field}
-                    value={field.value ?? ""}
-                    onChange={(e) =>
-                      field.onChange(
-                        e.target.value === ""
-                          ? undefined
-                          : Number(e.target.value)
-                      )
-                    }
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(e.target.value)}
                   />
                 </div>
               </FormControl>
@@ -329,25 +323,18 @@ const PricingTab: React.FC = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm font-medium">
-                Discount (%)
+                Discount (%) <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
-                    type="number"
-                    min={0}
-                    max={100}
-                    className="h-11 rounded-xl pr-8"
+                    type="text"
+                    inputMode="numeric"
                     placeholder="0"
+                    className="h-11 rounded-xl pr-8"
                     {...field}
-                    value={field.value ?? ""}
-                    onChange={(e) =>
-                      field.onChange(
-                        e.target.value === ""
-                          ? undefined
-                          : Number(e.target.value)
-                      )
-                    }
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(e.target.value)}
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500">
                     %
@@ -359,37 +346,36 @@ const PricingTab: React.FC = () => {
           )}
         />
 
+        {/* STOCK */}
         <FormField
           control={form.control}
           name="pricing.stockQuantity"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm font-medium">
-                Stock Quantity
+                Stock Quantity <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
                 <Input
-                  type="number"
-                  min={0}
-                  className="h-11 rounded-xl"
+                  type="text"
+                  inputMode="numeric"
                   placeholder="0"
+                  className="h-11 rounded-xl"
                   {...field}
-                  value={field.value ?? ""}
-                  onChange={(e) =>
-                    field.onChange(
-                      e.target.value === "" ? undefined : Number(e.target.value)
-                    )
-                  }
+                  value={field.value || ""}
+                  onChange={(e) => field.onChange(e.target.value)}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
       </div>
     </div>
   );
 };
+
 
 const ImagesTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
@@ -804,9 +790,6 @@ const CategoriesTab: React.FC<{ categories: Category[] }> = ({
   );
 };
 
-// ---------------------------------------------------------------------------
-// Main Component
-// ---------------------------------------------------------------------------
 
 export default function AdminProductPanel({
   initialProduct = {},

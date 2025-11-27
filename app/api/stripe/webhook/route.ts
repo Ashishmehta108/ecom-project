@@ -6,6 +6,8 @@ import { db } from "@/lib/db";
 import { payments, orders, orderItem, cartItem, cart } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
+import { sendEmail } from "@/lib/sendemail";
+import { orderConfirmationTemplate } from "@/lib/orders/confirmationemail";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -106,7 +108,7 @@ export async function POST(req: NextRequest) {
         where: (table, { eq }) =>
           eq(table.stripePaymentIntentId, paymentIntentId),
       });
-
+      
       if (!existingPayment) {
         await db.insert(payments).values({
           id: nanoid(),
@@ -136,11 +138,10 @@ export async function POST(req: NextRequest) {
 
     const orderId = nanoid();
 
-    // Create ORDER
     await db.insert(orders).values({
       id: orderId,
       userId,
-      status: "successful", // your order-level status
+      status: "successful",
       subtotal: ((session.amount_subtotal ?? 0) / 100).toString(),
       tax: "0",
       shippingFee: "0",
@@ -180,6 +181,22 @@ export async function POST(req: NextRequest) {
           price: item.price,
         });
       }
+      await sendEmail({
+        to: session.customer_details?.email!,
+        subject: "Your Techbar Order Confirmation",
+        html: orderConfirmationTemplate({
+          customerName: session.customer_details?.name ?? "Customer",
+          orderId,
+          orderDate: new Date().toLocaleDateString(),
+          total: ((session.amount_total ?? 0) / 100).toString(),
+          items: userCartItems.map((item) => ({
+            title: item.name,
+            quantity: item.quantity,
+            price: item.price,
+          
+          })),
+        }),
+      });
 
       await db.delete(cartItem).where(eq(cartItem.cartId, userCart.id));
 
