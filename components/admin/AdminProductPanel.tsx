@@ -1068,7 +1068,7 @@ export default function AdminProductPanel({
                       <TabsContent value="specs" className="mt-0">
                         {/* <SpecsTab />
                          */}
-                        <TSpecsTab />
+                        <SpecsTab />
                       </TabsContent>
 
                       <TabsContent value="images" className="mt-0">
@@ -1100,7 +1100,7 @@ export default function AdminProductPanel({
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             <p>Auto-saved to database on submit</p>
           </div>
-          <p>Last updated: {lastUpdated}</p>
+      
         </div>
       </div>
     </div>

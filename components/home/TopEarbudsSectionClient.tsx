@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Container from "../giobal/Container";
 import { ChevronRight } from "lucide-react";
-import { Heart } from "iconsax-reactjs";
 import FavoriteButton from "../favourites/favoritebutton";
 
 export default function TopEarbudsSectionClient({
