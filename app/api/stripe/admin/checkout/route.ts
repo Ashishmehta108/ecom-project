@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
         subtotal: subtotal.toString(),
         tax: "0",
         total: total.toString(),
-        currency: "INR",
+        currency: "EUR",
         status: "pending",
         orderStatus: "pending",
       })
@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
       line_items: cartData.items.map((item) => ({
         quantity: item.quantity,
         price_data: {
-          currency: "INR", // or "EUR" if you prefer
+          currency: "EUR", // or "EUR" if you prefer
           product_data: {
             name: item.productName,
             description: `${item.brand} ${item.model}`,
@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
       id: nanoid(),
       orderId: order.id,
       amount: Math.round(total),
-      currency: "INR",
+      currency: "EUR",
       status: "requires_payment_method",
       stripeCheckoutSessionId: session.id,
     });

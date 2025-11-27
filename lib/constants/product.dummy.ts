@@ -20,7 +20,7 @@ export const product = {
   ],
   pricing: {
     price: 660,
-    currency: "INR",
+    currency: "EUR",
     discount: 0,
     inStock: true,
     stockQuantity: 10,

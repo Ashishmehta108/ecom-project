@@ -17,7 +17,7 @@ CREATE TABLE "account" (
 CREATE TABLE "cart" (
 	"id" text PRIMARY KEY NOT NULL,
 	"user_id" text NOT NULL,
-	"currency" text DEFAULT 'INR' NOT NULL,
+	"currency" text DEFAULT 'EUR' NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );

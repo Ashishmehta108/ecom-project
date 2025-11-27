@@ -34,7 +34,7 @@ export const createAdmin=async()=>{
 //       description: "Product 1 description",
 //       price: "100",
 //       images: ["image1.jpg", "image2.jpg"],
-//       currency: "INR",
+//       currency: "EUR",
 //       id: randomUUID(),
 //     })
 //     .returning({

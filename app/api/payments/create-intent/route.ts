@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
     }
 
-    const allowedCurrencies = ["eur", "usd", "inr"];
+    const allowedCurrencies = ["eur", "usd", "eur"];
     if (!allowedCurrencies.includes(currency.toLowerCase())) {
       return NextResponse.json(
         { error: "Unsupported currency" },

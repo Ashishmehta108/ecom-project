@@ -130,7 +130,7 @@ const cart = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
-    currency: text("currency").notNull().default("INR"),
+    currency: text("currency").notNull().default("EUR"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -333,7 +333,7 @@ const orders = pgTable("orders", {
     .default("0")
     .notNull(),
   total: numeric("total", { precision: 10, scale: 2 }).notNull(),
-  currency: varchar("currency", { length: 8 }).default("INR"),
+  currency: varchar("currency", { length: 8 }).default("EUR"),
   shippingAddressId: text("shipping_address_id").references(() => address.id, {
     onDelete: "set null",
   }),
@@ -363,7 +363,7 @@ export const posCart = pgTable("pos_cart", {
     .notNull()
     .references(() => posCustomer.id, { onDelete: "cascade" }),
 
-  currency: text("currency").notNull().default("INR"),
+  currency: text("currency").notNull().default("EUR"),
 
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at")
@@ -395,7 +395,7 @@ export const posOrder = pgTable("pos_order", {
   subtotal: numeric("subtotal", { precision: 10, scale: 2 }).notNull(),
   tax: numeric("tax", { precision: 10, scale: 2 }).notNull().default("0"),
   total: numeric("total", { precision: 10, scale: 2 }).notNull(),
-  currency: text("currency").default("INR"),
+  currency: text("currency").default("EUR"),
 
   status: text("status").default("pending"),
   orderStatus: text("order_status").default("pending"),
@@ -431,7 +431,7 @@ export const posPayment = pgTable("pos_payment", {
   }),
 
   amount: integer("amount").notNull(),
-  currency: text("currency").notNull().default("INR"),
+  currency: text("currency").notNull().default("EUR"),
 
   stripePaymentIntentId: text("stripe_payment_intent_id"),
   stripeCheckoutSessionId: text("stripe_checkout_session_id"),
@@ -501,7 +501,7 @@ export const adminCustomerOrder = pgTable("admin_customer_order", {
     .default("0")
     .notNull(),
   total: numeric("total", { precision: 10, scale: 2 }).notNull(),
-  currency: text("currency").default("INR"),
+  currency: text("currency").default("EUR"),
 
   // --- Status ---
   status: text("status").default("pending"), // pending | paid | refunded

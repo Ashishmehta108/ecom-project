@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
       stripePaymentIntentId: intent.id,
       stripeCheckoutSessionId: intent.metadata?.checkoutSessionId ?? "",
       amount: intent.amount_received ?? 0,
-      currency: intent.currency ?? "INR",
+      currency: intent.currency ?? "EUR",
       status: "succeeded",
     });
 
@@ -117,7 +117,7 @@ export async function POST(req: NextRequest) {
           stripePaymentIntentId: paymentIntentId,
           stripeCheckoutSessionId: checkoutSessionId,
           amount: session.amount_total ?? 0,
-          currency: (session.currency ?? "INR").toLowerCase(),
+          currency: (session.currency ?? "EUR").toLowerCase(),
           status: "succeeded",
         });
       } else if (existingPayment.status !== "succeeded") {
@@ -146,7 +146,7 @@ export async function POST(req: NextRequest) {
       tax: "0",
       shippingFee: "0",
       total: ((session.amount_total ?? 0) / 100).toString(),
-      currency: (session.currency ?? "INR").toUpperCase(),
+      currency: (session.currency ?? "EUR").toUpperCase(),
       shippingAddressId: addressId,
       stripePaymentIntentId: paymentIntentId,
       stripeCheckoutSessionId: checkoutSessionId,

@@ -295,7 +295,7 @@ const PricingTab: React.FC = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm font-medium">
-                Price (INR) <span className="text-red-500">*</span>
+                Price (EUR) <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
                 <div className="relative">
@@ -872,7 +872,7 @@ export default function AdminProductPanel({
     categories: categoryNames,
     pricing: initialProduct?.pricing ?? {
       price: 0,
-      currency: "INR",
+      currency: "EUR",
       discount: 0,
       inStock: true,
       stockQuantity: 0,

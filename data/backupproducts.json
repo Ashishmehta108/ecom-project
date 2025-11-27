@@ -19,7 +19,7 @@
     ],
     "pricing": {
       "price": 660,
-      "currency": "INR",
+      "currency": "EUR",
       "discount": 0,
       "inStock": true
     },
@@ -65,7 +65,7 @@
     ],
     "pricing": {
       "price": 1299,
-      "currency": "INR",
+      "currency": "EUR",
       "discount": 10,
       "inStock": true
     },
@@ -117,7 +117,7 @@
     ],
     "pricing": {
       "price": 3596,
-      "currency": "INR",
+      "currency": "EUR",
       "discount": 0,
       "inStock": true,
       "stockQuantity": 25
@@ -174,7 +174,7 @@
     ],
     "pricing": {
       "price": 4114.45,
-      "currency": "INR",
+      "currency": "EUR",
       "discount": 0,
       "inStock": true,
       "stockQuantity": 15
@@ -233,7 +233,7 @@
     ],
     "pricing": {
       "price": 15450,
-      "currency": "INR",
+      "currency": "EUR",
       "discount": 0,
       "inStock": true,
       "stockQuantity": 20
@@ -290,7 +290,7 @@
     ],
     "pricing": {
       "price": 3082,
-      "currency": "INR",
+      "currency": "EUR",
       "discount": 0,
       "inStock": true,
       "stockQuantity": 40
@@ -349,7 +349,7 @@
     ],
     "pricing": {
       "price": 3082,
-      "currency": "INR",
+      "currency": "EUR",
       "discount": 0,
       "inStock": true,
       "stockQuantity": 30
@@ -407,7 +407,7 @@
     ],
     "pricing": {
       "price": 3596,
-      "currency": "INR",
+      "currency": "EUR",
       "discount": 0,
       "inStock": true,
       "stockQuantity": 25
@@ -467,7 +467,7 @@
     ],
     "pricing": {
       "price": 3596,
-      "currency": "INR",
+      "currency": "EUR",
       "discount": 0,
       "inStock": true,
       "stockQuantity": 25
@@ -535,7 +535,7 @@
     ],
     "pricing": {
       "price": 3082,
-      "currency": "INR",
+      "currency": "EUR",
       "discount": 0,
       "inStock": true,
       "stockQuantity": 25
@@ -596,7 +596,7 @@
     ],
     "pricing": {
       "price": 1751,
-      "currency": "INR",
+      "currency": "EUR",
       "discount": 0,
       "inStock": true,
       "stockQuantity": 50
@@ -659,7 +659,7 @@
     ],
     "pricing": {
       "price": 14430,
-      "currency": "INR",
+      "currency": "EUR",
       "discount": 0,
       "inStock": true,
       "stockQuantity": 20
