@@ -8,7 +8,7 @@ export default async function ProductEditorPage({
 }) {
   const p = await params;
   const product = await getProductById((await params).id);
-  console.log(product);
+  console.log("this is product",product.categories);
 
   return (
     <div className="p-8">

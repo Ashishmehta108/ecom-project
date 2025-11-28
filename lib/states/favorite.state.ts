@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { toast } from "sonner";
-import { toggleFavouriteAction } from "../actions/favourite-actions";
+import {
+  toggleFavouriteAction,
+  getFavouriteProducts,
+} from "../actions/favourite-actions";
 
 export type ProductInFavourite = {
   productId: string;
@@ -11,11 +14,33 @@ export type ProductInFavourite = {
 
 type FavouriteState = {
   items: ProductInFavourite[];
+  loading: boolean;
+
+  fetchFavourites: () => Promise<void>;
   toggleFavourite: (item: ProductInFavourite) => void;
 };
 
 export const useFavouriteState = create<FavouriteState>((set, get) => ({
   items: [],
+  loading: false,
+
+  fetchFavourites: async () => {
+    set({ loading: true });
+
+    try {
+      const res = await fetch("/api/favorites", { cache: "no-store" });
+      const data = await res.json();
+
+      console.log("FAVS:", data);
+
+      set({ items: data || [] });
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to load favorites");
+    } finally {
+      set({ loading: false });
+    }
+  },
 
   toggleFavourite: async (item) => {
     const exists = get().items.some((i) => i.productId === item.productId);

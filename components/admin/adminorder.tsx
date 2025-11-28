@@ -50,7 +50,6 @@ export default function OrdersClient({ orders }: any) {
     if (!selectedOrder) return;
 
     setLoadingId(selectedOrder.id);
-
     await updateOrderStatus(selectedOrder.id, pendingStatus);
 
     setLoadingId("");
@@ -58,44 +57,64 @@ export default function OrdersClient({ orders }: any) {
     window.location.reload();
   }
 
+  const statusColor = (status: string) => {
+    switch (status) {
+      case "pending":
+        return "bg-yellow-100 text-yellow-800 border-yellow-300";
+      case "shipped":
+        return "bg-blue-100 text-blue-800 border-blue-300";
+      case "delivered":
+        return "bg-green-100 text-green-800 border-green-300";
+      default:
+        return "bg-neutral-100 text-neutral-700 border-neutral-300";
+    }
+  };
+
   return (
     <>
       {/* STATUS CONFIRMATION MODAL */}
       <Dialog open={openConfirm} onOpenChange={setOpenConfirm}>
-        <DialogContent className="max-w-sm border-neutral-200 rounded-xl">
+        <DialogContent className="max-w-sm rounded-xl border border-neutral-200 shadow-lg bg-white">
           <DialogHeader>
-            <DialogTitle className="text-lg font-semibold">
-              Confirm Update
+            <DialogTitle className="text-lg font-semibold tracking-tight">
+              Confirm Status Update
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-neutral-600">
               Are you sure you want to mark this order as{" "}
-              <strong className="capitalize">{pendingStatus}</strong>?
+              <strong className="capitalize text-neutral-900">
+                {pendingStatus}
+              </strong>
+              ?
             </DialogDescription>
           </DialogHeader>
 
-          <DialogFooter className="flex justify-end gap-3">
-            <Button variant="ghost" onClick={() => setOpenConfirm(false)}>
+          <DialogFooter className="flex justify-end gap-3 pt-4">
+            <Button
+              variant="ghost"
+              onClick={() => setOpenConfirm(false)}
+              className="text-neutral-600 hover:bg-neutral-100"
+            >
               Cancel
             </Button>
 
             <Button
               onClick={confirmStatusUpdate}
               disabled={loadingId === selectedOrder?.id}
-              className="bg-neutral-900 text-white"
+              className="bg-neutral-900 text-white hover:bg-neutral-800"
             >
               {loadingId === selectedOrder?.id ? (
                 <Loader2 className="animate-spin w-4 h-4" />
               ) : (
-                "Continue"
+                "Update"
               )}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* FULL DETAILS MODAL */}
+      {/* ORDER DETAILS MODAL */}
       <Dialog open={openDetails} onOpenChange={setOpenDetails}>
-        <DialogContent className="max-w-2xl border-neutral-200 rounded-xl p-6">
+        <DialogContent className="max-w-2xl p-6 rounded-xl border border-neutral-200 shadow-lg bg-white">
           {!selectedOrder || detailsLoading ? (
             <div className="flex items-center justify-center py-12">
               <Loader2 className="w-6 h-6 animate-spin text-neutral-700" />
@@ -103,11 +122,11 @@ export default function OrdersClient({ orders }: any) {
           ) : (
             <>
               <DialogHeader>
-                <DialogTitle className="text-2xl font-semibold text-neutral-900">
+                <DialogTitle className="text-2xl font-semibold text-neutral-900 tracking-tight">
                   Order #{selectedOrder.id}
                 </DialogTitle>
                 <DialogDescription className="text-neutral-600">
-                  Full order breakdown including products & shipping details.
+                  Full order details and breakdown.
                 </DialogDescription>
               </DialogHeader>
 
@@ -118,10 +137,14 @@ export default function OrdersClient({ orders }: any) {
                     Order Summary
                   </h3>
 
-                  <div className="mt-2 text-sm">
+                  <div className="mt-2 text-sm space-y-1">
                     <p>
                       <strong>Status:</strong>{" "}
-                      <Badge className="capitalize">
+                      <Badge
+                        className={`capitalize border ${statusColor(
+                          selectedOrder.orderStatus
+                        )}`}
+                      >
                         {selectedOrder.orderStatus}
                       </Badge>
                     </p>
@@ -155,7 +178,7 @@ export default function OrdersClient({ orders }: any) {
                       return (
                         <div
                           key={item.id}
-                          className="flex items-center gap-4 p-3 border border-neutral-200 rounded-lg"
+                          className="flex items-center gap-4 p-3 rounded-lg border border-neutral-200 bg-neutral-50"
                         >
                           <img
                             src={img}
@@ -171,7 +194,7 @@ export default function OrdersClient({ orders }: any) {
                             </p>
                           </div>
 
-                          <p className="font-medium">
+                          <p className="font-medium text-neutral-900">
                             {selectedOrder.currency} {item.price}
                           </p>
                         </div>
@@ -182,14 +205,14 @@ export default function OrdersClient({ orders }: any) {
 
                 <Separator />
 
-                {/* SHIPPING ADDRESS */}
+                {/* SHIPPING */}
                 {selectedOrder.shippingAddress && (
                   <div>
                     <h3 className="font-medium text-neutral-900">
                       Shipping Address
                     </h3>
 
-                    <div className="text-sm text-neutral-700 mt-2">
+                    <div className="text-sm text-neutral-700 mt-2 space-y-1">
                       <p>{selectedOrder.shippingAddress.fullName}</p>
                       <p>{selectedOrder.shippingAddress.line1}</p>
                       {selectedOrder.shippingAddress.line2 && (
@@ -207,28 +230,30 @@ export default function OrdersClient({ orders }: any) {
 
                 <Separator />
 
-                {/* UPDATE STATUS */}
-                <div>
-                  <h3 className="font-medium text-neutral-900 mb-2">
-                    Update Status
-                  </h3>
+                {/* UPDATE STATUS (HIDE IF DELIVERED) */}
+                {selectedOrder.orderStatus !== "delivered" && (
+                  <div>
+                    <h3 className="font-medium text-neutral-900 mb-2">
+                      Update Status
+                    </h3>
 
-                  <div className="flex gap-3">
-                    <Button
-                      onClick={() => askToConfirm(selectedOrder, "shipped")}
-                      className="bg-neutral-100 text-neutral-800 border border-neutral-300"
-                    >
-                      Mark Shipped
-                    </Button>
+                    <div className="flex gap-3">
+                      <Button
+                        onClick={() => askToConfirm(selectedOrder, "shipped")}
+                        className="bg-neutral-100 text-neutral-800 border border-neutral-300 hover:bg-neutral-200"
+                      >
+                        Mark Shipped
+                      </Button>
 
-                    <Button
-                      onClick={() => askToConfirm(selectedOrder, "delivered")}
-                      className="bg-neutral-100 text-neutral-800 border border-neutral-300"
-                    >
-                      Mark Delivered
-                    </Button>
+                      <Button
+                        onClick={() => askToConfirm(selectedOrder, "delivered")}
+                        className="bg-neutral-100 text-neutral-800 border border-neutral-300 hover:bg-neutral-200"
+                      >
+                        Mark Delivered
+                      </Button>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </>
           )}
@@ -236,35 +261,38 @@ export default function OrdersClient({ orders }: any) {
       </Dialog>
 
       {/* ORDERS GRID */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         {orders.map((order: any) => (
           <Card
             key={order.id}
             className="border border-neutral-200 shadow-sm hover:shadow-md transition-all bg-white rounded-xl"
           >
             <CardHeader>
-              <CardTitle className="flex justify-between items-center">
-                <span className="text-neutral-900">Order #{order.id}</span>
+              <CardTitle className="flex justify-between items-center tracking-tight">
+                <span className="text-neutral-900 font-semibold">
+                  Order #{order.id}
+                </span>
 
                 <Badge
-                  variant="outline"
-                  className="capitalize border-neutral-300 text-neutral-700"
+                  className={`capitalize border ${statusColor(
+                    order.orderStatus
+                  )}`}
                 >
                   {order.orderStatus}
                 </Badge>
               </CardTitle>
             </CardHeader>
 
-            <CardContent className="space-y-4">
-              <p className="text-sm">
+            <CardContent className="space-y-4 text-sm text-neutral-700">
+              <p>
                 <strong>User:</strong> {order.userId}
               </p>
 
-              <p className="text-sm">
+              <p>
                 <strong>Total:</strong> {order.currency} {order.total}
               </p>
 
-              <p className="text-sm">
+              <p>
                 <strong>Date:</strong>{" "}
                 {new Date(order.createdAt).toLocaleDateString()}
               </p>
@@ -278,25 +306,27 @@ export default function OrdersClient({ orders }: any) {
                   <Eye className="w-4 h-4 mr-2" /> View Details
                 </Button>
 
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => askToConfirm(order, "shipped")}
-                    className="border-neutral-300 bg-neutral-100"
-                  >
-                    Ship
-                  </Button>
+                {order.orderStatus !== "delivered" && (
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => askToConfirm(order, "shipped")}
+                      className="border-neutral-300 bg-neutral-100 hover:bg-neutral-200"
+                    >
+                      Ship
+                    </Button>
 
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => askToConfirm(order, "delivered")}
-                    className="border-neutral-300 bg-neutral-100"
-                  >
-                    Deliver
-                  </Button>
-                </div>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => askToConfirm(order, "delivered")}
+                      className="border-neutral-300 bg-neutral-100 hover:bg-neutral-200"
+                    >
+                      Deliver
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

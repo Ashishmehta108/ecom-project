@@ -107,7 +107,7 @@ const product = pgTable("product", {
       currency: string;
       discount: number;
       inStock: boolean;
-      stockQuantity?: number;
+      stockQuantity: number;
     }>()
     .notNull(),
 
@@ -120,8 +120,6 @@ const product = pgTable("product", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
-
-
 
 const cart = pgTable(
   "cart",
@@ -448,7 +446,6 @@ export const adminCustomerCart = pgTable("admin_customer_cart", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-
 export const appointment = pgTable("appointment", {
   id: text("id").primaryKey(),
 
@@ -461,7 +458,7 @@ export const appointment = pgTable("appointment", {
   issueDescription: text("issue_description").notNull(),
 
   scheduledDate: timestamp("scheduled_date").notNull(), // appointment date & time
-  status: varchar("status", { length: 40 }).default("pending"), 
+  status: varchar("status", { length: 40 }).default("pending"),
   // pending | confirmed | completed | cancelled
 
   createdAt: timestamp("created_at").defaultNow(),
@@ -723,6 +720,48 @@ export const stripePaymentMethodRelations = relations(
     user: one(user, {
       fields: [stripePaymentMethod.userId],
       references: [user.id],
+    }),
+  })
+);
+
+export const adminCustomerCartRelations = relations(
+  adminCustomerCart,
+  ({ many }) => ({
+    items: many(adminCustomerCartItem),
+  })
+);
+
+export const adminCustomerCartItemRelations = relations(
+  adminCustomerCartItem,
+  ({ one }) => ({
+    cart: one(adminCustomerCart, {
+      fields: [adminCustomerCartItem.cartId],
+      references: [adminCustomerCart.id],
+    }),
+    product: one(product, {
+      fields: [adminCustomerCartItem.productId],
+      references: [product.id],
+    }),
+  })
+);
+
+export const adminCustomerOrderRelations = relations(
+  adminCustomerOrder,
+  ({ many }) => ({
+    items: many(adminCustomerOrderItem),
+  })
+);
+
+export const adminCustomerOrderItemRelations = relations(
+  adminCustomerOrderItem,
+  ({ one }) => ({
+    order: one(adminCustomerOrder, {
+      fields: [adminCustomerOrderItem.orderId],
+      references: [adminCustomerOrder.id],
+    }),
+    product: one(product, {
+      fields: [adminCustomerOrderItem.productId],
+      references: [product.id],
     }),
   })
 );

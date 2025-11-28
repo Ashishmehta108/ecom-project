@@ -6,7 +6,7 @@ import ClickableHeart from "@/app/test/page";
 export default function FavoriteButton({ product }: { product: any }) {
   const { items, toggleFavourite } = useFavouriteState();
   const isFav = items.some((i) => i.productId === product.id);
-  console.log(product);
+  console.log(items);
   return (
     <button
       onClick={(e) => {
