@@ -23,6 +23,7 @@ export async function sendEmail({
       subject,
       html,
     });
+    console.log(response)
 
     return {
       success: true,
