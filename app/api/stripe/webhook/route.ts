@@ -1,4 +1,3 @@
-
 import { NextRequest } from "next/server";
 import Stripe from "stripe";
 import { stripeClient as stripe } from "@/lib/stripe";
@@ -19,214 +18,187 @@ import { orderConfirmationTemplate } from "@/lib/orders/confirmationemail";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+// ---------------------------------------------
+// 🔧 Helper functions
+// ---------------------------------------------
 
-  if (!endpointSecret) {
-    console.error("Missing STRIPE_WEBHOOK_SECRET");
-    return new Response("Server error", { status: 500 });
-  }
+async function upsertPayment({
+  userId,
+  intentId,
+  sessionId,
+  amount,
+  currency,
+}: any) {
+  const existing = await db.query.payments.findFirst({
+    where: (t, { eq }) => eq(t.stripePaymentIntentId, intentId),
+  });
 
-  if (!stripe) {
-    console.error("Stripe client not initialized");
-    return new Response("Server error", { status: 500 });
-  }
-
-  const rawBody = await req.text();
-  const signature = req.headers.get("stripe-signature");
-
-  if (!signature) {
-    return new Response("Missing Stripe signature", { status: 400 });
-  }
-
-  let event: Stripe.Event;
-
-  // Verify signature
-  try {
-    event = stripe.webhooks.constructEvent(rawBody, signature, endpointSecret);
-  } catch (err: any) {
-    console.error("Signature verification failed:", err.message);
-    return new Response("Webhook Error", { status: 400 });
-  }
-
-  console.log(`Stripe Event: ${event.type}`);
-
-  // ------------------------------------------------------------------
-  // 1️⃣ PAYMENT INTENT SUCCEEDED
-  // ------------------------------------------------------------------
-  if (event.type === "payment_intent.succeeded") {
-    const intent = event.data.object as Stripe.PaymentIntent;
-    console.log("PaymentIntent succeeded:", intent.id);
-
-    const userId = intent.metadata?.userId;
-    if (!userId) return new Response("OK", { status: 200 });
-
-    const existingPayment = await db.query.payments.findFirst({
-      where: (table, { eq }) => eq(table.stripePaymentIntentId, intent.id),
-    });
-
-    if (existingPayment) {
-      await db
-        .update(payments)
-        .set({ status: "succeeded" })
-        .where(eq(payments.stripePaymentIntentId, intent.id));
-
-      return new Response("OK", { status: 200 });
-    }
-
+  if (!existing) {
     await db.insert(payments).values({
       id: nanoid(),
       userId,
       orderId: null,
-      stripePaymentIntentId: intent.id,
-      stripeCheckoutSessionId: intent.metadata?.checkoutSessionId ?? "",
-      amount: intent.amount_received ?? 0,
-      currency: intent.currency ?? "EUR",
+      stripePaymentIntentId: intentId,
+      stripeCheckoutSessionId: sessionId,
+      amount: amount || 0,
+      currency: currency?.toLowerCase() || "eur",
       status: "succeeded",
     });
+  } else if (existing.status !== "succeeded") {
+    await db
+      .update(payments)
+      .set({ status: "succeeded" })
+      .where(eq(payments.id, existing.id));
+  }
+}
 
-    console.log("Payment created successfully");
-    return new Response("OK", { status: 200 });
+async function createOrder(session: Stripe.Checkout.Session, userId: string) {
+  const orderId = nanoid();
+
+  await db.insert(orders).values({
+    id: orderId,
+    userId,
+    status: "successful",
+    subtotal: ((session.amount_subtotal ?? 0) / 100).toString(),
+    tax: "0",
+    shippingFee: "0",
+    total: ((session.amount_total ?? 0) / 100).toString(),
+    currency: (session.currency ?? "EUR").toUpperCase(),
+    shippingAddressId: session.metadata?.addressId ?? null,
+    stripePaymentIntentId: session.payment_intent as string,
+    stripeCheckoutSessionId: session.id,
+  });
+
+  return orderId;
+}
+
+async function moveCartToOrder(orderId: string, userId: string) {
+  const userCart = await db.query.cart.findFirst({
+    where: (t, { eq }) => eq(t.userId, userId),
+  });
+
+  if (!userCart) return [];
+
+  const items = await db.query.cartItem.findMany({
+    where: (t, { eq }) => eq(t.cartId, userCart.id),
+  });
+
+  for (const item of items) {
+    await db.insert(orderItem).values({
+      id: nanoid(),
+      orderId,
+      productId: item.productId,
+      quantity: item.quantity,
+      price: item.price,
+    });
+
+    // Reduce inventory
+    const current = await db.query.product.findFirst({
+      where: (t, { eq }) => eq(t.id, item.productId),
+    });
+
+    if (current?.pricing) {
+      const updated = {
+        ...current.pricing,
+        stockQuantity: Math.max(
+          (current.pricing.stockQuantity || 0) - item.quantity,
+          0
+        ),
+        inStock: (current.pricing.stockQuantity || 0) - item.quantity > 0,
+      };
+
+      await db
+        .update(product)
+        .set({ pricing: updated })
+        .where(eq(product.id, item.productId));
+    }
   }
 
-  // ------------------------------------------------------------------
-  // 2️⃣ CHECKOUT SESSION COMPLETED
-  // ------------------------------------------------------------------
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
+  await db.delete(cartItem).where(eq(cartItem.cartId, userCart.id));
 
-    console.log("Checkout Session Completed:", session.id);
+  return items;
+}
 
-    const userId = session.metadata?.userId;
-    const addressId = session.metadata?.addressId ?? null;
-    const checkoutSessionId = session.id;
+// ---------------------------------------------
+// 🚀 Webhook Route
+// ---------------------------------------------
 
-    if (!userId) return new Response("OK", { status: 200 });
+export async function POST(req: NextRequest) {
+  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!secret) return new Response("Missing webhook secret", { status: 500 });
 
-    // Extract paymentIntentId
-    const paymentIntentId =
-      typeof session.payment_intent === "string"
-        ? session.payment_intent
-        : session.payment_intent?.id ?? "";
+  const rawBody = await req.text();
+  const signature = req.headers.get("stripe-signature");
 
-    // Create/Update PAYMENT (Idempotent)
-    if (paymentIntentId) {
-      const existingPayment = await db.query.payments.findFirst({
-        where: (table, { eq }) =>
-          eq(table.stripePaymentIntentId, paymentIntentId),
+  let event: Stripe.Event;
+  try {
+    event = stripe.webhooks.constructEvent(rawBody, signature!, secret);
+  } catch (err: any) {
+    return new Response("Invalid signature", { status: 400 });
+  }
+
+  switch (event.type) {
+    // -------------------------------------------------
+    // 1️⃣ PAYMENT INTENT SUCCEEDED
+    // -------------------------------------------------
+    case "payment_intent.succeeded": {
+      const intent = event.data.object as Stripe.PaymentIntent;
+      const userId = intent.metadata?.userId;
+      if (!userId) break;
+
+      await upsertPayment({
+        userId,
+        intentId: intent.id,
+        sessionId: intent.metadata?.checkoutSessionId ?? "",
+        amount: intent.amount_received,
+        currency: intent.currency,
       });
 
-      if (!existingPayment) {
-        await db.insert(payments).values({
-          id: nanoid(),
-          userId,
-          orderId: null,
-          stripePaymentIntentId: paymentIntentId,
-          stripeCheckoutSessionId: checkoutSessionId,
-          amount: session.amount_total ?? 0,
-          currency: (session.currency ?? "EUR").toLowerCase(),
-          status: "succeeded",
-        });
-      } else if (existingPayment.status !== "succeeded") {
-        await db
-          .update(payments)
-          .set({ status: "succeeded" })
-          .where(eq(payments.id, existingPayment.id));
-      }
+      break;
     }
 
-    // Idempotency: Skip if order already exists
-    const existingOrder = await db.query.orders.findFirst({
-      where: (table, { eq }) =>
-        eq(table.stripeCheckoutSessionId, checkoutSessionId),
-    });
+    // -------------------------------------------------
+    // 2️⃣ CHECKOUT COMPLETED → CREATE ORDER
+    // -------------------------------------------------
+    case "checkout.session.completed": {
+      const session = event.data.object as Stripe.Checkout.Session;
+      const userId = session.metadata?.userId;
+      if (!userId) break;
 
-    if (existingOrder) return new Response("OK", { status: 200 });
+      const paymentIntentId =
+        typeof session.payment_intent === "string"
+          ? session.payment_intent
+          : session.payment_intent?.id;
 
-    const orderId = nanoid();
+      // Save payment
+      await upsertPayment({
+        userId,
+        intentId: paymentIntentId,
+        sessionId: session.id,
+        amount: session.amount_total,
+        currency: session.currency,
+      });
 
-    await db.insert(orders).values({
-      id: orderId,
-      userId,
-      status: "successful",
-      subtotal: ((session.amount_subtotal ?? 0) / 100).toString(),
-      tax: "0",
-      shippingFee: "0",
-      total: ((session.amount_total ?? 0) / 100).toString(),
-      currency: (session.currency ?? "EUR").toUpperCase(),
-      shippingAddressId: addressId,
-      stripePaymentIntentId: paymentIntentId,
-      stripeCheckoutSessionId: checkoutSessionId,
-    });
+      // Prevent duplicate orders
+      const existingOrder = await db.query.orders.findFirst({
+        where: (t, { eq }) => eq(t.stripeCheckoutSessionId, session.id),
+      });
 
-    console.log("Order created:", orderId);
+      if (existingOrder) break;
 
-    // Attach orderId to payment
-    if (paymentIntentId) {
+      // Create order
+      const orderId = await createOrder(session, userId);
+
+      // Attach orderId to payment
       await db
         .update(payments)
         .set({ orderId })
-        .where(eq(payments.stripePaymentIntentId, paymentIntentId));
-    }
+        .where(eq(payments.stripePaymentIntentId, paymentIntentId!));
 
-    // Move cart → order items AND UPDATE INVENTORY
-    const userCart = await db.query.cart.findFirst({
-      where: (table, { eq }) => eq(table.userId, userId),
-    });
+      // Move cart items → order items
+      const purchasedItems = await moveCartToOrder(orderId, userId);
 
-    if (userCart) {
-      const userCartItems = await db.query.cartItem.findMany({
-        where: (table, { eq }) => eq(table.cartId, userCart.id),
-      });
-
-      // Create order items and update product quantities
-      for (const item of userCartItems) {
-        // Insert order item
-        await db.insert(orderItem).values({
-          id: nanoid(),
-          orderId,
-          productId: item.productId,
-          quantity: item.quantity,
-          price: item.price,
-        });
-
-        // ✅ REDUCE PRODUCT QUANTITY IN INVENTORY (JSONB pricing field)
-        try {
-          // Fetch current product to get pricing data
-          const currentProduct = await db.query.product.findFirst({
-            where: (table, { eq }) => eq(table.id, item.productId),
-          });
-
-          if (currentProduct && currentProduct.pricing) {
-            const updatedPricing = {
-              ...currentProduct.pricing,
-              stockQuantity: Math.max(
-                (currentProduct.pricing.stockQuantity || 0) - item.quantity,
-                0
-              ),
-              inStock:
-                (currentProduct.pricing.stockQuantity || 0) - item.quantity > 0,
-            };
-
-            await db
-              .update(product)
-              .set({ pricing: updatedPricing })
-              .where(eq(product.id, item.productId));
-
-            console.log(
-              `Updated inventory for product ${item.productId}: reduced by ${item.quantity} (new stock: ${updatedPricing.stockQuantity})`
-            );
-          }
-        } catch (error) {
-          console.error(
-            `Failed to update inventory for product ${item.productId}:`,
-            error
-          );
-          // Continue processing other items even if one fails
-        }
-      }
-
-      // Send confirmation email
+      // Send email
       await sendEmail({
         to: session.customer_details?.email!,
         subject: "Your Techbar Order Confirmation",
@@ -235,41 +207,31 @@ export async function POST(req: NextRequest) {
           orderId,
           orderDate: new Date().toLocaleDateString(),
           total: ((session.amount_total ?? 0) / 100).toString(),
-          items: userCartItems.map((item) => ({
-            title: item.name,
-            quantity: item.quantity,
-            price: item.price,
+          items: purchasedItems.map((i) => ({
+            title: i.name,
+            quantity: i.quantity,
+            price: i.price,
           })),
         }),
       });
 
-      // Clear cart
-      await db.delete(cartItem).where(eq(cartItem.cartId, userCart.id));
-
-      console.log(
-        "Cart moved to order items, inventory updated, and cart cleared"
-      );
+      break;
     }
 
-    return new Response("OK", { status: 200 });
+    case "payment_intent.payment_failed": {
+      const intent = event.data.object as Stripe.PaymentIntent;
+
+      await db
+        .update(payments)
+        .set({ status: "failed" })
+        .where(eq(payments.stripePaymentIntentId, intent.id));
+
+      break;
+    }
+
+    default:
+      console.log("Unhandled event:", event.type);
   }
 
-  // ------------------------------------------------------------------
-  // 3️⃣ PAYMENT FAILED
-  // ------------------------------------------------------------------
-  if (event.type === "payment_intent.payment_failed") {
-    const intent = event.data.object as Stripe.PaymentIntent;
-
-    await db
-      .update(payments)
-      .set({ status: "failed" })
-      .where(eq(payments.stripePaymentIntentId, intent.id));
-
-    console.log("Payment failed:", intent.id);
-    // ❌ NO INVENTORY UPDATE - Product quantity remains unchanged
-    return new Response("OK", { status: 200 });
-  }
-
-  console.log("Unhandled event type:", event.type);
   return new Response("OK", { status: 200 });
 }

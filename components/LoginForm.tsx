@@ -76,7 +76,7 @@ export default function LoginForm({ redirectUrl }: { redirectUrl?: string }) {
       <Card className="w-full max-w-md shadow-none border-none">
         <CardHeader>
           <CardTitle className="text-2xl font-semibold text-center">
-            Welcome Back 👋
+            Welcome 
           </CardTitle>
         </CardHeader>
 
