@@ -149,19 +149,3 @@ export async function filterProducts(params: FilterParams) {
   };
 }
 
-// Additional helper action for adding to cart
-export async function addToCart(productId: string, quantity: number = 1) {
-  // Implement cart logic here
-  // This would typically:
-  // 1. Get or create cart session
-  // 2. Add product to cart
-  // 3. Update cart totals
-
-  return { success: true, message: "Added to cart" };
-}
-
-// Helper action for wishlist
-export async function toggleWishlist(productId: string) {
-  // Implement wishlist logic
-  return { success: true, inWishlist: true };
-}

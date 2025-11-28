@@ -3,7 +3,6 @@ import { favorites, favoriteItem, product } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import FavoritesClient from "@/components/favourites/favoriteClient";
 import { getUserSession } from "@/server";
-import AdminProductsPage from "../admin/products/page";
 
 export default async function FavoritesPage() {
   const session = await getUserSession();

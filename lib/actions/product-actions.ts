@@ -5,9 +5,10 @@ import {
   product,
   productCategory,
   productImage,
+  review,
 } from "@/lib/db/schema";
 import { db } from "@/lib/db";
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, gte, inArray } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { Product } from "../types/product.types";
 
@@ -28,7 +29,6 @@ async function createCategoryIfNotExists(name: string) {
   return newCat;
 }
 
-// Get full product with relations
 export async function getProductById(id: string) {
   const result = await db.query.product.findFirst({
     where: eq(product.id, id),
@@ -44,9 +44,19 @@ export async function getProductById(id: string) {
 
   if (!result) return null;
 
+  const obj = {
+    ...result,
+
+    categories: result.productCategories?.map((pc) => ({
+      id: pc.category.id,
+      name: pc.category.name,
+    })),
+  };
+  console.log(obj)
+
   return {
     ...result,
-    //@ts-ignore
+
     categories: result.productCategories?.map((pc) => ({
       id: pc.category.id,
       name: pc.category.name,
@@ -157,7 +167,6 @@ export async function createProduct(p: Partial<Product>) {
 }
 
 export async function updateProduct(id: string, p: Partial<Product>) {
-  // 1. Update base product fields
   await db
     .update(product)
     .set({
@@ -179,7 +188,6 @@ export async function updateProduct(id: string, p: Partial<Product>) {
 
   const existingIds = new Set(existingCategoryLinks.map((c) => c.categoryId));
 
-  // Incoming categories (create if missing)
   const incomingCats = [];
   for (const name of p.categories ?? []) {
     incomingCats.push(await createCategoryIfNotExists(name));
@@ -272,9 +280,6 @@ export async function updateProduct(id: string, p: Partial<Product>) {
       .where(eq(productImage.id, oldImg.id));
   }
 
-  // ============================================================================
-  // Return updated product
-  // ============================================================================
   return getProductById(id);
 }
 export async function deleteProduct(id: string) {

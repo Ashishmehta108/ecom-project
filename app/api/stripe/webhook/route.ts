@@ -1,9 +1,16 @@
-// app/api/webhook/route.ts
+
 import { NextRequest } from "next/server";
 import Stripe from "stripe";
 import { stripeClient as stripe } from "@/lib/stripe";
 import { db } from "@/lib/db";
-import { payments, orders, orderItem, cartItem, cart } from "@/lib/db/schema";
+import {
+  payments,
+  orders,
+  orderItem,
+  cartItem,
+  cart,
+  product,
+} from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { sendEmail } from "@/lib/sendemail";
@@ -108,7 +115,7 @@ export async function POST(req: NextRequest) {
         where: (table, { eq }) =>
           eq(table.stripePaymentIntentId, paymentIntentId),
       });
-      
+
       if (!existingPayment) {
         await db.insert(payments).values({
           id: nanoid(),
@@ -162,7 +169,7 @@ export async function POST(req: NextRequest) {
         .where(eq(payments.stripePaymentIntentId, paymentIntentId));
     }
 
-    // Move cart → order items
+    // Move cart → order items AND UPDATE INVENTORY
     const userCart = await db.query.cart.findFirst({
       where: (table, { eq }) => eq(table.userId, userId),
     });
@@ -172,7 +179,9 @@ export async function POST(req: NextRequest) {
         where: (table, { eq }) => eq(table.cartId, userCart.id),
       });
 
+      // Create order items and update product quantities
       for (const item of userCartItems) {
+        // Insert order item
         await db.insert(orderItem).values({
           id: nanoid(),
           orderId,
@@ -180,7 +189,44 @@ export async function POST(req: NextRequest) {
           quantity: item.quantity,
           price: item.price,
         });
+
+        // ✅ REDUCE PRODUCT QUANTITY IN INVENTORY (JSONB pricing field)
+        try {
+          // Fetch current product to get pricing data
+          const currentProduct = await db.query.product.findFirst({
+            where: (table, { eq }) => eq(table.id, item.productId),
+          });
+
+          if (currentProduct && currentProduct.pricing) {
+            const updatedPricing = {
+              ...currentProduct.pricing,
+              stockQuantity: Math.max(
+                (currentProduct.pricing.stockQuantity || 0) - item.quantity,
+                0
+              ),
+              inStock:
+                (currentProduct.pricing.stockQuantity || 0) - item.quantity > 0,
+            };
+
+            await db
+              .update(product)
+              .set({ pricing: updatedPricing })
+              .where(eq(product.id, item.productId));
+
+            console.log(
+              `Updated inventory for product ${item.productId}: reduced by ${item.quantity} (new stock: ${updatedPricing.stockQuantity})`
+            );
+          }
+        } catch (error) {
+          console.error(
+            `Failed to update inventory for product ${item.productId}:`,
+            error
+          );
+          // Continue processing other items even if one fails
+        }
       }
+
+      // Send confirmation email
       await sendEmail({
         to: session.customer_details?.email!,
         subject: "Your Techbar Order Confirmation",
@@ -193,14 +239,16 @@ export async function POST(req: NextRequest) {
             title: item.name,
             quantity: item.quantity,
             price: item.price,
-          
           })),
         }),
       });
 
+      // Clear cart
       await db.delete(cartItem).where(eq(cartItem.cartId, userCart.id));
 
-      console.log("Cart moved to order items and cleared");
+      console.log(
+        "Cart moved to order items, inventory updated, and cart cleared"
+      );
     }
 
     return new Response("OK", { status: 200 });
@@ -218,6 +266,7 @@ export async function POST(req: NextRequest) {
       .where(eq(payments.stripePaymentIntentId, intent.id));
 
     console.log("Payment failed:", intent.id);
+    // ❌ NO INVENTORY UPDATE - Product quantity remains unchanged
     return new Response("OK", { status: 200 });
   }
 

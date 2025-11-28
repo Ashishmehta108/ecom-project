@@ -287,7 +287,6 @@ const PricingTab: React.FC = () => {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
         {/* PRICE */}
         <FormField
           control={form.control}
@@ -371,12 +370,10 @@ const PricingTab: React.FC = () => {
             </FormItem>
           )}
         />
-
       </div>
     </div>
   );
 };
-
 
 const ImagesTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
@@ -713,28 +710,22 @@ const TagsTab: React.FC = () => {
   );
 };
 
-const CategoriesTab: React.FC<{ categories: Category[] }> = ({
-  categories,
-}) => {
-  console.log(categories)
-  const form = useFormContext<ProductFormValues>();
-  const selected: string[] = form.watch("categories") ?? [];
+import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "sonner";
 
-  const toggleCategory = (categoryName: string) => {
-    if (selected.includes(categoryName)) {
-      form.setValue(
-        "categories",
-        selected.filter((c) => c !== categoryName),
-        { shouldDirty: true }
-      );
-    } else {
-      form.setValue("categories", [...selected, categoryName], {
-        shouldDirty: true,
-      });
-    }
+const CategoriesTab: React.FC<{ categories: string[] }> = ({ categories }) => {
+  const form = useFormContext<ProductFormValues>();
+  const selected = form.watch("categories") ?? [];
+
+  const toggleCategory = (category: string) => {
+    const updated = selected.includes(category)
+      ? selected.filter((c) => c !== category)
+      : [...selected, category];
+
+    form.setValue("categories", updated, { shouldDirty: true });
   };
 
-  if (!categories || categories.length === 0) {
+  if (!categories?.length) {
     return (
       <EmptyState
         icon={<Package className="w-8 h-8 text-neutral-400" />}
@@ -753,39 +744,39 @@ const CategoriesTab: React.FC<{ categories: Category[] }> = ({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {categories.map((category) => {
-          console.log(categories)
-          const isSelected = selected.includes(category.name);
+          const isSelected = selected.includes(category);
 
           return (
             <label
-              key={category.id}
+              key={category}
               className={clsx(
-                "relative flex items-start gap-4 p-5 border-2 rounded-2xl cursor-pointer transition-all duration-200 group",
+                "relative flex items-start gap-4 p-5 rounded-2xl border transition-all duration-300 cursor-pointer group",
+                "bg-white dark:bg-neutral-900",
                 isSelected
-                  ? "border-blue-500 bg-blue-50 dark:bg-blue-950/20 shadow-sm"
-                  : "border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-900"
+                  ? "border-indigo-500 shadow-sm dark:border-indigo-400"
+                  : "border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:border-neutral-300"
               )}
             >
-              <div className="flex items-center h-6 shrink-0">
-                <input
-                  type="checkbox"
-                  className="w-5 h-5 rounded-lg border-2 border-neutral-300 dark:border-neutral-600 text-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer transition-all"
-                  checked={isSelected}
-                  onChange={() => toggleCategory(category.category.name)}
-                />
-              </div>
+              {/* ShadCN Checkbox */}
+              <Checkbox
+                checked={isSelected}
+                onCheckedChange={() => toggleCategory(category)}
+                className={clsx(
+                  "data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600",
+                  "transition-all duration-200"
+                )}
+              />
+
+              {/* Label */}
               <div className="flex-1 min-w-0">
-                <div className="font-semibold text-neutral-900 dark:text-neutral-100 mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {category.category.name}
-                </div>
-                <div className="text-xs text-neutral-500 dark:text-neutral-400 font-mono">
-                  ID: {category.category.id}
-                </div>
+                <p className="font-medium text-neutral-900 dark:text-neutral-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                  {category}
+                </p>
               </div>
+
+              {/* Check Icon */}
               {isSelected && (
-                <div className="absolute top-3 right-3">
-                  <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                </div>
+                <CheckCircle2 className="absolute top-3 right-3 w-5 h-5 text-indigo-600 dark:text-indigo-400 transition-opacity" />
               )}
             </label>
           );
@@ -794,7 +785,6 @@ const CategoriesTab: React.FC<{ categories: Category[] }> = ({
     </div>
   );
 };
-
 
 export default function AdminProductPanel({
   initialProduct = {},
@@ -900,9 +890,9 @@ export default function AdminProductPanel({
       (async () => {
         try {
           console.log(
-               arrayToObject(values.specifications.general),
-           arrayToObject(values.specifications.technical),
-            );
+            arrayToObject(values.specifications.general),
+            arrayToObject(values.specifications.technical)
+          );
 
           const payload: ProductFormValues = {
             ...values,
@@ -918,17 +908,17 @@ export default function AdminProductPanel({
 
           if (isNew) {
             const saved = await createProductAction(payload);
-            alert("✅ Product created successfully!");
+            toast("✅ Product created successfully!");
             if (saved?.id) {
               window.location.href = `/admin/products/${saved.id}`;
             }
           } else if (values.id) {
             await updateProductAction(values.id, payload);
-            alert("✅ Product updated successfully!");
+            toast("✅ Product updated successfully!");
           }
         } catch (error: any) {
           console.error("Product save error:", error);
-          alert(`❌ ${error?.message ?? "Failed to save product"}`);
+          toast.error(`❌ ${error?.message ?? "Failed to save product"}`);
         }
       })();
     });
@@ -988,7 +978,7 @@ export default function AdminProductPanel({
                   id="product-form"
                   onError={(e) => console.log(e)}
                   onSubmit={form.handleSubmit(onSubmit, (errors) => {
-                    console.log("❌ ZOD Validation Errors:", errors);
+                    console.log(" ZOD Validation Errors:", errors);
                   })}
                   className="space-y-6"
                 >
@@ -1068,7 +1058,7 @@ export default function AdminProductPanel({
                       <TabsContent value="specs" className="mt-0">
                         {/* <SpecsTab />
                          */}
-                        <TSpecsTab />
+                        <SpecsTab />
                       </TabsContent>
 
                       <TabsContent value="images" className="mt-0">
@@ -1100,7 +1090,6 @@ export default function AdminProductPanel({
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             <p>Auto-saved to database on submit</p>
           </div>
-          <p>Last updated: {lastUpdated}</p>
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { CategoryFilter } from "@/components/products/SortFilter";
 import { SortFilter } from "@/components/products/SortFilter";
 import { filterProducts } from "@/lib/actions/productActions";
 import { getUserSession } from "@/server";
+import ProductsListWrapper from "./productWrapper";
 
 type SearchParams = {
   category?: string;
@@ -78,31 +79,33 @@ export default async function ProductPage({
             </Link>
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={{
-                  id: product.id,
-                  productName: product.productName,
-                  brand: product.brand,
-                  subCategory: product.subCategory,
-                  description: product.description,
-                  features: product.features,
-                  pricing: product.pricing,
+          <ProductsListWrapper products={products} userId={session?.user.id!} />
 
-                  //@ts-ignore
-                  productImages: product.productImages
-                    .filter((img) => img.position !== null)
-                    .map((img) => ({
-                      url: img.url,
-                      position: img.position as string,
-                    })),
-                }}
-                userId={session?.user.id!}
-              />
-            ))}
-          </div>
+          // <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          //   {products.map((product) => (
+          //     <ProductCard
+          //       key={product.id}
+          //       product={{
+          //         id: product.id,
+          //         productName: product.productName,
+          //         brand: product.brand,
+          //         subCategory: product.subCategory,
+          //         description: product.description,
+          //         features: product.features,
+          //         pricing: product.pricing,
+
+          //         //@ts-ignore
+          //         productImages: product.productImages
+          //           .filter((img) => img.position !== null)
+          //           .map((img) => ({
+          //             url: img.url,
+          //             position: img.position as string,
+          //           })),
+          //       }}
+          //       userId={session?.user.id!}
+          //     />
+          //   ))}
+          // </div>
         )}
       </Container>
     </div>

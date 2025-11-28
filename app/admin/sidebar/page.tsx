@@ -14,13 +14,14 @@ import {
   CreditCard,
   ChevronLeft,
   Store,
+  UserSearch,
+  Menu,
 } from "lucide-react";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import Logo from "@/components/navbar/Logo";
 
 export default function Sidebar() {
   const [open, setOpen] = useState(true);
@@ -35,15 +36,16 @@ export default function Sidebar() {
     { name: "Dashboard", icon: LayoutDashboard, href: "/admin" },
     { name: "Orders", icon: ShoppingCart, href: "/admin/orders" },
     { name: "Products", icon: Package, href: "/admin/products" },
+    { name: "Appointment", icon: UserSearch, href: "/admin/appointment" },
     { name: "Customers", icon: Users, href: "/admin/users" },
     { name: "Categories", icon: Tag, href: "/admin/categories" },
     { name: "Payments", icon: CreditCard, href: "/admin/payments" },
-    { name: "Settings", icon: Settings, href: "/admin/settings" },
     {
       name: "Buy for customer",
       icon: ShoppingCart,
       href: "/admin/customers/order",
     },
+    { name: "Settings", icon: Settings, href: "/admin/settings" },
   ];
 
   const isActive = (href: string) =>
@@ -52,38 +54,32 @@ export default function Sidebar() {
   return (
     <aside
       className={cn(
-        "sticky left-0 top-0 z-40 h-screen border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 transition-all duration-300",
+        "sticky left-0 top-0 z-40 h-screen border-r border-neutral-200 bg-white transition-all duration-300 ease-in-out",
         open ? "w-64" : "w-20"
       )}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800">
-        <div className="flex items-center gap-3 overflow-hidden">
-          {/* <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-            <Store className="w-5 h-5 text-white" />
-          </div> */}
-          <Logo size={50} />
-          {open && (
-            <h1 className="text-lg font-semibold truncate">Store Admin</h1>
-          )}
-        </div>
+      {/* HEADER WITH TOGGLE */}
+      <div className="relative flex items-center p-4 h-20 border-b border-neutral-200">
+        {/* Sidebar toggle button replaces the logo */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setOpen(!open)}
+          className="h-9 w-9  text-neutral-700 hover:bg-neutral-100"
+        >
+          <Menu className={cn("h-5 w-5")} />
+        </Button>
+
+        {/* Title when expanded */}
+        {open && (
+          <h1 className="ml-3 text-xl font-semibold tracking-tight text-neutral-900">
+            Admin Panel
+          </h1>
+        )}
       </div>
 
-      {/* Toggle button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className={cn(
-          "absolute -right-3 top-20 h-6 w-6 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-sm transition-all",
-          !open && "rotate-180"
-        )}
-        onClick={() => setOpen(!open)}
-      >
-        <ChevronLeft className="h-4 w-4" />
-      </Button>
-
-      {/* Navigation */}
-      <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-5rem)]">
+      {/* NAVIGATION */}
+      <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-9rem)]">
         {routes.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href);
@@ -92,29 +88,25 @@ export default function Sidebar() {
             <Link key={item.name} href={item.href}>
               <div
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative text-sm",
                   active
-                    ? "bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400"
-                    : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-900 hover:text-neutral-900 dark:hover:text-neutral-100"
+                    ? "bg-indigo-50 text-indigo-600 font-medium"
+                    : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
                 )}
               >
-                {/* Active Indicator */}
+                {/* Active indicator */}
                 {active && (
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-indigo-600 rounded-r-full" />
                 )}
 
                 <Icon className="w-5 h-5 flex-shrink-0" />
 
-                {/* Open = show text */}
-                {open && (
-                  <span className="font-medium text-sm truncate">
-                    {item.name}
-                  </span>
-                )}
+                {/* Show text only when open */}
+                {open && <span className="truncate">{item.name}</span>}
 
-                {/* Collapsed Tooltip */}
+                {/* Tooltip when collapsed */}
                 {!open && (
-                  <div className="absolute left-full ml-2 px-2 py-1 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible whitespace-nowrap">
+                  <div className="absolute left-full ml-2 px-2 py-1 bg-neutral-200 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible whitespace-nowrap shadow-md">
                     {item.name}
                   </div>
                 )}
@@ -124,16 +116,16 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* Footer (User info) */}
+      {/* FOOTER USER CARD */}
       {open && (
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-neutral-200 dark:border-neutral-800">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-neutral-50 dark:bg-neutral-900">
-            <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-sm font-semibold">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-neutral-200 bg-white">
+          <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-neutral-50">
+            <div className="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center font-medium">
               {user?.name?.charAt(0)?.toUpperCase() ?? "A"}
             </div>
 
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">
+              <p className="text-sm font-medium text-neutral-900 truncate">
                 {user?.name ?? "Admin User"}
               </p>
               <p className="text-xs text-neutral-500 truncate">{user?.email}</p>

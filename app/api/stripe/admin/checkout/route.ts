@@ -12,7 +12,7 @@ import {
   posPayment,
   product,
 } from "@/lib/db/schema";
-import { getPosCart, clearPosCart } from "@/lib/queries/pos-cart";
+import { getPosCart,clearPosCart } from "@/lib/queries/admin-cart";
 import { nanoid } from "nanoid";
 
 export async function POST(req: NextRequest) {

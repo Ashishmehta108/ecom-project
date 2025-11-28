@@ -23,6 +23,7 @@ export async function createProductAction(data: ProductFormValues) {
     //@ts-ignore
     specifications: data.specifications,
   });
+ 
   revalidatePath("/admin/products");
   return product;
 }
@@ -39,7 +40,7 @@ export async function updateProductAction(id: string, data: ProductFormValues) {
     })),
     specifications: data.specifications as any,
   });
-
+revalidatePath("/admin/products")
   revalidatePath(`/admin/products/${id}`);
   return product;
 }

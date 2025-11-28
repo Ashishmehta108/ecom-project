@@ -5,21 +5,19 @@ import { getAllCategories } from "@/lib/actions/categories.actions";
 import TechbarCTA from "@/components/CTA/TechbarCTA";
 
 import TopEarbudsSectionServer from "@/components/home/TopEarbudsSectionServer";
-
-
-
+import TopSmartphonesSection from "@/components/home/TopSmartphoneServer";
 
 export default async function App() {
   const categories = await getAllCategories();
   return (
     <div className="min-h-screen bg-background">
       <div className="w-full">
-        <ImageSlider/>
+        <ImageSlider />
         <TopCategoriesSection categories={categories} />
-        <TopEarbudsSectionServer/>
-        <ProductDealsSection />
-        <TechbarCTA/>
-      </div>  
+        <TopEarbudsSectionServer />
+        <TopSmartphonesSection />
+        <TechbarCTA />
+      </div>
     </div>
   );
 }
