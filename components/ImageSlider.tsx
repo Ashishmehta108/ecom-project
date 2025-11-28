@@ -42,7 +42,7 @@ const DEMO_SLIDES = [
   {
     subtitle: "TECH ESSENTIALS",
     title: "Smart Watches",
-    discount: "Starting at $199",
+    discount: "Starting at €199",
     shortText: "Track your health, stay connected, and move smarter.",
     buttonText: "Explore",
     buttonLink: "/products?category=UJC5MstDEmoMXfzgQsLuG",

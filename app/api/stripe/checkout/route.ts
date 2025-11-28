@@ -1,11 +1,11 @@
-// app/api/checkout/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import { stripeClient as stripe } from "@/lib/stripe";
 import { getUserSession } from "@/server";
+import { db } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
   try {
-    
     if (!stripe) {
       console.error("Stripe client not initialized");
       return NextResponse.json(
@@ -30,7 +30,6 @@ export async function POST(req: NextRequest) {
 
     const { items, addressId } = body;
 
-    // Basic validations
     if (!addressId) {
       return NextResponse.json({ error: "Address required" }, { status: 400 });
     }
@@ -40,6 +39,46 @@ export async function POST(req: NextRequest) {
         { error: "Items must be a non-empty array" },
         { status: 400 }
       );
+    }
+
+    // ✅ STOCK VALIDATION - Check if products are in stock before creating checkout
+    for (const item of items) {
+      if (!item.productId) {
+        return NextResponse.json(
+          { error: `Missing productId for item: ${item.name}` },
+          { status: 400 }
+        );
+      }
+
+      const productData = await db.query.product.findFirst({
+        where: (table, { eq }) => eq(table.id, item.productId),
+      });
+
+      if (!productData) {
+        return NextResponse.json(
+          { error: `Product not found: ${item.name}` },
+          { status: 404 }
+        );
+      }
+
+      // Check if product is in stock
+      if (!productData.pricing.inStock) {
+        return NextResponse.json(
+          { error: `Product out of stock: ${item.name}` },
+          { status: 400 }
+        );
+      }
+
+      // Check if requested quantity is available
+      const requestedQuantity = Number(item.quantity) || 1;
+      if (productData.pricing.stockQuantity < requestedQuantity) {
+        return NextResponse.json(
+          {
+            error: `Insufficient stock for ${item.name}. Available: ${productData.pricing.stockQuantity}, Requested: ${requestedQuantity}`,
+          },
+          { status: 400 }
+        );
+      }
     }
 
     const line_items: any[] = [];
@@ -70,7 +109,7 @@ export async function POST(req: NextRequest) {
 
       line_items.push({
         price_data: {
-          currency: "eur", // <-- your shop currency
+          currency: "eur",
           product_data: {
             name: item.name,
             images:

@@ -6,20 +6,17 @@ import TechbarCTA from "@/components/CTA/TechbarCTA";
 
 import TopEarbudsSectionServer from "@/components/home/TopEarbudsSectionServer";
 
-
-
-
 export default async function App() {
   const categories = await getAllCategories();
   return (
     <div className="min-h-screen bg-background">
       <div className="w-full">
-        <ImageSlider/>
+        <ImageSlider />
         <TopCategoriesSection categories={categories} />
-        <TopEarbudsSectionServer/>
+        <TopEarbudsSectionServer />
         <ProductDealsSection />
-        <TechbarCTA/>
-      </div>  
+        <TechbarCTA />
+      </div>
     </div>
   );
 }

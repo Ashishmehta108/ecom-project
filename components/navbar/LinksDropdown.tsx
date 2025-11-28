@@ -24,32 +24,32 @@ export default function RightSidebar() {
     <Sheet>
       {/* OPEN BUTTON */}
       <SheetTrigger asChild>
-        <button className="p-2.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition">
+        <button className="p-2.5 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition">
           <Menu size={22} className="text-neutral-700 dark:text-neutral-300" />
         </button>
       </SheetTrigger>
 
       <SheetContent
         side="right"
-        className="w-[80%] sm:w-[340px] p-0 
-        bg-white dark:bg-neutral-900 border-l border-neutral-200 dark:border-neutral-800"
+        className="w-[80%] sm:w-[340px] p-0 bg-white dark:bg-neutral-900 
+        border-l border-neutral-200 dark:border-neutral-800"
       >
         {/* HEADER */}
         <div className="px-6 py-5 border-b border-neutral-200 dark:border-neutral-800">
-          <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
+          <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">
             Menu
           </h2>
         </div>
 
         {/* NAV LINKS */}
-        <nav className="flex-1 px-4 py-5 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
           {links.map((item) => (
             <SheetClose asChild key={item.href}>
               <Link
                 href={item.href}
-                className="block px-4 py-3 rounded-lg
+                className="block px-4 py-3 rounded-lg tracking-tight
                 text-neutral-800 dark:text-neutral-200 
-                hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+                hover:bg-neutral-100 dark:hover:bg-neutral-800/70 transition"
               >
                 {item.label.charAt(0).toUpperCase() + item.label.slice(1)}
               </Link>
@@ -67,31 +67,35 @@ export default function RightSidebar() {
           {!isPending && user && (
             <div className="space-y-3">
               <SheetClose asChild>
-                <Link
-                  href="/profile"
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg 
-                  bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700
+                <div
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl
+                  bg-neutral-100/70 dark:bg-neutral-800/70 
+                  border border-neutral-200 dark:border-neutral-700
                   hover:bg-neutral-200 dark:hover:bg-neutral-700 transition"
                 >
-                  <div className="w-9 h-9 flex items-center justify-center rounded-full bg-neutral-900 dark:bg-neutral-700 text-white">
-                    <User size={16} />
+                  <div
+                    className="w-10 h-10 flex items-center justify-center rounded-full 
+                  bg-neutral-900 dark:bg-neutral-700 text-white"
+                  >
+                    <User size={17} />
                   </div>
 
                   <div className="flex-1">
-                    <p className="font-medium text-sm">{user.name || "User"}</p>
+                    <p className="font-medium text-sm tracking-tight">
+                      {user.name || "User"}
+                    </p>
                     <p className="text-xs text-neutral-500 dark:text-neutral-400">
                       View profile
                     </p>
                   </div>
-                </Link>
+                </div>
               </SheetClose>
 
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center justify-center gap-2
-                px-4 py-3 rounded-lg font-medium
-                bg-neutral-900 text-white dark:bg-neutral-700
-                hover:bg-neutral-800 dark:hover:bg-neutral-600 transition"
+                px-4 py-3 rounded-lg font-medium tracking-tight
+                bg-red-600 text-white hover:bg-red-500 transition"
               >
                 <LogOut size={16} />
                 Logout
@@ -105,7 +109,7 @@ export default function RightSidebar() {
               <SheetClose asChild>
                 <Link
                   href="/login"
-                  className="w-full px-4 py-3 rounded-lg text-center font-medium
+                  className="w-full px-4 py-3 rounded-lg text-center font-medium tracking-tight
                   bg-neutral-900 text-white hover:bg-neutral-800 transition"
                 >
                   Login
@@ -115,9 +119,10 @@ export default function RightSidebar() {
               <SheetClose asChild>
                 <Link
                   href="/signup"
-                  className="w-full px-4 py-3 rounded-lg text-center font-medium
+                  className="w-full px-4 py-3 rounded-lg text-center font-medium tracking-tight
                   border border-neutral-300 dark:border-neutral-700
-                  bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white
+                  bg-white dark:bg-neutral-800 
+                  text-neutral-900 dark:text-white
                   hover:bg-neutral-100 dark:hover:bg-neutral-700 transition"
                 >
                   Create Account

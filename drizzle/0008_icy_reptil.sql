@@ -23,7 +23,7 @@ CREATE TABLE "admin_customer_order" (
 	"tax" numeric(10, 2) DEFAULT '0' NOT NULL,
 	"shipping_fee" numeric(10, 2) DEFAULT '0' NOT NULL,
 	"total" numeric(10, 2) NOT NULL,
-	"currency" text DEFAULT 'INR',
+	"currency" text DEFAULT 'EUR',
 	"status" text DEFAULT 'pending',
 	"order_status" text DEFAULT 'pending',
 	"stripe_payment_intent_id" text,

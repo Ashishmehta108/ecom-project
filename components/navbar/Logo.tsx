@@ -12,20 +12,51 @@
 // }
 
 
+// import Image from "next/image";
+// import Link from "next/link";
+// import { memo } from "react";
+// import techbar from "@/public/Tech Bar (4).svg";
+
+// function Logo() {
+//   return (
+//     <Link
+//       href="/"
+//       className="flex items-center gap-2 hover:opacity-80 transition-opacity duration-200"
+//       aria-label="TechBar - Go to homepage"
+//     >
+//       <Image src={techbar} alt="" width={36} height={36} priority />
+     
+//     </Link>
+//   );
+// }
+
+// export default memo(Logo);
+
+
 import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
-import techbar from "@/public/Tech Bar (4).svg";
+import techbar from "@/public/Tech Bar (7).svg";
 
-function Logo() {
+interface LogoProps {
+  size?: number; // optional
+}
+
+function Logo({ size = 36 }: LogoProps) {
   return (
     <Link
       href="/"
       className="flex items-center gap-2 hover:opacity-80 transition-opacity duration-200"
       aria-label="TechBar - Go to homepage"
     >
-      <Image src={techbar} alt="" width={36} height={36} priority />
-     
+      <Image
+        src={techbar}
+        alt=""
+        width={size}
+        height={size}
+        priority
+      />
+
     </Link>
   );
 }

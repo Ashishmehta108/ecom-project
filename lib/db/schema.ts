@@ -107,7 +107,7 @@ const product = pgTable("product", {
       currency: string;
       discount: number;
       inStock: boolean;
-      stockQuantity?: number;
+      stockQuantity: number;
     }>()
     .notNull(),
 
@@ -121,8 +121,6 @@ const product = pgTable("product", {
     .notNull(),
 });
 
-
-
 const cart = pgTable(
   "cart",
   {
@@ -130,7 +128,7 @@ const cart = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
-    currency: text("currency").notNull().default("INR"),
+    currency: text("currency").notNull().default("EUR"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -333,7 +331,7 @@ const orders = pgTable("orders", {
     .default("0")
     .notNull(),
   total: numeric("total", { precision: 10, scale: 2 }).notNull(),
-  currency: varchar("currency", { length: 8 }).default("INR"),
+  currency: varchar("currency", { length: 8 }).default("EUR"),
   shippingAddressId: text("shipping_address_id").references(() => address.id, {
     onDelete: "set null",
   }),
@@ -363,7 +361,7 @@ export const posCart = pgTable("pos_cart", {
     .notNull()
     .references(() => posCustomer.id, { onDelete: "cascade" }),
 
-  currency: text("currency").notNull().default("INR"),
+  currency: text("currency").notNull().default("EUR"),
 
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at")
@@ -395,7 +393,7 @@ export const posOrder = pgTable("pos_order", {
   subtotal: numeric("subtotal", { precision: 10, scale: 2 }).notNull(),
   tax: numeric("tax", { precision: 10, scale: 2 }).notNull().default("0"),
   total: numeric("total", { precision: 10, scale: 2 }).notNull(),
-  currency: text("currency").default("INR"),
+  currency: text("currency").default("EUR"),
 
   status: text("status").default("pending"),
   orderStatus: text("order_status").default("pending"),
@@ -431,7 +429,7 @@ export const posPayment = pgTable("pos_payment", {
   }),
 
   amount: integer("amount").notNull(),
-  currency: text("currency").notNull().default("INR"),
+  currency: text("currency").notNull().default("EUR"),
 
   stripePaymentIntentId: text("stripe_payment_intent_id"),
   stripeCheckoutSessionId: text("stripe_checkout_session_id"),
@@ -448,7 +446,6 @@ export const adminCustomerCart = pgTable("admin_customer_cart", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-
 export const appointment = pgTable("appointment", {
   id: text("id").primaryKey(),
 
@@ -461,7 +458,7 @@ export const appointment = pgTable("appointment", {
   issueDescription: text("issue_description").notNull(),
 
   scheduledDate: timestamp("scheduled_date").notNull(), // appointment date & time
-  status: varchar("status", { length: 40 }).default("pending"), 
+  status: varchar("status", { length: 40 }).default("pending"),
   // pending | confirmed | completed | cancelled
 
   createdAt: timestamp("created_at").defaultNow(),
@@ -501,7 +498,7 @@ export const adminCustomerOrder = pgTable("admin_customer_order", {
     .default("0")
     .notNull(),
   total: numeric("total", { precision: 10, scale: 2 }).notNull(),
-  currency: text("currency").default("INR"),
+  currency: text("currency").default("EUR"),
 
   // --- Status ---
   status: text("status").default("pending"), // pending | paid | refunded
@@ -723,6 +720,48 @@ export const stripePaymentMethodRelations = relations(
     user: one(user, {
       fields: [stripePaymentMethod.userId],
       references: [user.id],
+    }),
+  })
+);
+
+export const adminCustomerCartRelations = relations(
+  adminCustomerCart,
+  ({ many }) => ({
+    items: many(adminCustomerCartItem),
+  })
+);
+
+export const adminCustomerCartItemRelations = relations(
+  adminCustomerCartItem,
+  ({ one }) => ({
+    cart: one(adminCustomerCart, {
+      fields: [adminCustomerCartItem.cartId],
+      references: [adminCustomerCart.id],
+    }),
+    product: one(product, {
+      fields: [adminCustomerCartItem.productId],
+      references: [product.id],
+    }),
+  })
+);
+
+export const adminCustomerOrderRelations = relations(
+  adminCustomerOrder,
+  ({ many }) => ({
+    items: many(adminCustomerOrderItem),
+  })
+);
+
+export const adminCustomerOrderItemRelations = relations(
+  adminCustomerOrderItem,
+  ({ one }) => ({
+    order: one(adminCustomerOrder, {
+      fields: [adminCustomerOrderItem.orderId],
+      references: [adminCustomerOrder.id],
+    }),
+    product: one(product, {
+      fields: [adminCustomerOrderItem.productId],
+      references: [product.id],
     }),
   })
 );

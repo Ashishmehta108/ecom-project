@@ -58,7 +58,7 @@
 //     },
 //   ]);
 
-//   // 👉 Format INR with commas
+//   // 👉 Format EUR with commas
 //   const formatEuro = (amount: number) => {
 //     return "€" + amount.toLocaleString("en");
 //   };

@@ -6,6 +6,48 @@ import { eq, and } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { getUserSession } from "@/server";
 
+export async function getFavouriteProducts() {
+  const session = await getUserSession();
+  if (!session) return [];
+
+  // Get the favorites list + items + product + productImages
+  const fav = await db.query.favorites.findFirst({
+    where: eq(favorites.userId, session.user.id),
+    with: {
+      items: {
+        with: {
+          product: {
+            with: {
+              productImages: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!fav) return [];
+
+  // Transform into clean frontend format
+  const formatted = fav.items.map((item) => {
+    const p = item.product;
+    const primaryImage =
+    //@ts-ignore
+      p.productImages?.find((img) => img.position === "0") ||
+      //@ts-ignore
+      p.productImages?.[0];
+
+    return {
+      productId: p.id,
+      name: p.productName,
+      price: p.pricing.price,
+      image: primaryImage?.url || item.imageUrl, 
+    };
+  });
+
+  return formatted;
+}
+
 async function getOrCreateFavoriteList(userId: string) {
   const fav = await db.query.favorites.findFirst({
     where: eq(favorites.userId, userId),
@@ -23,7 +65,7 @@ async function getOrCreateFavoriteList(userId: string) {
 }
 
 export async function toggleFavouriteAction(productId: string, image: string) {
-  const session = await getUserSession()
+  const session = await getUserSession();
 
   if (!session) return { success: false, message: "Not authenticated" };
 
@@ -47,7 +89,7 @@ export async function toggleFavouriteAction(productId: string, image: string) {
     id: nanoid(),
     favoritesId: favId,
     productId,
-    imageUrl:image,
+    imageUrl: image,
   });
 
   return { success: true, removed: false };

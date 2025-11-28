@@ -193,18 +193,18 @@ export default function AdminPaymentsPage() {
                               {p.orderStatus}
                             </p>
                             <p>
-                              <span className="font-medium">Subtotal:</span> ₹
+                              <span className="font-medium">Subtotal:</span> €
                               {p.subtotal}
                             </p>
                             <p>
-                              <span className="font-medium">Tax:</span> ₹{p.tax}
+                              <span className="font-medium">Tax:</span> €{p.tax}
                             </p>
                             <p>
                               <span className="font-medium">Shipping Fee:</span>{" "}
-                              ₹{p.shippingFee}
+                              €{p.shippingFee}
                             </p>
                             <p>
-                              <span className="font-medium">Total:</span> ₹
+                              <span className="font-medium">Total:</span> €
                               {p.total}
                             </p>
                           </div>

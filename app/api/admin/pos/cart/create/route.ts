@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
     shippingFee: "0",
     total: subtotal,
-    currency: "INR",
+    currency: "EUR",
   });
 
   for (const item of items) {

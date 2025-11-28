@@ -7,7 +7,7 @@
 //   description: string,
 //   price: string,
 //   images: string[],
-//   currency: string = "INR"
+//   currency: string = "EUR"
 // ) => {
 //   const [p] = await db
 //     .insert(product)
@@ -239,7 +239,7 @@ export const sampleProductDataset = {
     "High quality wireless earbuds with deep bass, long-lasting battery, and sleek Hoco premium finish.",
   price: "1499",
   images: formatted,
-  currency: "INR",
+  currency: "EUR",
 };
 
 export const createProduct = async (
@@ -247,7 +247,7 @@ export const createProduct = async (
   description: string,
   price: string,
   images: { url: string; fileId: string }[],
-  currency: string = "INR"
+  currency: string = "EUR"
 ) => {
   const productId = randomUUID();
 

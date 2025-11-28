@@ -42,7 +42,7 @@ export function orderConfirmationTemplate({
           <div style="margin-top:20px; padding:20px; background:#f9fafb; border-radius:8px;">
             <p style="margin:5px 0; font-size:15px;"><strong>Order ID:</strong> ${orderId}</p>
             <p style="margin:5px 0; font-size:15px;"><strong>Order Date:</strong> ${orderDate}</p>
-            <p style="margin:5px 0; font-size:15px;"><strong>Total Amount:</strong> ₹${total}</p>
+            <p style="margin:5px 0; font-size:15px;"><strong>Total Amount:</strong> €${total}</p>
           </div>
   
           <!-- Items -->
@@ -55,7 +55,7 @@ export function orderConfirmationTemplate({
               <div>
                 <p style="margin:0; font-size:15px;"><strong>${item.title}</strong></p>
                 <p style="margin:4px 0; color:#555;">Qty: ${item.quantity}</p>
-                <p style="margin:4px 0; color:#111;"><strong>₹${item.price}</strong></p>
+                <p style="margin:4px 0; color:#111;"><strong>€${item.price}</strong></p>
               </div>
             </div>
           `

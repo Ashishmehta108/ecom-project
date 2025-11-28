@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Container from "../giobal/Container";
 import { ChevronRight } from "lucide-react";
-import { Heart } from "iconsax-reactjs";
 import FavoriteButton from "../favourites/favoritebutton";
 
 export default function TopEarbudsSectionClient({
@@ -22,7 +21,7 @@ export default function TopEarbudsSectionClient({
           </h2>
 
           <Link
-            href="/earbuds"
+            href="/products?category=m2A9BCDELvjQDvWUZQjEq"
             className="text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors flex items-center gap-1 group"
           >
             See All
@@ -111,15 +110,21 @@ export default function TopEarbudsSectionClient({
                     {e.name}
                   </h3>
 
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-[15px] font-bold text-neutral-900 dark:text-neutral-50">
-                      €{e.price}
-                    </span>
-                  </div>
+             {/* PRICE SECTION */}
+<div className="flex items-center gap-2 mt-1">
+  {/* NEW PRICE (calculated after discount) */}
+  <span className="text-[15px] font-bold text-neutral-900 dark:text-neutral-50">
+    €{(e.price - (e.price * e.discount) / 100).toFixed(2)}
+  </span>
 
-                  <span className="line-through text-neutral-400 dark:text-neutral-600 text-[12px]">
-                    €{e.oldPrice}
-                  </span>
+  {/* OLD PRICE */}
+  {e.discount > 0 && (
+    <span className="line-through text-neutral-400 dark:text-neutral-600 text-[12px]">
+      €{e.price}
+    </span>
+  )}
+</div>
+
                 </div>
               </Link>
             ))}

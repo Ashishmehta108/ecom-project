@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createAppointment } from "@/lib/actions/appointment.actions";
 import { useRouter } from "next/navigation";
 
@@ -11,11 +12,11 @@ export default function CreateAppointmentPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
 
-    const form = new FormData(e.target);
+    const form = new FormData(e.currentTarget);
 
     await createAppointment({
       customerId: "replace-with-user-id",
@@ -31,27 +32,69 @@ export default function CreateAppointmentPage() {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-6 space-y-4">
-      <h1 className="text-2xl font-semibold">Book Appointment</h1>
+    <div className="max-w-lg mx-auto p-6">
+      <Card className="shadow-md border">
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold">
+            Book an Appointment
+          </CardTitle>
+        </CardHeader>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input name="name" placeholder="Full Name" required />
-        <Input type="email" name="email" placeholder="Email" required />
-        <Input name="phone" placeholder="Phone Number" required />
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Full Name</label>
+              <Input name="name" placeholder="John Doe" required />
+            </div>
 
-        <Input
-          name="device"
-          placeholder="Device Type (Laptop / Mobile / etc.)"
-          required
-        />
-        <Textarea name="issue" placeholder="Describe your issue" required />
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Email</label>
+              <Input
+                type="email"
+                name="email"
+                placeholder="example@mail.com"
+                required
+              />
+            </div>
 
-        <Input type="date" name="date" required />
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Phone Number</label>
+              <Input name="phone" placeholder="+91 9876543210" required />
+            </div>
 
-        <Button type="submit" disabled={loading} className="w-full">
-          {loading ? "Booking..." : "Book Appointment"}
-        </Button>
-      </form>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Device Type</label>
+              <Input
+                name="device"
+                placeholder="Laptop, Mobile, Tablet..."
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Issue Description</label>
+              <Textarea
+                name="issue"
+                placeholder="Describe the problem…"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Preferred Date</label>
+              <Input type="date" name="date" required />
+            </div>
+
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full py-5 text-base font-semibold"
+            >
+              {loading ? "Booking Appointment..." : "Book Appointment"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

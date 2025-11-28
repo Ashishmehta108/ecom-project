@@ -225,7 +225,7 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "'INR'"
+          "default": "'EUR'"
         },
         "created_at": {
           "name": "created_at",
@@ -713,7 +713,7 @@
           "type": "varchar(8)",
           "primaryKey": false,
           "notNull": false,
-          "default": "'INR'"
+          "default": "'EUR'"
         },
         "shipping_address_id": {
           "name": "shipping_address_id",

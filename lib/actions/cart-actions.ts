@@ -1,6 +1,5 @@
 "use server";
 
-import { eq, and } from "drizzle-orm";
 import { db } from "../db";
 import { cart, cartItem, product, productImage } from "../db/schema";
 import { nanoid } from "nanoid";
@@ -63,72 +62,117 @@ export const getCart = async (userId: string): Promise<GetCartResponse> => {
     error: null,
   };
 };
+import { v4 as uuidv4 } from "uuid";
+import { eq, and } from "drizzle-orm";
 
-export const addItemToCart = async (
+export async function addItemToCart(
   userId: string,
   productId: string,
-  qty: number
-) => {
-  const cartData = await createCartIfNotExists(userId);
-
-  const [existing] = await db
-    .select()
-    .from(cartItem)
-    .where(
-      and(eq(cartItem.cartId, cartData.id), eq(cartItem.productId, productId))
-    );
-
-  if (existing) {
-    const products = await db
-      .select()
-      .from(product)
-      .where(eq(product.id, productId));
-    if (!products)
-      return { success: false, data: null, error: "Product not found" };
-    const p = products[0];
-    if (!p) return { success: false, data: null, error: "Product not found" };
-    if (
-      p.pricing?.stockQuantity &&
-      p.pricing?.stockQuantity < existing.quantity + qty
-    )
-      return { success: false, data: null, error: "Product out of stock" };
-
-    const [updated] = await db
-      .update(cartItem)
-      .set({
-        quantity: existing.quantity + qty,
-        price: String(p.pricing.price),
-      })
-      .where(eq(cartItem.id, existing.id))
-      .returning();
-
-    return { success: true, data: updated, error: null };
+  quantityToAdd: number
+) {
+  if (quantityToAdd <= 0) {
+    throw new Error("Quantity must be greater than 0");
   }
 
-  const prod = await db.query.product.findFirst({
-    where: (t, { eq }) => eq(t.id, productId),
-    with: {
-      productImages: {
-        limit: 1,
-        orderBy: (t, { asc }) => [asc(t.position)],
-      },
-    },
+  return await db.transaction(async (tx) => {
+
+    let userCart = await tx
+      .select()
+      .from(cart)
+      .where(eq(cart.userId, userId))
+      .limit(1);
+
+    let cartId: string;
+
+    if (userCart.length === 0) {
+      const newCart = await tx
+        .insert(cart)
+        .values({
+          id: uuidv4(),
+          userId: userId,
+          currency: "EUR",
+        })
+        .returning();
+      
+      cartId = newCart[0].id;
+    } else {
+      cartId = userCart[0].id;
+    }
+
+    const productData = await tx
+      .select()
+      .from(product)
+      .where(eq(product.id, productId))
+      .limit(1);
+
+    if (productData.length === 0) {
+      throw new Error("Product not found");
+    }
+
+    const currentProduct = productData[0];
+    const currentStock = currentProduct.pricing.stockQuantity;
+
+    if (!currentProduct.pricing.inStock ) {
+      throw new Error(
+        `Insufficient stock. Available: ${currentStock}`
+      );
+    }
+
+    const existingCartItem = await tx
+      .select()
+      .from(cartItem)
+      .where(
+        and(
+          eq(cartItem.cartId, cartId),
+          eq(cartItem.productId, productId)
+        )
+      )
+      .limit(1);
+
+    let finalQuantity: number;
+
+    if (existingCartItem.length > 0) {
+      finalQuantity = existingCartItem[0].quantity + quantityToAdd;
+      await tx
+        .update(cartItem)
+        .set({
+          quantity: finalQuantity,
+        })
+        .where(eq(cartItem.id, existingCartItem[0].id));
+    } else {
+      finalQuantity = quantityToAdd;
+      
+      await tx.insert(cartItem).values({
+        id: uuidv4(),
+        cartId: cartId,
+        productId: productId,
+        name: currentProduct.productName,
+        price: currentProduct.pricing.price.toString(),
+        quantity: quantityToAdd,
+      });
+    }
+
+
+    await tx
+      .update(cart)
+      .set({
+        updatedAt: new Date(),
+      })
+      .where(eq(cart.id, cartId));
+
+    return {
+      success: true,
+      cartId: cartId,
+      productName: currentProduct.productName,
+      quantityAdded: quantityToAdd,
+      totalInCart: finalQuantity,
+      message: `Added ${quantityToAdd} x ${currentProduct.productName} to cart`,
+    };
   });
+}
 
-  const [created] = await db
-    .insert(cartItem)
-    .values({
-      id: nanoid(),
-      cartId: cartData.id,
-      productId,
-      quantity: qty,
-      name: prod?.productName || "Product",
-      price: String(prod?.pricing.price),
-    })
-    .returning();
 
-  return { success: true, data: created, error: null };
-};
+
 
 export const updateItemQuantity = async (cartItemId: string, qty: number) => {
   const [updated] = await db
