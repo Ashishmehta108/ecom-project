@@ -94,8 +94,7 @@ export const getEarbuds = async () => {
                       eq(category.name, "Earphones")
                     )
                   )
-              ),
-              gte(review.rating,product.)
+              )
             )
           )
       ),
