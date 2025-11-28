@@ -11,6 +11,7 @@ import {
   SheetContent,
   SheetClose,
 } from "@/components/ui/sheet";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 export default function RightSidebar() {
   const { data, isPending } = authClient.useSession();
@@ -34,6 +35,10 @@ export default function RightSidebar() {
         className="w-[80%] sm:w-[340px] p-0 bg-white dark:bg-neutral-900 
         border-l border-neutral-200 dark:border-neutral-800"
       >
+     
+    <DialogTitle className="hidden">Sidebar Menu</DialogTitle>
+
+
         {/* HEADER */}
         <div className="px-6 py-5 border-b border-neutral-200 dark:border-neutral-800">
           <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-white">

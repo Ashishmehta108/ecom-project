@@ -58,30 +58,33 @@ export default function AddToCartButton({ productId }: { productId: string }) {
     <>
       <LoginModal open={showLogin} onOpenChange={setShowLogin} />
 
+      {/* If item not in cart */}
       {!cartItem ? (
         <button
           disabled={loading}
           onClick={handleAdd}
-          className="w-full py-2 bg-neutral-900 text-white rounded-lg"
+          className="w-fit px-4 py-2 text-sm bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 disabled:opacity-60"
         >
           {loading ? "Adding..." : "Add to Cart"}
         </button>
       ) : (
-        <div className="flex items-center gap-3 bg-neutral-100 px-3 py-1.5 rounded-full">
+        <div className="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800 px-3 py-1.5 rounded-full w-fit">
           <button
             disabled={loading}
             onClick={() => handleQty(cartItem.quantity - 1)}
+            className="p-1 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 transition disabled:opacity-50"
           >
-            <Minus size={16} />
+            <Minus size={14} />
           </button>
 
-          <span className="font-medium">{cartItem.quantity}</span>
+          <span className="font-medium text-sm">{cartItem.quantity}</span>
 
           <button
             disabled={loading}
             onClick={() => handleQty(cartItem.quantity + 1)}
+            className="p-1 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 transition disabled:opacity-50"
           >
-            <Plus size={16} />
+            <Plus size={14} />
           </button>
         </div>
       )}

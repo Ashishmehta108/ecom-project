@@ -10,5 +10,6 @@ export default async function Product({
   const id = (await params).id;
   //@ts-ignore
   const p: Product = await getProductById(id); 
+  console.log(p)
   return <ProductPage product={p} />;
 }

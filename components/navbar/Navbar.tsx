@@ -10,17 +10,20 @@ import userCartState from "@/lib/states/cart.state";
 import { User } from "lucide-react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
-;
-
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { data, isPending } = authClient.useSession();
+  const { data } = authClient.useSession();
   const isLoggedIn = !!data?.session;
   const itemsCount = userCartState((state) => state.items.length);
 
-  // Hide navbar in /admin routes
-  if (pathname.startsWith("/admin")) return null;
+  // Hide navbar in /admin, /login, /signup
+  const hideNavbar =
+    pathname.startsWith("/admin") ||
+    pathname === "/login" ||
+    pathname === "/signup";
+
+  if (hideNavbar) return null;
 
   return (
     <nav
@@ -34,11 +37,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center gap-3 flex-shrink-0">
             <Logo />
-
-           
           </div>
-         
-
 
           {/* Search - Desktop */}
           <div className="hidden md:block flex-1 max-w-xl">
@@ -51,21 +50,10 @@ export default function Navbar() {
             <div className="md:hidden">
               <NavSearch />
             </div>
-            {/* <NotificationBellWrapper /> */}
+
             {/* Cart */}
             <CartButton items={itemsCount} />
-            {!isLoggedIn && (
-              <Link
-                href="/login"
-                className="p-2 rounded-full hover:bg-neutral-100/50 dark:hover:bg-neutral-800/50 transition-colors duration-200"
-                aria-label="Sign in"
-              >
-                <User
-                  size={22}
-                  className="text-neutral-600 dark:text-neutral-400"
-                />
-              </Link>
-            )}
+
             <LinksDropdown />
           </div>
         </div>
