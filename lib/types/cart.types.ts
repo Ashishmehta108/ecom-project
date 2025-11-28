@@ -13,21 +13,36 @@ export type ProductInCart = {
 };
 // lib/types/cart.types.ts
 
-export interface CartItem {
+
+// lib/types/cart.types.ts
+export type CartItem = {
   id: string;
   productId: string;
   name: string;
   price: number | string;
   quantity: number;
-  imageUrl: string | null;
-}
+  imageUrl?: string | null;
+  stockQuantity?: number;
+  inStock?: boolean;
+};
 
-export interface CartData {
+export type CartData = {
   id: string;
   userId: string;
+  currency: string;
   createdAt?: Date;
   updatedAt?: Date;
-}
+};
+
+export type GetCartResponse = {
+  success: boolean;
+  data: {
+    cart: CartData;
+    items: CartItem[];
+    removedOutOfStock?: number;
+  } | null;
+  error: string | null;
+};
 
 export interface GetCartSuccess {
   success: true;
@@ -44,4 +59,4 @@ export interface GetCartError {
   error: string;
 }
 
-export type GetCartResponse = GetCartSuccess | GetCartError;
+
