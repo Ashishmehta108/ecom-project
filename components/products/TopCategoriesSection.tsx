@@ -285,7 +285,7 @@ export default function TopCategoriesSection({
                 className="group/card flex-shrink-0"
                 draggable={false}
               >
-                <div className="w-[120px] h-[180px] mx-1 flex flex-col items-center">
+                <div className="w-[160px] h-[280px] mx-1 flex flex-col items-center">
                   {/* IMAGE CONTAINER */}
                   <div
                     className="

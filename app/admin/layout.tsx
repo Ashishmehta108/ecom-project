@@ -5,17 +5,19 @@ import Topbar from "./topbar/page";
 import { authClient } from "@/lib/auth-client";
 import { usePathname } from "next/navigation";
 
-export default function AdminLayout({ children }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { data, isPending } = authClient.useSession();
   const pathname = usePathname();
 
   const isAuthPage = pathname.startsWith("/admin/login");
   const user = data?.user;
 
-  const isLoadingSession = isPending || data === undefined;
-
-  // Loading state
-  if (isLoadingSession) {
+  // Show loading screen while session is being fetched
+  if (isPending || data === undefined) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="animate-pulse text-muted-foreground">Loading...</div>
@@ -23,13 +25,10 @@ export default function AdminLayout({ children }) {
     );
   }
 
-  // If logged out OR on admin login page
-  if (!user || isAuthPage) {
-    return <div className="p-6 w-full">{children}</div>;
-  }
-
-  // ❌ Not an admin → block access
-  if (user.role !== "admin") {
+  // ----------------------------
+  // 🚫 BLOCK NON-ADMINS FIRST
+  // ----------------------------
+  if (user && user.role !== "admin" && !isAuthPage) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
@@ -42,11 +41,19 @@ export default function AdminLayout({ children }) {
     );
   }
 
-  // ✅ Logged-in admin view
+  // ----------------------------
+  // ✔️ Allow login page or unauthenticated
+  // ----------------------------
+  if (!user || isAuthPage) {
+    return <div className="p-6 w-full">{children}</div>;
+  }
+
+  // ----------------------------
+  // ✔️ Admin layout
+  // ----------------------------
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar />
-
       <div className="flex-1 flex flex-col">
         <Topbar />
         <main className="p-6">{children}</main>
