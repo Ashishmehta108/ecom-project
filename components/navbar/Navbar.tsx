@@ -111,8 +111,8 @@ export default function Navbar() {
         bg-white dark:bg-neutral-950 sticky top-0 z-50
       "
     >
-      <Container>
-        <div className="flex items-center justify-evenly py-3.5 md:py-4 gap-3 md:gap-4">
+      <Container className="w-full mx-2 max-w-full xl:max-w-full">
+        <div className="flex items-center justify-between py-3.5 md:py-4 gap-3 md:gap-4">
           
           {/* Logo Section */}
           <div className="flex items-center gap-3 flex-shrink-0">
