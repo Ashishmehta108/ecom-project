@@ -3,7 +3,7 @@
     "productName": "Hoco EW30 Intelligent True Wireless Bluetooth Earphone",
     "brand": "Hoco",
     "model": "EW30",
-    "categories": ["Electronics", "Earphones"],
+    "categories": ["Earphones"],
     "subCategory": "Bluetooth Earphone",
     "description": "Hoco EW30 is a true wireless Bluetooth 5.3 headset with low latency, long standby time, LED indicators, and ergonomic design.",
     "features": [
@@ -67,7 +67,7 @@
     "productName": "Hoco EQ20 True Wireless ANC+ENC Noise Reduction Bluetooth Earphone",
     "brand": "Hoco",
     "model": "EQ20",
-    "categories": ["Electronics", "Earphones"],
+    "categories": [ "Earphones"],
     "subCategory": "Bluetooth Earphone",
     "description": "The Hoco EQ20 is a true wireless Bluetooth 5.4 earphone featuring ANC+ENC noise reduction, long battery life, one-to-two connection, master–slave switching, and Siri voice assistant support.",
     "features": [
@@ -129,7 +129,7 @@
     "productName": "Hoco Y23 Smart Watch",
     "brand": "Hoco",
     "model": "Y23",
-    "categories": ["Electronics", "Watch"],
+    "categories": [ "Watch"],
     "subCategory": "Wearable",
     "description": "The Hoco Y23 Smart Watch features a large 2.02-inch HD touchscreen with a 320×385 resolution, Bluetooth 5.3 connectivity, and IP67 water resistance. With 5–7 days of battery life, heart rate monitoring, sleep tracking, step counting, and support for 22 languages, it offers a complete smart wearable experience for Android and iOS users.",
     "features": [
@@ -195,7 +195,7 @@
     "productName": "HOCO DS61 Retro Leather Bluetooth Speaker",
     "brand": "Hoco",
     "model": "DS61",
-    "categories": ["Electronics", "Speaker"],
+    "categories": [ "Speaker"],
     "subCategory": "Bluetooth Speaker",
     "description": "The HOCO DS61 Retro Leather Bluetooth Speaker combines vintage aesthetics with modern Bluetooth 5.3 technology. Featuring dual 2.5-inch speaker units, 14W total output, multiple playback modes, and a 2400mAh battery, it is designed for rich, powerful sound with a stylish leather finish.",
     "features": [
@@ -256,7 +256,7 @@
     "productName": "Hoco A10 Max 10.1″ Tablet 8GB RAM 256GB 5G - Metal Grey",
     "brand": "Hoco",
     "model": "A10 Max",
-    "categories": ["Electronics", "Tablet"],
+    "categories": ["Tablet"],
     "subCategory": "Android Tablet",
     "description": "The Hoco A10 Max is a 10.1-inch Android tablet featuring an HD display, 8GB RAM, 256GB storage, 5G connectivity, quad-core T310 processor, dual-band WiFi, SIM support, GPS, and a 4000mAh battery. Designed for entertainment, study, and daily productivity with a sleek metal grey body.",
     "features": [
@@ -323,7 +323,7 @@
     "productName": "Hoco EW81 Elegant True Wireless Touch Screen Earbuds",
     "brand": "Hoco",
     "model": "EW81",
-    "categories": ["Electronics", "Earphones"],
+    "categories": ["Earphones"],
     "subCategory": "TWS Earbuds",
     "description": "The Hoco EW81 Elegant True Wireless Earbuds feature Bluetooth 5.4, a smart LED touch screen on the charging case, 4-hour battery life, and lightweight ABS design. With accurate battery indicators, comfortable fit, and seamless connectivity, it is a stylish and functional choice for everyday users.",
     "features": [
@@ -388,7 +388,7 @@
     "productName": "Hoco W60 28Hrs Kids Bluetooth Headband Wireless Headphones",
     "brand": "Hoco",
     "model": "W60",
-    "categories": ["Electronics", "Earphones"],
+    "categories": [ "Earphones"],
     "subCategory": "Kids Wireless Headphones",
     "description": "The Hoco W60 Kids Bluetooth Headphones are designed for children, offering comfort, durability, and long 28-hour playback time. With Bluetooth 5.4, AUX support, a lightweight headband design, and a built-in microphone, they are ideal for music, videos, online classes, and everyday entertainment.",
     "features": [
@@ -455,7 +455,7 @@
     "productName": "Hoco Y24 Smart Watch",
     "brand": "Hoco",
     "model": "Y24",
-    "categories": ["Electronics", "Watch"],
+    "categories": [ "Watch"],
     "subCategory": "Wearable",
     "description": "The Hoco Y24 Smart Watch features a 1.43-inch round display with 466×466 resolution, IP67 waterproof rating, Bluetooth 5.3 connectivity, a 390 mAh battery offering up to 10 days of use, supports video playback, local music, information push and more. Compatible with Android and iOS smartphones.",
     "features": [
@@ -520,7 +520,7 @@
     "productName": "Hoco Y26 Smart Watch",
     "brand": "Hoco",
     "model": "Y26",
-    "categories": ["Electronics", "Watch"],
+    "categories": [ "Watch"],
     "subCategory": "Wearable",
     "description": "The Hoco Y26 Smart Watch features a 1.81-inch TFT touch screen, IPX4 life-grade waterproofing, Bluetooth 5.0, multiple health tracking modes, and up to 7 days of battery life. It includes sleep tracking, activity monitoring, calling support, message reminders, and a range of everyday smart functions. The detachable silica gel band and alloy body provide both comfort and durability.",
     "features": [
@@ -588,7 +588,7 @@
     "productName": "Hoco Y30 Smart Watch",
     "brand": "Hoco",
     "model": "Y30",
-    "categories": ["Electronics", "Watch"],
+    "categories": ["Watch"],
     "subCategory": "Wearable",
     "description": "The Hoco Y30 is a feature-rich smartwatch with a 2.0-inch TFT capacitive display, Bluetooth calling support, and full health monitoring. Equipped with a JL 7012A6 chipset and Bluetooth 5.0, it offers seamless hands-free calling, notifications, sports tracking, real-time weather, and utilities like music/camera control, stopwatch, alarm, and more. Its 230mAh battery provides 3–7 days of use and up to 25 days standby. With IP67 water resistance and compatibility with Android and iOS via the Vband/FitCloudPro apps, the Y30 is a versatile everyday smartwatch.",
     "features": [
@@ -662,7 +662,7 @@
     "productName": "Redmi Buds 6 Play - In-Ear Wireless Earbuds (Blue)",
     "brand": "Xiaomi",
     "model": "Redmi Buds 6 Play",
-    "categories": ["Electronics", "Earphones"],
+    "categories": [ "Earphones"],
     "subCategory": "TWS Earbuds",
     "description": "The Redmi Buds 6 Play are lightweight in-ear wireless earbuds featuring 36 hours of total battery life, 10mm dynamic drivers, Bluetooth 5.4, AI noise cancellation for calls, and fast charging that provides 3 hours of playback in just 10 minutes. Designed for daily use with comfort, strong connectivity, app control, and IP-rated water resistance.",
     "features": [
@@ -732,7 +732,7 @@
     "productName": "Samsung Galaxy Tab A9 4G LTE (4GB RAM, 128GB Storage) 8.7\" Android Tablet",
     "brand": "Samsung",
     "model": "Galaxy Tab A9 X115",
-    "categories": ["Electronics", "Tablet"],
+    "categories": ["Tablet"],
     "subCategory": "Android Tablet",
     "description": "The Samsung Galaxy Tab A9 4G LTE features an 8.7-inch WXGA+ display, MediaTek Helio G99 octa-core processor, 4GB RAM, 128GB storage, dual speakers, and Android 13 with One UI 5.1. With 4G LTE support, Bluetooth 5.3, a 5100mAh battery, and international carrier compatibility, it is designed for productivity, entertainment, and on-the-go usage.",
     "features": [
