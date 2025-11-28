@@ -14,7 +14,7 @@ export default function AdminLayout({ children }) {
 
   const isLoadingSession = isPending || data === undefined;
 
-  // Wait for session to fully resolve
+  // Loading state
   if (isLoadingSession) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -23,12 +23,26 @@ export default function AdminLayout({ children }) {
     );
   }
 
-  // If logged out or on login page
+  // If logged out OR on admin login page
   if (!user || isAuthPage) {
     return <div className="p-6 w-full">{children}</div>;
   }
 
-  // Logged-in admin view
+  // ❌ Not an admin → block access
+  if (user.role !== "admin") {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold">Access Denied</h2>
+          <p className="text-muted-foreground mt-2">
+            You do not have permission to access the admin dashboard.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // ✅ Logged-in admin view
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar />

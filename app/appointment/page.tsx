@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createAppointment } from "@/lib/actions/appointment.actions";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import { authClient } from "@/lib/auth-client";
 
 // ---------------------- ZOD SCHEMA ----------------------
 const appointmentSchema = z.object({
@@ -26,6 +27,7 @@ export default function CreateAppointmentPage() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const user=authClient.useSession()
   // ---------------------- FORM SUBMIT ----------------------
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -59,7 +61,7 @@ export default function CreateAppointmentPage() {
 
     // Submit to backend
     await createAppointment({
-      customerId: "replace-with-user-id",
+      customerId:user.data?.user.id ,
       customerName: result.data.name,
       customerEmail: result.data.email,
       customerPhone: result.data.phone,
