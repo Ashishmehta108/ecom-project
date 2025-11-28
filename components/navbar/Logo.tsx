@@ -36,13 +36,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
-import techbar from "@/public/Tech Bar (7).svg";
+import techbar from "@/public/Tech Bar (11).svg";
 
 interface LogoProps {
   size?: number; // optional
 }
 
-function Logo({ size = 36 }: LogoProps) {
+function Logo({ size = 35 }: LogoProps) {
   return (
     <Link
       href="/"

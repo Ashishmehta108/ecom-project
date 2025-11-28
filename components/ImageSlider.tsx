@@ -901,9 +901,9 @@ const AUTOPLAY_DURATION = 5000;
 
 const DEMO_SLIDES = [
   {
-    subtitle: "BLACK FRIDAY",
-    title: "Mega Sale",
-    discount: "Black Friday Sale 20% Off",
+    subtitle: "",
+    title: "Black Friday Sale",
+    discount: " 20% Off on all products",
     shortText: "Limited time offer on all premium products.",
     buttonText: "Shop Now",
     buttonLink: "/products?category=black-friday",
@@ -912,7 +912,7 @@ const DEMO_SLIDES = [
       "max-w-[280px] sm:max-w-[340px] md:max-w-[420px] lg:max-w-[500px] max-h-[320px] sm:max-h-[380px] md:max-h-[440px] lg:max-h-[500px]",
   },
   {
-    subtitle: "EXCLUSIVE DEAL",
+    subtitle: "",
     title: "Premium Headphones",
     discount: "Limited Time Offer",
     shortText: "Experience rich sound, deep bass, and all-day comfort.",
@@ -923,7 +923,7 @@ const DEMO_SLIDES = [
       "max-w-[300px] sm:max-w-[380px] md:max-w-[460px] lg:max-w-[540px] max-h-[340px] sm:max-h-[420px] md:max-h-[480px] lg:max-h-[540px]",
   },
   {
-    subtitle: "SUMMER COLLECTION",
+    subtitle: "",
     title: "New Arrivals",
     discount: "Up to 50% Off",
     shortText: "Fresh designs made for comfort and everyday style.",
@@ -1164,11 +1164,7 @@ export default function PromoSlider({
                               transition-transform duration-700
                               hover:scale-105
                               relative z-10
-                          ${
-                            index === 0
-                              ? "scale-110 sm:scale-125 md:scale-150"
-                              : ""
-                          }
+                          ${index === 0 ? "scale-110 sm:scale-125 md:scale-150" : ""}
                             `}
                       loading={index === 0 ? "eager" : "lazy"}
                     />
@@ -1267,10 +1263,10 @@ export default function PromoSlider({
 
       {/* Progress Bar */}
       {hasMultipleSlides && (
-        <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white/10 overflow-hidden">
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 overflow-hidden">
           <div
             ref={progressBarRef}
-            className="h-full bg-indigo-600"
+            className="h-full bg-gradient-to-r from-indigo-100  to-indigo-500"
             style={{ width: "0%" }}
           />
         </div>
