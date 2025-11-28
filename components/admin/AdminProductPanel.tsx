@@ -711,7 +711,7 @@ const TagsTab: React.FC = () => {
 };
 
 import { Checkbox } from "@/components/ui/checkbox";
-
+import { toast } from "sonner";
 
 const CategoriesTab: React.FC<{ categories: string[] }> = ({ categories }) => {
   const form = useFormContext<ProductFormValues>();
@@ -785,7 +785,6 @@ const CategoriesTab: React.FC<{ categories: string[] }> = ({ categories }) => {
     </div>
   );
 };
-
 
 export default function AdminProductPanel({
   initialProduct = {},
@@ -909,17 +908,17 @@ export default function AdminProductPanel({
 
           if (isNew) {
             const saved = await createProductAction(payload);
-            alert("✅ Product created successfully!");
+            toast("✅ Product created successfully!");
             if (saved?.id) {
               window.location.href = `/admin/products/${saved.id}`;
             }
           } else if (values.id) {
             await updateProductAction(values.id, payload);
-            alert("✅ Product updated successfully!");
+            toast("✅ Product updated successfully!");
           }
         } catch (error: any) {
           console.error("Product save error:", error);
-          alert(`❌ ${error?.message ?? "Failed to save product"}`);
+          toast.error(`❌ ${error?.message ?? "Failed to save product"}`);
         }
       })();
     });

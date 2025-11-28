@@ -347,7 +347,7 @@ const orders = pgTable("orders", {
 });
 
 export const posCustomer = pgTable("pos_customer", {
-  id: text("id").primaryKey(), // nanoid()
+  id: text("id").primaryKey(),
   name: text("name"),
   email: text("email"),
   phone: text("phone"),
@@ -396,7 +396,6 @@ export const posOrder = pgTable("pos_order", {
   currency: text("currency").default("EUR"),
 
   status: text("status").default("pending"),
-  orderStatus: text("order_status").default("pending"),
 
   stripeCheckoutSessionId: text("stripe_checkout_session_id"),
   stripePaymentIntentId: text("stripe_payment_intent_id"),

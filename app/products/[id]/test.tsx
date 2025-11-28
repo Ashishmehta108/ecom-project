@@ -47,9 +47,9 @@ export default function ProductPage({ product }: { product: Product }) {
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(url)}
-                  className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden transition-all duration-200 ${
+                  className={`relative flex-shrink-0 w-20 h-20 rounded-lg bg-neutral-100 overflow-hidden transition-all duration-200 hover:bg-neutral-200 ${
                     selectedImage === url
-                      ? "ring-2 ring-indigo-600 ring-offset-2 dark:ring-offset-neutral-900"
+                      ? "ring-0 ring-indigo-600 ring-offset-0 bg-neutral-200  border-[1px] border-neutral-300 dark:ring-offset-neutral-900"
                       : "opacity-80 hover:opacity-100"
                   }`}
                 >
@@ -57,7 +57,7 @@ export default function ProductPage({ product }: { product: Product }) {
                     src={url}
                     alt={`Thumbnail ${idx + 1}`}
                     fill
-                    className="object-contain p-2"
+                    className="object-contain mix-blend-multiply p-2"
                   />
                 </button>
               ))}

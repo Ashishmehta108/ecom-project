@@ -19,7 +19,7 @@ export async function getAllOrders() {
       createdAt: true,
       orderStatus: true,
     },
-    orderBy: (orders, { asc }) => [asc(orders.createdAt)],
+    orderBy: (orders, { desc }) => [desc(orders.createdAt)],
   });
 
   return result;
