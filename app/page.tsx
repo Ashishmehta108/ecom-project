@@ -5,6 +5,7 @@ import { getAllCategories } from "@/lib/actions/categories.actions";
 import TechbarCTA from "@/components/CTA/TechbarCTA";
 
 import TopEarbudsSectionServer from "@/components/home/TopEarbudsSectionServer";
+import TopSmartphonesSection from "@/components/home/TopSmartphoneServer";
 
 export default async function App() {
   const categories = await getAllCategories();
@@ -14,7 +15,7 @@ export default async function App() {
         <ImageSlider />
         <TopCategoriesSection categories={categories} />
         <TopEarbudsSectionServer />
-        <ProductDealsSection />
+        <TopSmartphonesSection />
         <TechbarCTA />
       </div>
     </div>

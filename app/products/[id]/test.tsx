@@ -8,14 +8,16 @@ import ReviewPage from "@/components/reviews/page";
 import { Product } from "@/lib/types/product.types";
 import AddToCartButton from "@/components/cart/addToCart";
 import { authClient } from "@/lib/auth-client";
-import userCartState from "@/lib/states/cart.state";
 
 const FALLBACK_IMG = "https://via.placeholder.com/500x500.png?text=No+Image";
 
 export default function ProductPage({ product }: { product: Product }) {
-  console.log(product);
-
   const user = authClient.useSession();
+
+  // Determine stock status correctly
+  const outOfStock =
+    product.pricing?.stockQuantity === 0 || product.pricing?.stockQuantity <= 0;
+
   const images =
     Array.isArray(product.productImages) && product.productImages.length > 0
       ? product.productImages.map((i) => i.url)
@@ -39,26 +41,23 @@ export default function ProductPage({ product }: { product: Product }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
         {/* LEFT — IMAGE GALLERY */}
         <div className="flex flex-col lg:flex-row gap-4">
-          {/* Thumbnails - Side on Desktop, Top on Mobile */}
           {images.length > 1 && (
             <div className="flex lg:flex-col gap-2.5 overflow-x-auto lg:overflow-y-auto pb-1 lg:pb-0 order-2 lg:order-1 scrollbar-thin">
               {images.map((url, idx) => (
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(url)}
-                  className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden transition-all duration-200
-                    ${
-                      selectedImage === url
-                        ? "bg-white border border-neutral-200"
-                        : ""
-                    }
-                  `}
+                  className={`relative flex-shrink-0 w-20 h-20 rounded-lg bg-neutral-100 overflow-hidden transition-all duration-200 hover:bg-neutral-200 ${
+                    selectedImage === url
+                      ? "ring-0 ring-indigo-600 ring-offset-0 bg-neutral-200  border-[1px] border-neutral-300 dark:ring-offset-neutral-900"
+                      : "opacity-80 hover:opacity-100"
+                  }`}
                 >
                   <Image
                     src={url}
                     alt={`Thumbnail ${idx + 1}`}
                     fill
-                    className="object-contain  p-2"
+                    className="object-contain mix-blend-multiply p-2"
                   />
                 </button>
               ))}
@@ -66,7 +65,7 @@ export default function ProductPage({ product }: { product: Product }) {
           )}
 
           {/* Main Image */}
-          <div className="flex-1 rounded-xl bg-white dark:bg-neutral-900 overflow-hidden order-1 lg:order-2">
+          <div className="flex-1 rounded-xl bg-white dark:bg-neutral-900 overflow-hidden order-1 lg:order-2 border border-neutral-200 dark:border-neutral-800">
             <div className="relative w-full aspect-square flex items-center justify-center">
               <Image
                 src={selectedImage}
@@ -90,13 +89,13 @@ export default function ProductPage({ product }: { product: Product }) {
               {product.productName}
             </h1>
             {product.model && (
-              <p className=" text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 mt-2">
+              <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 mt-2">
                 Model: {product.model}
               </p>
             )}
           </div>
 
-          {/* Price & Stock */}
+          {/* Price */}
           <div className="space-y-3 pb-6 border-b border-neutral-200 dark:border-neutral-800">
             <div className="flex items-baseline gap-3 flex-wrap">
               <p className="text-xl sm:text-2xl font-normal tracking-tight">
@@ -105,10 +104,10 @@ export default function ProductPage({ product }: { product: Product }) {
 
               {discount > 0 && (
                 <>
-                  <p className="text-sm sm:text-lg text-neutral-400 dark:text-neutral-600 line-through">
+                  <p className="text-sm sm:text-lg text-neutral-400 line-through dark:text-neutral-600">
                     €{price.toLocaleString()}
                   </p>
-                  <Badge className="bg-green-600 hover:bg-green-600 text-white text-xs font-semibold px-2 py-0.5">
+                  <Badge className="bg-indigo-600 hover:bg-indigo-600 text-white text-xs font-semibold px-2 py-0.5">
                     {discount}% OFF
                   </Badge>
                 </>
@@ -116,20 +115,29 @@ export default function ProductPage({ product }: { product: Product }) {
             </div>
 
             {/* Stock Status */}
-            {product.pricing?.inStock ? (
-              <Badge className="bg-green-600 hover:bg-green-600 text-white text-xs font-medium px-2.5 py-1">
-                In Stock
-              </Badge>
-            ) : (
+            {outOfStock ? (
               <Badge className="bg-red-600 hover:bg-red-600 text-white text-xs font-medium px-2.5 py-1">
                 Out of Stock
+              </Badge>
+            ) : (
+              <Badge className="bg-green-600 hover:bg-green-600 text-white text-xs font-medium px-2.5 py-1">
+                In Stock
               </Badge>
             )}
           </div>
 
           {/* Add to Cart */}
           <div className="pt-2">
-            <AddToCartButton productId={product.id} />
+            {outOfStock ? (
+              <Button
+                disabled
+                className="w-full rounded-lg cursor-not-allowed bg-neutral-300 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-500"
+              >
+                Out of Stock
+              </Button>
+            ) : (
+              <AddToCartButton productId={product.id} />
+            )}
           </div>
 
           {/* Description */}
@@ -183,7 +191,7 @@ export default function ProductPage({ product }: { product: Product }) {
         </div>
       </div>
 
-      {/* SPECIFICATIONS SECTION */}
+      {/* SPECIFICATIONS */}
       {product.specifications &&
         Object.keys(product.specifications).length > 0 && (
           <div className="mt-16 md:mt-20">
@@ -230,7 +238,7 @@ export default function ProductPage({ product }: { product: Product }) {
 
       {/* REVIEWS */}
       <div className="mt-16 md:mt-20">
-        <ReviewPage  productId={product.id} />
+        <ReviewPage productId={product.id} />
       </div>
     </div>
   );

@@ -1,33 +1,69 @@
 "use client";
 
+import { useState, useTransition } from "react";
+import { toggleFavouriteAction } from "@/lib/actions/favourite-actions";
+
 import { useFavouriteState } from "@/lib/states/favorite.state";
-import ClickableHeart from "@/app/test/page";
+import ClickableHeart from "./heartAnimated";
+import { toast } from "sonner";
 
 export default function FavoriteButton({ product }: { product: any }) {
-  const { items, toggleFavourite } = useFavouriteState();
+  const { items, setFavouriteItems } = useFavouriteState();
+  const [isPending, startTransition] = useTransition();
+
+  // Correct image (primary image)
+  const primaryImage =
+    product.productImages?.find((img: any) => img.position == "0") ||
+    product.productImages?.[0];
+
+  const imageUrl = primaryImage?.url ?? "/placeholder.png";
+
   const isFav = items.some((i) => i.productId === product.id);
-  console.log(items);
-  return (
-    <button
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleFavourite({
+
+  function handleToggle(e: any) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    startTransition(async () => {
+      const res = await toggleFavouriteAction(product.id, imageUrl);
+
+      if (!res.success) {
+        toast.error("Please login first");
+        return;
+      }
+
+      // 🔥 UPDATE LOCAL STATE IN SYNC WITH BACKEND
+      let updatedItems = [...items];
+
+      if (res.removed) {
+        updatedItems = updatedItems.filter((i) => i.productId !== product.id);
+      } else {
+        updatedItems.push({
           productId: product.id,
           name: product.productName,
-          image: product.image,
-          price: product.price,
+          price: product.pricing.price,
+          image: imageUrl,
         });
-      }}
-      className={` absolute right-2 top-2 rounded-full bg-neutral-50 border-neutral-200 p-0 border  transition 
+      }
+
+      setFavouriteItems(updatedItems);
+    });
+  }
+
+  return (
+    <button
+      disabled={isPending}
+      onClick={handleToggle}
+      className={`absolute right-2 top-2 rounded-full bg-neutral-50 border p-1 border-neutral-200 
+        transition 
         ${
           isFav
-            ? " text-red-600 dark:bg-red-950 dark:border-red-900"
-            : " text-neutral-500"
+            ? "text-red-600 dark:bg-red-950 dark:border-red-900"
+            : "text-neutral-500"
         }
       `}
     >
-      <ClickableHeart />
+      <ClickableHeart filled={isFav} />
     </button>
   );
 }

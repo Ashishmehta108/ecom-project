@@ -125,7 +125,7 @@ export default async function AdminProductsPage() {
             </div>
           ))} */}
         </div>
-        <ProductsListWrapper products={displayProducts} />
+        <ProductsListWrapper admin={true} products={displayProducts} />
 
         {/* Empty state */}
         {displayProducts.length === 0 && (
