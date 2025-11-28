@@ -90,8 +90,8 @@ export default function RightSidebar() {
                 onClick={handleLogout}
                 className="w-full flex items-center justify-center gap-2
                 px-4 py-3 rounded-lg font-medium
-                bg-neutral-900 text-white dark:bg-neutral-700
-                hover:bg-neutral-800 dark:hover:bg-neutral-600 transition"
+                bg-red-600 text-white
+                hover:bg-red-500 transition"
               >
                 <LogOut size={16} />
                 Logout
