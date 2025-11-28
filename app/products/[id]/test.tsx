@@ -14,7 +14,6 @@ const FALLBACK_IMG = "https://via.placeholder.com/500x500.png?text=No+Image";
 export default function ProductPage({ product }: { product: Product }) {
   const user = authClient.useSession();
 
-  // Determine stock status correctly
   const outOfStock =
     product.pricing?.stockQuantity === 0 || product.pricing?.stockQuantity <= 0;
 
@@ -115,23 +114,32 @@ export default function ProductPage({ product }: { product: Product }) {
             </div>
 
             {/* Stock Status */}
-            {outOfStock ? (
-              <Badge className="bg-red-600 hover:bg-red-600 text-white text-xs font-medium px-2.5 py-1">
-                Out of Stock
-              </Badge>
-            ) : (
-              <Badge className="bg-green-600 hover:bg-green-600 text-white text-xs font-medium px-2.5 py-1">
-                In Stock
-              </Badge>
-            )}
+            <div className="flex items-center gap-3">
+              {outOfStock ? (
+                <Badge className="bg-red-600 hover:bg-red-600 text-white text-xs font-medium px-2.5 py-1">
+                  Out of Stock
+                </Badge>
+              ) : (
+                <Badge className="bg-green-600 hover:bg-green-600 text-white text-xs font-medium px-2.5 py-1">
+                  In Stock
+                </Badge>
+              )}
+
+              {/* Stock Quantity */}
+              {!outOfStock && (
+                <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                  Quantity: {product.pricing?.stockQuantity}
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Add to Cart */}
-          <div className="pt-2">
+          <div className="pt-2 ">
             {outOfStock ? (
               <Button
                 disabled
-                className="w-full rounded-lg cursor-not-allowed bg-neutral-300 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-500"
+                className="max-w-sm rounded-lg cursor-not-allowed bg-neutral-300 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-500"
               >
                 Out of Stock
               </Button>
