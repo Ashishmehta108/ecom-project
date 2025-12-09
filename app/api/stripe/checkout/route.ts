@@ -145,7 +145,6 @@ export async function POST(req: NextRequest) {
       payment_method_types: [
         "card",
         "klarna",
-        "giropay",
         "mb_way",
         "multibanco",
         "amazon_pay",
