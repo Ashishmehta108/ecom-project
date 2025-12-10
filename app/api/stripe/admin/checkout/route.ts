@@ -69,6 +69,7 @@ export async function POST(req: NextRequest) {
 
     console.log("📦 POS Order Created:", order);
 
+    // 3. Order items
     console.log("📦 Creating POS order items:", cartData.items);
     await db.insert(posOrderItem).values(
       cartData.items.map((i) => ({
