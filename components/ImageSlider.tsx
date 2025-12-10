@@ -15,11 +15,11 @@ const DEMO_SLIDES = [
   {
      bgColor: "bg-black", 
     subtitle: "",
-    title: "Black Friday Sale",
+    title: "Christmas Sale",
     discount: " 20% Off on all products",
     shortText: "Limited time offer on all premium products.",
     buttonText: "Shop Now",
-    buttonLink: "/products?category=black-friday",
+    buttonLink: "/products",
     image: "/blackfriday.png",
     imageStyles:
       "max-w-[230px] sm:max-w-[290px] md:max-w-[350px] lg:max-w-[420px] max-h-[260px] sm:max-h-[320px] md:max-h-[380px] lg:max-h-[440px]",

@@ -145,10 +145,10 @@ export async function POST(req: NextRequest) {
       payment_method_types: [
         "card",
         "klarna",
-        "mb_way",
-        "multibanco",
+        // "mb_way",
+        // "multibanco",
         "amazon_pay",
-        "paypal",
+        // "paypal",
       ],
       line_items,
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
