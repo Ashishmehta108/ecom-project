@@ -1,4 +1,3 @@
-// app/api/stripe/admin/checkout/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
 import { stripeClient as stripe } from "@/lib/stripe";
@@ -58,14 +57,13 @@ export async function POST(req: NextRequest) {
     const [order] = await db
       .insert(posOrder)
       .values({
-        id: nanoid(),
+        id:nanoid(),
         customerId,
         subtotal: subtotal.toString(),
         tax: "0",
         total: total.toString(),
         currency: "EUR",
         status: "pending",
-        orderStatus: "pending",
       })
       .returning();
 
@@ -87,7 +85,6 @@ export async function POST(req: NextRequest) {
     );
     console.log("📦 POS Order Items inserted");
 
-    // 4. Stripe Checkout
     console.log("💳 Creating Stripe Checkout Session…");
 
     const session = await stripe.checkout.sessions.create({
@@ -102,7 +99,7 @@ export async function POST(req: NextRequest) {
       line_items: cartData.items.map((item) => ({
         quantity: item.quantity,
         price_data: {
-          currency: "EUR", // or "EUR" if you prefer
+          currency: "EUR",
           product_data: {
             name: item.productName,
             description: `${item.brand} ${item.model}`,
@@ -110,12 +107,12 @@ export async function POST(req: NextRequest) {
           unit_amount: Number(item.price) * 100,
         },
       })),
+      metadata: { adminCustomerOrderId: order.id }
     });
 
-    console.log("💳 Stripe Session CREATED:", session.id);
+    console.log(" Stripe Session CREATED:", session.id);
 
-    // 5. POS payment record
-    console.log("💾 Storing POS payment info…");
+    console.log(" Storing POS payment info…");
     await db.insert(posPayment).values({
       id: nanoid(),
       orderId: order.id,
@@ -125,16 +122,15 @@ export async function POST(req: NextRequest) {
       stripeCheckoutSessionId: session.id,
     });
 
-    console.log("💾 POS Payment saved");
+    console.log("POS Payment saved");
 
-    // 6. Clear POS cart
-    console.log("🧹 Clearing POS cart...");
+    console.log("Clearing POS cart...");
     await clearPosCart(customerId);
 
-    console.log("✅ All done. Returning session URL:", session.url);
+    console.log(" All done. Returning session URL:", session.url);
     return NextResponse.json({ url: session.url });
   } catch (error: any) {
-    console.error("🔥 Stripe checkout error CATCH BLOCK:", {
+    console.error(" Stripe checkout error CATCH BLOCK:", {
       message: error.message,
       stack: error.stack,
       full: error,
