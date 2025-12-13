@@ -46,11 +46,10 @@ export default function ProductPage({ product }: { product: Product }) {
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(url)}
-                  className={`relative flex-shrink-0 w-20 h-20 rounded-lg bg-neutral-100 overflow-hidden transition-all duration-200 hover:bg-neutral-200 ${
-                    selectedImage === url
+                  className={`relative flex-shrink-0 w-20 h-20 rounded-lg bg-neutral-100 overflow-hidden transition-all duration-200 hover:bg-neutral-200 ${selectedImage === url
                       ? "ring-0 ring-indigo-600 ring-offset-0 bg-neutral-200  border-[1px] border-neutral-300 dark:ring-offset-neutral-900"
                       : "opacity-80 hover:opacity-100"
-                  }`}
+                    }`}
                 >
                   <Image
                     src={url}
@@ -98,7 +97,11 @@ export default function ProductPage({ product }: { product: Product }) {
           <div className="space-y-3 pb-6 border-b border-neutral-200 dark:border-neutral-800">
             <div className="flex items-baseline gap-3 flex-wrap">
               <p className="text-xl sm:text-2xl font-normal tracking-tight">
-                €{discountedPrice.toLocaleString()}
+                {/* €{discountedPrice.toLocaleString()} */}
+                €{discountedPrice.toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                })}
               </p>
 
               {discount > 0 && (
@@ -222,11 +225,10 @@ export default function ProductPage({ product }: { product: Product }) {
                       {Object.entries(items).map(([k, v], idx) => (
                         <div
                           key={k}
-                          className={`flex justify-between py-3 text-sm ${
-                            idx !== Object.entries(items).length - 1
+                          className={`flex justify-between py-3 text-sm ${idx !== Object.entries(items).length - 1
                               ? "border-b border-neutral-200 dark:border-neutral-800"
                               : ""
-                          }`}
+                            }`}
                         >
                           <span className="font-medium text-neutral-600 dark:text-neutral-400 capitalize">
                             {k.replace(/([A-Z])/g, " $1").trim()}

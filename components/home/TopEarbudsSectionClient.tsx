@@ -114,7 +114,11 @@ export default function TopEarbudsSectionClient({
 <div className="flex items-center gap-2 mt-1">
   {/* NEW PRICE (calculated after discount) */}
   <span className="text-[15px] font-bold text-neutral-900 dark:text-neutral-50">
-    €{(e.price - (e.price * e.discount) / 100).toFixed(2)}
+    {/* €{Number(e.price - (e.price * e.discount) / 100).toFixed(2)} */}
+    €{Number((e.price - (e.price * e.discount) / 100).toFixed(2)).toLocaleString('en-US', { 
+  minimumFractionDigits: 2, 
+  maximumFractionDigits: 2 
+})}
   </span>
 
   {/* OLD PRICE */}
