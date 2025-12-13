@@ -11,6 +11,8 @@ import {
   primaryKey,
   jsonb,
 } from "drizzle-orm/pg-core";
+
+import { varchar } from "drizzle-orm/pg-core";
 import { db } from ".";
 
 const user = pgTable("user", {
@@ -280,7 +282,50 @@ const customer = pgTable("customer", {
   }>(),
 });
 
-import { varchar } from "drizzle-orm/pg-core";
+const address = pgTable("address", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+
+  fullName: text("full_name").notNull(),
+  phone: text("phone").notNull(),
+
+  line1: text("line1").notNull(),
+  line2: text("line2"),
+  city: text("city").notNull(),
+  state: text("state").notNull(),
+  postalCode: text("postal_code").notNull(),
+  country: text("country").notNull(),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+const orders = pgTable("orders", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  status: text("status").notNull().default("pending"),
+  subtotal: numeric("subtotal", { precision: 10, scale: 2 }).notNull(),
+  tax: numeric("tax", { precision: 10, scale: 2 }).default("0").notNull(),
+  shippingFee: numeric("shipping_fee", { precision: 10, scale: 2 })
+    .default("0")
+    .notNull(),
+  total: numeric("total", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 8 }).default("EUR"),
+  shippingAddressId: text("shipping_address_id").references(() => address.id, {
+    onDelete: "set null",
+  }),
+  stripePaymentIntentId: text("stripe_payment_intent_id"), // pi_xxx
+  stripeCheckoutSessionId: text("stripe_checkout_session_id"), // cs_xxx
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+  orderStatus: text("order_status").default("pending"),
+});
 const payments = pgTable("payments", {
   id: text("id").primaryKey(),
 
@@ -319,32 +364,7 @@ const stripePaymentMethod = pgTable("stripe_payment_method", {
 
   createdAt: timestamp("created_at").defaultNow(),
 });
-const orders = pgTable("orders", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-  status: text("status").notNull().default("pending"),
-  subtotal: numeric("subtotal", { precision: 10, scale: 2 }).notNull(),
-  tax: numeric("tax", { precision: 10, scale: 2 }).default("0").notNull(),
-  shippingFee: numeric("shipping_fee", { precision: 10, scale: 2 })
-    .default("0")
-    .notNull(),
-  total: numeric("total", { precision: 10, scale: 2 }).notNull(),
-  currency: varchar("currency", { length: 8 }).default("EUR"),
-  shippingAddressId: text("shipping_address_id").references(() => address.id, {
-    onDelete: "set null",
-  }),
-  stripePaymentIntentId: text("stripe_payment_intent_id"), // pi_xxx
-  stripeCheckoutSessionId: text("stripe_checkout_session_id"), // cs_xxx
 
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
-  orderStatus: text("order_status").default("pending"),
-});
 
 export const posCustomer = pgTable("pos_customer", {
   id: text("id").primaryKey(),
@@ -586,24 +606,7 @@ const shipment = pgTable("shipment", {
   deliveredAt: timestamp("delivered_at"),
 });
 
-const address = pgTable("address", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
 
-  fullName: text("full_name").notNull(),
-  phone: text("phone").notNull(),
-
-  line1: text("line1").notNull(),
-  line2: text("line2"),
-  city: text("city").notNull(),
-  state: text("state").notNull(),
-  postalCode: text("postal_code").notNull(),
-  country: text("country").notNull(),
-
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
 
 const favorites = pgTable("favorites", {
   id: text("id").primaryKey(),
@@ -764,6 +767,23 @@ export const adminCustomerOrderItemRelations = relations(
     }),
   })
 );
+
+
+export const posOrderRelations = relations(posOrder, ({ one, many }) => ({
+  items: many(posOrderItem),
+  customer: one(posCustomer, {
+    fields: [posOrder.customerId],
+    references: [posCustomer.id],
+  }),
+}));
+
+
+export const posOrderItemRelations = relations(posOrderItem, ({ one }) => ({
+  order: one(posOrder, {
+    fields: [posOrderItem.orderId],
+    references: [posOrder.id],
+  }),
+}));
 
 export const schema = {
   user,
