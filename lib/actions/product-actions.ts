@@ -11,6 +11,7 @@ import { db } from "@/lib/db";
 import { and, eq, gte, inArray } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { Product } from "../types/product.types";
+import { revalidatePath } from "next/cache";
 
 async function createCategoryIfNotExists(name: string) {
   const existing = await db.query.category.findFirst({
@@ -163,9 +164,12 @@ export async function createProduct(p: Partial<Product>) {
     );
   }
 
+  revalidatePath("/");
+  revalidatePath("/products");
+  revalidatePath("/admin/products");
   return getProductById(id);
+  
 }
-
 export async function updateProduct(id: string, p: Partial<Product>) {
   await db
     .update(product)
@@ -279,10 +283,20 @@ export async function updateProduct(id: string, p: Partial<Product>) {
       .set({ position: newImg.position })
       .where(eq(productImage.id, oldImg.id));
   }
+  revalidatePath("/");
+revalidatePath("/products");
+revalidatePath(`/products/${id}`);
+revalidatePath("/admin/products");
+revalidatePath(`/admin/products/${id}`);
 
   return getProductById(id);
 }
 export async function deleteProduct(id: string) {
   await db.delete(product).where(eq(product.id, id));
+  revalidatePath("/");
+  revalidatePath("/products");
+  revalidatePath(`/products/${id}`);
+  revalidatePath("/admin/products");
+  revalidatePath(`/admin/products/${id}`);
   return { success: true };
 }
