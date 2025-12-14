@@ -8,9 +8,12 @@
     const formatted = earbuds.map((item) => ({
       id: item.id,
       name: item.productName,
-      price: item.pricing.price,
-      oldPrice: item.pricing.price,
-      discount: item.pricing.discount,
+      // price: item.pricing.price,
+      // oldPrice: item.pricing.price,
+      // discount: item.pricing.discount,
+      price: Number(item.pricing.price) || 0,           // ✅ CONVERT TO NUMBER
+      oldPrice: Number(item.pricing.price) || 0,         // ✅ CONVERT TO NUMBER
+      discount: Number(item.pricing.discount) || 0,
       //@ts-ignore
       image: item.productImages?.[0]?.url || "/placeholder.png",
     }));
