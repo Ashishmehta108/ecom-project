@@ -12,7 +12,6 @@
 // import { authClient } from "@/lib/auth-client";
 // ;
 
-
 // export default function Navbar() {
 //   const pathname = usePathname();
 //   const { data, isPending } = authClient.useSession();
@@ -35,10 +34,7 @@
 //           <div className="flex items-center gap-3 flex-shrink-0">
 //             <Logo />
 
-           
 //           </div>
-         
-
 
 //           {/* Search - Desktop */}
 //           <div className="hidden md:block flex-1 max-w-xl">
@@ -74,8 +70,6 @@
 //   );
 // }
 
-
-
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -89,6 +83,7 @@ import userCartState from "@/lib/states/cart.state";
 import { User } from "lucide-react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+import LanguageSwitcher from "../LanguageSwitcher";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -113,10 +108,8 @@ export default function Navbar() {
     >
       <Container className="w-full  max-w-full xl:max-w-full">
         <div className="flex items-center justify-between py-3.5 md:py-4 gap-3 md:gap-4">
-          
           {/* Logo Section */}
           <div className="flex items-center gap-3 flex-shrink-0">
-
             {/* Mobile Logo */}
             <div className="md:hidden">
               <Logo />
@@ -126,7 +119,6 @@ export default function Navbar() {
             <div className="hidden md:block">
               <LogoFull />
             </div>
-
           </div>
 
           {/* Search - Desktop */}
@@ -136,15 +128,14 @@ export default function Navbar() {
 
           {/* Right Side */}
           <div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
-
             {/* Mobile Search */}
             <div className="md:hidden">
               <NavSearch />
             </div>
 
             {/* Cart */}
-            <CartButton items={itemsCount} /> 
-
+            <CartButton items={itemsCount} />
+            <LanguageSwitcher />
             <LinksDropdown />
           </div>
         </div>

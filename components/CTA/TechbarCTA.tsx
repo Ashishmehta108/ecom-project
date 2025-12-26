@@ -1,55 +1,75 @@
 "use client";
 
+import { useLanguage } from "@/app/context/languageContext";
 import { ArrowRight } from "lucide-react";
 import { redirect } from "next/navigation";
 
 export default function TechbarCTA() {
+  const { locale } = useLanguage();
+
   return (
-    <section className="relative w-[95%] mx-auto overflow-hidden rounded-[40px] mt-20 mb-10 
-      bg-gradient-to-br from-[#0d0d0f] via-[#111113] to-[#0c0c0e]
-      border border-white/5 shadow-[0_0_40px_-10px_rgba(0,0,0,0.6)]">
-      
-      {/* Soft Glow Lights */}
+    <section
+      className="relative w-[95%] mx-auto overflow-hidden rounded-[40px] mt-20 mb-10
+      bg-gradient-to-br from-[#f8f8f9] via-[#f3f3f4] to-[#e9e9eb]
+      border border-neutral-200 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.06)]
+      "
+    >
+      {/* Soft neutral glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-[-150px] top-[-100px] w-[420px] h-[420px] 
-            bg-indigo-500/10 blur-[160px] rounded-full" />
-        <div className="absolute right-[-150px] bottom-[-100px] w-[420px] h-[420px] 
-            bg-purple-500/10 blur-[160px] rounded-full" />
+        <div
+          className="absolute left-[-150px] top-[-100px] w-[420px] h-[420px]
+          bg-neutral-200/50 blur-[180px] rounded-full"
+        />
+        <div
+          className="absolute right-[-150px] bottom-[-100px] w-[420px] h-[420px]
+          bg-neutral-300/40 blur-[180px] rounded-full"
+        />
       </div>
 
       {/* Content */}
-      <div className="relative max-w-3xl mx-auto text-center px-6 py-24 md:py-32">
-        <h2 className="text-3xl md:text-5xl font-semibold tracking-tight leading-[1.15]
-          bg-gradient-to-b from-white to-white/70 text-transparent bg-clip-text">
-          Book your service appointment at our store today.
+      <div className="relative max-w-3xl mx-auto text-center px-6 py-24 md:py-28">
+        <h2
+          className="text-3xl md:text-5xl font-semibold tracking-tight leading-[1.15]
+          text-neutral-900"
+        >
+          {locale === "pt"
+            ? "Agende seu atendimento em nossa loja hoje."
+            : "Book your service appointment at our store today."}
         </h2>
 
-        <p className="text-base text-neutral-300 md:text-lg mt-6 opacity-80 mx-auto max-w-xl">
-        Fast, reliable and handled by professionals.
+        <p className="text-base text-neutral-600 md:text-lg mt-6 max-w-xl mx-auto">
+          {locale === "pt"
+            ? "Rápido, confiável e feito por profissionais."
+            : "Fast, reliable and handled by professionals."}
         </p>
 
         {/* Button */}
-        <button className="group relative mt-8 px-8 py-4 rounded-2xl font-semibold
-          bg-white text-neutral-700 cursor-pointer shadow-lg shadow-black/20
-          hover:shadow-xl hover:shadow-black/30 hover:bg-white/95
+        <button
+          className="group relative mt-8 px-8 py-4 rounded-2xl font-semibold
+          bg-neutral-900 text-neutral-100 cursor-pointer shadow-lg shadow-neutral-300/20
+          hover:shadow-xl hover:shadow-neutral-400/30 hover:bg-neutral-800
           transition-all duration-300"
-          onClick={()=>redirect("/appointment")}
-          >
+          onClick={() => redirect("/appointment")}
+        >
           <span className="flex items-center gap-2">
-           Book your service 
+            {locale === "pt" ? "Agendar serviço" : "Book your service"}
             <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
           </span>
 
           {/* subtle glossy highlight */}
-          <span className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/30 to-transparent opacity-0 
-            group-hover:opacity-20 transition-opacity duration-300 pointer-events-none" />
+          <span
+            className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/20 to-transparent opacity-0
+            group-hover:opacity-30 transition-opacity duration-300 pointer-events-none"
+          />
         </button>
 
-        {/* Divider line */}
-        <div className="w-20 h-px bg-white/15 mx-auto mt-10" />
+        {/* Divider */}
+        <div className="w-20 h-px bg-neutral-300 mx-auto mt-10" />
 
-        <p className="mt-4 text-xs md:text-sm text-neutral-200 opacity-70 tracking-wide">
-          No signup needed • Lightning-fast checkout • 24 hours delivery
+        <p className="mt-4 text-xs md:text-sm text-neutral-500 tracking-wide">
+          {locale === "pt"
+            ? "Sem cadastro • Pagamento rápido • Entrega em 24 horas"
+            : "No signup needed • Lightning-fast checkout • 24 hours delivery"}
         </p>
       </div>
     </section>

@@ -8,6 +8,7 @@ import Footer from "@/components/footer/Footer";
 import techbar from "@/public/Tech Bar (4).svg";
 import { Toaster } from "sonner";
 import { Playfair } from "next/font/google";
+import { LanguageProvider } from "./context/languageContext";
 // import SmoothScroll from "@/components/global/smoothScroll";
 export const poppins = Poppins({
   variable: "--font-arimo",
@@ -39,17 +40,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`antialiased ${poppins.className}`}>
-        {/* <ThemeProvider
+        <LanguageProvider>
+          {/* <ThemeProvider
           attribute="class"
           defaultTheme="light"
           
           disableTransitionOnChange
         > */}
-        <Toaster position="bottom-right" />
-        <Navbar />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        {/* </ThemeProvider> */}
+          <Toaster position="bottom-right" />
+          <Navbar />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+          {/* </ThemeProvider> */}
+        </LanguageProvider>
       </body>
     </html>
   );

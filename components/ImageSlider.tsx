@@ -22,7 +22,7 @@
 //     buttonLink: "/products?category=black-friday",
 //     image: "/christmas.png",
 //     imageStyles:
-//       "max-w-[230px] sm:max-w-[290px] md:max-w-[350px] lg:max-w-[420px] max-h-[260px] sm:max-h-[320px] md:max-h-[380px] lg:max-h-[440px]",
+//       "max-w-[180px] sm:max-w-[240px] md:max-w-[320px] lg:max-w-[400px] max-h-[180px] sm:max-h-[240px] md:max-h-[320px] lg:max-h-[400px]",
 //   },
 //   {
 //     bgColor: "bg-blue-900",
@@ -34,7 +34,7 @@
 //     buttonLink: "/products?category=headphones",
 //     image: "/promo2.png",
 //     imageStyles:
-//       "max-w-[300px] sm:max-w-[380px] md:max-w-[460px] lg:max-w-[540px] max-h-[340px] sm:max-h-[420px] md:max-h-[480px] lg:max-h-[540px]",
+//       "max-w-[200px] sm:max-w-[280px] md:max-w-[380px] lg:max-w-[480px] max-h-[200px] sm:max-h-[280px] md:max-h-[380px] lg:max-h-[480px]",
 //   },
 //   {
 //     bgColor: "bg-slate-900",
@@ -46,7 +46,7 @@
 //     buttonLink: "/products?category=summer",
 //     image: "/promo1.png",
 //     imageStyles:
-//       "max-w-[320px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[580px] max-h-[350px] sm:max-h-[430px] md:max-h-[490px] lg:max-h-[550px]",
+//       "max-w-[220px] sm:max-w-[300px] md:max-w-[420px] lg:max-w-[520px] max-h-[220px] sm:max-h-[300px] md:max-h-[420px] lg:max-h-[520px]",
 //   },
 // ];
 
@@ -249,7 +249,7 @@
 //         <div
 //           className={`
 //     relative overflow-hidden rounded-none shadow-2xl
-//     min-h-[460px] sm:min-h-[520px] md:min-h-[580px] lg:min-h-[620px]
+//     min-h-[380px] sm:min-h-[450px] md:min-h-[520px] lg:min-h-[600px]
 //     transition-colors duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]
 //     ${slides[activeIndex]?.bgColor || "bg-[#1a1d2e]"}
 //   `}
@@ -269,11 +269,11 @@
 //                 aria-hidden={index !== activeIndex}
 //               >
 //                 <div
-//                   className="h-full flex flex-col sm:flex-row items-center justify-between px-6 sm:px-8 md:px-14 lg:px-24 pt-10 sm:pt-12 md:pt-16 lg:pt-20 pb-0 gap-8 sm:gap-10 md:gap-14 lg:gap-20 flex-col-reverse
+//                   className="h-full flex flex-col sm:flex-row items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 pt-6 sm:pt-10 md:pt-14 lg:pt-16 pb-0 gap-4 sm:gap-8 md:gap-12 lg:gap-16 flex-col-reverse
 // "
 //                 >
 //                   {/* Image Section */}
-//                   <div className="flex-1 flex items-end justify-center h-full relative">
+//                   <div className="flex-1 flex items-end justify-center h-full relative w-full">
 //                     <img
 //                       src={slide.image}
 //                       alt={slide.title}
@@ -283,39 +283,35 @@
 //     object-contain
 //     drop-shadow-2xl
 //     select-none pointer-events-none
-//     transition-transform duration-700
-//     hover:scale-105
-//     z-10
-//     md:relative md:top-auto
-//     lg:absolute lg:top-0
-//     ${index === 0 ? "scale-110 sm:scale-125 md:scale-150" : ""}
+//     transition-transform duration-700 hover:scale-105
+
+//     md:translate-y-4 lg:translate-y-6
 //   `}
-//                       loading={index === 0 ? "eager" : "lazy"}
 //                     />
 //                   </div>
 
 //                   {/* Content Section */}
-//                   <div className="flex-1 flex flex-col gap-3 sm:gap-4 md:gap-6 max-w-xl text-center sm:text-left w-full pb-12 sm:pb-14 md:pb-16">
+//                   <div className="flex-1 flex flex-col gap-2 sm:gap-3 md:gap-5 max-w-xl text-center sm:text-left w-full pb-8 sm:pb-12 md:pb-14">
 //                     <span className="inline-block text-xs sm:text-sm font-bold tracking-[0.2em] sm:tracking-[0.25em] text-indigo-400 uppercase">
 //                       {slide.subtitle}
 //                     </span>
 
-//                     <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-white">
+//                     <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight text-white">
 //                       {slide.title}
 //                     </h2>
 
-//                     <p className="text-base sm:text-lg text-neutral-300 leading-relaxed">
+//                     <p className="text-sm sm:text-base text-neutral-300 leading-relaxed">
 //                       {slide.shortText}
 //                     </p>
 
-//                     <p className="text-lg sm:text-xl md:text-2xl font-bold text-white">
+//                     <p className="text-base sm:text-lg md:text-xl font-bold text-white">
 //                       {slide.discount}
 //                     </p>
 
 //                     {slide.buttonText && (
 //                       <Link
 //                         href={slide.buttonLink || "#"}
-//                         className="inline-flex items-center justify-center mt-2 sm:mt-3 px-7 sm:px-8 md:px-10 py-3 sm:py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-base sm:text-lg font-bold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 max-w-[200px] sm:max-w-[220px] mx-auto sm:mx-0"
+//                         className="inline-flex items-center justify-center mt-1 sm:mt-2 px-6 sm:px-7 md:px-9 py-2.5 sm:py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm sm:text-base font-bold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 max-w-[180px] sm:max-w-[200px] mx-auto sm:mx-0"
 //                         aria-label={`${slide.buttonText} - ${slide.title}`}
 //                         onClick={() => resetProgress(true)}
 //                       >
@@ -354,7 +350,7 @@
 //       {/* Dot Indicators */}
 //       {hasMultipleSlides && (
 //         <div
-//           className="absolute bottom-8 sm:bottom-10 left-0 right-0 flex justify-center items-center gap-2.5 z-20"
+//           className="absolute bottom-6 sm:bottom-8 left-0 right-0 flex justify-center items-center gap-2 z-20"
 //           role="tablist"
 //           aria-label="Slide navigation"
 //         >
@@ -362,10 +358,10 @@
 //             <button
 //               key={index}
 //               onClick={() => goToSlide(index)}
-//               className={`h-2.5 sm:h-3 rounded-full transition-all duration-300 ${
+//               className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 ${
 //                 index === activeIndex
-//                   ? "w-10 sm:w-12 bg-indigo-500"
-//                   : "w-2.5 sm:w-3 bg-white/40 hover:bg-white/60"
+//                   ? "w-8 sm:w-10 bg-indigo-500"
+//                   : "w-2 sm:w-2.5 bg-white/40 hover:bg-white/60"
 //               }`}
 //               aria-label={`Go to slide ${index + 1}`}
 //               aria-current={index === activeIndex}
@@ -378,7 +374,7 @@
 //       {/* Slide Counter */}
 //       {hasMultipleSlides && (
 //         <div
-//           className="absolute top-8 right-8 px-4 py-2 bg-black/40 backdrop-blur-md rounded-full text-white text-sm sm:text-base font-medium z-20"
+//           className="absolute top-4 sm:top-6 right-4 sm:right-6 px-3 py-1.5 sm:px-4 sm:py-2 bg-black/40 backdrop-blur-md rounded-full text-white text-xs sm:text-sm font-medium z-20"
 //           aria-live="polite"
 //         >
 //           {activeIndex + 1} / {totalSlides}
@@ -403,6 +399,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from "@/app/context/languageContext";
 
 const Link = ({ href, children, className, ...props }: any) => (
   <a href={href} className={className} {...props}>
@@ -412,50 +409,89 @@ const Link = ({ href, children, className, ...props }: any) => (
 
 const AUTOPLAY_DURATION = 5000;
 
-const DEMO_SLIDES = [
-  {
-    bgColor: "bg-red-950",
-    subtitle: "",
-    title: "Christmas Sale",
-    discount: "Upto 20% Off on all products",
-    shortText: "Limited time offer on all premium products.",
-    buttonText: "Shop Now",
-    buttonLink: "/products?category=black-friday",
-    image: "/christmas.png",
-    imageStyles:
-      "max-w-[180px] sm:max-w-[240px] md:max-w-[320px] lg:max-w-[400px] max-h-[180px] sm:max-h-[240px] md:max-h-[320px] lg:max-h-[400px]",
-  },
-  {
-    bgColor: "bg-blue-900",
-    subtitle: "",
-    title: "Premium Headphones",
-    discount: "Limited Time Offer",
-    shortText: "Experience rich sound, deep bass, and all-day comfort.",
-    buttonText: "View Details",
-    buttonLink: "/products?category=headphones",
-    image: "/promo2.png",
-    imageStyles:
-      "max-w-[200px] sm:max-w-[280px] md:max-w-[380px] lg:max-w-[480px] max-h-[200px] sm:max-h-[280px] md:max-h-[380px] lg:max-h-[480px]",
-  },
-  {
-    bgColor: "bg-slate-900",
-    subtitle: "",
-    title: "New Arrivals",
-    discount: "Exclusive deal",
-    shortText: "Fresh designs made for comfort and everyday style.",
-    buttonText: "Explore",
-    buttonLink: "/products?category=summer",
-    image: "/promo1.png",
-    imageStyles:
-      "max-w-[220px] sm:max-w-[300px] md:max-w-[420px] lg:max-w-[520px] max-h-[220px] sm:max-h-[300px] md:max-h-[420px] lg:max-h-[520px]",
-  },
-];
+export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
+  const { locale } = useLanguage();
+  slides =
+    locale === "pt"
+      ? [
+          {
+            bgColor: "bg-red-950",
+            subtitle: "",
+            title: "Promoção de Natal",
+            discount: "Até 20% de desconto em todos os acessórios",
+            shortText:
+              "Oferta por tempo limitado em todos os produtos premium.",
+            buttonText: "Compre Agora",
+            buttonLink: "/products?category=black-friday",
+            image: "/christmas.png",
+            imageStyles:
+              "max-w-[140px] sm:max-w-[200px] md:max-w-[280px] lg:max-w-[340px]",
+          },
+          {
+            bgColor: "bg-blue-900",
+            subtitle: "",
+            title: "Auscultadores Premium",
+            discount: "Oferta por tempo limitado",
+            shortText: "Som rico, graves profundos e conforto o dia todo.",
+            buttonText: "Ver Detalhes",
+            buttonLink: "/products?category=headphones",
+            image: "/promo2.png",
+            imageStyles:
+              "max-w-[160px] sm:max-w-[220px] md:max-w-[320px] lg:max-w-[400px]",
+          },
+          {
+            bgColor: "bg-slate-900",
+            subtitle: "",
+            title: "Novidades",
+            discount: "Oferta exclusiva",
+            shortText:
+              "Novos designs criados para conforto e estilo no dia a dia.",
+            buttonText: "Explorar",
+            buttonLink: "/products?category=summer",
+            image: "/promo1.png",
+            imageStyles:
+              "max-w-[160px] sm:max-w-[240px] md:max-w-[340px] lg:max-w-[420px]",
+          },
+        ]
+      : [
+          {
+            bgColor: "bg-red-950",
+            subtitle: "",
+            title: "Christmas Sale",
+            discount: "Up to 20% Off on all accessories",
+            shortText: "Limited time offer on all premium products.",
+            buttonText: "Shop Now",
+            buttonLink: "/products?category=black-friday",
+            image: "/christmas.png",
+            imageStyles:
+              "max-w-[140px] sm:max-w-[200px] md:max-w-[280px] lg:max-w-[340px]",
+          },
+          {
+            bgColor: "bg-blue-900",
+            subtitle: "",
+            title: "Premium Headphones",
+            discount: "Limited Time Offer",
+            shortText: "Experience rich sound, deep bass, and all-day comfort.",
+            buttonText: "View Details",
+            buttonLink: "/products?category=headphones",
+            image: "/promo2.png",
+            imageStyles:
+              "max-w-[160px] sm:max-w-[220px] md:max-w-[320px] lg:max-w-[400px]",
+          },
+          {
+            bgColor: "bg-slate-900",
+            subtitle: "",
+            title: "New Arrivals",
+            discount: "Exclusive deal",
+            shortText: "Fresh designs made for comfort and everyday style.",
+            buttonText: "Explore",
+            buttonLink: "/products?category=summer",
+            image: "/promo1.png",
+            imageStyles:
+              "max-w-[160px] sm:max-w-[240px] md:max-w-[340px] lg:max-w-[420px]",
+          },
+        ];
 
-export default function PromoSlider({
-  slides = DEMO_SLIDES,
-}: {
-  slides?: any[];
-}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [touchStart, setTouchStart] = useState(0);
@@ -650,7 +686,7 @@ export default function PromoSlider({
         <div
           className={`
     relative overflow-hidden rounded-none shadow-2xl
-    min-h-[380px] sm:min-h-[450px] md:min-h-[520px] lg:min-h-[600px]
+    min-h-[280px] sm:min-h-[350px] md:min-h-[420px] lg:min-h-[500px]
     transition-colors duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]
     ${slides[activeIndex]?.bgColor || "bg-[#1a1d2e]"}
   `}
@@ -665,40 +701,20 @@ export default function PromoSlider({
             {slides.map((slide: any, index: number) => (
               <div
                 key={index}
-                className="w-full flex-shrink-0"
+                className="w-full py-10 max-w-3xl mx-auto flex-shrink-0"
                 style={{ width: `${100 / totalSlides}%` }}
                 aria-hidden={index !== activeIndex}
               >
-                <div
-                  className="h-full flex flex-col sm:flex-row items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 pt-6 sm:pt-10 md:pt-14 lg:pt-16 pb-0 gap-4 sm:gap-8 md:gap-12 lg:gap-16 flex-col-reverse
-"
-                >
-                  {/* Image Section */}
-                  <div className="flex-1 flex items-end justify-center h-full relative w-full">
-                    <img
-  src={slide.image}
-  alt={slide.title}
-  className={`
-    ${slide.imageStyles}
-    w-full h-auto
-    object-contain
-    drop-shadow-2xl
-    select-none pointer-events-none
-    transition-transform duration-700 hover:scale-105
-
-    md:translate-y-4 lg:translate-y-6
-  `}
-/>
-
-                  </div>
-
+                <div className="h-full flex flex-col max-w-full sm:flex-row items-center justify-between px-4 sm:px-8 md:px-12 lg:px-16 py-4 sm:py-6 md:py-8 gap-4 sm:gap-6 md:gap-8 lg:gap-12">
                   {/* Content Section */}
-                  <div className="flex-1 flex flex-col gap-2 sm:gap-3 md:gap-5 max-w-xl text-center sm:text-left w-full pb-8 sm:pb-12 md:pb-14">
-                    <span className="inline-block text-xs sm:text-sm font-bold tracking-[0.2em] sm:tracking-[0.25em] text-indigo-400 uppercase">
-                      {slide.subtitle}
-                    </span>
+                  <div className="  flex flex-col gap-2 sm:gap-3 md:gap-4 max-w-[400px] text-center sm:text-left w-full  order-1 sm:order-1">
+                    {slide.subtitle && (
+                      <span className="inline-block text-xs sm:text-sm font-bold tracking-[0.2em] sm:tracking-[0.25em] text-indigo-400 uppercase">
+                        {slide.subtitle}
+                      </span>
+                    )}
 
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight text-white">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-tight text-white">
                       {slide.title}
                     </h2>
 
@@ -713,13 +729,29 @@ export default function PromoSlider({
                     {slide.buttonText && (
                       <Link
                         href={slide.buttonLink || "#"}
-                        className="inline-flex items-center justify-center mt-1 sm:mt-2 px-6 sm:px-7 md:px-9 py-2.5 sm:py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm sm:text-base font-bold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 max-w-[180px] sm:max-w-[200px] mx-auto sm:mx-0"
+                        className="inline-flex items-center justify-center mt-1 sm:mt-2 px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm sm:text-base font-bold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 max-w-[160px] sm:max-w-[180px] mx-auto sm:mx-0"
                         aria-label={`${slide.buttonText} - ${slide.title}`}
                         onClick={() => resetProgress(true)}
                       >
                         {slide.buttonText}
                       </Link>
                     )}
+                  </div>
+
+                  {/* Image Section */}
+                  <div className="  flex items-center justify-center relative w-full ">
+                    <img
+                      src={slide.image}
+                      alt={slide.title}
+                      className={`
+    ${slide.imageStyles}
+    w-full h-auto
+    object-contain
+    drop-shadow-2xl
+    select-none pointer-events-none
+    transition-transform duration-700 hover:scale-105
+  `}
+                    />
                   </div>
                 </div>
               </div>
@@ -733,18 +765,18 @@ export default function PromoSlider({
         <>
           <button
             onClick={goToPrev}
-            className="hidden md:flex absolute left-6 lg:left-8 top-1/2 -translate-y-1/2 w-14 h-14 lg:w-16 lg:h-16 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/50 z-20"
+            className="hidden md:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/50 z-20"
             aria-label="Previous slide"
           >
-            <ChevronLeft className="w-7 h-7 lg:w-8 lg:h-8" />
+            <ChevronLeft className="w-6 h-6 lg:w-7 lg:h-7" />
           </button>
 
           <button
             onClick={goToNext}
-            className="hidden md:flex absolute right-6 lg:right-8 top-1/2 -translate-y-1/2 w-14 h-14 lg:w-16 lg:h-16 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/50 z-20"
+            className="hidden md:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/50 z-20"
             aria-label="Next slide"
           >
-            <ChevronRight className="w-7 h-7 lg:w-8 lg:h-8" />
+            <ChevronRight className="w-6 h-6 lg:w-7 lg:h-7" />
           </button>
         </>
       )}
@@ -752,7 +784,7 @@ export default function PromoSlider({
       {/* Dot Indicators */}
       {hasMultipleSlides && (
         <div
-          className="absolute bottom-6 sm:bottom-8 left-0 right-0 flex justify-center items-center gap-2 z-20"
+          className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex justify-center items-center gap-2 z-20"
           role="tablist"
           aria-label="Slide navigation"
         >
@@ -776,7 +808,7 @@ export default function PromoSlider({
       {/* Slide Counter */}
       {hasMultipleSlides && (
         <div
-          className="absolute top-4 sm:top-6 right-4 sm:right-6 px-3 py-1.5 sm:px-4 sm:py-2 bg-black/40 backdrop-blur-md rounded-full text-white text-xs sm:text-sm font-medium z-20"
+          className="absolute top-3 sm:top-4 right-3 sm:right-4 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-black/40 backdrop-blur-md rounded-full text-white text-xs font-medium z-20"
           aria-live="polite"
         >
           {activeIndex + 1} / {totalSlides}

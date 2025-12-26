@@ -1,5 +1,5 @@
 import React from "react";
-import "@/app/globals.css"
+import "@/app/globals.css";
 
 interface SkeletonProps {
   className?: string;
@@ -7,5 +7,5 @@ interface SkeletonProps {
 }
 
 export function Skeleton({ className = "", children }: SkeletonProps) {
-  return <div className={`skeleton ${className}`}>{children}</div>;
+  return <div className={`skeleton shadow-inner ${className}`}>{children}</div>;
 }

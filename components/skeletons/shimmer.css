@@ -1,0 +1,42 @@
+/* skeleton.css */
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(160, 160, 160, 0.1);
+  border-radius: 0.5rem; /* optional: smooth corners */
+}
+
+.dark .skeleton {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced diagonal shimmer */
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-150%) skewX(-20deg);
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .skeleton::after {
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 100%
+  );
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(150%) skewX(-20deg);
+  }
+}

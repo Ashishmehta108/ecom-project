@@ -7,8 +7,10 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-
-
+  i18n: {
+    locales: ["en", "pt"], // English + Portuguese (Portugal)
+    defaultLocale: "en",
+  },
 
   images: {
     remotePatterns: [
@@ -23,10 +25,11 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ["lucide-react"],
-    serverActions: { allowedOrigins: [
-      "https://xtt5m66l-3000.inc1.devtunnels.ms",
-      "http://localhost:3000"
-    ],
+    serverActions: {
+      allowedOrigins: [
+        "https://xtt5m66l-3000.inc1.devtunnels.ms",
+        "http://localhost:3000",
+      ],
     },
   },
 };

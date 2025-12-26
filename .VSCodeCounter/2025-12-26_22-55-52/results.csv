@@ -1,0 +1,287 @@
+"filename", "language", "MS SQL", "TypeScript", "JSON", "JavaScript", "Markdown", "TypeScript JSX", "XML", "JSON with Comments", "PostCSS", "comment", "blank", "total"
+"/home/ashishm1/ecom-project/README.md", "Markdown", 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 14, 37
+"/home/ashishm1/ecom-project/abcde.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"/home/ashishm1/ecom-project/app/about/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 54, 0, 0, 0, 45, 12, 111
+"/home/ashishm1/ecom-project/app/admin/appointment/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 93, 0, 0, 0, 1, 11, 105
+"/home/ashishm1/ecom-project/app/admin/categories/[id]/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 48, 0, 0, 0, 0, 17, 65
+"/home/ashishm1/ecom-project/app/admin/categories/new/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 85, 0, 0, 0, 3, 12, 100
+"/home/ashishm1/ecom-project/app/admin/categories/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 102, 0, 0, 0, 4, 16, 122
+"/home/ashishm1/ecom-project/app/admin/customers/order/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 2, 6
+"/home/ashishm1/ecom-project/app/admin/layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 46, 0, 0, 0, 10, 8, 64
+"/home/ashishm1/ecom-project/app/admin/login/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 81, 0, 0, 0, 2, 14, 97
+"/home/ashishm1/ecom-project/app/admin/orders/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 3, 15
+"/home/ashishm1/ecom-project/app/admin/orders/pos/client.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 174, 0, 0, 0, 0, 16, 190
+"/home/ashishm1/ecom-project/app/admin/orders/pos/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 114, 0, 0, 0, 3, 8, 125
+"/home/ashishm1/ecom-project/app/admin/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 59, 0, 0, 0, 0, 13, 72
+"/home/ashishm1/ecom-project/app/admin/payments/loading.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 50, 0, 0, 0, 4, 7, 61
+"/home/ashishm1/ecom-project/app/admin/payments/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 240, 0, 0, 0, 9, 27, 276
+"/home/ashishm1/ecom-project/app/admin/pos/ordersRow/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 64, 0, 0, 0, 7, 11, 82
+"/home/ashishm1/ecom-project/app/admin/pos/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 5, 34
+"/home/ashishm1/ecom-project/app/admin/products/[id]/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 19, 0, 0, 0, 1, 3, 23
+"/home/ashishm1/ecom-project/app/admin/products/new/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 1, 8
+"/home/ashishm1/ecom-project/app/admin/products/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 72, 0, 0, 0, 78, 7, 157
+"/home/ashishm1/ecom-project/app/admin/sidebar/loading.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 41, 0, 0, 0, 5, 6, 52
+"/home/ashishm1/ecom-project/app/admin/sidebar/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 113, 0, 0, 0, 8, 18, 139
+"/home/ashishm1/ecom-project/app/admin/topbar/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 131, 0, 0, 0, 4, 4, 139
+"/home/ashishm1/ecom-project/app/admin/users/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 10, 0, 0, 0, 1, 3, 14
+"/home/ashishm1/ecom-project/app/api/admin/pos/cart/[cartId]/route.ts", "TypeScript", 0, 28, 0, 0, 0, 0, 0, 0, 0, 1, 4, 33
+"/home/ashishm1/ecom-project/app/api/admin/pos/cart/add/route.ts", "TypeScript", 0, 18, 0, 0, 0, 0, 0, 0, 0, 1, 5, 24
+"/home/ashishm1/ecom-project/app/api/admin/pos/cart/clear/route.ts", "TypeScript", 0, 11, 0, 0, 0, 0, 0, 0, 0, 1, 4, 16
+"/home/ashishm1/ecom-project/app/api/admin/pos/cart/create/route.ts", "TypeScript", 0, 52, 0, 0, 0, 0, 0, 0, 0, 3, 10, 65
+"/home/ashishm1/ecom-project/app/api/admin/pos/cart/remove/route.ts", "TypeScript", 0, 11, 0, 0, 0, 0, 0, 0, 0, 1, 4, 16
+"/home/ashishm1/ecom-project/app/api/admin/pos/order/[orderId]/route.ts", "TypeScript", 0, 18, 0, 0, 0, 0, 0, 0, 0, 1, 4, 23
+"/home/ashishm1/ecom-project/app/api/admin/pos/order/route.ts", "TypeScript", 0, 10, 0, 0, 0, 0, 0, 0, 0, 1, 3, 14
+"/home/ashishm1/ecom-project/app/api/admin/pos/order/update-status/route.ts", "TypeScript", 0, 12, 0, 0, 0, 0, 0, 0, 0, 1, 4, 17
+"/home/ashishm1/ecom-project/app/api/admin/route.ts", "TypeScript", 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 4, 16
+"/home/ashishm1/ecom-project/app/api/admin/users/ban/route.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"/home/ashishm1/ecom-project/app/api/admin/users/route.ts", "TypeScript", 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 2, 15
+"/home/ashishm1/ecom-project/app/api/auth/[...all]/route.ts", "TypeScript", 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4
+"/home/ashishm1/ecom-project/app/api/cart/route.ts", "TypeScript", 0, 28, 0, 0, 0, 0, 0, 0, 0, 1, 3, 32
+"/home/ashishm1/ecom-project/app/api/categories/[id]/route.ts", "TypeScript", 0, 42, 0, 0, 0, 0, 0, 0, 0, 0, 6, 48
+"/home/ashishm1/ecom-project/app/api/categories/route.ts", "TypeScript", 0, 13, 0, 0, 0, 0, 0, 0, 0, 32, 5, 50
+"/home/ashishm1/ecom-project/app/api/email/route.ts", "TypeScript", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12
+"/home/ashishm1/ecom-project/app/api/favorites/route.ts", "TypeScript", 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 8
+"/home/ashishm1/ecom-project/app/api/imagekit/upload/route.ts", "TypeScript", 0, 117, 0, 0, 0, 0, 0, 0, 0, 12, 24, 153
+"/home/ashishm1/ecom-project/app/api/neon/route.ts", "TypeScript", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12
+"/home/ashishm1/ecom-project/app/api/payments/create-intent/route.ts", "TypeScript", 0, 99, 0, 0, 0, 0, 0, 0, 0, 4, 18, 121
+"/home/ashishm1/ecom-project/app/api/products/route.ts", "TypeScript", 0, 46, 0, 0, 0, 0, 0, 0, 0, 0, 6, 52
+"/home/ashishm1/ecom-project/app/api/route.ts", "TypeScript", 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 4, 13
+"/home/ashishm1/ecom-project/app/api/stripe/admin/checkout/route.ts", "TypeScript", 0, 119, 0, 0, 0, 0, 0, 0, 0, 3, 23, 145
+"/home/ashishm1/ecom-project/app/api/stripe/admin/webhook/route.ts", "TypeScript", 0, 161, 0, 0, 0, 0, 0, 0, 0, 17, 34, 212
+"/home/ashishm1/ecom-project/app/api/stripe/checkout/route.ts", "TypeScript", 0, 142, 0, 0, 0, 0, 0, 0, 0, 6, 23, 171
+"/home/ashishm1/ecom-project/app/api/stripe/webhook/route.ts", "TypeScript", 0, 180, 0, 0, 0, 0, 0, 0, 0, 19, 39, 238
+"/home/ashishm1/ecom-project/app/api/test/route.ts", "TypeScript", 0, 24, 0, 0, 0, 0, 0, 0, 0, 23, 2, 49
+"/home/ashishm1/ecom-project/app/api/upload-auth/route.ts", "TypeScript", 0, 8, 0, 0, 0, 0, 0, 0, 0, 5, 5, 18
+"/home/ashishm1/ecom-project/app/appointment/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 124, 0, 0, 0, 12, 20, 156
+"/home/ashishm1/ecom-project/app/appointment/success/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 44, 0, 0, 0, 0, 7, 51
+"/home/ashishm1/ecom-project/app/cart/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 15, 0, 0, 0, 271, 31, 317
+"/home/ashishm1/ecom-project/app/checkout/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 3, 9
+"/home/ashishm1/ecom-project/app/checkout/payment/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 26, 0, 0, 0, 0, 3, 29
+"/home/ashishm1/ecom-project/app/favorites/loading.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 31, 0, 0, 0, 4, 3, 38
+"/home/ashishm1/ecom-project/app/favorites/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 29, 0, 0, 0, 1, 5, 35
+"/home/ashishm1/ecom-project/app/forgot-password/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 70, 0, 0, 0, 0, 12, 82
+"/home/ashishm1/ecom-project/app/globals.css", "PostCSS", 0, 0, 0, 0, 0, 0, 0, 0, 277, 6, 35, 318
+"/home/ashishm1/ecom-project/app/layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 39, 0, 0, 0, 14, 4, 57
+"/home/ashishm1/ecom-project/app/login/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 10, 0, 0, 0, 3, 1, 14
+"/home/ashishm1/ecom-project/app/menu.svg", "XML", 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 4
+"/home/ashishm1/ecom-project/app/not-found.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 3, 32
+"/home/ashishm1/ecom-project/app/orders/[id]/cancel/client.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 75, 0, 0, 0, 2, 8, 85
+"/home/ashishm1/ecom-project/app/orders/[id]/cancel/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 3, 9
+"/home/ashishm1/ecom-project/app/orders/[id]/success/client.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 53, 0, 0, 0, 0, 7, 60
+"/home/ashishm1/ecom-project/app/orders/[id]/success/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 3, 9
+"/home/ashishm1/ecom-project/app/orders/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 28, 0, 0, 0, 152, 19, 199
+"/home/ashishm1/ecom-project/app/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 3, 24
+"/home/ashishm1/ecom-project/app/privacy-policy/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 131, 0, 0, 0, 297, 44, 472
+"/home/ashishm1/ecom-project/app/products/[id]/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 13, 0, 0, 0, 1, 2, 16
+"/home/ashishm1/ecom-project/app/products/[id]/test.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 217, 0, 0, 0, 15, 24, 256
+"/home/ashishm1/ecom-project/app/products/loading.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 47, 0, 0, 0, 5, 12, 64
+"/home/ashishm1/ecom-project/app/products/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 82, 0, 0, 0, 24, 8, 114
+"/home/ashishm1/ecom-project/app/products/productWrapper.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 59, 0, 0, 0, 4, 7, 70
+"/home/ashishm1/ecom-project/app/refund-policy/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 156, 0, 0, 0, 10, 10, 176
+"/home/ashishm1/ecom-project/app/reset-password/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 85, 0, 0, 0, 71, 28, 184
+"/home/ashishm1/ecom-project/app/signup/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 9, 0, 0, 0, 5, 3, 17
+"/home/ashishm1/ecom-project/app/success/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 93, 0, 0, 0, 11, 17, 121
+"/home/ashishm1/ecom-project/app/terms-and-conditions/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 106, 0, 0, 0, 54, 41, 201
+"/home/ashishm1/ecom-project/app/test/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 186, 0, 0, 0, 0, 7, 193
+"/home/ashishm1/ecom-project/app/test1/client.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 5, 25
+"/home/ashishm1/ecom-project/app/test1/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 2, 12
+"/home/ashishm1/ecom-project/app/verification/client.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 8, 33
+"/home/ashishm1/ecom-project/app/verification/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 4, 19
+"/home/ashishm1/ecom-project/auth-schema.ts", "TypeScript", 0, 62, 0, 0, 0, 0, 0, 0, 0, 0, 5, 67
+"/home/ashishm1/ecom-project/auth.ts", "TypeScript", 0, 71, 0, 0, 0, 0, 0, 0, 0, 0, 5, 76
+"/home/ashishm1/ecom-project/components.json", "JSON", 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 1, 25
+"/home/ashishm1/ecom-project/components/CTA/TechbarCTA.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 55, 0, 0, 0, 5, 9, 69
+"/home/ashishm1/ecom-project/components/CloudinaryUploader.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 133, 0, 0, 0, 0, 18, 151
+"/home/ashishm1/ecom-project/components/ImageSlider.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 345, 0, 0, 0, 359, 87, 791
+"/home/ashishm1/ecom-project/components/LoginForm.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 185, 0, 0, 0, 9, 19, 213
+"/home/ashishm1/ecom-project/components/SignupForm.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 190, 0, 0, 0, 4, 23, 217
+"/home/ashishm1/ecom-project/components/ToggleTheme.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 5, 34
+"/home/ashishm1/ecom-project/components/UploadComponent.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 88, 0, 0, 0, 39, 15, 142
+"/home/ashishm1/ecom-project/components/admin/AdminProductPanel.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 988, 0, 0, 0, 20, 90, 1098
+"/home/ashishm1/ecom-project/components/admin/Customer.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 81, 0, 0, 0, 1, 12, 94
+"/home/ashishm1/ecom-project/components/admin/adminSalesDashboard.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 406, 0, 0, 0, 8, 19, 433
+"/home/ashishm1/ecom-project/components/admin/adminhomepage.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 22, 0, 0, 0, 1, 6, 29
+"/home/ashishm1/ecom-project/components/admin/adminorder.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 289, 0, 0, 0, 7, 42, 338
+"/home/ashishm1/ecom-project/components/admin/pos/admin-customer.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 356, 0, 0, 0, 6, 50, 412
+"/home/ashishm1/ecom-project/components/admin/pos/customerinfo.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 190, 0, 0, 0, 1, 15, 206
+"/home/ashishm1/ecom-project/components/admin/specTab.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 112, 0, 0, 0, 6, 17, 135
+"/home/ashishm1/ecom-project/components/admin/users-table.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 81, 0, 0, 0, 0, 12, 93
+"/home/ashishm1/ecom-project/components/admin/usersSkeleton.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 3, 22
+"/home/ashishm1/ecom-project/components/admin/view-toggle.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 39, 0, 0, 0, 0, 6, 45
+"/home/ashishm1/ecom-project/components/adminlayout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 28, 0, 0, 0, 2, 9, 39
+"/home/ashishm1/ecom-project/components/auth/loginModal.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 2, 24
+"/home/ashishm1/ecom-project/components/cart/CartSkeleton.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 61, 0, 0, 0, 5, 12, 78
+"/home/ashishm1/ecom-project/components/cart/EmptyCart.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 6, 36
+"/home/ashishm1/ecom-project/components/cart/addToCart.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 75, 0, 0, 0, 1, 18, 94
+"/home/ashishm1/ecom-project/components/cart/cartClient.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 205, 0, 0, 0, 3, 29, 237
+"/home/ashishm1/ecom-project/components/checkout/AddNewAddressPage.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 124, 0, 0, 0, 0, 22, 146
+"/home/ashishm1/ecom-project/components/checkout/addressPage.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 38, 0, 0, 0, 0, 2, 40
+"/home/ashishm1/ecom-project/components/checkout/checkoutAddressPage.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 61, 0, 0, 0, 0, 7, 68
+"/home/ashishm1/ecom-project/components/checkout/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 96, 0, 0, 0, 103, 40, 239
+"/home/ashishm1/ecom-project/components/favourites/favoriteClient.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 93, 0, 0, 0, 5, 7, 105
+"/home/ashishm1/ecom-project/components/favourites/favoritebutton.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 54, 0, 0, 0, 2, 14, 70
+"/home/ashishm1/ecom-project/components/favourites/heartAnimated.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 186, 0, 0, 0, 0, 7, 193
+"/home/ashishm1/ecom-project/components/footer/Footer.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 140, 0, 0, 0, 283, 60, 483
+"/home/ashishm1/ecom-project/components/giobal/Container.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 3, 18
+"/home/ashishm1/ecom-project/components/highlighter.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 32, 0, 0, 0, 2, 7, 41
+"/home/ashishm1/ecom-project/components/home/TopEarbudsSectionClient.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 104, 0, 0, 0, 21, 15, 140
+"/home/ashishm1/ecom-project/components/home/TopEarbudsSectionServer.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 15, 0, 0, 0, 4, 4, 23
+"/home/ashishm1/ecom-project/components/home/TopSmartphoneServer.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 3, 9
+"/home/ashishm1/ecom-project/components/home/TopsmartphoneClient.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 88, 0, 0, 0, 4, 11, 103
+"/home/ashishm1/ecom-project/components/navbar/CartItems.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 36, 0, 0, 0, 0, 6, 42
+"/home/ashishm1/ecom-project/components/navbar/CategoriesBar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 65, 0, 0, 0, 70, 19, 154
+"/home/ashishm1/ecom-project/components/navbar/LinksDropdown.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 120, 0, 0, 0, 6, 17, 143
+"/home/ashishm1/ecom-project/components/navbar/Logo.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 25, 0, 0, 0, 27, 12, 64
+"/home/ashishm1/ecom-project/components/navbar/LogoFull.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 5, 30
+"/home/ashishm1/ecom-project/components/navbar/NavSearch.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 253, 0, 0, 0, 236, 34, 523
+"/home/ashishm1/ecom-project/components/navbar/Navbar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 54, 0, 0, 0, 72, 29, 155
+"/home/ashishm1/ecom-project/components/navbar/NotificationBell.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 4, 29
+"/home/ashishm1/ecom-project/components/navbar/notificationBellWrapper.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 6, 0, 0, 0, 1, 5, 12
+"/home/ashishm1/ecom-project/components/notification/notificationclient.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 51, 0, 0, 0, 0, 8, 59
+"/home/ashishm1/ecom-project/components/notification/notificationserver.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 2, 9
+"/home/ashishm1/ecom-project/components/orders/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 201, 0, 0, 0, 5, 23, 229
+"/home/ashishm1/ecom-project/components/payments/paymentclient.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 146, 0, 0, 0, 3, 20, 169
+"/home/ashishm1/ecom-project/components/products/ElectronicsBrandSlider.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 162, 0, 0, 0, 3, 21, 186
+"/home/ashishm1/ecom-project/components/products/ProductCard.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 256, 0, 0, 0, 10, 34, 300
+"/home/ashishm1/ecom-project/components/products/ProductDealsSection.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 123, 0, 0, 0, 186, 23, 332
+"/home/ashishm1/ecom-project/components/products/ProductsContainer.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 118, 0, 0, 0, 32, 13, 163
+"/home/ashishm1/ecom-project/components/products/SortFilter.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 112, 0, 0, 0, 0, 21, 133
+"/home/ashishm1/ecom-project/components/products/TopCategoriesSection.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 204, 0, 0, 0, 116, 30, 350
+"/home/ashishm1/ecom-project/components/products/TopEarbuds.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 141, 0, 0, 0, 6, 14, 161
+"/home/ashishm1/ecom-project/components/reviews/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 323, 0, 0, 0, 18, 48, 389
+"/home/ashishm1/ecom-project/components/skeletons/shimmer.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 13, 0, 0, 0, 1, 2, 16
+"/home/ashishm1/ecom-project/components/theme-provider.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 3, 12
+"/home/ashishm1/ecom-project/components/ui/badge.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 41, 0, 0, 0, 0, 6, 47
+"/home/ashishm1/ecom-project/components/ui/button.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 55, 0, 0, 0, 0, 6, 61
+"/home/ashishm1/ecom-project/components/ui/card.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 83, 0, 0, 0, 0, 10, 93
+"/home/ashishm1/ecom-project/components/ui/checkbox.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 28, 0, 0, 0, 0, 5, 33
+"/home/ashishm1/ecom-project/components/ui/dialog.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 130, 0, 0, 0, 0, 14, 144
+"/home/ashishm1/ecom-project/components/ui/dropdown-menu.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 239, 0, 0, 0, 0, 19, 258
+"/home/ashishm1/ecom-project/components/ui/form.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 143, 0, 0, 0, 0, 25, 168
+"/home/ashishm1/ecom-project/components/ui/highlighter.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 87, 0, 0, 0, 1, 16, 104
+"/home/ashishm1/ecom-project/components/ui/input.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 18, 0, 0, 0, 0, 4, 22
+"/home/ashishm1/ecom-project/components/ui/label.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 5, 25
+"/home/ashishm1/ecom-project/components/ui/scroll-area.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 53, 0, 0, 0, 0, 6, 59
+"/home/ashishm1/ecom-project/components/ui/separator.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 5, 29
+"/home/ashishm1/ecom-project/components/ui/sheet.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 131, 0, 0, 0, 0, 15, 146
+"/home/ashishm1/ecom-project/components/ui/skeleton.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 3, 12
+"/home/ashishm1/ecom-project/components/ui/table.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 105, 0, 0, 0, 0, 12, 117
+"/home/ashishm1/ecom-project/components/ui/tabs.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 59, 0, 0, 0, 0, 8, 67
+"/home/ashishm1/ecom-project/components/ui/textarea.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 4, 19
+"/home/ashishm1/ecom-project/data/backupproducts.json", "JSON", 0, 0, 698, 0, 0, 0, 0, 0, 0, 0, 2, 700
+"/home/ashishm1/ecom-project/data/data.json", "JSON", 0, 0, 104, 0, 0, 0, 0, 0, 0, 0, 9, 113
+"/home/ashishm1/ecom-project/data/p1.json", "JSON", 0, 0, 65, 0, 0, 0, 0, 0, 0, 0, 1, 66
+"/home/ashishm1/ecom-project/data/products.json", "JSON", 0, 0, 792, 0, 0, 0, 0, 0, 0, 0, 8, 800
+"/home/ashishm1/ecom-project/drizzle.config.ts", "TypeScript", 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 2, 13
+"/home/ashishm1/ecom-project/drizzle/0000_short_kree.sql", "MS SQL", 119, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 131
+"/home/ashishm1/ecom-project/drizzle/0001_dizzy_trish_tilby.sql", "MS SQL", 9, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 10
+"/home/ashishm1/ecom-project/drizzle/0002_kind_klaw.sql", "MS SQL", 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10
+"/home/ashishm1/ecom-project/drizzle/0003_dark_mephistopheles.sql", "MS SQL", 8, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 9
+"/home/ashishm1/ecom-project/drizzle/0004_short_mesmero.sql", "MS SQL", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/ashishm1/ecom-project/drizzle/0005_abandoned_dark_beast.sql", "MS SQL", 83, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 89
+"/home/ashishm1/ecom-project/drizzle/0006_graceful_the_hunter.sql", "MS SQL", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/ashishm1/ecom-project/drizzle/0007_noisy_scalphunter.sql", "MS SQL", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/ashishm1/ecom-project/drizzle/0008_icy_reptil.sql", "MS SQL", 44, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 48
+"/home/ashishm1/ecom-project/drizzle/0009_lazy_nekra.sql", "MS SQL", 64, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 70
+"/home/ashishm1/ecom-project/drizzle/0009_worthless_grandmaster.sql", "MS SQL", 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 13
+"/home/ashishm1/ecom-project/drizzle/0010_spicy_multiple_man.sql", "MS SQL", 64, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 70
+"/home/ashishm1/ecom-project/drizzle/0011_romantic_king_bedlam.sql", "MS SQL", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/ashishm1/ecom-project/drizzle/meta/0000_snapshot.json", "JSON", 0, 0, 876, 0, 0, 0, 0, 0, 0, 0, 0, 876
+"/home/ashishm1/ecom-project/drizzle/meta/0001_snapshot.json", "JSON", 0, 0, 946, 0, 0, 0, 0, 0, 0, 0, 0, 946
+"/home/ashishm1/ecom-project/drizzle/meta/0002_snapshot.json", "JSON", 0, 0, 1004, 0, 0, 0, 0, 0, 0, 0, 0, 1004
+"/home/ashishm1/ecom-project/drizzle/meta/0003_snapshot.json", "JSON", 0, 0, 1062, 0, 0, 0, 0, 0, 0, 0, 0, 1062
+"/home/ashishm1/ecom-project/drizzle/meta/0004_snapshot.json", "JSON", 0, 0, 1068, 0, 0, 0, 0, 0, 0, 0, 0, 1068
+"/home/ashishm1/ecom-project/drizzle/meta/0005_snapshot.json", "JSON", 0, 0, 1662, 0, 0, 0, 0, 0, 0, 0, 0, 1662
+"/home/ashishm1/ecom-project/drizzle/meta/0006_snapshot.json", "JSON", 0, 0, 1662, 0, 0, 0, 0, 0, 0, 0, 0, 1662
+"/home/ashishm1/ecom-project/drizzle/meta/0007_snapshot.json", "JSON", 0, 0, 1669, 0, 0, 0, 0, 0, 0, 0, 0, 1669
+"/home/ashishm1/ecom-project/drizzle/meta/0008_snapshot.json", "JSON", 0, 0, 1978, 0, 0, 0, 0, 0, 0, 0, 0, 1978
+"/home/ashishm1/ecom-project/drizzle/meta/0009_snapshot.json", "JSON", 0, 0, 2053, 0, 0, 0, 0, 0, 0, 0, 0, 2053
+"/home/ashishm1/ecom-project/drizzle/meta/0010_snapshot.json", "JSON", 0, 0, 2497, 0, 0, 0, 0, 0, 0, 0, 0, 2497
+"/home/ashishm1/ecom-project/drizzle/meta/0011_snapshot.json", "JSON", 0, 0, 2490, 0, 0, 0, 0, 0, 0, 0, 0, 2490
+"/home/ashishm1/ecom-project/drizzle/meta/_journal.json", "JSON", 0, 0, 90, 0, 0, 0, 0, 0, 0, 0, 0, 90
+"/home/ashishm1/ecom-project/eslint.config.mjs", "JavaScript", 0, 0, 0, 14, 0, 0, 0, 0, 0, 2, 3, 19
+"/home/ashishm1/ecom-project/items.md", "Markdown", 0, 0, 0, 0, 25, 0, 0, 0, 0, 1, 7, 33
+"/home/ashishm1/ecom-project/lib/actions/address-action.ts", "TypeScript", 0, 74, 0, 0, 0, 0, 0, 0, 0, 0, 11, 85
+"/home/ashishm1/ecom-project/lib/actions/admin-actions/actions.ts", "TypeScript", 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 2, 16
+"/home/ashishm1/ecom-project/lib/actions/admin-actions/admin-analytic.ts", "TypeScript", 0, 124, 0, 0, 0, 0, 0, 0, 0, 205, 75, 404
+"/home/ashishm1/ecom-project/lib/actions/admin-actions/admin-customer-cart.ts", "TypeScript", 0, 228, 0, 0, 0, 0, 0, 0, 0, 29, 33, 290
+"/home/ashishm1/ecom-project/lib/actions/admin-actions/admin-customer-checkout.ts", "TypeScript", 0, 144, 0, 0, 0, 0, 0, 0, 0, 12, 20, 176
+"/home/ashishm1/ecom-project/lib/actions/admin-actions/pos-orders.ts", "TypeScript", 0, 89, 0, 0, 0, 0, 0, 0, 0, 0, 19, 108
+"/home/ashishm1/ecom-project/lib/actions/admin-actions/prods.ts", "TypeScript", 0, 46, 0, 0, 0, 0, 0, 0, 0, 1, 6, 53
+"/home/ashishm1/ecom-project/lib/actions/appointment.actions.ts", "TypeScript", 0, 112, 0, 0, 0, 0, 0, 0, 0, 9, 16, 137
+"/home/ashishm1/ecom-project/lib/actions/cart-actions.ts", "TypeScript", 0, 290, 0, 0, 0, 0, 0, 0, 0, 217, 92, 599
+"/home/ashishm1/ecom-project/lib/actions/categories.actions.ts", "TypeScript", 0, 66, 0, 0, 0, 0, 0, 0, 0, 19, 21, 106
+"/home/ashishm1/ecom-project/lib/actions/create-review.ts", "TypeScript", 0, 148, 0, 0, 0, 0, 0, 0, 0, 38, 32, 218
+"/home/ashishm1/ecom-project/lib/actions/favourite-actions.ts", "TypeScript", 0, 73, 0, 0, 0, 0, 0, 0, 0, 4, 20, 97
+"/home/ashishm1/ecom-project/lib/actions/get-smartphone.ts", "TypeScript", 0, 26, 0, 0, 0, 0, 0, 0, 0, 3, 6, 35
+"/home/ashishm1/ecom-project/lib/actions/navbar.action.ts", "TypeScript", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12
+"/home/ashishm1/ecom-project/lib/actions/notification-action.ts", "TypeScript", 0, 44, 0, 0, 0, 0, 0, 0, 0, 9, 14, 67
+"/home/ashishm1/ecom-project/lib/actions/order.actions.ts", "TypeScript", 0, 55, 0, 0, 0, 0, 0, 0, 0, 7, 12, 74
+"/home/ashishm1/ecom-project/lib/actions/payments.actions.ts", "TypeScript", 0, 61, 0, 0, 0, 0, 0, 0, 0, 4, 10, 75
+"/home/ashishm1/ecom-project/lib/actions/pos-orders.ts", "TypeScript", 0, 39, 0, 0, 0, 0, 0, 0, 0, 10, 9, 58
+"/home/ashishm1/ecom-project/lib/actions/product-actions.ts", "TypeScript", 0, 265, 0, 0, 0, 0, 0, 0, 0, 1, 37, 303
+"/home/ashishm1/ecom-project/lib/actions/productActions.ts", "TypeScript", 0, 130, 0, 0, 0, 0, 0, 0, 0, 5, 17, 152
+"/home/ashishm1/ecom-project/lib/actions/search.ts", "TypeScript", 0, 37, 0, 0, 0, 0, 0, 0, 0, 0, 5, 42
+"/home/ashishm1/ecom-project/lib/actions/stripe-checkout.ts", "TypeScript", 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 5, 27
+"/home/ashishm1/ecom-project/lib/api.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"/home/ashishm1/ecom-project/lib/auth-client.ts", "TypeScript", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12
+"/home/ashishm1/ecom-project/lib/constants/product.dummy.ts", "TypeScript", 0, 58, 0, 0, 0, 0, 0, 0, 0, 0, 1, 59
+"/home/ashishm1/ecom-project/lib/customers/order/actions.ts", "TypeScript", 0, 129, 0, 0, 0, 0, 0, 0, 0, 6, 21, 156
+"/home/ashishm1/ecom-project/lib/db/index.ts", "TypeScript", 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 3, 12
+"/home/ashishm1/ecom-project/lib/db/schema.ts", "TypeScript", 0, 694, 0, 0, 0, 0, 0, 0, 0, 17, 124, 835
+"/home/ashishm1/ecom-project/lib/helper/cart/cart.helper.ts", "TypeScript", 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 2, 11
+"/home/ashishm1/ecom-project/lib/imagekit/imageUpload.ts", "TypeScript", 0, 76, 0, 0, 0, 0, 0, 0, 0, 0, 17, 93
+"/home/ashishm1/ecom-project/lib/loadEnv.ts", "TypeScript", 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 20
+"/home/ashishm1/ecom-project/lib/orders/confirmationemail.ts", "TypeScript", 0, 79, 0, 0, 0, 0, 0, 0, 0, 0, 1, 80
+"/home/ashishm1/ecom-project/lib/permissions.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"/home/ashishm1/ecom-project/lib/queries/admin-cart.ts", "TypeScript", 0, 69, 0, 0, 0, 0, 0, 0, 0, 1, 16, 86
+"/home/ashishm1/ecom-project/lib/rbac.ts", "TypeScript", 0, 17, 0, 0, 0, 0, 0, 0, 0, 9, 4, 30
+"/home/ashishm1/ecom-project/lib/sendemail.ts", "TypeScript", 0, 34, 0, 0, 0, 0, 0, 0, 0, 1, 5, 40
+"/home/ashishm1/ecom-project/lib/slugify.ts", "TypeScript", 0, 7, 0, 0, 0, 0, 0, 0, 0, 1, 1, 9
+"/home/ashishm1/ecom-project/lib/states/cart.state.ts", "TypeScript", 0, 55, 0, 0, 0, 0, 0, 0, 0, 57, 24, 136
+"/home/ashishm1/ecom-project/lib/states/favorite.state.ts", "TypeScript", 0, 67, 0, 0, 0, 0, 0, 0, 0, 2, 18, 87
+"/home/ashishm1/ecom-project/lib/stripe-client.ts", "TypeScript", 0, 8, 0, 0, 0, 0, 0, 0, 0, 1, 4, 13
+"/home/ashishm1/ecom-project/lib/stripe.ts", "TypeScript", 0, 2, 0, 0, 0, 0, 0, 0, 0, 9, 6, 17
+"/home/ashishm1/ecom-project/lib/syncCart.ts", "TypeScript", 0, 19, 0, 0, 0, 0, 0, 0, 0, 12, 9, 40
+"/home/ashishm1/ecom-project/lib/types/address.types.ts", "TypeScript", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/ashishm1/ecom-project/lib/types/cart.types.ts", "TypeScript", 0, 51, 0, 0, 0, 0, 0, 0, 0, 2, 10, 63
+"/home/ashishm1/ecom-project/lib/types/favourites.types.ts", "TypeScript", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12
+"/home/ashishm1/ecom-project/lib/types/general.types.ts", "TypeScript", 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 1, 7
+"/home/ashishm1/ecom-project/lib/types/orders.types.ts", "TypeScript", 0, 41, 0, 0, 0, 0, 0, 0, 0, 0, 6, 47
+"/home/ashishm1/ecom-project/lib/types/product.types.ts", "TypeScript", 0, 84, 0, 0, 0, 0, 0, 0, 0, 1, 12, 97
+"/home/ashishm1/ecom-project/lib/utils.ts", "TypeScript", 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 2, 7
+"/home/ashishm1/ecom-project/lib/validations/admin-cart.types.ts", "TypeScript", 0, 72, 0, 0, 0, 0, 0, 0, 0, 3, 13, 88
+"/home/ashishm1/ecom-project/lib/validations/product-schema.ts", "TypeScript", 0, 38, 0, 0, 0, 0, 0, 0, 0, 0, 5, 43
+"/home/ashishm1/ecom-project/n.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 3
+"/home/ashishm1/ecom-project/next.config.ts", "TypeScript", 0, 31, 0, 0, 0, 0, 0, 0, 0, 2, 5, 38
+"/home/ashishm1/ecom-project/package-lock.json", "JSON", 0, 0, 11174, 0, 0, 0, 0, 0, 0, 0, 1, 11175
+"/home/ashishm1/ecom-project/package.json", "JSON", 0, 0, 81, 0, 0, 0, 0, 0, 0, 0, 1, 82
+"/home/ashishm1/ecom-project/postcss.config.mjs", "JavaScript", 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 2, 8
+"/home/ashishm1/ecom-project/public/Tech Bar (10).svg", "XML", 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 1, 14
+"/home/ashishm1/ecom-project/public/Tech Bar (11).svg", "XML", 0, 0, 0, 0, 0, 0, 55, 0, 0, 1, 1, 57
+"/home/ashishm1/ecom-project/public/Tech Bar (12).svg", "XML", 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 1, 10
+"/home/ashishm1/ecom-project/public/Tech Bar (4).svg", "XML", 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 1, 15
+"/home/ashishm1/ecom-project/public/Tech Bar (7).svg", "XML", 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 1, 11
+"/home/ashishm1/ecom-project/public/Techbar.svg", "XML", 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 1, 16
+"/home/ashishm1/ecom-project/public/apple.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/home/ashishm1/ecom-project/public/cartempty.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/home/ashishm1/ecom-project/public/file.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/home/ashishm1/ecom-project/public/globe.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/home/ashishm1/ecom-project/public/google.svg", "XML", 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2
+"/home/ashishm1/ecom-project/public/menu.svg", "XML", 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 4
+"/home/ashishm1/ecom-project/public/next.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/home/ashishm1/ecom-project/public/tiktok-circle.svg", "XML", 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1, 5
+"/home/ashishm1/ecom-project/public/vercel.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/home/ashishm1/ecom-project/public/whatsapp.svg", "XML", 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 11
+"/home/ashishm1/ecom-project/public/window.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"/home/ashishm1/ecom-project/scripts/category.seed.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"/home/ashishm1/ecom-project/scripts/products.seed.ts", "TypeScript", 0, 161, 0, 0, 0, 0, 0, 0, 0, 14, 26, 201
+"/home/ashishm1/ecom-project/seed.ts", "TypeScript", 0, 13, 0, 0, 0, 0, 0, 0, 0, 65, 11, 89
+"/home/ashishm1/ecom-project/seed/cart.seed.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"/home/ashishm1/ecom-project/seed/categories.seed.ts", "TypeScript", 0, 47, 0, 0, 0, 0, 0, 0, 0, 0, 12, 59
+"/home/ashishm1/ecom-project/seed/product.seed.ts", "TypeScript", 0, 243, 0, 0, 0, 0, 0, 0, 0, 81, 30, 354
+"/home/ashishm1/ecom-project/server.ts", "TypeScript", 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 2, 11
+"/home/ashishm1/ecom-project/test-schema.ts", "TypeScript", 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3
+"/home/ashishm1/ecom-project/tsconfig.json", "JSON with Comments", 0, 0, 0, 0, 0, 0, 0, 34, 0, 0, 1, 35
+"/home/ashishm1/ecom-project/utils/links.ts", "TypeScript", 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 3, 15
+"Total", "-", 416, 5635, 31995, 20, 48, 12310, 146, 34, 277, 3872, 3090, 57843

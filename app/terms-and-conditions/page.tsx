@@ -1,89 +1,17 @@
-
-
-// "use client";
-
-// export default function TermsAndConditions() {
-//   return (
-//     <div className="min-h-screen bg-gray-50 text-gray-800">
-//       {/* Header */}
-//       <header className="bg-white border-b border-gray-200">
-//         <div className="max-w-4xl mx-auto px-6 py-10">
-//           <h1 className="text-4xl font-bold text-black tracking-tight">Terms & Conditions</h1>
-//         </div>
-//       </header>
-
-//       {/* Main */}
-//       <main className="max-w-4xl mx-auto px-6 py-12 leading-relaxed">
-//         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12 space-y-12">
-
-//           {/* Intro */}
-//           <section className="space-y-4">
-//             <h2 className="text-2xl font-bold text-black">Introduction</h2>
-//             <p>Welcome to TechBar.store. These Terms & Conditions explain the rules for using our website, mobile app, and services.</p>
-//             <p>By accessing TechBar, you agree to follow these terms.</p>
-//             <p className="font-semibold">If you do not agree, you must stop using TechBar Services.</p>
-//             <h2 className="text-2xl font-bold text-black">Eligibility</h2>
-//             <p>You must be at least 18 years old to use or purchase from TechBar. Users under 18 require supervision from a parent or legal guardian.</p>
-
-//             <h2 className="text-2xl font-bold text-black">Account Registration</h2>
-//             <p>Some features require you to create an account. You must provide correct information and keep your login details secure. You are responsible for all activity under your account.</p>
-
-//             <h2 className="text-2xl font-bold text-black">Use of TechBar Services</h2>
-//             <p>By using TechBar, you agree not to misuse our website or engage in fraudulent or illegal activities. Attempts to copy our content or access restricted data are strictly prohibited.</p>
-//             <p>Violation may lead to suspension or permanent account termination.</p>
-
-//             <h2 className="text-2xl font-bold text-black">Product Descriptions</h2>
-//             <p>We aim for accuracy, but product details such as colors or availability may vary. If a product listing contains an error, we may cancel your order.</p>
-
-//             <h2 className="text-2xl font-bold text-black">Pricing & Payments</h2>
-//             <p>All prices are in EURO. We support Visa, MasterCard, MBway, MultiBanco,Klarana, cards,net banking, (where available). Payments are processed securely by Stripe Payment gateways.</p>
-
-//             <h2 className="text-2xl font-bold text-black">Orders & Cancellations</h2>
-//             <p>Your order is confirmed only after receiving an official confirmation email or SMS. You may cancel before dispatch for a full refund. After dispatch, cancellation depends on our return policy.</p>
-//             <p>We may cancel orders due to stock issues, payment failures, pricing errors, or suspected fraud.</p>
-
-//             <h2 className="text-2xl font-bold text-black">Shipping & Delivery</h2>
-//             <p>Delivery timelines may vary based on courier delays, weather conditions, or stock location. We inform you of delays whenever possible.</p>
-
-//             <h2 className="text-2xl font-bold text-black">Returns, Refunds & Replacements</h2>
-//             <p>Returns, refunds, and replacements are accepted only in cases where the delivered product is found to be defective, damaged, or incorrect, and customers must submit a return request within 7 days of delivery. All items must be returned in their original packaging with the box, manuals, accessories, and invoice; products with signs of misuse, physical damage, or liquid damage caused by the customer are not eligible. Once the returned item passes quality inspection, a refund will be initiated to the original payment method within the standard processing timeline, and if the item fails inspection, it will be returned to the customer without refund. Replacements are provided only when stock is available and strictly for qualifying cases, with a maximum of one replacement per order.</p>
-
-//             <h2 className="text-2xl font-bold text-black">Intellectual Property</h2>
-//             <p>All logos, images, text, and design elements belong to TechBar or its partners. Reuse is not allowed without permission.</p>
-
-//             <h2 className="text-2xl font-bold text-black">Third-Party Services</h2>
-//             <p>We may link to third-party services. We are not responsible for their content, privacy policies, or actions. Use them at your own risk.</p>
-
-//             <h2 className="text-2xl font-bold text-black">Limitation of Liability</h2>
-//             <p>We are not liable for indirect losses, courier delays, incorrect user information, or unauthorized access caused by weak passwords.</p>
-
-//             <h2 className="text-2xl font-bold text-black">Changes to Terms</h2>
-//             <p>We may update these Terms from time to time. Continued use of TechBar means you accept the updated terms.</p>
-//           </section>
-
-          
-
-        
-
-//         </div>
-//       </main>
-//     </div>
-//   );
-// }
-
-
-
-
 "use client";
 
+import { useLanguage } from "../context/languageContext";
+
 export default function TermsAndConditions() {
+  const { locale } = useLanguage(); // NEW
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
       {/* Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-6 py-8">
           <h1 className="text-3xl font-semibold text-black tracking-tight opacity-90">
-            Terms & Conditions
+            {locale === "pt" ? "Termos e Condições" : "Terms & Conditions"}
           </h1>
         </div>
       </header>
@@ -91,106 +19,167 @@ export default function TermsAndConditions() {
       {/* Main */}
       <main className="max-w-4xl mx-auto px-6 py-10 leading-relaxed">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-10 space-y-10">
-
-          {/* Intro */}
+          {/* INTRO */}
           <section className="space-y-3">
-            <h2 className="text-xl font-semibold text-black opacity-90">Introduction</h2>
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt" ? "Introdução" : "Introduction"}
+            </h2>
+
             <p className="text-sm md:text-base text-gray-700">
-              Welcome to TechBar.store. These Terms & Conditions explain the rules for using our
-              website, mobile app, and services.
+              {locale === "pt"
+                ? "Bem-vindo ao TechBar.store. Estes Termos e Condições explicam as regras para a utilização do nosso website, aplicação móvel e serviços."
+                : "Welcome to TechBar.store. These Terms & Conditions explain the rules for using our website, mobile app, and services."}
             </p>
+
             <p className="text-sm md:text-base text-gray-700">
-              By accessing TechBar, you agree to follow these terms.
+              {locale === "pt"
+                ? "Ao aceder ao TechBar, concorda em seguir estes termos."
+                : "By accessing TechBar, you agree to follow these terms."}
             </p>
+
             <p className="font-medium text-sm md:text-base">
-              If you do not agree, you must stop using TechBar Services.
+              {locale === "pt"
+                ? "Se não concordar, deve parar de utilizar os Serviços TechBar."
+                : "If you do not agree, you must stop using TechBar Services."}
             </p>
 
-            <h2 className="text-xl font-semibold text-black opacity-90">Eligibility</h2>
+            {/* Eligibility */}
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt" ? "Elegibilidade" : "Eligibility"}
+            </h2>
             <p className="text-sm md:text-base text-gray-700">
-              You must be at least 18 years old to use or purchase from TechBar. Users under 18
-              require supervision from a parent or legal guardian.
+              {locale === "pt"
+                ? "Deve ter pelo menos 18 anos para utilizar ou comprar na TechBar. Utilizadores menores de 18 anos requerem supervisão de um pai ou tutor legal."
+                : "You must be at least 18 years old to use or purchase from TechBar. Users under 18 require supervision from a parent or legal guardian."}
             </p>
 
-            <h2 className="text-xl font-semibold text-black opacity-90">Account Registration</h2>
+            {/* Account Registration */}
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt" ? "Registo de Conta" : "Account Registration"}
+            </h2>
             <p className="text-sm md:text-base text-gray-700">
-              Some features require you to create an account. You must provide correct information
-              and keep your login details secure. You are responsible for all activity under your
-              account.
+              {locale === "pt"
+                ? "Algumas funcionalidades exigem a criação de uma conta. Deve fornecer informações corretas e manter as suas credenciais seguras. É responsável por todas as atividades realizadas na sua conta."
+                : "Some features require you to create an account. You must provide correct information and keep your login details secure. You are responsible for all activity under your account."}
             </p>
 
-            <h2 className="text-xl font-semibold text-black opacity-90">Use of TechBar Services</h2>
+            {/* Use of Services */}
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt"
+                ? "Utilização dos Serviços TechBar"
+                : "Use of TechBar Services"}
+            </h2>
             <p className="text-sm md:text-base text-gray-700">
-              By using TechBar, you agree not to misuse our website or engage in fraudulent or
-              illegal activities. Attempts to copy our content or access restricted data are strictly
-              prohibited.
+              {locale === "pt"
+                ? "Ao utilizar a TechBar, concorda em não utilizar indevidamente o website ou realizar atividades ilegais ou fraudulentas. Qualquer tentativa de copiar conteúdo ou aceder a dados restritos é estritamente proibida."
+                : "By using TechBar, you agree not to misuse our website or engage in fraudulent or illegal activities. Attempts to copy our content or access restricted data are strictly prohibited."}
             </p>
             <p className="text-sm md:text-base text-gray-700">
-              Violation may lead to suspension or permanent account termination.
-            </p>
-
-            <h2 className="text-xl font-semibold text-black opacity-90">Product Descriptions</h2>
-            <p className="text-sm md:text-base text-gray-700">
-              We aim for accuracy, but product details such as colors or availability may vary. If a
-              product listing contains an error, we may cancel your order.
-            </p>
-
-            <h2 className="text-xl font-semibold text-black opacity-90">Pricing & Payments</h2>
-            <p className="text-sm md:text-base text-gray-700">
-              All prices are in EURO. We support Visa, MasterCard, MBway, MultiBanco, Klarna,
-              cards, net banking (where available). Payments are processed securely by Stripe
-              Payment gateways.
+              {locale === "pt"
+                ? "A violação destes termos pode resultar na suspensão ou encerramento permanente da conta."
+                : "Violation may lead to suspension or permanent account termination."}
             </p>
 
-            <h2 className="text-xl font-semibold text-black opacity-90">Orders & Cancellations</h2>
+            {/* Product Descriptions */}
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt"
+                ? "Descrições de Produtos"
+                : "Product Descriptions"}
+            </h2>
             <p className="text-sm md:text-base text-gray-700">
-              Your order is confirmed only after receiving an official confirmation email or SMS.
-              You may cancel before dispatch for a full refund. After dispatch, cancellation depends
-              on our return policy.
-            </p>
-            <p className="text-sm md:text-base text-gray-700">
-              We may cancel orders due to stock issues, payment failures, pricing errors, or
-              suspected fraud.
-            </p>
-
-            <h2 className="text-xl font-semibold text-black opacity-90">Shipping & Delivery</h2>
-            <p className="text-sm md:text-base text-gray-700">
-              Delivery timelines may vary based on courier delays, weather conditions, or stock
-              location. We inform you of delays whenever possible.
+              {locale === "pt"
+                ? "Tentamos ser precisos, mas os detalhes dos produtos, como cor ou disponibilidade, podem variar. Se houver um erro na listagem de um produto, a encomenda pode ser cancelada."
+                : "We aim for accuracy, but product details such as colors or availability may vary. If a product listing contains an error, we may cancel your order."}
             </p>
 
-            <h2 className="text-xl font-semibold text-black opacity-90">Returns, Refunds & Replacements</h2>
+            {/* Pricing & Payments */}
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt" ? "Preços e Pagamentos" : "Pricing & Payments"}
+            </h2>
             <p className="text-sm md:text-base text-gray-700">
-              Returns, refunds, and replacements are accepted only in cases where the delivered
-              product is defective, damaged, or incorrect. Customers must submit a return request
-              within 7 days of delivery. Items must be returned in original packaging with all
-              accessories. If an item fails inspection, it will be returned to the customer without
-              refund. Replacement depends on stock availability and is limited to one replacement
-              per order.
+              {locale === "pt"
+                ? "Todos os preços estão em EURO. Aceitamos Visa, MasterCard, MB Way, MultiBanco, Klarna, cartões, e net banking (quando disponível). Os pagamentos são processados com segurança por gateways de pagamento Stripe."
+                : "All prices are in EURO. We support Visa, MasterCard, MBway, MultiBanco, Klarna, cards, net banking (where available). Payments are processed securely by Stripe Payment gateways."}
             </p>
 
-            <h2 className="text-xl font-semibold text-black opacity-90">Intellectual Property</h2>
+            {/* Orders & Cancellations */}
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt"
+                ? "Encomendas e Cancelamentos"
+                : "Orders & Cancellations"}
+            </h2>
             <p className="text-sm md:text-base text-gray-700">
-              All logos, images, text, and design elements belong to TechBar or its partners. Reuse
-              is not allowed without permission.
+              {locale === "pt"
+                ? "A encomenda é confirmada apenas após o envio de um email ou SMS de confirmação. Pode cancelar antes do envio para obter reembolso total. Após o envio, aplicam-se as nossas regras de devolução."
+                : "Your order is confirmed only after receiving an official confirmation email or SMS. You may cancel before dispatch for a full refund. After dispatch, cancellation depends on our return policy."}
             </p>
 
-            <h2 className="text-xl font-semibold text-black opacity-90">Third-Party Services</h2>
+            {/* Shipping */}
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt" ? "Envio e Entregas" : "Shipping & Delivery"}
+            </h2>
             <p className="text-sm md:text-base text-gray-700">
-              We may link to third-party services. We are not responsible for their content, privacy
-              policies, or actions. Use them at your own risk.
+              {locale === "pt"
+                ? "Os prazos de entrega podem variar devido a atrasos logísticos, condições meteorológicas ou localização do stock. Informaremos sempre que possível em caso de atraso."
+                : "Delivery timelines may vary based on courier delays, weather conditions, or stock location. We inform you of delays whenever possible."}
             </p>
 
-            <h2 className="text-xl font-semibold text-black opacity-90">Limitation of Liability</h2>
+            {/* Returns */}
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt"
+                ? "Devoluções, Reembolsos e Substituições"
+                : "Returns, Refunds & Replacements"}
+            </h2>
             <p className="text-sm md:text-base text-gray-700">
-              We are not liable for indirect losses, courier delays, incorrect user information, or
-              unauthorized access caused by weak passwords.
+              {locale === "pt"
+                ? "As devoluções, reembolsos e substituições são aceites apenas em caso de produto defeituoso, danificado ou incorreto. O pedido deve ser realizado dentro de 7 dias após a entrega. O produto deve ser devolvido com embalagem original e acessórios. Caso não passe na inspeção, será devolvido ao cliente sem reembolso. A substituição depende de disponibilidade de stock."
+                : "Returns, refunds, and replacements are accepted only in cases where the delivered product is defective, damaged, or incorrect. Customers must submit a return request within 7 days of delivery. Items must be returned in original packaging with all accessories. Replacement depends on stock availability and is limited to one replacement per order."}
             </p>
 
-            <h2 className="text-xl font-semibold text-black opacity-90">Changes to Terms</h2>
+            {/* IP */}
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt"
+                ? "Propriedade Intelectual"
+                : "Intellectual Property"}
+            </h2>
             <p className="text-sm md:text-base text-gray-700">
-              We may update these Terms from time to time. Continued use of TechBar means you
-              accept the updated terms.
+              {locale === "pt"
+                ? "Todos os logotipos, imagens, textos e elementos de design pertencem à TechBar ou aos seus parceiros. A utilização não autorizada é proibida."
+                : "All logos, images, text, and design elements belong to TechBar or its partners. Reuse is not allowed without permission."}
+            </p>
+
+            {/* Third-party */}
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt"
+                ? "Serviços de Terceiros"
+                : "Third-Party Services"}
+            </h2>
+            <p className="text-sm md:text-base text-gray-700">
+              {locale === "pt"
+                ? "Podemos incluir ligações a serviços de terceiros. Não somos responsáveis pelo conteúdo, políticas de privacidade ou ações desses serviços. A utilização é por sua conta e risco."
+                : "We may link to third-party services. We are not responsible for their content, privacy policies, or actions. Use them at your own risk."}
+            </p>
+
+            {/* Liability */}
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt"
+                ? "Limitação de Responsabilidade"
+                : "Limitation of Liability"}
+            </h2>
+            <p className="text-sm md:text-base text-gray-700">
+              {locale === "pt"
+                ? "Não somos responsáveis por perdas indiretas, atrasos de entregas, informações incorretas fornecidas pelo utilizador, ou acessos não autorizados causados por credenciais fracas."
+                : "We are not liable for indirect losses, courier delays, incorrect user information, or unauthorized access caused by weak passwords."}
+            </p>
+
+            {/* Modifications */}
+            <h2 className="text-xl font-semibold text-black opacity-90">
+              {locale === "pt" ? "Alterações aos Termos" : "Changes to Terms"}
+            </h2>
+            <p className="text-sm md:text-base text-gray-700">
+              {locale === "pt"
+                ? "Podemos atualizar estes Termos ocasionalmente. A continuação da utilização dos serviços TechBar significa que aceita os termos atualizados."
+                : "We may update these Terms from time to time. Continued use of TechBar means you accept the updated terms."}
             </p>
           </section>
         </div>

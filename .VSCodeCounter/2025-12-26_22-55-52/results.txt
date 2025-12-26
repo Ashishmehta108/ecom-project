@@ -1,0 +1,458 @@
+Date : 2025-12-26 22:55:52
+Directory : /home/ashishm1/ecom-project
+Total : 285 files,  50881 codes, 3872 comments, 3090 blanks, all 57843 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |         20 |     31,995 |          0 |         23 |     32,018 |
+| TypeScript JSX     |        134 |     12,310 |      2,835 |      1,863 |     17,008 |
+| TypeScript         |         94 |      5,635 |        991 |      1,131 |      7,757 |
+| MS SQL             |         13 |        416 |         36 |          2 |        454 |
+| PostCSS            |          1 |        277 |          6 |         35 |        318 |
+| XML                |         18 |        146 |          1 |          9 |        156 |
+| Markdown           |          2 |         48 |          1 |         21 |         70 |
+| JSON with Comments |          1 |         34 |          0 |          1 |         35 |
+| JavaScript         |          2 |         20 |          2 |          5 |         27 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                             | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                |        285 |     50,881 |      3,872 |      3,090 |     57,843 |
+| . (Files)                                                                        |         17 |     11,580 |         72 |         63 |     11,715 |
+| app                                                                              |         86 |      4,996 |      1,279 |        861 |      7,136 |
+| app (Files)                                                                      |          5 |        369 |         20 |         46 |        435 |
+| app/about                                                                        |          1 |         54 |         45 |         12 |        111 |
+| app/admin                                                                        |         22 |      1,594 |        140 |        212 |      1,946 |
+| app/admin (Files)                                                                |          2 |        105 |         10 |         21 |        136 |
+| app/admin/appointment                                                            |          1 |         93 |          1 |         11 |        105 |
+| app/admin/categories                                                             |          3 |        235 |          7 |         45 |        287 |
+| app/admin/categories (Files)                                                     |          1 |        102 |          4 |         16 |        122 |
+| app/admin/categories/[id]                                                        |          1 |         48 |          0 |         17 |         65 |
+| app/admin/categories/new                                                         |          1 |         85 |          3 |         12 |        100 |
+| app/admin/customers                                                              |          1 |          4 |          0 |          2 |          6 |
+| app/admin/customers/order                                                        |          1 |          4 |          0 |          2 |          6 |
+| app/admin/login                                                                  |          1 |         81 |          2 |         14 |         97 |
+| app/admin/orders                                                                 |          3 |        300 |          3 |         27 |        330 |
+| app/admin/orders (Files)                                                         |          1 |         12 |          0 |          3 |         15 |
+| app/admin/orders/pos                                                             |          2 |        288 |          3 |         24 |        315 |
+| app/admin/payments                                                               |          2 |        290 |         13 |         34 |        337 |
+| app/admin/pos                                                                    |          2 |         93 |          7 |         16 |        116 |
+| app/admin/pos (Files)                                                            |          1 |         29 |          0 |          5 |         34 |
+| app/admin/pos/ordersRow                                                          |          1 |         64 |          7 |         11 |         82 |
+| app/admin/products                                                               |          3 |         98 |         79 |         11 |        188 |
+| app/admin/products (Files)                                                       |          1 |         72 |         78 |          7 |        157 |
+| app/admin/products/[id]                                                          |          1 |         19 |          1 |          3 |         23 |
+| app/admin/products/new                                                           |          1 |          7 |          0 |          1 |          8 |
+| app/admin/sidebar                                                                |          2 |        154 |         13 |         24 |        191 |
+| app/admin/topbar                                                                 |          1 |        131 |          4 |          4 |        139 |
+| app/admin/users                                                                  |          1 |         10 |          1 |          3 |         14 |
+| app/api                                                                          |         28 |      1,202 |        132 |        244 |      1,578 |
+| app/api (Files)                                                                  |          1 |          9 |          0 |          4 |         13 |
+| app/api/admin                                                                    |         11 |        185 |         10 |         45 |        240 |
+| app/api/admin (Files)                                                            |          1 |         12 |          0 |          4 |         16 |
+| app/api/admin/pos                                                                |          8 |        160 |         10 |         38 |        208 |
+| app/api/admin/pos/cart                                                           |          5 |        120 |          7 |         27 |        154 |
+| app/api/admin/pos/cart/[cartId]                                                  |          1 |         28 |          1 |          4 |         33 |
+| app/api/admin/pos/cart/add                                                       |          1 |         18 |          1 |          5 |         24 |
+| app/api/admin/pos/cart/clear                                                     |          1 |         11 |          1 |          4 |         16 |
+| app/api/admin/pos/cart/create                                                    |          1 |         52 |          3 |         10 |         65 |
+| app/api/admin/pos/cart/remove                                                    |          1 |         11 |          1 |          4 |         16 |
+| app/api/admin/pos/order                                                          |          3 |         40 |          3 |         11 |         54 |
+| app/api/admin/pos/order (Files)                                                  |          1 |         10 |          1 |          3 |         14 |
+| app/api/admin/pos/order/[orderId]                                                |          1 |         18 |          1 |          4 |         23 |
+| app/api/admin/pos/order/update-status                                            |          1 |         12 |          1 |          4 |         17 |
+| app/api/admin/users                                                              |          2 |         13 |          0 |          3 |         16 |
+| app/api/admin/users (Files)                                                      |          1 |         13 |          0 |          2 |         15 |
+| app/api/admin/users/ban                                                          |          1 |          0 |          0 |          1 |          1 |
+| app/api/auth                                                                     |          1 |          3 |          0 |          1 |          4 |
+| app/api/auth/[...all]                                                            |          1 |          3 |          0 |          1 |          4 |
+| app/api/cart                                                                     |          1 |         28 |          1 |          3 |         32 |
+| app/api/categories                                                               |          2 |         55 |         32 |         11 |         98 |
+| app/api/categories (Files)                                                       |          1 |         13 |         32 |          5 |         50 |
+| app/api/categories/[id]                                                          |          1 |         42 |          0 |          6 |         48 |
+| app/api/email                                                                    |          1 |         10 |          0 |          2 |         12 |
+| app/api/favorites                                                                |          1 |          6 |          0 |          2 |          8 |
+| app/api/imagekit                                                                 |          1 |        117 |         12 |         24 |        153 |
+| app/api/imagekit/upload                                                          |          1 |        117 |         12 |         24 |        153 |
+| app/api/neon                                                                     |          1 |         10 |          0 |          2 |         12 |
+| app/api/payments                                                                 |          1 |         99 |          4 |         18 |        121 |
+| app/api/payments/create-intent                                                   |          1 |         99 |          4 |         18 |        121 |
+| app/api/products                                                                 |          1 |         46 |          0 |          6 |         52 |
+| app/api/stripe                                                                   |          4 |        602 |         45 |        119 |        766 |
+| app/api/stripe/admin                                                             |          2 |        280 |         20 |         57 |        357 |
+| app/api/stripe/admin/checkout                                                    |          1 |        119 |          3 |         23 |        145 |
+| app/api/stripe/admin/webhook                                                     |          1 |        161 |         17 |         34 |        212 |
+| app/api/stripe/checkout                                                          |          1 |        142 |          6 |         23 |        171 |
+| app/api/stripe/webhook                                                           |          1 |        180 |         19 |         39 |        238 |
+| app/api/test                                                                     |          1 |         24 |         23 |          2 |         49 |
+| app/api/upload-auth                                                              |          1 |          8 |          5 |          5 |         18 |
+| app/appointment                                                                  |          2 |        168 |         12 |         27 |        207 |
+| app/appointment (Files)                                                          |          1 |        124 |         12 |         20 |        156 |
+| app/appointment/success                                                          |          1 |         44 |          0 |          7 |         51 |
+| app/cart                                                                         |          1 |         15 |        271 |         31 |        317 |
+| app/checkout                                                                     |          2 |         32 |          0 |          6 |         38 |
+| app/checkout (Files)                                                             |          1 |          6 |          0 |          3 |          9 |
+| app/checkout/payment                                                             |          1 |         26 |          0 |          3 |         29 |
+| app/favorites                                                                    |          2 |         60 |          5 |          8 |         73 |
+| app/forgot-password                                                              |          1 |         70 |          0 |         12 |         82 |
+| app/login                                                                        |          1 |         10 |          3 |          1 |         14 |
+| app/orders                                                                       |          5 |        168 |        154 |         40 |        362 |
+| app/orders (Files)                                                               |          1 |         28 |        152 |         19 |        199 |
+| app/orders/[id]                                                                  |          4 |        140 |          2 |         21 |        163 |
+| app/orders/[id]/cancel                                                           |          2 |         81 |          2 |         11 |         94 |
+| app/orders/[id]/success                                                          |          2 |         59 |          0 |         10 |         69 |
+| app/privacy-policy                                                               |          1 |        131 |        297 |         44 |        472 |
+| app/products                                                                     |          5 |        418 |         49 |         53 |        520 |
+| app/products (Files)                                                             |          3 |        188 |         33 |         27 |        248 |
+| app/products/[id]                                                                |          2 |        230 |         16 |         26 |        272 |
+| app/refund-policy                                                                |          1 |        156 |         10 |         10 |        176 |
+| app/reset-password                                                               |          1 |         85 |         71 |         28 |        184 |
+| app/signup                                                                       |          1 |          9 |          5 |          3 |         17 |
+| app/success                                                                      |          1 |         93 |         11 |         17 |        121 |
+| app/terms-and-conditions                                                         |          1 |        106 |         54 |         41 |        201 |
+| app/test                                                                         |          1 |        186 |          0 |          7 |        193 |
+| app/test1                                                                        |          2 |         30 |          0 |          7 |         37 |
+| app/verification                                                                 |          2 |         40 |          0 |         12 |         52 |
+| components                                                                       |         78 |      8,796 |      1,694 |      1,282 |     11,772 |
+| components (Files)                                                               |          9 |      1,039 |        415 |        186 |      1,640 |
+| components/CTA                                                                   |          1 |         55 |          5 |          9 |         69 |
+| components/admin                                                                 |         11 |      2,583 |         50 |        272 |      2,905 |
+| components/admin (Files)                                                         |          9 |      2,037 |         43 |        207 |      2,287 |
+| components/admin/pos                                                             |          2 |        546 |          7 |         65 |        618 |
+| components/auth                                                                  |          1 |         22 |          0 |          2 |         24 |
+| components/cart                                                                  |          4 |        371 |          9 |         65 |        445 |
+| components/checkout                                                              |          4 |        319 |        103 |         71 |        493 |
+| components/favourites                                                            |          3 |        333 |          7 |         28 |        368 |
+| components/footer                                                                |          1 |        140 |        283 |         60 |        483 |
+| components/giobal                                                                |          1 |         15 |          0 |          3 |         18 |
+| components/home                                                                  |          4 |        213 |         29 |         33 |        275 |
+| components/navbar                                                                |          9 |        609 |        412 |        131 |      1,152 |
+| components/notification                                                          |          2 |         58 |          0 |         10 |         68 |
+| components/orders                                                                |          1 |        201 |          5 |         23 |        229 |
+| components/payments                                                              |          1 |        146 |          3 |         20 |        169 |
+| components/products                                                              |          7 |      1,116 |        353 |        156 |      1,625 |
+| components/reviews                                                               |          1 |        323 |         18 |         48 |        389 |
+| components/skeletons                                                             |          1 |         13 |          1 |          2 |         16 |
+| components/ui                                                                    |         17 |      1,240 |          1 |        163 |      1,404 |
+| data                                                                             |          4 |      1,659 |          0 |         20 |      1,679 |
+| drizzle                                                                          |         26 |     19,473 |         36 |          2 |     19,511 |
+| drizzle (Files)                                                                  |         13 |        416 |         36 |          2 |        454 |
+| drizzle/meta                                                                     |         13 |     19,057 |          0 |          0 |     19,057 |
+| lib                                                                              |         51 |      3,771 |        695 |        781 |      5,247 |
+| lib (Files)                                                                      |         11 |        117 |         33 |         40 |        190 |
+| lib/actions                                                                      |         22 |      2,097 |        573 |        464 |      3,134 |
+| lib/actions (Files)                                                              |         16 |      1,452 |        326 |        309 |      2,087 |
+| lib/actions/admin-actions                                                        |          6 |        645 |        247 |        155 |      1,047 |
+| lib/constants                                                                    |          1 |         58 |          0 |          1 |         59 |
+| lib/customers                                                                    |          1 |        129 |          6 |         21 |        156 |
+| lib/customers/order                                                              |          1 |        129 |          6 |         21 |        156 |
+| lib/db                                                                           |          2 |        703 |         17 |        127 |        847 |
+| lib/helper                                                                       |          1 |          9 |          0 |          2 |         11 |
+| lib/helper/cart                                                                  |          1 |          9 |          0 |          2 |         11 |
+| lib/imagekit                                                                     |          1 |         76 |          0 |         17 |         93 |
+| lib/orders                                                                       |          1 |         79 |          0 |          1 |         80 |
+| lib/queries                                                                      |          1 |         69 |          1 |         16 |         86 |
+| lib/states                                                                       |          2 |        122 |         59 |         42 |        223 |
+| lib/types                                                                        |          6 |        202 |          3 |         32 |        237 |
+| lib/validations                                                                  |          2 |        110 |          3 |         18 |        131 |
+| public                                                                           |         17 |        143 |          1 |          8 |        152 |
+| scripts                                                                          |          2 |        161 |         14 |         27 |        202 |
+| seed                                                                             |          3 |        290 |         81 |         43 |        414 |
+| utils                                                                            |          1 |         12 |          0 |          3 |         15 |
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                         | language           | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /home/ashishm1/ecom-project/README.md                                            | Markdown           |         23 |          0 |         14 |         37 |
+| /home/ashishm1/ecom-project/abcde.ts                                             | TypeScript         |          0 |          0 |          1 |          1 |
+| /home/ashishm1/ecom-project/app/about/page.tsx                                   | TypeScript JSX     |         54 |         45 |         12 |        111 |
+| /home/ashishm1/ecom-project/app/admin/appointment/page.tsx                       | TypeScript JSX     |         93 |          1 |         11 |        105 |
+| /home/ashishm1/ecom-project/app/admin/categories/[id]/page.tsx                   | TypeScript JSX     |         48 |          0 |         17 |         65 |
+| /home/ashishm1/ecom-project/app/admin/categories/new/page.tsx                    | TypeScript JSX     |         85 |          3 |         12 |        100 |
+| /home/ashishm1/ecom-project/app/admin/categories/page.tsx                        | TypeScript JSX     |        102 |          4 |         16 |        122 |
+| /home/ashishm1/ecom-project/app/admin/customers/order/page.tsx                   | TypeScript JSX     |          4 |          0 |          2 |          6 |
+| /home/ashishm1/ecom-project/app/admin/layout.tsx                                 | TypeScript JSX     |         46 |         10 |          8 |         64 |
+| /home/ashishm1/ecom-project/app/admin/login/page.tsx                             | TypeScript JSX     |         81 |          2 |         14 |         97 |
+| /home/ashishm1/ecom-project/app/admin/orders/page.tsx                            | TypeScript JSX     |         12 |          0 |          3 |         15 |
+| /home/ashishm1/ecom-project/app/admin/orders/pos/client.tsx                      | TypeScript JSX     |        174 |          0 |         16 |        190 |
+| /home/ashishm1/ecom-project/app/admin/orders/pos/page.tsx                        | TypeScript JSX     |        114 |          3 |          8 |        125 |
+| /home/ashishm1/ecom-project/app/admin/page.tsx                                   | TypeScript JSX     |         59 |          0 |         13 |         72 |
+| /home/ashishm1/ecom-project/app/admin/payments/loading.tsx                       | TypeScript JSX     |         50 |          4 |          7 |         61 |
+| /home/ashishm1/ecom-project/app/admin/payments/page.tsx                          | TypeScript JSX     |        240 |          9 |         27 |        276 |
+| /home/ashishm1/ecom-project/app/admin/pos/ordersRow/page.tsx                     | TypeScript JSX     |         64 |          7 |         11 |         82 |
+| /home/ashishm1/ecom-project/app/admin/pos/page.tsx                               | TypeScript JSX     |         29 |          0 |          5 |         34 |
+| /home/ashishm1/ecom-project/app/admin/products/[id]/page.tsx                     | TypeScript JSX     |         19 |          1 |          3 |         23 |
+| /home/ashishm1/ecom-project/app/admin/products/new/page.tsx                      | TypeScript JSX     |          7 |          0 |          1 |          8 |
+| /home/ashishm1/ecom-project/app/admin/products/page.tsx                          | TypeScript JSX     |         72 |         78 |          7 |        157 |
+| /home/ashishm1/ecom-project/app/admin/sidebar/loading.tsx                        | TypeScript JSX     |         41 |          5 |          6 |         52 |
+| /home/ashishm1/ecom-project/app/admin/sidebar/page.tsx                           | TypeScript JSX     |        113 |          8 |         18 |        139 |
+| /home/ashishm1/ecom-project/app/admin/topbar/page.tsx                            | TypeScript JSX     |        131 |          4 |          4 |        139 |
+| /home/ashishm1/ecom-project/app/admin/users/page.tsx                             | TypeScript JSX     |         10 |          1 |          3 |         14 |
+| /home/ashishm1/ecom-project/app/api/admin/pos/cart/[cartId]/route.ts             | TypeScript         |         28 |          1 |          4 |         33 |
+| /home/ashishm1/ecom-project/app/api/admin/pos/cart/add/route.ts                  | TypeScript         |         18 |          1 |          5 |         24 |
+| /home/ashishm1/ecom-project/app/api/admin/pos/cart/clear/route.ts                | TypeScript         |         11 |          1 |          4 |         16 |
+| /home/ashishm1/ecom-project/app/api/admin/pos/cart/create/route.ts               | TypeScript         |         52 |          3 |         10 |         65 |
+| /home/ashishm1/ecom-project/app/api/admin/pos/cart/remove/route.ts               | TypeScript         |         11 |          1 |          4 |         16 |
+| /home/ashishm1/ecom-project/app/api/admin/pos/order/[orderId]/route.ts           | TypeScript         |         18 |          1 |          4 |         23 |
+| /home/ashishm1/ecom-project/app/api/admin/pos/order/route.ts                     | TypeScript         |         10 |          1 |          3 |         14 |
+| /home/ashishm1/ecom-project/app/api/admin/pos/order/update-status/route.ts       | TypeScript         |         12 |          1 |          4 |         17 |
+| /home/ashishm1/ecom-project/app/api/admin/route.ts                               | TypeScript         |         12 |          0 |          4 |         16 |
+| /home/ashishm1/ecom-project/app/api/admin/users/ban/route.ts                     | TypeScript         |          0 |          0 |          1 |          1 |
+| /home/ashishm1/ecom-project/app/api/admin/users/route.ts                         | TypeScript         |         13 |          0 |          2 |         15 |
+| /home/ashishm1/ecom-project/app/api/auth/[...all]/route.ts                       | TypeScript         |          3 |          0 |          1 |          4 |
+| /home/ashishm1/ecom-project/app/api/cart/route.ts                                | TypeScript         |         28 |          1 |          3 |         32 |
+| /home/ashishm1/ecom-project/app/api/categories/[id]/route.ts                     | TypeScript         |         42 |          0 |          6 |         48 |
+| /home/ashishm1/ecom-project/app/api/categories/route.ts                          | TypeScript         |         13 |         32 |          5 |         50 |
+| /home/ashishm1/ecom-project/app/api/email/route.ts                               | TypeScript         |         10 |          0 |          2 |         12 |
+| /home/ashishm1/ecom-project/app/api/favorites/route.ts                           | TypeScript         |          6 |          0 |          2 |          8 |
+| /home/ashishm1/ecom-project/app/api/imagekit/upload/route.ts                     | TypeScript         |        117 |         12 |         24 |        153 |
+| /home/ashishm1/ecom-project/app/api/neon/route.ts                                | TypeScript         |         10 |          0 |          2 |         12 |
+| /home/ashishm1/ecom-project/app/api/payments/create-intent/route.ts              | TypeScript         |         99 |          4 |         18 |        121 |
+| /home/ashishm1/ecom-project/app/api/products/route.ts                            | TypeScript         |         46 |          0 |          6 |         52 |
+| /home/ashishm1/ecom-project/app/api/route.ts                                     | TypeScript         |          9 |          0 |          4 |         13 |
+| /home/ashishm1/ecom-project/app/api/stripe/admin/checkout/route.ts               | TypeScript         |        119 |          3 |         23 |        145 |
+| /home/ashishm1/ecom-project/app/api/stripe/admin/webhook/route.ts                | TypeScript         |        161 |         17 |         34 |        212 |
+| /home/ashishm1/ecom-project/app/api/stripe/checkout/route.ts                     | TypeScript         |        142 |          6 |         23 |        171 |
+| /home/ashishm1/ecom-project/app/api/stripe/webhook/route.ts                      | TypeScript         |        180 |         19 |         39 |        238 |
+| /home/ashishm1/ecom-project/app/api/test/route.ts                                | TypeScript         |         24 |         23 |          2 |         49 |
+| /home/ashishm1/ecom-project/app/api/upload-auth/route.ts                         | TypeScript         |          8 |          5 |          5 |         18 |
+| /home/ashishm1/ecom-project/app/appointment/page.tsx                             | TypeScript JSX     |        124 |         12 |         20 |        156 |
+| /home/ashishm1/ecom-project/app/appointment/success/page.tsx                     | TypeScript JSX     |         44 |          0 |          7 |         51 |
+| /home/ashishm1/ecom-project/app/cart/page.tsx                                    | TypeScript JSX     |         15 |        271 |         31 |        317 |
+| /home/ashishm1/ecom-project/app/checkout/page.tsx                                | TypeScript JSX     |          6 |          0 |          3 |          9 |
+| /home/ashishm1/ecom-project/app/checkout/payment/page.tsx                        | TypeScript JSX     |         26 |          0 |          3 |         29 |
+| /home/ashishm1/ecom-project/app/favorites/loading.tsx                            | TypeScript JSX     |         31 |          4 |          3 |         38 |
+| /home/ashishm1/ecom-project/app/favorites/page.tsx                               | TypeScript JSX     |         29 |          1 |          5 |         35 |
+| /home/ashishm1/ecom-project/app/forgot-password/page.tsx                         | TypeScript JSX     |         70 |          0 |         12 |         82 |
+| /home/ashishm1/ecom-project/app/globals.css                                      | PostCSS            |        277 |          6 |         35 |        318 |
+| /home/ashishm1/ecom-project/app/layout.tsx                                       | TypeScript JSX     |         39 |         14 |          4 |         57 |
+| /home/ashishm1/ecom-project/app/login/page.tsx                                   | TypeScript JSX     |         10 |          3 |          1 |         14 |
+| /home/ashishm1/ecom-project/app/menu.svg                                         | XML                |          3 |          0 |          1 |          4 |
+| /home/ashishm1/ecom-project/app/not-found.tsx                                    | TypeScript JSX     |         29 |          0 |          3 |         32 |
+| /home/ashishm1/ecom-project/app/orders/[id]/cancel/client.tsx                    | TypeScript JSX     |         75 |          2 |          8 |         85 |
+| /home/ashishm1/ecom-project/app/orders/[id]/cancel/page.tsx                      | TypeScript JSX     |          6 |          0 |          3 |          9 |
+| /home/ashishm1/ecom-project/app/orders/[id]/success/client.tsx                   | TypeScript JSX     |         53 |          0 |          7 |         60 |
+| /home/ashishm1/ecom-project/app/orders/[id]/success/page.tsx                     | TypeScript JSX     |          6 |          0 |          3 |          9 |
+| /home/ashishm1/ecom-project/app/orders/page.tsx                                  | TypeScript JSX     |         28 |        152 |         19 |        199 |
+| /home/ashishm1/ecom-project/app/page.tsx                                         | TypeScript JSX     |         21 |          0 |          3 |         24 |
+| /home/ashishm1/ecom-project/app/privacy-policy/page.tsx                          | TypeScript JSX     |        131 |        297 |         44 |        472 |
+| /home/ashishm1/ecom-project/app/products/[id]/page.tsx                           | TypeScript JSX     |         13 |          1 |          2 |         16 |
+| /home/ashishm1/ecom-project/app/products/[id]/test.tsx                           | TypeScript JSX     |        217 |         15 |         24 |        256 |
+| /home/ashishm1/ecom-project/app/products/loading.tsx                             | TypeScript JSX     |         47 |          5 |         12 |         64 |
+| /home/ashishm1/ecom-project/app/products/page.tsx                                | TypeScript JSX     |         82 |         24 |          8 |        114 |
+| /home/ashishm1/ecom-project/app/products/productWrapper.tsx                      | TypeScript JSX     |         59 |          4 |          7 |         70 |
+| /home/ashishm1/ecom-project/app/refund-policy/page.tsx                           | TypeScript JSX     |        156 |         10 |         10 |        176 |
+| /home/ashishm1/ecom-project/app/reset-password/page.tsx                          | TypeScript JSX     |         85 |         71 |         28 |        184 |
+| /home/ashishm1/ecom-project/app/signup/page.tsx                                  | TypeScript JSX     |          9 |          5 |          3 |         17 |
+| /home/ashishm1/ecom-project/app/success/page.tsx                                 | TypeScript JSX     |         93 |         11 |         17 |        121 |
+| /home/ashishm1/ecom-project/app/terms-and-conditions/page.tsx                    | TypeScript JSX     |        106 |         54 |         41 |        201 |
+| /home/ashishm1/ecom-project/app/test/page.tsx                                    | TypeScript JSX     |        186 |          0 |          7 |        193 |
+| /home/ashishm1/ecom-project/app/test1/client.tsx                                 | TypeScript JSX     |         20 |          0 |          5 |         25 |
+| /home/ashishm1/ecom-project/app/test1/page.tsx                                   | TypeScript JSX     |         10 |          0 |          2 |         12 |
+| /home/ashishm1/ecom-project/app/verification/client.tsx                          | TypeScript JSX     |         25 |          0 |          8 |         33 |
+| /home/ashishm1/ecom-project/app/verification/page.tsx                            | TypeScript JSX     |         15 |          0 |          4 |         19 |
+| /home/ashishm1/ecom-project/auth-schema.ts                                       | TypeScript         |         62 |          0 |          5 |         67 |
+| /home/ashishm1/ecom-project/auth.ts                                              | TypeScript         |         71 |          0 |          5 |         76 |
+| /home/ashishm1/ecom-project/components.json                                      | JSON               |         24 |          0 |          1 |         25 |
+| /home/ashishm1/ecom-project/components/CTA/TechbarCTA.tsx                        | TypeScript JSX     |         55 |          5 |          9 |         69 |
+| /home/ashishm1/ecom-project/components/CloudinaryUploader.tsx                    | TypeScript JSX     |        133 |          0 |         18 |        151 |
+| /home/ashishm1/ecom-project/components/ImageSlider.tsx                           | TypeScript JSX     |        345 |        359 |         87 |        791 |
+| /home/ashishm1/ecom-project/components/LoginForm.tsx                             | TypeScript JSX     |        185 |          9 |         19 |        213 |
+| /home/ashishm1/ecom-project/components/SignupForm.tsx                            | TypeScript JSX     |        190 |          4 |         23 |        217 |
+| /home/ashishm1/ecom-project/components/ToggleTheme.tsx                           | TypeScript JSX     |         29 |          0 |          5 |         34 |
+| /home/ashishm1/ecom-project/components/UploadComponent.tsx                       | TypeScript JSX     |         88 |         39 |         15 |        142 |
+| /home/ashishm1/ecom-project/components/admin/AdminProductPanel.tsx               | TypeScript JSX     |        988 |         20 |         90 |      1,098 |
+| /home/ashishm1/ecom-project/components/admin/Customer.tsx                        | TypeScript JSX     |         81 |          1 |         12 |         94 |
+| /home/ashishm1/ecom-project/components/admin/adminSalesDashboard.tsx             | TypeScript JSX     |        406 |          8 |         19 |        433 |
+| /home/ashishm1/ecom-project/components/admin/adminhomepage.tsx                   | TypeScript JSX     |         22 |          1 |          6 |         29 |
+| /home/ashishm1/ecom-project/components/admin/adminorder.tsx                      | TypeScript JSX     |        289 |          7 |         42 |        338 |
+| /home/ashishm1/ecom-project/components/admin/pos/admin-customer.tsx              | TypeScript JSX     |        356 |          6 |         50 |        412 |
+| /home/ashishm1/ecom-project/components/admin/pos/customerinfo.tsx                | TypeScript JSX     |        190 |          1 |         15 |        206 |
+| /home/ashishm1/ecom-project/components/admin/specTab.tsx                         | TypeScript JSX     |        112 |          6 |         17 |        135 |
+| /home/ashishm1/ecom-project/components/admin/users-table.tsx                     | TypeScript JSX     |         81 |          0 |         12 |         93 |
+| /home/ashishm1/ecom-project/components/admin/usersSkeleton.tsx                   | TypeScript JSX     |         19 |          0 |          3 |         22 |
+| /home/ashishm1/ecom-project/components/admin/view-toggle.tsx                     | TypeScript JSX     |         39 |          0 |          6 |         45 |
+| /home/ashishm1/ecom-project/components/adminlayout.tsx                           | TypeScript JSX     |         28 |          2 |          9 |         39 |
+| /home/ashishm1/ecom-project/components/auth/loginModal.tsx                       | TypeScript JSX     |         22 |          0 |          2 |         24 |
+| /home/ashishm1/ecom-project/components/cart/CartSkeleton.tsx                     | TypeScript JSX     |         61 |          5 |         12 |         78 |
+| /home/ashishm1/ecom-project/components/cart/EmptyCart.tsx                        | TypeScript JSX     |         30 |          0 |          6 |         36 |
+| /home/ashishm1/ecom-project/components/cart/addToCart.tsx                        | TypeScript JSX     |         75 |          1 |         18 |         94 |
+| /home/ashishm1/ecom-project/components/cart/cartClient.tsx                       | TypeScript JSX     |        205 |          3 |         29 |        237 |
+| /home/ashishm1/ecom-project/components/checkout/AddNewAddressPage.tsx            | TypeScript JSX     |        124 |          0 |         22 |        146 |
+| /home/ashishm1/ecom-project/components/checkout/addressPage.tsx                  | TypeScript JSX     |         38 |          0 |          2 |         40 |
+| /home/ashishm1/ecom-project/components/checkout/checkoutAddressPage.tsx          | TypeScript JSX     |         61 |          0 |          7 |         68 |
+| /home/ashishm1/ecom-project/components/checkout/page.tsx                         | TypeScript JSX     |         96 |        103 |         40 |        239 |
+| /home/ashishm1/ecom-project/components/favourites/favoriteClient.tsx             | TypeScript JSX     |         93 |          5 |          7 |        105 |
+| /home/ashishm1/ecom-project/components/favourites/favoritebutton.tsx             | TypeScript JSX     |         54 |          2 |         14 |         70 |
+| /home/ashishm1/ecom-project/components/favourites/heartAnimated.tsx              | TypeScript JSX     |        186 |          0 |          7 |        193 |
+| /home/ashishm1/ecom-project/components/footer/Footer.tsx                         | TypeScript JSX     |        140 |        283 |         60 |        483 |
+| /home/ashishm1/ecom-project/components/giobal/Container.tsx                      | TypeScript JSX     |         15 |          0 |          3 |         18 |
+| /home/ashishm1/ecom-project/components/highlighter.tsx                           | TypeScript JSX     |         32 |          2 |          7 |         41 |
+| /home/ashishm1/ecom-project/components/home/TopEarbudsSectionClient.tsx          | TypeScript JSX     |        104 |         21 |         15 |        140 |
+| /home/ashishm1/ecom-project/components/home/TopEarbudsSectionServer.tsx          | TypeScript JSX     |         15 |          4 |          4 |         23 |
+| /home/ashishm1/ecom-project/components/home/TopSmartphoneServer.tsx              | TypeScript JSX     |          6 |          0 |          3 |          9 |
+| /home/ashishm1/ecom-project/components/home/TopsmartphoneClient.tsx              | TypeScript JSX     |         88 |          4 |         11 |        103 |
+| /home/ashishm1/ecom-project/components/navbar/CartItems.tsx                      | TypeScript JSX     |         36 |          0 |          6 |         42 |
+| /home/ashishm1/ecom-project/components/navbar/CategoriesBar.tsx                  | TypeScript JSX     |         65 |         70 |         19 |        154 |
+| /home/ashishm1/ecom-project/components/navbar/LinksDropdown.tsx                  | TypeScript JSX     |        120 |          6 |         17 |        143 |
+| /home/ashishm1/ecom-project/components/navbar/Logo.tsx                           | TypeScript JSX     |         25 |         27 |         12 |         64 |
+| /home/ashishm1/ecom-project/components/navbar/LogoFull.tsx                       | TypeScript JSX     |         25 |          0 |          5 |         30 |
+| /home/ashishm1/ecom-project/components/navbar/NavSearch.tsx                      | TypeScript JSX     |        253 |        236 |         34 |        523 |
+| /home/ashishm1/ecom-project/components/navbar/Navbar.tsx                         | TypeScript JSX     |         54 |         72 |         29 |        155 |
+| /home/ashishm1/ecom-project/components/navbar/NotificationBell.tsx               | TypeScript JSX     |         25 |          0 |          4 |         29 |
+| /home/ashishm1/ecom-project/components/navbar/notificationBellWrapper.tsx        | TypeScript JSX     |          6 |          1 |          5 |         12 |
+| /home/ashishm1/ecom-project/components/notification/notificationclient.tsx       | TypeScript JSX     |         51 |          0 |          8 |         59 |
+| /home/ashishm1/ecom-project/components/notification/notificationserver.tsx       | TypeScript JSX     |          7 |          0 |          2 |          9 |
+| /home/ashishm1/ecom-project/components/orders/page.tsx                           | TypeScript JSX     |        201 |          5 |         23 |        229 |
+| /home/ashishm1/ecom-project/components/payments/paymentclient.tsx                | TypeScript JSX     |        146 |          3 |         20 |        169 |
+| /home/ashishm1/ecom-project/components/products/ElectronicsBrandSlider.tsx       | TypeScript JSX     |        162 |          3 |         21 |        186 |
+| /home/ashishm1/ecom-project/components/products/ProductCard.tsx                  | TypeScript JSX     |        256 |         10 |         34 |        300 |
+| /home/ashishm1/ecom-project/components/products/ProductDealsSection.tsx          | TypeScript JSX     |        123 |        186 |         23 |        332 |
+| /home/ashishm1/ecom-project/components/products/ProductsContainer.tsx            | TypeScript JSX     |        118 |         32 |         13 |        163 |
+| /home/ashishm1/ecom-project/components/products/SortFilter.tsx                   | TypeScript JSX     |        112 |          0 |         21 |        133 |
+| /home/ashishm1/ecom-project/components/products/TopCategoriesSection.tsx         | TypeScript JSX     |        204 |        116 |         30 |        350 |
+| /home/ashishm1/ecom-project/components/products/TopEarbuds.tsx                   | TypeScript JSX     |        141 |          6 |         14 |        161 |
+| /home/ashishm1/ecom-project/components/reviews/page.tsx                          | TypeScript JSX     |        323 |         18 |         48 |        389 |
+| /home/ashishm1/ecom-project/components/skeletons/shimmer.tsx                     | TypeScript JSX     |         13 |          1 |          2 |         16 |
+| /home/ashishm1/ecom-project/components/theme-provider.tsx                        | TypeScript JSX     |          9 |          0 |          3 |         12 |
+| /home/ashishm1/ecom-project/components/ui/badge.tsx                              | TypeScript JSX     |         41 |          0 |          6 |         47 |
+| /home/ashishm1/ecom-project/components/ui/button.tsx                             | TypeScript JSX     |         55 |          0 |          6 |         61 |
+| /home/ashishm1/ecom-project/components/ui/card.tsx                               | TypeScript JSX     |         83 |          0 |         10 |         93 |
+| /home/ashishm1/ecom-project/components/ui/checkbox.tsx                           | TypeScript JSX     |         28 |          0 |          5 |         33 |
+| /home/ashishm1/ecom-project/components/ui/dialog.tsx                             | TypeScript JSX     |        130 |          0 |         14 |        144 |
+| /home/ashishm1/ecom-project/components/ui/dropdown-menu.tsx                      | TypeScript JSX     |        239 |          0 |         19 |        258 |
+| /home/ashishm1/ecom-project/components/ui/form.tsx                               | TypeScript JSX     |        143 |          0 |         25 |        168 |
+| /home/ashishm1/ecom-project/components/ui/highlighter.tsx                        | TypeScript JSX     |         87 |          1 |         16 |        104 |
+| /home/ashishm1/ecom-project/components/ui/input.tsx                              | TypeScript JSX     |         18 |          0 |          4 |         22 |
+| /home/ashishm1/ecom-project/components/ui/label.tsx                              | TypeScript JSX     |         20 |          0 |          5 |         25 |
+| /home/ashishm1/ecom-project/components/ui/scroll-area.tsx                        | TypeScript JSX     |         53 |          0 |          6 |         59 |
+| /home/ashishm1/ecom-project/components/ui/separator.tsx                          | TypeScript JSX     |         24 |          0 |          5 |         29 |
+| /home/ashishm1/ecom-project/components/ui/sheet.tsx                              | TypeScript JSX     |        131 |          0 |         15 |        146 |
+| /home/ashishm1/ecom-project/components/ui/skeleton.tsx                           | TypeScript JSX     |          9 |          0 |          3 |         12 |
+| /home/ashishm1/ecom-project/components/ui/table.tsx                              | TypeScript JSX     |        105 |          0 |         12 |        117 |
+| /home/ashishm1/ecom-project/components/ui/tabs.tsx                               | TypeScript JSX     |         59 |          0 |          8 |         67 |
+| /home/ashishm1/ecom-project/components/ui/textarea.tsx                           | TypeScript JSX     |         15 |          0 |          4 |         19 |
+| /home/ashishm1/ecom-project/data/backupproducts.json                             | JSON               |        698 |          0 |          2 |        700 |
+| /home/ashishm1/ecom-project/data/data.json                                       | JSON               |        104 |          0 |          9 |        113 |
+| /home/ashishm1/ecom-project/data/p1.json                                         | JSON               |         65 |          0 |          1 |         66 |
+| /home/ashishm1/ecom-project/data/products.json                                   | JSON               |        792 |          0 |          8 |        800 |
+| /home/ashishm1/ecom-project/drizzle.config.ts                                    | TypeScript         |         11 |          0 |          2 |         13 |
+| /home/ashishm1/ecom-project/drizzle/0000_short_kree.sql                          | MS SQL             |        119 |         12 |          0 |        131 |
+| /home/ashishm1/ecom-project/drizzle/0001_dizzy_trish_tilby.sql                   | MS SQL             |          9 |          1 |          0 |         10 |
+| /home/ashishm1/ecom-project/drizzle/0002_kind_klaw.sql                           | MS SQL             |          9 |          0 |          1 |         10 |
+| /home/ashishm1/ecom-project/drizzle/0003_dark_mephistopheles.sql                 | MS SQL             |          8 |          1 |          0 |          9 |
+| /home/ashishm1/ecom-project/drizzle/0004_short_mesmero.sql                       | MS SQL             |          1 |          0 |          0 |          1 |
+| /home/ashishm1/ecom-project/drizzle/0005_abandoned_dark_beast.sql                | MS SQL             |         83 |          6 |          0 |         89 |
+| /home/ashishm1/ecom-project/drizzle/0006_graceful_the_hunter.sql                 | MS SQL             |          1 |          0 |          0 |          1 |
+| /home/ashishm1/ecom-project/drizzle/0007_noisy_scalphunter.sql                   | MS SQL             |          1 |          0 |          0 |          1 |
+| /home/ashishm1/ecom-project/drizzle/0008_icy_reptil.sql                          | MS SQL             |         44 |          4 |          0 |         48 |
+| /home/ashishm1/ecom-project/drizzle/0009_lazy_nekra.sql                          | MS SQL             |         64 |          6 |          0 |         70 |
+| /home/ashishm1/ecom-project/drizzle/0009_worthless_grandmaster.sql               | MS SQL             |         12 |          0 |          1 |         13 |
+| /home/ashishm1/ecom-project/drizzle/0010_spicy_multiple_man.sql                  | MS SQL             |         64 |          6 |          0 |         70 |
+| /home/ashishm1/ecom-project/drizzle/0011_romantic_king_bedlam.sql                | MS SQL             |          1 |          0 |          0 |          1 |
+| /home/ashishm1/ecom-project/drizzle/meta/0000_snapshot.json                      | JSON               |        876 |          0 |          0 |        876 |
+| /home/ashishm1/ecom-project/drizzle/meta/0001_snapshot.json                      | JSON               |        946 |          0 |          0 |        946 |
+| /home/ashishm1/ecom-project/drizzle/meta/0002_snapshot.json                      | JSON               |      1,004 |          0 |          0 |      1,004 |
+| /home/ashishm1/ecom-project/drizzle/meta/0003_snapshot.json                      | JSON               |      1,062 |          0 |          0 |      1,062 |
+| /home/ashishm1/ecom-project/drizzle/meta/0004_snapshot.json                      | JSON               |      1,068 |          0 |          0 |      1,068 |
+| /home/ashishm1/ecom-project/drizzle/meta/0005_snapshot.json                      | JSON               |      1,662 |          0 |          0 |      1,662 |
+| /home/ashishm1/ecom-project/drizzle/meta/0006_snapshot.json                      | JSON               |      1,662 |          0 |          0 |      1,662 |
+| /home/ashishm1/ecom-project/drizzle/meta/0007_snapshot.json                      | JSON               |      1,669 |          0 |          0 |      1,669 |
+| /home/ashishm1/ecom-project/drizzle/meta/0008_snapshot.json                      | JSON               |      1,978 |          0 |          0 |      1,978 |
+| /home/ashishm1/ecom-project/drizzle/meta/0009_snapshot.json                      | JSON               |      2,053 |          0 |          0 |      2,053 |
+| /home/ashishm1/ecom-project/drizzle/meta/0010_snapshot.json                      | JSON               |      2,497 |          0 |          0 |      2,497 |
+| /home/ashishm1/ecom-project/drizzle/meta/0011_snapshot.json                      | JSON               |      2,490 |          0 |          0 |      2,490 |
+| /home/ashishm1/ecom-project/drizzle/meta/_journal.json                           | JSON               |         90 |          0 |          0 |         90 |
+| /home/ashishm1/ecom-project/eslint.config.mjs                                    | JavaScript         |         14 |          2 |          3 |         19 |
+| /home/ashishm1/ecom-project/items.md                                             | Markdown           |         25 |          1 |          7 |         33 |
+| /home/ashishm1/ecom-project/lib/actions/address-action.ts                        | TypeScript         |         74 |          0 |         11 |         85 |
+| /home/ashishm1/ecom-project/lib/actions/admin-actions/actions.ts                 | TypeScript         |         14 |          0 |          2 |         16 |
+| /home/ashishm1/ecom-project/lib/actions/admin-actions/admin-analytic.ts          | TypeScript         |        124 |        205 |         75 |        404 |
+| /home/ashishm1/ecom-project/lib/actions/admin-actions/admin-customer-cart.ts     | TypeScript         |        228 |         29 |         33 |        290 |
+| /home/ashishm1/ecom-project/lib/actions/admin-actions/admin-customer-checkout.ts | TypeScript         |        144 |         12 |         20 |        176 |
+| /home/ashishm1/ecom-project/lib/actions/admin-actions/pos-orders.ts              | TypeScript         |         89 |          0 |         19 |        108 |
+| /home/ashishm1/ecom-project/lib/actions/admin-actions/prods.ts                   | TypeScript         |         46 |          1 |          6 |         53 |
+| /home/ashishm1/ecom-project/lib/actions/appointment.actions.ts                   | TypeScript         |        112 |          9 |         16 |        137 |
+| /home/ashishm1/ecom-project/lib/actions/cart-actions.ts                          | TypeScript         |        290 |        217 |         92 |        599 |
+| /home/ashishm1/ecom-project/lib/actions/categories.actions.ts                    | TypeScript         |         66 |         19 |         21 |        106 |
+| /home/ashishm1/ecom-project/lib/actions/create-review.ts                         | TypeScript         |        148 |         38 |         32 |        218 |
+| /home/ashishm1/ecom-project/lib/actions/favourite-actions.ts                     | TypeScript         |         73 |          4 |         20 |         97 |
+| /home/ashishm1/ecom-project/lib/actions/get-smartphone.ts                        | TypeScript         |         26 |          3 |          6 |         35 |
+| /home/ashishm1/ecom-project/lib/actions/navbar.action.ts                         | TypeScript         |         10 |          0 |          2 |         12 |
+| /home/ashishm1/ecom-project/lib/actions/notification-action.ts                   | TypeScript         |         44 |          9 |         14 |         67 |
+| /home/ashishm1/ecom-project/lib/actions/order.actions.ts                         | TypeScript         |         55 |          7 |         12 |         74 |
+| /home/ashishm1/ecom-project/lib/actions/payments.actions.ts                      | TypeScript         |         61 |          4 |         10 |         75 |
+| /home/ashishm1/ecom-project/lib/actions/pos-orders.ts                            | TypeScript         |         39 |         10 |          9 |         58 |
+| /home/ashishm1/ecom-project/lib/actions/product-actions.ts                       | TypeScript         |        265 |          1 |         37 |        303 |
+| /home/ashishm1/ecom-project/lib/actions/productActions.ts                        | TypeScript         |        130 |          5 |         17 |        152 |
+| /home/ashishm1/ecom-project/lib/actions/search.ts                                | TypeScript         |         37 |          0 |          5 |         42 |
+| /home/ashishm1/ecom-project/lib/actions/stripe-checkout.ts                       | TypeScript         |         22 |          0 |          5 |         27 |
+| /home/ashishm1/ecom-project/lib/api.ts                                           | TypeScript         |          0 |          0 |          1 |          1 |
+| /home/ashishm1/ecom-project/lib/auth-client.ts                                   | TypeScript         |         10 |          0 |          2 |         12 |
+| /home/ashishm1/ecom-project/lib/constants/product.dummy.ts                       | TypeScript         |         58 |          0 |          1 |         59 |
+| /home/ashishm1/ecom-project/lib/customers/order/actions.ts                       | TypeScript         |        129 |          6 |         21 |        156 |
+| /home/ashishm1/ecom-project/lib/db/index.ts                                      | TypeScript         |          9 |          0 |          3 |         12 |
+| /home/ashishm1/ecom-project/lib/db/schema.ts                                     | TypeScript         |        694 |         17 |        124 |        835 |
+| /home/ashishm1/ecom-project/lib/helper/cart/cart.helper.ts                       | TypeScript         |          9 |          0 |          2 |         11 |
+| /home/ashishm1/ecom-project/lib/imagekit/imageUpload.ts                          | TypeScript         |         76 |          0 |         17 |         93 |
+| /home/ashishm1/ecom-project/lib/loadEnv.ts                                       | TypeScript         |         15 |          0 |          5 |         20 |
+| /home/ashishm1/ecom-project/lib/orders/confirmationemail.ts                      | TypeScript         |         79 |          0 |          1 |         80 |
+| /home/ashishm1/ecom-project/lib/permissions.ts                                   | TypeScript         |          0 |          0 |          1 |          1 |
+| /home/ashishm1/ecom-project/lib/queries/admin-cart.ts                            | TypeScript         |         69 |          1 |         16 |         86 |
+| /home/ashishm1/ecom-project/lib/rbac.ts                                          | TypeScript         |         17 |          9 |          4 |         30 |
+| /home/ashishm1/ecom-project/lib/sendemail.ts                                     | TypeScript         |         34 |          1 |          5 |         40 |
+| /home/ashishm1/ecom-project/lib/slugify.ts                                       | TypeScript         |          7 |          1 |          1 |          9 |
+| /home/ashishm1/ecom-project/lib/states/cart.state.ts                             | TypeScript         |         55 |         57 |         24 |        136 |
+| /home/ashishm1/ecom-project/lib/states/favorite.state.ts                         | TypeScript         |         67 |          2 |         18 |         87 |
+| /home/ashishm1/ecom-project/lib/stripe-client.ts                                 | TypeScript         |          8 |          1 |          4 |         13 |
+| /home/ashishm1/ecom-project/lib/stripe.ts                                        | TypeScript         |          2 |          9 |          6 |         17 |
+| /home/ashishm1/ecom-project/lib/syncCart.ts                                      | TypeScript         |         19 |         12 |          9 |         40 |
+| /home/ashishm1/ecom-project/lib/types/address.types.ts                           | TypeScript         |         10 |          0 |          1 |         11 |
+| /home/ashishm1/ecom-project/lib/types/cart.types.ts                              | TypeScript         |         51 |          2 |         10 |         63 |
+| /home/ashishm1/ecom-project/lib/types/favourites.types.ts                        | TypeScript         |         10 |          0 |          2 |         12 |
+| /home/ashishm1/ecom-project/lib/types/general.types.ts                           | TypeScript         |          6 |          0 |          1 |          7 |
+| /home/ashishm1/ecom-project/lib/types/orders.types.ts                            | TypeScript         |         41 |          0 |          6 |         47 |
+| /home/ashishm1/ecom-project/lib/types/product.types.ts                           | TypeScript         |         84 |          1 |         12 |         97 |
+| /home/ashishm1/ecom-project/lib/utils.ts                                         | TypeScript         |          5 |          0 |          2 |          7 |
+| /home/ashishm1/ecom-project/lib/validations/admin-cart.types.ts                  | TypeScript         |         72 |          3 |         13 |         88 |
+| /home/ashishm1/ecom-project/lib/validations/product-schema.ts                    | TypeScript         |         38 |          0 |          5 |         43 |
+| /home/ashishm1/ecom-project/n.ts                                                 | TypeScript         |          0 |          2 |          1 |          3 |
+| /home/ashishm1/ecom-project/next.config.ts                                       | TypeScript         |         31 |          2 |          5 |         38 |
+| /home/ashishm1/ecom-project/package-lock.json                                    | JSON               |     11,174 |          0 |          1 |     11,175 |
+| /home/ashishm1/ecom-project/package.json                                         | JSON               |         81 |          0 |          1 |         82 |
+| /home/ashishm1/ecom-project/postcss.config.mjs                                   | JavaScript         |          6 |          0 |          2 |          8 |
+| /home/ashishm1/ecom-project/public/Tech Bar (10).svg                             | XML                |         13 |          0 |          1 |         14 |
+| /home/ashishm1/ecom-project/public/Tech Bar (11).svg                             | XML                |         55 |          1 |          1 |         57 |
+| /home/ashishm1/ecom-project/public/Tech Bar (12).svg                             | XML                |          9 |          0 |          1 |         10 |
+| /home/ashishm1/ecom-project/public/Tech Bar (4).svg                              | XML                |         14 |          0 |          1 |         15 |
+| /home/ashishm1/ecom-project/public/Tech Bar (7).svg                              | XML                |         10 |          0 |          1 |         11 |
+| /home/ashishm1/ecom-project/public/Techbar.svg                                   | XML                |         15 |          0 |          1 |         16 |
+| /home/ashishm1/ecom-project/public/apple.svg                                     | XML                |          1 |          0 |          0 |          1 |
+| /home/ashishm1/ecom-project/public/cartempty.svg                                 | XML                |          1 |          0 |          0 |          1 |
+| /home/ashishm1/ecom-project/public/file.svg                                      | XML                |          1 |          0 |          0 |          1 |
+| /home/ashishm1/ecom-project/public/globe.svg                                     | XML                |          1 |          0 |          0 |          1 |
+| /home/ashishm1/ecom-project/public/google.svg                                    | XML                |          2 |          0 |          0 |          2 |
+| /home/ashishm1/ecom-project/public/menu.svg                                      | XML                |          3 |          0 |          1 |          4 |
+| /home/ashishm1/ecom-project/public/next.svg                                      | XML                |          1 |          0 |          0 |          1 |
+| /home/ashishm1/ecom-project/public/tiktok-circle.svg                             | XML                |          4 |          0 |          1 |          5 |
+| /home/ashishm1/ecom-project/public/vercel.svg                                    | XML                |          1 |          0 |          0 |          1 |
+| /home/ashishm1/ecom-project/public/whatsapp.svg                                  | XML                |         11 |          0 |          0 |         11 |
+| /home/ashishm1/ecom-project/public/window.svg                                    | XML                |          1 |          0 |          0 |          1 |
+| /home/ashishm1/ecom-project/scripts/category.seed.ts                             | TypeScript         |          0 |          0 |          1 |          1 |
+| /home/ashishm1/ecom-project/scripts/products.seed.ts                             | TypeScript         |        161 |         14 |         26 |        201 |
+| /home/ashishm1/ecom-project/seed.ts                                              | TypeScript         |         13 |         65 |         11 |         89 |
+| /home/ashishm1/ecom-project/seed/cart.seed.ts                                    | TypeScript         |          0 |          0 |          1 |          1 |
+| /home/ashishm1/ecom-project/seed/categories.seed.ts                              | TypeScript         |         47 |          0 |         12 |         59 |
+| /home/ashishm1/ecom-project/seed/product.seed.ts                                 | TypeScript         |        243 |         81 |         30 |        354 |
+| /home/ashishm1/ecom-project/server.ts                                            | TypeScript         |          9 |          0 |          2 |         11 |
+| /home/ashishm1/ecom-project/test-schema.ts                                       | TypeScript         |          2 |          0 |          1 |          3 |
+| /home/ashishm1/ecom-project/tsconfig.json                                        | JSON with Comments |         34 |          0 |          1 |         35 |
+| /home/ashishm1/ecom-project/utils/links.ts                                       | TypeScript         |         12 |          0 |          3 |         15 |
+| Total                                                                            |                    |     50,881 |      3,872 |      3,090 |     57,843 |
++----------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
