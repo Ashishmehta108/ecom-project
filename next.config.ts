@@ -7,10 +7,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  i18n: {
-    locales: ["en", "pt"], // English + Portuguese (Portugal)
-    defaultLocale: "en",
-  },
 
   images: {
     remotePatterns: [
