@@ -290,7 +290,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
       <div className="relative w-full overflow-hidden">
         <div
           className={`
-            relative overflow-hidden rounded-lg shadow-2xl
+            relative overflow-hidden  shadow-2xl
             min-h-[280px] sm:min-h-[350px] md:min-h-[420px] lg:min-h-[500px]
             transition-colors duration-700 ease-out
             ${slides[activeIndex]?.bgColor || "bg-[#1a1d2e]"}
