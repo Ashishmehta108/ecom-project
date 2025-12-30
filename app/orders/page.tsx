@@ -1,198 +1,45 @@
-// "use client";
-
-// import { useState } from "react";
-// import { PackageCheck, Clock, Truck } from "lucide-react";
-
-// export default function OrdersPage() {
-//   const [orders] = useState([
-//     {
-//       id: "iQOO Neo 10",
-//       date: "14 Nov 2025",
-//       status: "Delivered",
-//       total: 18999,
-//       items: 1,
-//       image:
-//         "https://m.media-amazon.com/images/I/41XfwBsC7wL._SY300_SX300_QL70_FMwebp_.jpg",
-//       address: {
-//         name: "Abhishek",
-//         line1: "Lalru, Punjab, India",
-//         line2: "Lalru, Punjab",
-//         phone: "6284698424",
-//       },
-//       method: "COD",
-//       payment: "Paid",
-//     },
-//     {
-//       id: "acer Aspire Lite",
-//       date: "13 Nov 2025",
-//       status: "Shipped",
-//       total: 46999,
-//       items: 1,
-//       image:
-//         "https://m.media-amazon.com/images/I/51hgSf-zC-L._SY300_SX300_QL70_FMwebp_.jpg",
-//       address: {
-//         name: "Abhishek",
-//         line1: "Lalru, Punjab, India",
-//         line2: "Lalru, Punjab",
-//         phone: "6284698424",
-//       },
-//       method: "COD",
-//       payment: "Pending",
-//     },
-//     {
-//       id: "Boat Airdopes Joy",
-//       date: "12 Nov 2025",
-//       status: "Processing",
-//       total: 799,
-//       items: 1,
-//       image:
-//         "https://m.media-amazon.com/images/I/512jrg8-68L._AC_UY327_FMwebp_QL65_.jpg",
-//       address: {
-//         name: "Abhishek",
-//         line1: "Lalru, Punjab, India",
-//         line2: "Lalru, Punjab",
-//         phone: "6284698424",
-//       },
-//       method: "COD",
-//       payment: "Pending",
-//     },
-//   ]);
-
-//   // 👉 Format EUR with commas
-//   const formatEuro = (amount: number) => {
-//     return "€" + amount.toLocaleString("en");
-//   };
-
-//   const statusColor = (status: string) => {
-//     switch (status) {
-//       case "Delivered":
-//         return "text-green-600 dark:text-green-400";
-//       case "Shipped":
-//         return "text-blue-600 dark:text-blue-400";
-//       default:
-//         return "text-yellow-600 dark:text-yellow-400";
-//     }
-//   };
-
-//   const statusIcon = (status: string) => {
-//     switch (status) {
-//       case "Delivered":
-//         return <PackageCheck className="w-4 h-4" />;
-//       case "Shipped":
-//         return <Truck className="w-4 h-4" />;
-//       default:
-//         return <Clock className="w-4 h-4" />;
-//     }
-//   };
-
-//   return (
-//     <div className="max-w-6xl mx-auto px-4 py-8">
-//       <h1 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
-//         My Orders
-//       </h1>
-
-//       <div className="border-t border-gray-200 dark:border-gray-700 pt-6 space-y-8">
-//         {orders.map((order) => (
-//           <div
-//             key={order.id}
-//             className="
-//               flex flex-col
-//               md:flex-row md:items-center md:justify-between
-//               gap-6 md:gap-10
-//               border-b pb-6 last:border-b-0
-//               border-gray-200 dark:border-gray-700
-//               bg-white dark:bg-neutral-950 rounded-lg p-4 shadow-sm
-//             "
-//           >
-//             {/* LEFT: PRODUCT */}
-//             <div className="flex items-center gap-4 md:w-1/3">
-//               <div className="w-20 h-20 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
-//                 <img
-//                   src={order.image}
-//                   className="w-full h-full object-cover"
-//                   alt=""
-//                 />
-//               </div>
-
-//               <div className="flex-1">
-//                 <p className="font-semibold text-gray-900 dark:text-gray-100">
-//                   {order.id} x {order.items}
-//                 </p>
-//                 <p className="text-sm text-gray-600 dark:text-gray-300">
-//                   Items: {order.items}
-//                 </p>
-
-//                 {/* Desktop price */}
-//                 <p className="hidden md:block font-medium mt-2 text-gray-800 dark:text-gray-200">
-//                   {order.total}
-//                 </p>
-//               </div>
-//             </div>
-
-//             {/* CENTER: ADDRESS */}
-//             <div className="text-left md:text-center md:w-1/3 text-sm text-gray-700 dark:text-gray-300 leading-5">
-//               <p className="font-semibold">{order.address.name}</p>
-//               <p>{order.address.line1}</p>
-//               <p>{order.address.line2}</p>
-//               <p>{order.address.phone}</p>
-//             </div>
-
-//             {/* RIGHT: DETAILS */}
-//             <div className="text-left md:text-right md:w-1/3 text-sm text-gray-700 dark:text-gray-300 space-y-1">
-//               {/* Mobile price */}
-//               <p className="md:hidden font-medium text-gray-800 dark:text-gray-200 text-lg">
-//                 {order.total}
-//               </p>
-
-//               <p>Method: {order.method}</p>
-//               <p>Date: {order.date}</p>
-//               <p>Payment: {order.payment}</p>
-
-//               <div
-//                 className={`flex items-center gap-1 mt-2 ${statusColor(
-//                   order.status
-//                 )}`}
-//               >
-//                 {statusIcon(order.status)}
-//                 <span>{order.status}</span>
-//               </div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-
 import { db } from "@/lib/db";
 import OrdersClient from "@/components/orders/page";
 import { getUserSession } from "@/server";
+import Link from "next/link";
 
 export default async function OrdersPage() {
-  const data = await getUserSession();
+  const session = await getUserSession();
+  const locale = session?.user.locale ?? "en";
 
-  const userId = data?.user.id;
-  if (!data?.user.id) {
-    return <div className="p-6">Please log in to view orders.</div>;
+  if (!session?.user.id) {
+    const message = locale === "pt" ? "Por favor, faça login para ver os pedidos." : "Please log in to view orders.";
+    const loginBtn = locale === "pt" ? "Entrar" : "Sign In";
+
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-center">
+        <p className="text-lg font-medium text-neutral-700 dark:text-neutral-300">
+          {message}
+        </p>
+        <Link
+          href="/auth/signin"
+          className="px-6 py-2 rounded-lg bg-neutral-900 text-white dark:bg-neutral-200 dark:text-neutral-900 font-medium"
+        >
+          {loginBtn}
+        </Link>
+      </div>
+    );
   }
 
-  const userOrders = await db.query.orders.findMany({
-    where: (table, { eq }) => eq(table.userId, userId!),
+  const orders = await db.query.orders.findMany({
+    where: (t, { eq }) => eq(t.userId, session.user.id),
     with: {
       shippingAddress: true,
       items: {
         with: {
           product: {
-            with: {
-              productImages: true,
-            },
+            with: { productImages: true },
           },
         },
       },
     },
-    orderBy: (table, { desc }) => [desc(table.createdAt)],
+    orderBy: (t, { desc }) => [desc(t.createdAt)],
   });
-  console.log(userOrders);
 
-  return <OrdersClient orders={userOrders} />;
+  return <OrdersClient orders={orders} locale={locale} />;
 }
