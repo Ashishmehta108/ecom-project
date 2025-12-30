@@ -45,7 +45,7 @@ export default function Sidebar() {
       icon: ShoppingCart,
       href: "/admin/customers/order",
     },
-    { name: "Settings", icon: Settings, href: "/admin/settings" },
+    
   ];
 
   const isActive = (href: string) =>

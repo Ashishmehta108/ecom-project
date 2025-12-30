@@ -1,5 +1,8 @@
+"use client";
+
 import { create } from "zustand";
 import { toast } from "sonner";
+import { getFavouriteProducts, toggleFavouriteAction } from "@/lib/actions/favourite-actions";
 
 export type ProductInFavourite = {
   productId: string;
@@ -12,75 +15,49 @@ type FavouriteState = {
   items: ProductInFavourite[];
   loading: boolean;
 
+  setFavouriteItems: (items: ProductInFavourite[]) => void;
   fetchFavourites: () => Promise<void>;
-  toggleFavourite: (item: ProductInFavourite) => Promise<void>;
-  setFavouriteItems: (items: ProductInFavourite[]) => void; // ✅ ADD THIS
+  toggleFavourite: (item: ProductInFavourite) => void;
 };
 
 export const useFavouriteState = create<FavouriteState>((set, get) => ({
   items: [],
   loading: false,
 
-  // 🟢 allow direct overrides from UI or API re-sync
-  setFavouriteItems: (items) => set({ items }), // ✅ IMPLEMENTATION HERE
+  // ⭐ Add back direct setter (needed on Favorites page)
+  setFavouriteItems: (items) => set({ items }),
 
   fetchFavourites: async () => {
     set({ loading: true });
-
     try {
-      const res = await fetch("/api/favorites", {
-        method: "GET",
-        cache: "no-store",
-      });
-
-      if (!res.ok) throw new Error("Failed req");
-
-      const data = await res.json();
-
+      const data = await getFavouriteProducts();
       set({ items: data || [] });
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to load favorites");
+    } catch {
+      toast.error("Failed to load favourites");
     } finally {
       set({ loading: false });
     }
   },
 
   toggleFavourite: async (item) => {
-    const prev = get().items;
-    const exists = prev.some((i) => i.productId === item.productId);
+    const prevItems = get().items;
+    const exists = prevItems.some((i) => i.productId === item.productId);
 
-    // Optimistic
-    let updated;
-    if (exists) {
-      updated = prev.filter((i) => i.productId !== item.productId);
-      toast("Removed from favourites");
-    } else {
-      updated = [...prev, item];
-      toast.success("Added to favourites ❤️");
-    }
+    // ⚡ Instant optimistic update
+    const updatedItems = exists
+      ? prevItems.filter((i) => i.productId !== item.productId)
+      : [...prevItems, item];
 
-    set({ items: updated });
+    set({ items: updatedItems });
 
-    const res = await fetch("/api/favorites", {
-      method: "POST",
-      body: JSON.stringify({
-        productId: item.productId,
-        image: item.image,
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
+    toast(exists ? "Removed ❤️" : "Added ❤️");
 
-    const result = await res.json();
+    // 🔁 Server update in background
+    const res = await toggleFavouriteAction(item.productId, item.image);
 
-    if (!res.ok || !result.success) {
-      toast.error("Something went wrong");
-      set({ items: prev }); // rollback
-      return;
-    }
-
-    if (result.removed) {
-      set({ items: prev.filter((i) => i.productId !== item.productId) });
+    if (!res.success) {
+      set({ items: prevItems }); // rollback
+      toast.error("Please login first");
     }
   },
 }));

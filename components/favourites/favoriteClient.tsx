@@ -28,11 +28,16 @@ export default function FavoritesClient({ initialItems }: { initialItems: any[] 
   const { locale } = useLanguage();
   const text = t[locale];
 
-  const { items, toggleFavourite, setFavouriteItems } = useFavouriteState();
+  const { items, setFavouriteItems, fetchFavourites, toggleFavourite } =
+  useFavouriteState();
 
   useEffect(() => {
-    setFavouriteItems(initialItems);
-  }, [initialItems, setFavouriteItems]);
+    if (initialItems?.length > 0) {
+      setFavouriteItems(initialItems);
+    } else {
+      fetchFavourites();
+    }
+  }, [initialItems, setFavouriteItems, fetchFavourites]);
 
   const hasItems = items.length > 0;
 
@@ -40,7 +45,6 @@ export default function FavoritesClient({ initialItems }: { initialItems: any[] 
     <main className="min-h-screen bg-white dark:bg-neutral-950">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-semibold text-neutral-900 dark:text-white sm:text-3xl">
             {text.heading}
@@ -52,7 +56,6 @@ export default function FavoritesClient({ initialItems }: { initialItems: any[] 
           )}
         </div>
 
-        {/* Empty State */}
         {!hasItems ? (
           <div className="flex flex-col items-center justify-center text-center rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 py-20 px-6">
             <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-neutral-200 dark:bg-neutral-800">
@@ -69,10 +72,12 @@ export default function FavoritesClient({ initialItems }: { initialItems: any[] 
             </Link>
           </div>
         ) : (
-          /* Products Grid */
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {items.map((item) => {
-              const localizedName = item.name?.[locale] || item.name?.en;
+              const localizedName =
+                typeof item.name === "string"
+                  ? item.name
+                  : item.name?.[locale] || item.name?.en;
               const imageUrl = item.image || "/placeholder.png";
               const price = item.price || 0;
 
@@ -87,7 +92,7 @@ export default function FavoritesClient({ initialItems }: { initialItems: any[] 
                         src={imageUrl}
                         alt={localizedName}
                         fill
-                        className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                        className="object-contain mix-blend-multiply p-4 transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>
                   </Link>

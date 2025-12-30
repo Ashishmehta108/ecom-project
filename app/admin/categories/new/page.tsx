@@ -12,14 +12,8 @@ export default function CreateCategoryPage() {
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
-  async function createCategory(formData: FormData) {
-    await fetch("/api/categories", {
-      method: "POST",
-      body: formData,
-    });
-
-    router.push("/admin/categories");
-  }
+  const [nameEN, setNameEN] = useState("");
+  const [namePT, setNamePT] = useState("");
 
   function handleImage(e: any) {
     const file = e.target.files[0];
@@ -29,9 +23,24 @@ export default function CreateCategoryPage() {
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    const form = new FormData(e.target);
-    form.append("image", image!);
-    await createCategory(form);
+
+    const formData = new FormData();
+    formData.append(
+      "name",
+      JSON.stringify({
+        en: nameEN,
+        pt: namePT,
+      })
+    );
+
+    if (image) formData.append("image", image);
+
+    await fetch("/api/categories", {
+      method: "POST",
+      body: formData,
+    });
+
+    router.push("/admin/categories");
   }
 
   return (
@@ -45,16 +54,29 @@ export default function CreateCategoryPage() {
 
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Category Name */}
+            {/* English Name */}
             <div className="space-y-2">
               <Label className="text-sm text-neutral-600 dark:text-neutral-300">
-                Category Name
+                Name (English)
               </Label>
               <Input
-                name="name"
+                value={nameEN}
+                onChange={(e) => setNameEN(e.target.value)}
                 placeholder="e.g. Electronics"
                 required
-                className="border-neutral-300 dark:border-neutral-700 rounded-lg"
+              />
+            </div>
+
+            {/* Portuguese Name */}
+            <div className="space-y-2">
+              <Label className="text-sm text-neutral-600 dark:text-neutral-300">
+                Nome (Português)
+              </Label>
+              <Input
+                value={namePT}
+                onChange={(e) => setNamePT(e.target.value)}
+                placeholder="ex.: Eletrônicos"
+                required
               />
             </div>
 
@@ -63,32 +85,18 @@ export default function CreateCategoryPage() {
               <Label className="text-sm text-neutral-600 dark:text-neutral-300">
                 Category Image
               </Label>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={handleImage}
-                required
-                className="border-neutral-300 dark:border-neutral-700 rounded-lg"
-              />
+              <Input type="file" accept="image/*" onChange={handleImage} required />
 
-              {/* Modern preview box */}
               {preview && (
                 <div className="mt-3">
-                  <div className="w-32 h-32 rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800">
-                    <img
-                      src={preview}
-                      className="w-full h-full object-cover"
-                      alt="Preview"
-                    />
+                  <div className="w-32 h-32 rounded-lg overflow-hidden border">
+                    <img src={preview} className="w-full h-full object-cover" />
                   </div>
                 </div>
               )}
             </div>
 
-            <Button
-              type="submit"
-              className="w-full rounded-lg mt-2 bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 hover:opacity-90 transition"
-            >
+            <Button type="submit" className="w-full rounded-lg mt-2">
               Create Category
             </Button>
           </form>

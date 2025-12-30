@@ -1,67 +1,77 @@
 "use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProductCard } from "@/components/products/ProductCard";
 import { LayoutGrid, List } from "lucide-react";
 
-export default function ProductsListWrapper({ products, userId ,admin}: any) {
+export default function ProductsListWrapper({ products, userId, admin }: any) {
   const [view, setView] = useState<"grid" | "list">("grid");
-  
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setView("list");
+      }
+    };
+
+    handleResize(); // Run once on mount
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <div className="space-y-5">
-      {/* Toggle */}
-      <div className="flex justify-end">
-        <div
-          className="flex items-center gap-1.5 bg-white dark:bg-neutral-900 
-                        border border-neutral-200 dark:border-neutral-800 
-                        rounded-full px-2 py-1 shadow-sm"
+    <div className="w-full px-3 sm:px-4 lg:px-6">
+      {/* Toggle Controls — hidden on mobile */}
+      <div className="hidden sm:flex justify-end mb-4 gap-2">
+        <button
+          onClick={() => setView("grid")}
+          aria-label="Grid View"
+          className={`
+            h-8 w-8 flex items-center justify-center rounded-md border transition
+            ${
+              view === "grid"
+                ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 border-neutral-900"
+                : "text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            }
+          `}
         >
-          {/* Grid Button */}
-          <button
-            onClick={() => setView("grid")}
-            className={`h-8 w-8 flex items-center justify-center rounded-full transition
-                        ${
-                          view === "grid"
-                            ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900"
-                            : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                        }`}
-          >
-            <LayoutGrid className="h-4 w-4" />
-          </button>
+          <LayoutGrid size={18} />
+        </button>
 
-          {/* List Button */}
-          <button
-            onClick={() => setView("list")}
-            className={`h-8 w-8 flex items-center justify-center rounded-full transition
-                        ${
-                          view === "list"
-                            ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900"
-                            : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                        }`}
-          >
-            <List className="h-4 w-4" />
-          </button>
-        </div>
+        <button
+          onClick={() => setView("list")}
+          aria-label="List View"
+          className={`
+            h-8 w-8 flex items-center justify-center rounded-md border transition
+            ${
+              view === "list"
+                ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 border-neutral-900"
+                : "text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            }
+          `}
+        >
+          <List size={18} />
+        </button>
       </div>
 
-      {/* Products layout */}
+      {/* Product List */}
       <div
-        className={
-          view === "grid"
-            ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-            : "flex flex-col gap-4"
-        }
+        className={`
+          transition-all duration-300 gap-3 sm:gap-4
+          ${
+            view === "grid"
+              ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+              : "flex flex-col"
+          }
+        `}
       >
         {products.map((product: any) => (
-          <div key={product.id} className={view === "list" ? "w-full" : ""}>
-            <ProductCard
-              product={product}
-              userId={userId}
-              listView={view === "list"}
-              admin={true}
-            />
-          </div>
+          <ProductCard
+            key={product.id}
+            product={product}
+            userId={userId}
+            admin={admin}
+            view={view}
+          />
         ))}
       </div>
     </div>

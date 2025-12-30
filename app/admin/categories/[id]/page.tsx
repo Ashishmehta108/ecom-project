@@ -7,17 +7,24 @@ import { useRouter } from "next/navigation";
 
 export default function EditCategory(props: any) {
   const router = useRouter();
-
   const { id } = use(props.params);
 
   const [category, setCategory] = useState<any>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [newImage, setNewImage] = useState<File | null>(null);
 
+  // Form fields for multilingual name
+  const [nameEN, setNameEN] = useState("");
+  const [namePT, setNamePT] = useState("");
+
   useEffect(() => {
     fetch(`/api/categories/${id}`)
       .then((res) => res.json())
-      .then(setCategory);
+      .then((data) => {
+        setCategory(data);
+        setNameEN(data.name?.en || "");
+        setNamePT(data.name?.pt || "");
+      });
   }, [id]);
 
   function handleImage(e: any) {
@@ -28,13 +35,23 @@ export default function EditCategory(props: any) {
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    const data = new FormData(e.target);
 
-    if (newImage) data.append("image", newImage);
+    const formData = new FormData();
+    formData.append(
+      "name",
+      JSON.stringify({
+        en: nameEN,
+        pt: namePT,
+      })
+    );
+
+    if (newImage) {
+      formData.append("image", newImage);
+    }
 
     await fetch(`/api/categories/${id}`, {
       method: "PUT",
-      body: data,
+      body: formData,
     });
 
     router.push("/admin/categories");
@@ -47,14 +64,26 @@ export default function EditCategory(props: any) {
       <h1 className="text-2xl font-bold mb-4">Edit Category</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Input name="name" defaultValue={category.name} />
+        {/* Multilingual Inputs */}
+        <div>
+          <label className="font-medium">Name (English)</label>
+          <Input value={nameEN} onChange={(e) => setNameEN(e.target.value)} />
+        </div>
 
+        <div>
+          <label className="font-medium">Nome (Português)</label>
+          <Input value={namePT} onChange={(e) => setNamePT(e.target.value)} />
+        </div>
+
+        {/* Preview Current Image */}
         <p className="font-semibold">Current Image:</p>
         <img
           src={preview || category.imageUrl}
-          className="w-32 h-32 rounded-md object-cover"
+          className="w-32 h-32 rounded-md object-cover bg-gray-200"
+          alt="Category"
         />
 
+        {/* Upload New Image */}
         <Input type="file" accept="image/*" onChange={handleImage} />
 
         <Button type="submit">Save Changes</Button>

@@ -297,7 +297,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
           `}
         >
           <div
-            className="flex h-full transition-transform duration-700 ease-out"
+            className="flex h-full transition-transform duration-700 ease-out "
             style={{
               width: `${totalSlides * 100}%`,
               transform: `translateX(-${activeIndex * (100 / totalSlides)}%)`,
@@ -309,17 +309,17 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
               return (
                 <div
                   key={index}
-                  className="w-full py-10 max-w-3xl mx-auto flex-shrink-0"
+                  className="w-full  py-10 sm:max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto flex-shrink-0"
                   style={{ width: `${100 / totalSlides}%` }}
                   aria-hidden={!isActive}
                 >
-                  <div className="h-full flex  sm:flex-row items-center justify-between px-4 sm:px-8 md:px-12 lg:px-16 py-4 sm:py-6 md:py-8 gap-4 sm:gap-6 md:gap-8 lg:gap-12">
+                  <div className="h-full flex  sm:flex-row items-center justify-between px-4 sm:px-8 md:px-12 lg:px-16 py-4 sm:py-6 md:py-8 gap-4 sm:gap-6 md:gap-8  w-full g:gap-12">
                     {/* Content Section with Fade-in Animation */}
                     <div
                       className={`
                         flex flex-col gap-2 sm:gap-3 md:gap-4 max-w-[400px] 
                         text-center sm:text-left w-full order-1 sm:order-1
-                        transition-all duration-700 ease-out
+                        transition-all duration-700 ease-out sm:max-w-[500px] md:max-w-[580px] lg:max-w-[650px] xl:max-w-[700px]   
                         ${isActive 
                           ? 'opacity-100 translate-y-0' 
                           : 'opacity-0 translate-y-4'
@@ -337,15 +337,15 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
                           </span>
                         )}
 
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-tight text-white drop-shadow-lg">
+                        <h2 className="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-tight text-white drop-shadow-lg">
                           {slide.title}
                         </h2>
 
-                        <p className="text-sm sm:text-base text-neutral-200 leading-relaxed mt-2">
+                        <p className="text-xs hidden sm:block sm:text-xl text-neutral-200 leading-relaxed mt-2">
                           {slide.shortText}
                         </p>
 
-                        <p className="text-base sm:text-lg md:text-xl font-bold text-white mt-2">
+                        <p className="text-lg sm:text-xl md:text-2xl lg:text-xl font-bold text-neutral-300 mt-2">
                           {slide.discount}
                         </p>
 
@@ -358,14 +358,14 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
                               inline-flex items-center justify-center
                               px-5 py-2.5
                               mt-4
-                              text-sm font-semibold
+                              text-sm sm:text-base md:text-lg lg:text-xl font-semibold
                               bg-indigo-600 text-white
                               rounded-lg shadow-lg
                               transition-all duration-300 ease-out
-                              hover:bg-indigo-500 hover:shadow-xl hover:scale-[1.05] hover:-translate-y-0.5
-                              active:scale-95 active:shadow-md
+                              hover:bg-indigo-500 hover:shadow-xl  hover:-translate-y-0.5
+                              active:shadow-md
                               focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-transparent
-                              max-w-[160px]
+                              max-w-[180px] sm:max-w-[200px] md:max-w-[220px] lg:max-w-[240px] xl:max-w-[260px]
                               mx-auto sm:mx-0
                             "
                           >

@@ -81,7 +81,7 @@ export default async function ProductPage({
               className="mt-6 rounded-full bg-neutral-900 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
             >
               Reset filters
-            </Link>
+          </Link>
           </div>
         ) : (
           <ProductsListWrapper products={products} userId={session?.user.id!} />

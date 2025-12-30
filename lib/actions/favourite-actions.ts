@@ -10,7 +10,6 @@ export async function getFavouriteProducts() {
   const session = await getUserSession();
   if (!session) return [];
 
-  // Get the favorites list + items + product + productImages
   const fav = await db.query.favorites.findFirst({
     where: eq(favorites.userId, session.user.id),
     with: {
@@ -28,24 +27,18 @@ export async function getFavouriteProducts() {
 
   if (!fav) return [];
 
-  // Transform into clean frontend format
-  const formatted = fav.items.map((item) => {
-    const p = item.product;
-    const primaryImage =
-    //@ts-ignore
-      p.productImages?.find((img) => img.position === "0") ||
-      //@ts-ignore
-      p.productImages?.[0];
+  return fav.items.map(({ product, imageUrl }) => {
+    const img =
+      product.productImages?.find((img) => img.position === "0") ||
+      product.productImages?.[0];
 
     return {
-      productId: p.id,
-      name: p.productName,
-      price: p.pricing.price,
-      image: primaryImage?.url || item.imageUrl, 
+      productId: product.id,
+      name: product.productName,
+      price: product.pricing.price,
+      image: img?.url || imageUrl || "/placeholder.png",
     };
   });
-
-  return formatted;
 }
 
 async function getOrCreateFavoriteList(userId: string) {
@@ -66,12 +59,9 @@ async function getOrCreateFavoriteList(userId: string) {
 
 export async function toggleFavouriteAction(productId: string, image: string) {
   const session = await getUserSession();
+  if (!session) return { success: false, removed: false };
 
-  if (!session) return { success: false, message: "Not authenticated" };
-
-  const userId = session.user.id;
-
-  const favId = await getOrCreateFavoriteList(userId);
+  const favId = await getOrCreateFavoriteList(session.user.id);
 
   const existing = await db.query.favoriteItem.findFirst({
     where: and(
@@ -93,4 +83,31 @@ export async function toggleFavouriteAction(productId: string, image: string) {
   });
 
   return { success: true, removed: false };
+}
+
+// 🆕 New: Sync full favourite list with DB
+export async function setFavouriteItemsAction(items: any[]) {
+  const session = await getUserSession();
+  if (!session) return { success: false };
+
+  const userId = session.user.id;
+  const favId = await getOrCreateFavoriteList(userId);
+
+  // Delete all current favourites
+  await db.delete(favoriteItem).where(eq(favoriteItem.favoritesId, favId));
+
+  if (items.length === 0) {
+    return { success: true };
+  }
+
+  await db.insert(favoriteItem).values(
+    items.map((item) => ({
+      id: nanoid(),
+      favoritesId: favId,
+      productId: item.productId,
+      imageUrl: item.image,
+    }))
+  );
+
+  return { success: true };
 }
