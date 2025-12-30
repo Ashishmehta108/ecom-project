@@ -1,55 +1,118 @@
+// import fs from "fs";
+// import path from "path";
+// import ImageKit from "imagekit";
+// import { nanoid } from "nanoid";
+// import { db } from "@/lib/db";
+// import { category } from "@/lib/db/schema";
+// import { client } from "@/lib/imagekit/imageUpload";
+
+// const CATEGORY_NAMES = [
+//   "Electronics",
+//   "Earphones",
+//   "Tablet",
+//   "Watch",
+//   "Speaker",
+//   "Phones",
+//   "Refurbished",
+// ];
+
+// const BASE_FOLDER = path.join(process.cwd(), "/categoryimages");
+
+// async function uploadCategoryFolder(categoryName: string) {
+//   const file = path.join(BASE_FOLDER, `${categoryName}.jpeg`);
+//   console.log(` Uploading ${file} for ${categoryName}...`);
+
+//   const upload = await client.upload({
+//     file: fs.createReadStream(file),
+//     fileName: `${categoryName}_${Date.now()}${path.extname(categoryName)}`,
+//     folder: "/category-images",
+//     tags: ["category"],
+//   });
+
+//   console.log(` Uploaded ${categoryName}:`, upload.url);
+
+//   return upload.url;
+// }
+
+// export async function seedCategory() {
+//   console.log("🌱 Starting category upload + seed...");
+//   await db.delete(category);
+//   const finalCategories: any[] = [];
+
+//   for (const name of CATEGORY_NAMES) {
+//     const imageUrl = await uploadCategoryFolder(name);
+//     console.log(`📝 Preparing category: ${name} with image URL: ${imageUrl}`);
+//     finalCategories.push({
+//       id: nanoid(),
+//       name,
+//       imageUrl: imageUrl ,
+//     });
+//   }
+
+//   console.log("📝 Final Prepared Categories:", finalCategories);
+
+//   await db.insert(category).values(finalCategories);
+
+//   console.log("🎉 Categories seeded successfully!");
+//   return finalCategories;
+// }
+
 import fs from "fs";
 import path from "path";
-import ImageKit from "imagekit";
 import { nanoid } from "nanoid";
 import { db } from "@/lib/db";
 import { category } from "@/lib/db/schema";
 import { client } from "@/lib/imagekit/imageUpload";
 
+// Updated multilingual category names
 const CATEGORY_NAMES = [
-  "Electronics",
-  "Earphones",
-  "Tablet",
-  "Watch",
-  "Speaker",
-  "Phones",
-  "Refurbished",
+  { en: "Electronics", pt: "Eletrônicos" },
+  { en: "Earphones", pt: "Fones de ouvido" },
+  { en: "Tablet", pt: "Tablet" },
+  { en: "Watch", pt: "Relógio" },
+  { en: "Speaker", pt: "Alto-falante" },
+  { en: "Phones", pt: "Telefones" },
+  { en: "Refurbished", pt: "Recondicionado" },
 ];
 
 const BASE_FOLDER = path.join(process.cwd(), "/categoryimages");
 
-async function uploadCategoryFolder(categoryName: string) {
-  const file = path.join(BASE_FOLDER, `${categoryName}.jpeg`);
-  console.log(` Uploading ${file} for ${categoryName}...`);
+async function uploadCategoryImage(categoryName: string) {
+  const file = path.join(BASE_FOLDER, `${categoryName.toLowerCase()}.jpeg`);
+  console.log(`📤 Uploading ${file} for ${categoryName}...`);
 
   const upload = await client.upload({
     file: fs.createReadStream(file),
-    fileName: `${categoryName}_${Date.now()}${path.extname(categoryName)}`,
+    fileName: `${categoryName}-${Date.now()}.jpeg`,
     folder: "/category-images",
     tags: ["category"],
   });
 
-  console.log(` Uploaded ${categoryName}:`, upload.url);
+  console.log(`✔️ Uploaded ${categoryName}:`, upload.url);
 
   return upload.url;
 }
 
 export async function seedCategory() {
   console.log("🌱 Starting category upload + seed...");
+
   await db.delete(category);
   const finalCategories: any[] = [];
 
-  for (const name of CATEGORY_NAMES) {
-    const imageUrl = await uploadCategoryFolder(name);
-    console.log(`📝 Preparing category: ${name} with image URL: ${imageUrl}`);
+  for (const cat of CATEGORY_NAMES) {
+    const imageUrl = await uploadCategoryImage(cat.en);
+
     finalCategories.push({
       id: nanoid(),
-      name,
-      imageUrl: imageUrl ,
+      name: {
+        en: cat.en,
+        pt: cat.pt,
+      },
+      imageUrl,
     });
-  }
 
-  console.log("📝 Final Prepared Categories:", finalCategories);
+    console.log(`📝 Prepared:`, cat.en);
+  }
 
   await db.insert(category).values(finalCategories);
 

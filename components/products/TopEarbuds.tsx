@@ -5,16 +5,19 @@ import Link from "next/link";
 import Container from "../giobal/Container";
 import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/app/context/languageContext";
 
 export default function TopEarbudsSection() {
   const [earbuds, setEarbuds] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const { locale } = useLanguage();
 
   useEffect(() => {
     const fetchEarbuds = async () => {
       try {
-        const res = await fetch("/api/earbuds");
+        const res = await fetch(`/api/earbuds?lang=${locale}`);
         const data = await res.json();
+        console.log(data)
         setEarbuds(data);
       } catch (err) {
         console.error("Earbuds fetch failed:", err);
@@ -24,7 +27,7 @@ export default function TopEarbudsSection() {
     };
 
     fetchEarbuds();
-  }, []);
+  }, [locale]);
 
   if (loading) {
     return (
@@ -66,7 +69,7 @@ export default function TopEarbudsSection() {
         >
           {earbuds.map((e) => (
             <Link
-              href={`/product/${e.id}`}
+              href={`/products/${e.id}`}
               key={e.id}
               className="
                 group
@@ -83,7 +86,7 @@ export default function TopEarbudsSection() {
               {/* IMAGE BOX */}
               <div className="relative w-full bg-white dark:bg-neutral-950 p-4 rounded-[20px] flex items-center justify-center">
                 <Image
-                  src={e.productImages?.[0]?.url || "/placeholder.png"}
+                  src={e.image || "/placeholder.png"}
                   alt={e.name}
                   width={400}
                   height={400}
@@ -143,13 +146,14 @@ export default function TopEarbudsSection() {
 
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-[15px] font-bold text-neutral-900 dark:text-neutral-50">
-                    €{e.price}
+                    €{e.discountedPrice?.toFixed(2) || e.price?.toFixed(2) || "0.00"}
                   </span>
+                  {e.discount > 0 && (
+                    <span className="line-through text-neutral-400 dark:text-neutral-600 text-[12px]">
+                      €{e.price?.toFixed(2)}
+                    </span>
+                  )}
                 </div>
-
-                <span className="line-through text-neutral-400 dark:text-neutral-600 text-[12px]">
-                  €{e.oldPrice}
-                </span>
               </div>
             </Link>
           ))}

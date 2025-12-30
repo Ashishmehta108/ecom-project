@@ -1,159 +1,1142 @@
-{
-  "productName": {
-    "en": "Hoco EW30 Intelligent True Wireless Bluetooth Earphone",
-    "pt": "Hoco EW30 Fone de Ouvido Bluetooth True Wireless Inteligente"
-  },
-  "brand": "Hoco",
-  "categories":["Earphones"],
-  "model": "EW30",
-
-  "subCategory": {
-    "en": "Bluetooth Earphone",
-    "pt": "Fone de Ouvido Bluetooth"
-  },
-
-  "description": {
-    "en": "Hoco EW30 is a true wireless Bluetooth 5.3 headset with low latency, long standby time, LED indicators, and ergonomic design.",
-    "pt": "O Hoco EW30 é um fone de ouvido Bluetooth 5.3 true wireless com baixa latência, longa duração em standby, indicadores LED e design ergonômico."
-  },
-
-  "features": {
-    "en": [
-      "Bluetooth 5.3",
-      "41–50ms low-latency wireless audio",
-      "Charging case 300mAh, Earbuds 25mAh",
-      "3.5 hours use time",
-      "150 hours standby",
-      "Leader–follower switching",
-      "Summon Siri",
-      "LED battery indicator",
-      "IPX-3 waterproof rating"
+[
+    {
+        "productName": {
+          "en": "Hoco EW30 Intelligent True Wireless Bluetooth Earphone",
+          "pt": "Hoco EW30 Fone de Ouvido Bluetooth True Wireless Inteligente"
+        },
+        "brand": "Hoco",
+        "categories": [
+          "Earphones"
+        ],
+        "model": "EW30",
+        "subCategory": {
+          "en": "Bluetooth Earphone",
+          "pt": "Fone de Ouvido Bluetooth"
+        },
+        "description": {
+          "en": "Hoco EW30 is a true wireless Bluetooth 5.3 headset with low latency, long standby time, LED indicators, and ergonomic design.",
+          "pt": "O Hoco EW30 é um fone de ouvido Bluetooth 5.3 true wireless com baixa latência, longa autonomia em standby, indicadores LED e design ergonômico."
+        },
+        "features": {
+          "en": [
+            "Bluetooth 5.3",
+            "41–50ms low-latency wireless audio",
+            "Charging case 300mAh, Earbuds 25mAh",
+            "3.5 hours use time",
+            "150 hours standby",
+            "Leader–follower switching",
+            "Summon Siri",
+            "LED battery indicator",
+            "IPX-3 waterproof rating"
+          ],
+          "pt": [
+            "Bluetooth 5.3",
+            "Áudio sem fio de baixa latência 41–50ms",
+            "Estojo de carregamento 300mAh, Earbuds 25mAh",
+            "Até 3,5 horas de uso",
+            "150 horas em standby",
+            "Alternância líder–seguidor",
+            "Ativação da Siri",
+            "Indicador de bateria LED",
+            "Classificação à prova d'água IPX-3"
+          ]
+        },
+        "pricing": {
+          "price": 660,
+          "currency": "EUR",
+          "discount": 0,
+          "inStock": true
+        },
+        "specifications": {
+          "general": {
+            "productName": {
+              "en": "EW30 Intelligent True Wireless Bluetooth Headset",
+              "pt": "EW30 Fone de Ouvido Bluetooth True Wireless Inteligente"
+            },
+            "brandName": {
+              "en": "Hoco",
+              "pt": "Hoco"
+            },
+            "colors": {
+              "en": "White",
+              "pt": "Branco"
+            },
+            "material": {
+              "en": "ABS",
+              "pt": "ABS"
+            },
+            "weight": {
+              "en": "37g",
+              "pt": "37g"
+            },
+            "sizeMm": {
+              "en": "51 × 44 × 21 mm",
+              "pt": "51 × 44 × 21 mm"
+            },
+            "privateMold": {
+              "en": "Yes",
+              "pt": "Sim"
+            },
+            "certificate": {
+              "en": [
+                "CE",
+                "FCC",
+                "ROHS"
+              ],
+              "pt": [
+                "CE",
+                "FCC",
+                "ROHS"
+              ]
+            }
+          },
+          "technical": {
+            "bluetoothVersion": {
+              "en": "5.3",
+              "pt": "5.3"
+            },
+            "wirelessDelayTime": {
+              "en": "41–50 ms",
+              "pt": "41–50 ms"
+            },
+            "waterproofStandard": {
+              "en": "IPX-3",
+              "pt": "IPX-3"
+            },
+            "chipset": {
+              "en": "JL AC6983D2",
+              "pt": "JL AC6983D2"
+            },
+            "batteryCapacity": {
+              "en": "300mAh (case), 25mAh (earbuds)",
+              "pt": "300mAh (estojo), 25mAh (earbuds)"
+            },
+            "useTime": {
+              "en": "3.5 hours",
+              "pt": "3,5 horas"
+            },
+            "standbyTime": {
+              "en": "150 hours",
+              "pt": "150 horas"
+            }
+          }
+        },
+        "imagesFolder": "/Techbar/hocoew30",
+        "tags": {
+          "en": [
+            "Bluetooth Earphone",
+            "Earphone",
+            "Wireless Earphone",
+            "TWS Earbuds",
+            "Earbuds",
+            "Hoco EW30",
+            "Low Latency Earbuds",
+            "Gaming Earbuds",
+            "Bluetooth 5.3 Earphone",
+            "Waterproof Earbuds",
+            "Budget TWS",
+            "LED Indicator Earbuds",
+            "Electronics",
+            "Audio Device",
+            "Wireless Audio"
+          ],
+          "pt": [
+            "Fone Bluetooth",
+            "Fone de ouvido",
+            "Fone sem fio",
+            "Earbuds TWS",
+            "Auriculares",
+            "Hoco EW30",
+            "Earbuds baixa latência",
+            "Earbuds para jogos",
+            "Fone Bluetooth 5.3",
+            "Earbuds à prova d'água",
+            "TWS econômico",
+            "Earbuds com LED",
+            "Eletrónica",
+            "Dispositivo de áudio",
+            "Áudio sem fio"
+          ]
+        }
+      }
+,{
+    "productName": {
+      "en": "Hoco EQ20 True Wireless ANC+ENC Noise Reduction Bluetooth Earphone",
+      "pt": "Hoco EQ20 Fone de Ouvido True Wireless com ANC+ENC"
+    },
+    "brand": "Hoco",
+    "categories": [
+      "Earphones"
     ],
-    "pt": [
-      "Bluetooth 5.3",
-      "Áudio sem fio com baixa latência de 41–50ms",
-      "Estojo de carregamento 300mAh, Earbuds 25mAh",
-      "Até 3,5 horas de uso",
-      "150 horas de standby",
-      "Alternância entre líder e seguidor",
-      "Ativação da Siri",
-      "Indicador de bateria em LED",
-      "Classificação à prova d’água IPX-3"
-    ]
-  },
-
-  "pricing": {
-    "price": 660,
-    "currency": "EUR",
-    "discount": 0,
-    "inStock": true,
-    "stockQuantity": 0
-  },
-
-  "specifications": {
-    "general": {
-      "productName": {
-        "en": "EW30 Intelligent True Wireless Bluetooth Headset",
-        "pt": "EW30 Fone de Ouvido Bluetooth True Wireless Inteligente"
+    "model": "EQ20",
+    "subCategory": {
+      "en": "Bluetooth Earphone",
+      "pt": "Fone de Ouvido Bluetooth"
+    },
+    "description": {
+      "en": "The Hoco EQ20 is a true wireless Bluetooth 5.4 earphone featuring ANC+ENC noise reduction, long battery life, one-to-two connection, master–slave switching, and Siri voice assistant support.",
+      "pt": "O Hoco EQ20 é um fone true wireless Bluetooth 5.4 com redução de ruído ANC+ENC, longa duração de bateria, conexão um-para-dois, alternância mestre–escravo e suporte à assistente Siri."
+    },
+    "features": {
+      "en": [
+        "Bluetooth 5.4",
+        "ANC + ENC dual noise reduction",
+        "400mAh charging case, 40mAh earbuds",
+        "Up to 7 hours usage (6 hours with ANC on)",
+        "Master–slave switching",
+        "Summon Siri voice assistant",
+        "One-to-two dual device connection"
+      ],
+      "pt": [
+        "Bluetooth 5.4",
+        "Redução de ruído dupla ANC + ENC",
+        "Estojo 400mAh, Earbuds 40mAh",
+        "Até 7 horas de uso (6 horas com ANC ligado)",
+        "Alternância mestre–escravo",
+        "Ativação da assistente Siri",
+        "Conexão dual um-para-dois"
+      ]
+    },
+    "pricing": {
+      "price": 1299,
+      "currency": "EUR",
+      "discount": 10,
+      "inStock": true
+    },
+    "specifications": {
+      "general": {
+        "productName": {
+          "en": "EQ20 Bluetooth Earphone",
+          "pt": "EQ20 Fone Bluetooth"
+        },
+        "brandName": {
+          "en": "Hoco",
+          "pt": "Hoco"
+        },
+        "colors": {
+          "en": "Black",
+          "pt": "Preto"
+        },
+        "material": {
+          "en": "ABS",
+          "pt": "ABS"
+        },
+        "weight": {
+          "en": "180g (package)",
+          "pt": "180g (pacote)"
+        },
+        "sizeMm": {
+          "en": "140 × 110 × 50 mm",
+          "pt": "140 × 110 × 50 mm"
+        },
+        "privateMold": {
+          "en": "Yes",
+          "pt": "Sim"
+        },
+        "certificate": {
+          "en": [
+            "CE",
+            "FCC",
+            "ROHS"
+          ],
+          "pt": [
+            "CE",
+            "FCC",
+            "ROHS"
+          ]
+        }
       },
-      "brandName": {
-        "en": "Hoco",
-        "pt": "Hoco"
-      },
-      "colors": {
-        "en": "White",
-        "pt": "Branco"
-      },
-      "material": {
-        "en": "ABS",
-        "pt": "ABS"
-      },
-      "weight": {
-        "en": "37g",
-        "pt": "37g"
-      },
-      "sizeMm": {
-        "en": "51 x 44 x 21 mm",
-        "pt": "51 x 44 x 21 mm"
-      },
-      "privateMold": {
-        "en": "Yes",
-        "pt": "Sim"
-      },
-      "certificate": {
-        "en": "CE / FCC / ROHS",
-        "pt": "CE / FCC / ROHS"
+      "technical": {
+        "bluetoothVersion": {
+          "en": "5.4",
+          "pt": "5.4"
+        },
+        "wirelessDelayTime": {
+          "en": "Low Latency",
+          "pt": "Baixa latência"
+        },
+        "waterproofStandard": {
+          "en": "IPX-3",
+          "pt": "IPX-3"
+        },
+        "chipset": {
+          "en": "Jerry AC7003",
+          "pt": "Jerry AC7003"
+        },
+        "batteryCapacity": {
+          "en": "400mAh (case), 40mAh (earbuds)",
+          "pt": "400mAh (estojo), 40mAh (earbuds)"
+        },
+        "useTime": {
+          "en": "7 hours (6 hours with ANC on)",
+          "pt": "7 horas (6 horas com ANC ligado)"
+        },
+        "standbyTime": {
+          "en": "100+ hours",
+          "pt": "100+ horas"
+        }
       }
     },
-
-    "technical": {
-      "bluetoothVersion": {
-        "en": "5.3",
-        "pt": "5.3"
-      },
-      "wirelessDelayTime": {
-        "en": "41–50 ms",
-        "pt": "41–50 ms"
-      },
-      "waterproofStandard": {
-        "en": "IPX-3",
-        "pt": "IPX-3"
-      },
-      "chipset": {
-        "en": "JL AC6983D2",
-        "pt": "JL AC6983D2"
-      },
-      "batteryCapacity": {
-        "en": "300mAh (case), 25mAh (earbuds)",
-        "pt": "300mAh (estojo) e 25mAh (earbuds)"
-      },
-      "useTime": {
-        "en": "3.5 hours",
-        "pt": "3.5 horas"
-      },
-      "standbyTime": {
-        "en": "150 hours",
-        "pt": "150 horas"
-      }
+    "imagesFolder": "/Techbar/hocoeq20",
+    "tags": {
+      "en": [
+        "ANC Earbuds",
+        "ENC Earbuds",
+        "Noise Cancelling Earphones",
+        "Earphone",
+        "Wireless Earphone",
+        "TWS Earbuds",
+        "Earbuds",
+        "Hoco EQ20",
+        "Bluetooth 5.4 Earbuds",
+        "Dual Device Connection",
+        "Premium TWS",
+        "Long Battery Earbuds",
+        "Electronics",
+        "Audio Device"
+      ],
+      "pt": [
+        "Earbuds ANC",
+        "Earbuds ENC",
+        "Fones com cancelamento de ruído",
+        "Fone de ouvido",
+        "Fone sem fio",
+        "Earbuds TWS",
+        "Auriculares",
+        "Hoco EQ20",
+        "Fone Bluetooth 5.4",
+        "Conexão dual",
+        "TWS premium",
+        "Earbuds longa bateria",
+        "Eletrónica",
+        "Dispositivo de áudio"
+      ]
     }
-  },
-
-  "tags": {
-    "en": [
-      "Bluetooth Earphone",
-      "Earphone",
-      "Wireless Earphone",
-      "TWS Earbuds",
-      "Earbuds",
-      "Hoco EW30",
-      "Low Latency Earbuds",
-      "Gaming Earbuds",
-      "Bluetooth 5.3 Earphone",
-      "Waterproof Earbuds",
-      "Budget TWS",
-      "LED Indicator Earbuds",
-      "Electronics",
-      "Audio Device",
-      "Wireless Audio"
-    ],
-    "pt": [
-      "Fone Bluetooth",
-      "Fone de ouvido",
-      "Fone de ouvido sem fio",
-      "Earbuds TWS",
-      "Auriculares",
-      "Hoco EW30",
-      "Earbuds de baixa latência",
-      "Earbuds para jogos",
-      "Fone Bluetooth 5.3",
-      "Earbuds à prova d’água",
-      "TWS econômico",
-      "Earbuds com indicador LED",
-      "Eletrônicos",
-      "Dispositivo de áudio",
-      "Áudio sem fio"
-    ]
-  },
-"imagesFolder": "/Techbar/hocoew30"
-
-}
+  }
+,{
+    "productName": {
+      "en": "Hoco Y23 Smart Watch",
+      "pt": "Hoco Y23 Relógio Inteligente"
+    },
+    "brand": "Hoco",
+    "categories": ["Watch"],
+    "model": "Y23",
+    "subCategory": {
+      "en": "Wearable",
+      "pt": "Dispositivo Vestível"
+    },
+    "description": {
+      "en": "The Hoco Y23 Smart Watch features a large 2.02' HD touchscreen with a 320×385 resolution, Bluetooth 5.3 connectivity, and IP67 water resistance. With 5–7 days of battery life, heart rate monitoring, sleep tracking, step counting, and support for 22 languages, it offers a complete smart wearable experience for Android and iOS users.",
+      "pt": "O Hoco Y23 apresenta ecrã tátil HD de 2,02' com resolução 320×385, conectividade Bluetooth 5.3 e resistência à água IP67. Com 5–7 dias de bateria, monitorização de batimentos cardíacos, rastreamento do sono, contagem de passos e suporte a 22 idiomas, oferece uma experiência completa para Android e iOS."
+    },
+    "features": {
+      "en": [
+        "2.02' HD touchscreen display",
+        "320×385 high-resolution screen",
+        "Bluetooth 5.3 seamless connectivity",
+        "5–7 days battery life",
+        "IP67 waterproof rating",
+        "Heart rate monitoring",
+        "Sleep tracking",
+        "Step counter",
+        "Multi-sport modes",
+        "Real-time weather updates",
+        "Supports 22 languages",
+        "Compatible with Android and iOS"
+      ],
+      "pt": [
+        "Ecrã tátil HD de 2,02'",
+        "Ecrã de alta resolução 320×385",
+        "Conectividade Bluetooth 5.3",
+        "Autonomia de 5–7 dias",
+        "Classificação IP67 à prova de água",
+        "Monitorização de batimentos cardíacos",
+        "Rastreamento do sono",
+        "Contador de passos",
+        "Modos multi-desporto",
+        "Atualizações meteorológicas em tempo real",
+        "Suporta 22 idiomas",
+        "Compatível com Android e iOS"
+      ]
+    },
+    "pricing": {
+      "price": 3596,
+      "currency": "EUR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 25
+    },
+    "specifications": {
+      "general": {
+        "productName": {
+          "en": "Hoco Y23 Smart Watch",
+          "pt": "Hoco Y23 Relógio Inteligente"
+        },
+        "brandName": { "en": "Hoco", "pt": "Hoco" },
+        "colors": { "en": "Black", "pt": "Preto" },
+        "material": {
+          "en": "Silicone strap + ABS/Metal body",
+          "pt": "Pulseira de silicone + corpo ABS/metal"
+        },
+        "weight": { "en": "Not specified", "pt": "Não especificado" },
+        "sizeMm": { "en": "Not specified", "pt": "Não especificado" },
+        "privateMold": { "en": "Yes", "pt": "Sim" },
+        "certificate": {
+          "en": ["CE", "FCC", "ROHS"],
+          "pt": ["CE", "FCC", "ROHS"]
+        }
+      },
+      "technical": {
+        "bluetoothVersion": { "en": "5.3", "pt": "5.3" },
+        "wirelessDelayTime": { "en": "Not specified", "pt": "Não especificado" },
+        "waterproofStandard": { "en": "IP67", "pt": "IP67" },
+        "chipset": { "en": "Not specified", "pt": "Não especificado" },
+        "batteryCapacity": { "en": "Not specified", "pt": "Não especificado" },
+        "useTime": { "en": "5–7 days", "pt": "5–7 dias" },
+        "standbyTime": { "en": "Not specified", "pt": "Não especificado" }
+      }
+    },
+    "imagesFolder": "/Techbar/hocoy23watch",
+    "tags": {
+      "en": [
+        "Smart Watch","Smartwatch","Wearable","Hoco Y23",
+        "Bluetooth Watch","Fitness Tracker","Health Tracker",
+        "Sleep Tracker","Sports Watch","IP67 Smartwatch",
+        "HD Display Watch","Electronics","Activity Tracker"
+      ],
+      "pt": [
+        "Relógio Inteligente","Smartwatch","Dispositivo Vestível",
+        "Hoco Y23","Relógio Bluetooth","Rastreador de fitness",
+        "Rastreador de saúde","Rastreador do sono","Relógio desportivo",
+        "Smartwatch IP67","Relógio com ecrã HD","Eletrónica","Rastreador de atividade"
+      ]
+    }
+  }
+,{
+    "productName": {
+      "en": "HOCO DS61 Retro Leather Bluetooth Speaker",
+      "pt": "HOCO DS61 Coluna Bluetooth em Pele Retro"
+    },
+    "brand": "Hoco",
+    "categories": ["Speaker"],
+    "model": "DS61",
+    "subCategory": {
+      "en": "Bluetooth Speaker",
+      "pt": "Coluna Bluetooth"
+    },
+    "description": {
+      "en": "The HOCO DS61 Retro Leather Bluetooth Speaker combines vintage aesthetics with modern Bluetooth 5.3 technology. Featuring dual 2.5' speaker units, 14W total output, multiple playback modes, and a 2400mAh battery, it is designed for rich, powerful sound with a stylish leather finish.",
+      "pt": "A HOCO DS61 combina estética retro com tecnologia Bluetooth 5.3. Com unidades de 2,5' duplas, 14W de potência total, vários modos de reprodução e bateria de 2400mAh, oferece som potente com acabamento em pele elegante."
+    },
+    "features": {
+      "en": [
+        "Bluetooth 5.3 (AC6966B chipset)",
+        "Dual 2.5' speaker units",
+        "Output power: 7W × 2 (14W total)",
+        "2400mAh long-lasting battery",
+        "3–4 hours charging time",
+        "2–3 hours continuous playtime",
+        "Supports Bluetooth, TF card, USB disk, AUX",
+        "Premium retro leather design"
+      ],
+      "pt": [
+        "Bluetooth 5.3 (chipset AC6966B)",
+        "Unidades de altifalante duplas de 2,5'",
+        "Potência de saída: 7W × 2 (14W total)",
+        "Bateria duradoura 2400mAh",
+        "Tempo de carregamento 3–4 horas",
+        "2–3 horas de reprodução contínua",
+        "Suporta Bluetooth, cartão TF, disco USB, AUX",
+        "Design premium em pele retro"
+      ]
+    },
+    "pricing": {
+      "price": 4114.45,
+      "currency": "EUR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 15
+    },
+    "specifications": {
+      "general": {
+        "productName": {
+          "en": "HOCO DS61 Retro Leather Bluetooth Speaker",
+          "pt": "HOCO DS61 Coluna Bluetooth em Pele Retro"
+        },
+        "brandName": { "en": "Hoco", "pt": "Hoco" },
+        "colors": {
+          "en": "Leather Brown / Black",
+          "pt": "Castanho pele / Preto"
+        },
+        "material": { "en": "Leather + ABS", "pt": "Pele + ABS" },
+        "weight": { "en": "1361g", "pt": "1361g" },
+        "sizeMm": {
+          "en": "263 × 100 × 134 mm",
+          "pt": "263 × 100 × 134 mm"
+        },
+        "privateMold": { "en": "Yes", "pt": "Sim" },
+        "certificate": {
+          "en": ["CE", "FCC", "ROHS"],
+          "pt": ["CE", "FCC", "ROHS"]
+        }
+      },
+      "technical": {
+        "bluetoothVersion": { "en": "5.3", "pt": "5.3" },
+        "chipset": { "en": "AC6966B", "pt": "AC6966B" },
+        "batteryCapacity": { "en": "2400mAh", "pt": "2400mAh" },
+        "useTime": { "en": "2–3 hours", "pt": "2–3 horas" },
+        "standbyTime": { "en": "Not specified", "pt": "Não especificado" }
+      }
+    },
+    "imagesFolder": "/Techbar/hocods61speaker",
+    "tags": {
+      "en": [
+        "Bluetooth Speaker","Speaker","Wireless Speaker","Portable Speaker",
+        "Hoco DS61","Retro Speaker","Leather Speaker","Bass Speaker",
+        "14W Speaker","Home Audio","Vintage Style Speaker","Electronics","Audio Device"
+      ],
+      "pt": [
+        "Coluna Bluetooth","Coluna","Coluna sem fio","Coluna portátil",
+        "Hoco DS61","Coluna retro","Coluna em pele","Coluna com graves",
+        "Coluna 14W","Áudio doméstico","Estilo vintage","Eletrónica","Dispositivo de áudio"
+      ]
+    }
+  }
+,{
+    "productName": {
+      "en": "Hoco A10 Max 10.1' Tablet 8GB RAM 256GB 5G - Metal Grey",
+      "pt": "Hoco A10 Max Tablet 10.1' 8GB RAM 256GB 5G - Cinza Metalizado"
+    },
+    "brand": "Hoco",
+    "categories": ["Tablet"],
+    "model": "A10 Max",
+    "subCategory": {
+      "en": "Android Tablet",
+      "pt": "Tablet Android"
+    },
+    "description": {
+      "en": "The Hoco A10 Max is a 10.1' Android tablet featuring an HD display, 8GB RAM, 256GB storage, 5G connectivity, quad-core T310 processor, dual-band WiFi, SIM support, GPS, and a 4000mAh battery. Designed for entertainment, study, and daily productivity with a sleek metal grey body.",
+      "pt": "O Hoco A10 Max é um tablet Android de 10,1' com ecrã HD, 8GB RAM, 256GB armazenamento, conectividade 5G, processador quad-core T310, WiFi dual-band, suporte a SIM, GPS e bateria de 4000mAh. Desenhado para entretenimento, estudo e produtividade diária com corpo cinza metálico."
+    },
+    "features": {
+      "en": [
+        "4000mAh battery with Type-C 5V2A input",
+        "T310 2.0GHz quad-core CPU",
+        "Mali-G57 GPU",
+        "8GB DDR RAM",
+        "256GB eMMC storage",
+        "10.1' capacitive touch display (800x1280)",
+        "Bluetooth 5.0",
+        "Dual-band WiFi (2.4G + 5G)",
+        "Dual speakers (1W x 2)",
+        "Front camera 2MP + Rear camera 5MP",
+        "3.5mm headphone jack",
+        "TF card support",
+        "SIM support & GPS",
+        "Multi-language support"
+      ],
+      "pt": [
+        "Bateria 4000mAh com entrada Type-C 5V2A",
+        "CPU T310 quad-core 2.0GHz",
+        "GPU Mali-G57",
+        "8GB DDR RAM",
+        "256GB armazenamento eMMC",
+        "Ecrã tátil capacitivo 10,1' (800x1280)",
+        "Bluetooth 5.0",
+        "WiFi dual-band (2.4G + 5G)",
+        "Colunas duplas (1W x 2)",
+        "Câmara frontal 2MP + traseira 5MP",
+        "Entrada jack 3.5mm",
+        "Suporte a cartão TF",
+        "Suporte a SIM e GPS",
+        "Suporte multilingue"
+      ]
+    },
+    "pricing": {
+      "price": 15450,
+      "currency": "EUR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 20
+    },
+    "specifications": {
+      "general": {
+        "productName": {
+          "en": "Hoco A10 Max Tablet",
+          "pt": "Hoco A10 Max Tablet"
+        },
+        "brandName": { "en": "Hoco", "pt": "Hoco" },
+        "colors": {
+          "en": "Metal Grey",
+          "pt": "Cinza Metalizado"
+        },
+        "material": {
+          "en": "Metal + ABS",
+          "pt": "Metal + ABS"
+        },
+        "weight": {
+          "en": "499g",
+          "pt": "499g"
+        },
+        "sizeMm": {
+          "en": "240 × 159 × 9 mm",
+          "pt": "240 × 159 × 9 mm"
+        },
+        "privateMold": {
+          "en": "Yes",
+          "pt": "Sim"
+        },
+        "certificate": {
+          "en": ["CE", "FCC", "ROHS"],
+          "pt": ["CE", "FCC", "ROHS"]
+        }
+      },
+      "technical": {
+        "bluetoothVersion": { "en": "5.0", "pt": "5.0" },
+        "chipset": { "en": "T310 2.0GHz Quad-Core", "pt": "T310 Quad-Core 2.0GHz" },
+        "batteryCapacity": {
+          "en": "4000mAh (3.7V)",
+          "pt": "4000mAh (3.7V)"
+        },
+        "useTime": {
+          "en": "Varies by usage",
+          "pt": "Varia conforme o uso"
+        },
+        "standbyTime": {
+          "en": "Not specified",
+          "pt": "Não especificado"
+        }
+      }
+    },
+    "imagesFolder": "/Techbar/hocotablet",
+    "tags": {
+      "en": [
+        "Android Tablet","Tablet","Hoco A10 Max","10.1 Inch Tablet","5G Tablet",
+        "8GB RAM Tablet","256GB Tablet","Study Tablet","Gaming Tablet",
+        "Dual SIM Tablet","HD Display Tablet","Electronics","Portable Device"
+      ],
+      "pt": [
+        "Tablet Android","Tablet","Hoco A10 Max","Tablet 10.1'",
+        "Tablet 5G","Tablet 8GB RAM","Tablet 256GB","Tablet para estudo",
+        "Tablet para jogos","Tablet Dual SIM","Tablet ecrã HD",
+        "Eletrónica","Dispositivo portátil"
+      ]
+    }
+  }
+,{
+    "productName": {
+      "en": "Hoco EW81 Elegant True Wireless Touch Screen Earbuds",
+      "pt": "Hoco EW81 Earbuds True Wireless com Ecrã Tátil Elegante"
+    },
+    "brand": "Hoco",
+    "categories": ["Earphones"],
+    "model": "EW81",
+    "subCategory": {
+      "en": "TWS Earbuds",
+      "pt": "Earbuds TWS"
+    },
+    "description": {
+      "en": "The Hoco EW81 Elegant True Wireless Earbuds feature Bluetooth 5.4, a smart LED touch screen on the charging case, 4-hour battery life, and lightweight ABS design. Comfort fit, seamless connectivity, and accurate battery indicators.",
+      "pt": "Os Hoco EW81 são earbuds true wireless com Bluetooth 5.4, ecrã tátil LED na caixa, autonomia de 4 horas e design leve em ABS, confortáveis e com conectividade sem esforço."
+    },
+    "features": {
+      "en": [
+        "Bluetooth 5.4 with JL AC6983D4 chipset",
+        "Smart LED touch screen on charging case",
+        "Earbuds battery 30mAh, case 300mAh",
+        "Up to 4 hours playtime",
+        "Lightweight 50g design",
+        "54.5 × 46.5 × 23 mm compact size",
+        "ABS build",
+        "Microphone included",
+        "Android & iOS compatibility",
+        "Accurate battery indicators"
+      ],
+      "pt": [
+        "Bluetooth 5.4 com chipset JL AC6983D4",
+        "Ecrã tátil LED na caixa de carregamento",
+        "Bateria 30mAh earbuds, 300mAh estojo",
+        "Até 4 horas de reprodução",
+        "Design leve 50g",
+        "Tamanho compacto: 54.5 × 46.5 × 23 mm",
+        "Construção ABS",
+        "Microfone integrado",
+        "Compatível com Android e iOS",
+        "Indicadores de bateria precisos"
+      ]
+    },
+    "pricing": {
+      "price": 3082,
+      "currency": "EUR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 40
+    },
+    "specifications": {
+      "general": {
+        "productName": {
+          "en": "Hoco EW81 Elegant True Wireless Earbuds",
+          "pt": "Hoco EW81 Earbuds True Wireless Elegantes"
+        },
+        "brandName": { "en": "Hoco", "pt": "Hoco" },
+        "colors": { "en": "White", "pt": "Branco" },
+        "material": { "en": "ABS", "pt": "ABS" },
+        "weight": { "en": "50g", "pt": "50g" },
+        "sizeMm": {
+          "en": "54.5 × 46.5 × 23 mm",
+          "pt": "54.5 × 46.5 × 23 mm"
+        },
+        "privateMold": { "en": "Yes", "pt": "Sim" },
+        "certificate": {
+          "en": ["CE","FCC","ROHS"],
+          "pt": ["CE","FCC","ROHS"]
+        }
+      },
+      "technical": {
+        "bluetoothVersion": { "en": "5.4", "pt": "5.4" },
+        "chipset": { "en": "JL AC6983D4", "pt": "JL AC6983D4" },
+        "batteryCapacity": {
+          "en": "30mAh (earbuds), 300mAh (case)",
+          "pt": "30mAh (earbuds), 300mAh (estojo)"
+        },
+        "useTime": { "en": "4 hours", "pt": "4 horas" },
+        "standbyTime": { "en": "Not specified", "pt": "Não especificado" }
+      }
+    },
+    "imagesFolder": "/Techbar/hocoew81",
+    "tags": {
+      "en": [
+        "TWS Earbuds","Wireless Earbuds","Earbuds","Bluetooth Earphone",
+        "Hoco EW81","Touch Screen Case Earbuds","Bluetooth 5.4 Earbuds",
+        "Smart Display Earbuds","Daily Use TWS","Premium TWS Earbuds",
+        "LED Case Earphones","Electronics","Wireless Audio"
+      ],
+      "pt": [
+        "Earbuds TWS","Earbuds sem fio","Auriculares","Fone Bluetooth",
+        "Hoco EW81","Earbuds com estojo tátil","Fone Bluetooth 5.4",
+        "Earbuds com ecrã inteligente","TWS para uso diário",
+        "Earbuds TWS premium","Fones com estojo LED",
+        "Eletrónica","Áudio sem fio"
+      ]
+    }
+  }
+,{
+    "productName": {
+      "en": "Hoco W60 28Hrs Kids Bluetooth Headband Wireless Headphones",
+      "pt": "Hoco W60 Auscultadores Infantis Bluetooth com Banda de Cabeça - 28h"
+    },
+    "brand": "Hoco",
+    "categories": ["Earphones"],
+    "model": "W60",
+    "subCategory": {
+      "en": "Kids Wireless Headphones",
+      "pt": "Auscultadores Infantis Sem Fios"
+    },
+    "description": {
+      "en": "The Hoco W60 Kids Bluetooth Headphones are designed for children, offering comfort, durability, and long 28-hour playback time. With Bluetooth 5.4, AUX support, lightweight design, and a built-in microphone for calls and online classes.",
+      "pt": "Os Hoco W60 foram concebidos para crianças, oferecendo conforto, durabilidade e 28 horas de reprodução. Com Bluetooth 5.4, suporte AUX, design leve e microfone integrado para chamadas e aulas online."
+    },
+    "features": {
+      "en": [
+        "Bluetooth 5.4 wireless connection",
+        "28 hours continuous playtime",
+        "180 hours standby time",
+        "250mAh battery with 2-hour charge",
+        "Lightweight and ergonomic design (159g)",
+        "3.5mm AUX cable support",
+        "Built-in microphone",
+        "Hi-Fi immersive sound",
+        "Button controls",
+        "Type-C charging",
+        "Compatible with phones, tablets, laptops"
+      ],
+      "pt": [
+        "Conexão Bluetooth 5.4",
+        "28 horas de reprodução contínua",
+        "180 horas em standby",
+        "Bateria 250mAh com 2 horas para carga completa",
+        "Design leve e ergonómico (159g)",
+        "Suporte a cabo AUX 3.5mm",
+        "Microfone integrado",
+        "Som Hi-Fi imersivo",
+        "Controles por botões",
+        "Carregamento Type-C",
+        "Compatível com telemóveis, tablets e portáteis"
+      ]
+    },
+    "pricing": {
+      "price": 3082,
+      "currency": "EUR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 30
+    },
+    "specifications": {
+      "general": {
+        "productName": { "en": "Hoco W60 Kids Headphones", "pt": "Hoco W60 Auscultadores Infantis" },
+        "brandName": { "en": "Hoco", "pt": "Hoco" },
+        "colors": { "en": "Blue, Purple, Yellow", "pt": "Azul, Roxo, Amarelo" },
+        "material": { "en": "ABS + Silicone", "pt": "ABS + Silicone" },
+        "weight": { "en": "159g", "pt": "159g" },
+        "sizeMm": { "en": "Not specified", "pt": "Não especificado" },
+        "privateMold": { "en": "Yes", "pt": "Sim" },
+        "certificate": {
+          "en": ["CE", "FCC", "ROHS"],
+          "pt": ["CE", "FCC", "ROHS"]
+        }
+      },
+      "technical": {
+        "bluetoothVersion": { "en": "5.4", "pt": "5.4" },
+        "wirelessDelayTime": { "en": "Low Latency", "pt": "Baixa latência" },
+        "waterproofStandard": { "en": "Not specified", "pt": "Não especificado" },
+        "batteryCapacity": { "en": "250mAh", "pt": "250mAh" },
+        "useTime": { "en": "28 hours", "pt": "28 horas" },
+        "standbyTime": { "en": "180 hours", "pt": "180 horas" }
+      }
+    },
+    "imagesFolder": "/Techbar/hocow60",
+    "tags": {
+      "en": [
+        "Kids Headphones","Wireless Headphones","Bluetooth Kids Headset",
+        "Hoco W60","Child Safe Headphones","Kids Gaming Headphones",
+        "Study Headphones","Durable Kids Earphones","Electronics","Audio Device"
+      ],
+      "pt": [
+        "Auscultadores Infantis","Auscultadores Sem Fios",
+        "Headset Infantil Bluetooth","Hoco W60","Auscultadores Seguros",
+        "Auscultadores Gaming Infantis","Para Estudo","Auscultadores Duráveis",
+        "Eletrónica","Dispositivo de Áudio"
+      ]
+    }
+  }
+,{
+    "productName": {
+      "en": "Hoco Y24 Smart Watch",
+      "pt": "Hoco Y24 Relógio Inteligente"
+    },
+    "brand": "Hoco",
+    "categories": ["Watch"],
+    "model": "Y24",
+    "subCategory": {
+      "en": "Wearable",
+      "pt": "Dispositivo Vestível"
+    },
+    "description": {
+      "en": "The Hoco Y24 Smart Watch features a 1.43' round display with 466×466 resolution, IP67 waterproof rating, Bluetooth 5.3, 390mAh battery up to 10 days of use, video playback, local music & push notifications.",
+      "pt": "O Hoco Y24 tem ecrã redondo de 1,43' com resolução 466×466, IP67, Bluetooth 5.3, bateria de 390mAh até 10 dias de uso, reprodução de vídeo, música local e notificações push."
+    },
+    "features": {
+      "en": [
+        "1.43' round display (466×466 resolution)",
+        "IP67 waterproof",
+        "CPU Torch core ATS3085S",
+        "128MB RAM + 4GB storage",
+        "Bluetooth 5.3",
+        "390mAh battery - up to 10 days",
+        "Video playback & music storage",
+        "Push notifications",
+        "22 languages supported",
+        "Silicone strap"
+      ],
+      "pt": [
+        "Ecrã redondo 1,43' (466×466)",
+        "Classificação IP67 à prova d'água",
+        "CPU Torch core ATS3085S",
+        "128MB RAM + 4GB armazenamento",
+        "Bluetooth 5.3",
+        "Bateria 390mAh - até 10 dias",
+        "Reprodução de vídeo e música local",
+        "Notificações push",
+        "Suporte a 22 idiomas",
+        "Pulseira de silicone"
+      ]
+    },
+    "pricing": {
+      "price": 3596,
+      "currency": "EUR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 25
+    },
+    "specifications": {
+      "general": {
+        "productName": {
+          "en": "Hoco Y24 Smart Watch",
+          "pt": "Hoco Y24 Relógio Inteligente"
+        },
+        "brandName": { "en": "Hoco", "pt": "Hoco" },
+        "colors": { "en": "Black", "pt": "Preto" },
+        "material": {
+          "en": "Silicone strap + metal/ABS body",
+          "pt": "Pulseira de silicone + corpo metal/ABS"
+        },
+        "weight": { "en": "Not specified", "pt": "Não especificado" },
+        "sizeMm": { "en": "Not specified", "pt": "Não especificado" },
+        "privateMold": { "en": "Yes", "pt": "Sim" },
+        "certificate": {
+          "en": ["CE", "FCC", "ROHS"],
+          "pt": ["CE", "FCC", "ROHS"]
+        }
+      },
+      "technical": {
+        "bluetoothVersion": { "en": "5.3", "pt": "5.3" },
+        "waterproofStandard": { "en": "IP67", "pt": "IP67" },
+        "chipset": { "en": "Torch core ATS3085S", "pt": "Torch core ATS3085S" },
+        "batteryCapacity": { "en": "390mAh", "pt": "390mAh" },
+        "useTime": { "en": "Up to 10 days", "pt": "Até 10 dias" },
+        "standbyTime": { "en": "Not specified", "pt": "Não especificado" }
+      }
+    },
+    "imagesFolder": "/Techbar/hocowatchy24",
+    "tags": {
+      "en": [
+        "Smart Watch", "Wearable", "Hoco Y24", "1.43 Inch Smartwatch",
+        "Bluetooth 5.3 Watch", "Fitness Watch", "Sports Mode Watch",
+        "IP67 Watch", "Activity Tracker", "Electronics"
+      ],
+      "pt": [
+        "Relógio Inteligente", "Dispositivo Vestível", "Hoco Y24",
+        "Smartwatch 1.43'", "Relógio Bluetooth 5.3",
+        "Relógio fitness", "Relógio desportivo",
+        "Relógio IP67", "Rastreador de atividade", "Eletrónica"
+      ]
+    }
+  }
+,{
+    "productName": {
+      "en": "Hoco Y26 Smart Watch",
+      "pt": "Hoco Y26 Relógio Inteligente"
+    },
+    "brand": "Hoco",
+    "categories": ["Watch"],
+    "model": "Y26",
+    "subCategory": {
+      "en": "Wearable",
+      "pt": "Dispositivo Vestível"
+    },
+    "description": {
+      "en": "The Hoco Y26 Smart Watch has a 1.81' TFT touch display, IPX4 waterproof rating, Bluetooth 5.0, health tracking, message alerts and calling support. Up to 7 days battery life for daily usage.",
+      "pt": "O Hoco Y26 possui ecrã tátil TFT de 1,81', resistência à água IPX4, Bluetooth 5.0, monitorização de saúde e suporte a chamadas. Até 7 dias de bateria para uso diário."
+    },
+    "features": {
+      "en": [
+        "1.81' TFT touch display",
+        "Resolution 240×286",
+        "Bluetooth 5.0",
+        "230mAh battery (3–7 days usage)",
+        "IPX4 splash-proof",
+        "Heart rate and sleep monitoring",
+        "Answer/make phone calls via BT",
+        "Message alerts & notifications",
+        "Multi-sport modes",
+        "Music & camera controls",
+        "Alarm, calculator, stopwatch",
+        "22+ language support"
+      ],
+      "pt": [
+        "Ecrã tátil TFT 1,81'",
+        "Resolução 240×286",
+        "Bluetooth 5.0",
+        "Bateria 230mAh (3–7 dias)",
+        "IPX4 à prova de salpicos",
+        "Monitorização cardíaca e do sono",
+        "Chamadas via Bluetooth",
+        "Alertas de mensagens",
+        "Modos desportivos",
+        "Controlo de música e câmara",
+        "Alarme, calculadora, cronómetro",
+        "Suporte 22+ idiomas"
+      ]
+    },
+    "pricing": {
+      "price": 3596,
+      "currency": "EUR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 25
+    },
+    "specifications": {
+      "general": {
+        "productName": {
+          "en": "Hoco Y26 Smart Watch",
+          "pt": "Hoco Y26 Relógio Inteligente"
+        },
+        "brandName": { "en": "Hoco", "pt": "Hoco" },
+        "colors": { "en": "Black", "pt": "Preto" },
+        "material": { "en": "Alloy + Silica Gel Band", "pt": "Liga + Pulseira de gel de sílica" },
+        "weight": { "en": "Not specified", "pt": "Não especificado" },
+        "sizeMm": { "en": "Not specified", "pt": "Não especificado" },
+        "privateMold": { "en": "Yes", "pt": "Sim" },
+        "certificate": {
+          "en": ["CE", "FCC", "ROHS"],
+          "pt": ["CE", "FCC", "ROHS"]
+        }
+      },
+      "technical": {
+        "bluetoothVersion": { "en": "5.0", "pt": "5.0" },
+        "waterproofStandard": { "en": "IPX4", "pt": "IPX4" },
+        "batteryCapacity": { "en": "230mAh", "pt": "230mAh" },
+        "useTime": { "en": "3–7 days", "pt": "3–7 dias" }
+      }
+    },
+    "imagesFolder": "/Techbar/hocowatchy26",
+    "tags": {
+      "en": [
+        "Smart Watch", "Bluetooth Calling Watch", "Fitness Tracker",
+        "Hoco Y26", "IPX4 Watch", "Daily Smartwatch"
+      ],
+      "pt": [
+        "Relógio Inteligente", "Chamadas Bluetooth",
+        "Rastreador de Fitness", "Hoco Y26"
+      ]
+    }
+  }
+,{
+    "productName": {
+      "en": "Hoco Y30 Smart Watch",
+      "pt": "Hoco Y30 Relógio Inteligente"
+    },
+    "brand": "Hoco",
+    "categories": ["Watch"],
+    "model": "Y30",
+    "subCategory": {
+      "en": "Wearable",
+      "pt": "Dispositivo Vestível"
+    },
+    "description": {
+      "en": "The Hoco Y30 Smart Watch features a 2.0' TFT touchscreen, Bluetooth calling, full health monitoring, sports tracking, and 3–7 days battery life with IP67 water resistance.",
+      "pt": "O Hoco Y30 apresenta ecrã TFT de 2,0', chamadas via Bluetooth, monitorização de saúde, modos desportivos e bateria de 3–7 dias com resistência IP67."
+    },
+    "features": {
+      "en": [
+        "2.0' TFT capacitive touchscreen",
+        "410×494 resolution",
+        "Bluetooth 5.0",
+        "Hands-free calling",
+        "Heart rate, SpO2 & sleep tracking",
+        "Sports tracking",
+        "Weather updates",
+        "Music & camera control",
+        "Alarm, stopwatch, calculator",
+        "230mAh magnetic charging battery",
+        "3–7 days usage",
+        "IP67 splash-resistant",
+        "Android & iOS compatible"
+      ],
+      "pt": [
+        "Ecrã TFT 2,0'",
+        "Resolução 410×494",
+        "Bluetooth 5.0",
+        "Chamadas hands-free",
+        "Monitorização cardíaca, SpO2 e sono",
+        "Modos desportivos",
+        "Previsão do tempo",
+        "Controlo de música e câmara",
+        "Alarme, cronómetro, calculadora",
+        "Bateria 230mAh",
+        "3–7 dias de uso",
+        "IP67 resistente a salpicos",
+        "Compatível com Android e iOS"
+      ]
+    },
+    "pricing": {
+      "price": 3082,
+      "currency": "EUR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 25
+    },
+    "specifications": {
+      "general": {
+        "productName": { "en": "Hoco Y30 Smart Watch", "pt": "Hoco Y30 Relógio Inteligente" },
+        "brandName": { "en": "Hoco", "pt": "Hoco" },
+        "colors": { "en": "Black", "pt": "Preto" },
+        "material": { "en": "Alloy + Silicone Strap", "pt": "Liga + Pulseira de silicone" }
+      },
+      "technical": {
+        "bluetoothVersion": { "en": "5.0", "pt": "5.0" },
+        "waterproofStandard": { "en": "IP67", "pt": "IP67" },
+        "batteryCapacity": { "en": "230mAh", "pt": "230mAh" },
+        "useTime": { "en": "3–7 days", "pt": "3–7 dias" }
+      }
+    },
+    "imagesFolder": "/Techbar/hocoy30",
+    "tags": {
+      "en": ["Smart Watch", "Bluetooth Calling Watch", "Hoco Y30"],
+      "pt": ["Relógio Inteligente", "Chamadas Bluetooth", "Hoco Y30"]
+    }
+  }
+,{
+    "productName": {
+      "en": "Samsung Galaxy Tab A9 4G LTE (4GB RAM, 128GB Storage) 8.7' Android Tablet",
+      "pt": "Samsung Galaxy Tab A9 4G LTE (4GB RAM, 128GB) Tablet Android 8.7'"
+    },
+    "brand": "Samsung",
+    "categories": ["Tablet"],
+    "model": "Galaxy Tab A9",
+    "subCategory": {
+      "en": "Android Tablet",
+      "pt": "Tablet Android"
+    },
+    "description": {
+      "en": "The Samsung Galaxy Tab A9 4G LTE features an 8.7' WXGA+ display, MediaTek Helio G99 processor, 4GB RAM, 128GB storage, dual speakers, Android 13 and a 5100mAh battery.",
+      "pt": "O Samsung Galaxy Tab A9 possui ecrã WXGA+ de 8,7', processador Helio G99, 4GB RAM, 128GB armazenamento, colunas duplas e bateria de 5100mAh."
+    },
+    "features": {
+      "en": [
+        "8.7' (1340×800) WXGA+ TFT display",
+        "Android 13 (One UI 5.1)",
+        "MediaTek Helio G99 octa-core",
+        "4GB RAM + 128GB storage",
+        "microSD expandable",
+        "5100mAh battery",
+        "4G LTE connectivity",
+        "Dual speakers",
+        "Bluetooth 5.3",
+        "USB Type-C 2.0"
+      ],
+      "pt": [
+        "Ecrã WXGA+ 8,7' (1340×800)",
+        "Android 13 (One UI 5.1)",
+        "Processador Helio G99",
+        "4GB RAM + 128GB",
+        "Armazenamento expansível",
+        "Bateria 5100mAh",
+        "4G LTE",
+        "Colunas duplas",
+        "Bluetooth 5.3",
+        "USB Type-C 2.0"
+      ]
+    },
+    "pricing": {
+      "price": 14430,
+      "currency": "EUR",
+      "discount": 0,
+      "inStock": true,
+      "stockQuantity": 20
+    },
+    "specifications": {
+      "general": {
+        "brandName": { "en": "Samsung", "pt": "Samsung" },
+        "colors": { "en": "Graphite", "pt": "Grafite" },
+        "material": { "en": "Metal + Plastic", "pt": "Metal + Plástico" },
+        "weight": { "en": "480g", "pt": "480g" }
+      },
+      "technical": {
+        "chipset": { "en": "Helio G99", "pt": "Helio G99" },
+        "batteryCapacity": { "en": "5100mAh", "pt": "5100mAh" },
+        "waterproofStandard": { "en": "Not specified", "pt": "Não especificado" }
+      }
+    },
+    "imagesFolder": "/Techbar/samsungtaba9",
+    "tags": {
+      "en": [
+        "Android Tablet","Samsung Tablet","8.7 Inch Tablet","4G Tablet"
+      ],
+      "pt": [
+        "Tablet Android","Tablet Samsung","Tablet 8.7'","Tablet 4G"
+      ]
+    }
+  }
+                          
+]

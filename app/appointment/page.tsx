@@ -9,59 +9,74 @@ import { createAppointment } from "@/lib/actions/appointment.actions";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { authClient } from "@/lib/auth-client";
+import { useLanguage } from "@/app/context/languageContext";
 
-// ---------------------- ZOD SCHEMA ----------------------
+// 🟦 Translations
+const t = {
+  en: {
+    title: "Book an Appointment",
+    name: "Full Name",
+    email: "Email",
+    phone: "Phone Number",
+    device: "Device Type",
+    issue: "Issue Description",
+    date: "Preferred Date",
+    submit: "Book Appointment",
+    submitting: "Booking...",
+  },
+  pt: {
+    title: "Agendar Consulta",
+    name: "Nome Completo",
+    email: "E-mail",
+    phone: "Telefone",
+    device: "Tipo de Dispositivo",
+    issue: "Descrição do Problema",
+    date: "Data Preferida",
+    submit: "Agendar",
+    submitting: "A Agendar...",
+  },
+};
+
+// Validation Schema
 const appointmentSchema = z.object({
-  name: z.string().min(3, "Name must be at least 3 characters"),
-  email: z.email("Invalid email address"),
-  phone: z.string().regex(/^\+?[0-9\s-]{7,15}$/, "Invalid phone number format"),
-  device: z.string().min(2, "Device type is required"),
-  issue: z.string().min(10, "Issue description must be at least 10 characters"),
-  date: z.string().refine((d) => !isNaN(Date.parse(d)), {
-    message: "Invalid date selected",
-  }),
+  name: z.string().min(3),
+  email: z.string().email(),
+  phone: z.string().regex(/^\+?[0-9\s-]{7,15}$/),
+  device: z.string().min(2),
+  issue: z.string().min(10),
+  date: z.string().refine((d) => !isNaN(Date.parse(d))),
 });
 
 export default function CreateAppointmentPage() {
   const router = useRouter();
+  const { locale } = useLanguage();
+  const text = t[locale];
+
+  const user = authClient.useSession();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const user=authClient.useSession()
-  // ---------------------- FORM SUBMIT ----------------------
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setErrors({});
 
     const form = new FormData(e.currentTarget);
+    const formData = Object.fromEntries(form) as Record<string, string>;
 
-    const formData = {
-      name: form.get("name"),
-      email: form.get("email"),
-      phone: form.get("phone"),
-      device: form.get("device"),
-      issue: form.get("issue"),
-      date: form.get("date"),
-    };
-
-    // Validate form data
     const result = appointmentSchema.safeParse(formData);
-
     if (!result.success) {
       const formatted: Record<string, string> = {};
       result.error.issues.forEach((issue) => {
         formatted[issue.path[0]] = issue.message;
       });
-
       setErrors(formatted);
       setLoading(false);
       return;
     }
 
-    // Submit to backend
     await createAppointment({
-      customerId:user.data?.user.id ,
+      customerId: user.data?.user.id,
       customerName: result.data.name,
       customerEmail: result.data.email,
       customerPhone: result.data.phone,
@@ -73,69 +88,60 @@ export default function CreateAppointmentPage() {
     router.push("/appointment/success");
   }
 
-  // ---------------------- UI ----------------------
   return (
     <div className="max-w-lg mx-auto p-6">
-      <Card className="shadow-md border">
+      <Card className="shadow-lg border rounded-xl">
         <CardHeader>
           <CardTitle className="text-2xl font-semibold">
-            Book an Appointment
+            {text.title}
           </CardTitle>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Name */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Full Name</label>
-              <Input name="name" placeholder="John Doe" />
-              {errors.name && (
-                <p className="text-red-500 text-sm">{errors.name}</p>
-              )}
-            </div>
 
-            {/* Email */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Email</label>
-              <Input type="email" name="email" placeholder="example@mail.com" />
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
-              )}
-            </div>
-
-            {/* Phone */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Phone Number</label>
-              <Input name="phone" placeholder="+91 9876543210" />
-              {errors.phone && (
-                <p className="text-red-500 text-sm">{errors.phone}</p>
-              )}
-            </div>
-
-            {/* Device */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Device Type</label>
-              <Input name="device" placeholder="Laptop, Mobile, Tablet..." />
-              {errors.device && (
-                <p className="text-red-500 text-sm">{errors.device}</p>
-              )}
-            </div>
+            {/* Dynamic Fields Rendering */}
+            {[
+              { name: "name", type: "text", label: text.name, placeholder: "John Doe" },
+              { name: "email", type: "email", label: text.email, placeholder: "example@mail.com" },
+              { name: "phone", type: "text", label: text.phone, placeholder: "+91 9876543210" },
+              { name: "device", type: "text", label: text.device, placeholder: "Laptop, Mobile, Tablet..." },
+            ].map((field) => (
+              <div key={field.name} className="space-y-1">
+                <label className="text-sm font-medium">{field.label}</label>
+                <Input
+                  name={field.name}
+                  type={field.type}
+                  placeholder={field.placeholder}
+                  defaultValue={
+                    field.name === "name"
+                      ? user.data?.user?.name ?? ""
+                      : field.name === "email"
+                      ? user.data?.user?.email ?? ""
+                      : ""
+                  }
+                />
+                {errors[field.name] && (
+                  <p className="text-red-500 text-xs">{errors[field.name]}</p>
+                )}
+              </div>
+            ))}
 
             {/* Issue */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Issue Description</label>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">{text.issue}</label>
               <Textarea name="issue" placeholder="Describe the problem…" />
               {errors.issue && (
-                <p className="text-red-500 text-sm">{errors.issue}</p>
+                <p className="text-red-500 text-xs">{errors.issue}</p>
               )}
             </div>
 
             {/* Date */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Preferred Date</label>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">{text.date}</label>
               <Input type="date" name="date" />
               {errors.date && (
-                <p className="text-red-500 text-sm">{errors.date}</p>
+                <p className="text-red-500 text-xs">{errors.date}</p>
               )}
             </div>
 
@@ -143,9 +149,9 @@ export default function CreateAppointmentPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full py-5 text-base font-semibold"
+              className="w-full h-12 text-base font-semibold"
             >
-              {loading ? "Booking Appointment..." : "Book Appointment"}
+              {loading ? text.submitting : text.submit}
             </Button>
           </form>
         </CardContent>

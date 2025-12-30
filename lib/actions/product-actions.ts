@@ -8,7 +8,7 @@ import {
   review,
 } from "@/lib/db/schema";
 import { db } from "@/lib/db";
-import { and, eq, gte, inArray } from "drizzle-orm";
+import { and, eq, gte, inArray, sql, or } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { Product } from "../types/product.types";
 import { revalidatePath } from "next/cache";
@@ -102,23 +102,26 @@ export async function getProducts(lang: Language = "en") {
 }
 
 export const getEarbuds = async (lang: Language = "en") => {
-  const earbuds = await db.query.product.findMany({
-    where: (product, { exists, eq, and }) =>
+  const rows = await db.query.product.findMany({
+    where: (p, { exists, eq: eqFn, and: andFn }) =>
       exists(
         db
           .select()
           .from(productCategory)
           .where(
-            and(
-              eq(productCategory.productId, product.id),
+            andFn(
+              eqFn(productCategory.productId, p.id),
               exists(
                 db
                   .select()
                   .from(category)
                   .where(
-                    and(
-                      eq(category.id, productCategory.categoryId),
-                      eq(category.name, "Earphones")
+                    andFn(
+                      eqFn(category.id, productCategory.categoryId),
+                      or(
+                        sql`${category.name}->>'en' = 'Earphones'`,
+                        sql`${category.name}->>'pt' = 'Fones de ouvido'`
+                      )
                     )
                   )
               )
@@ -135,8 +138,11 @@ export const getEarbuds = async (lang: Language = "en") => {
     },
   });
 
-  return earbuds.map((p) => resolveProductForLanguage(p, lang));
+  // Return raw products with multilingual objects (not resolved)
+  // This allows client-side components to translate dynamically when language changes
+  return rows;
 };
+
 
 export async function createProduct(p: Partial<Product>) {
   const id = nanoid();

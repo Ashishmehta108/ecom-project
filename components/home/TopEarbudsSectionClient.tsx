@@ -5,26 +5,39 @@ import Link from "next/link";
 import Container from "../giobal/Container";
 import { ChevronRight } from "lucide-react";
 import FavoriteButton from "../favourites/favoritebutton";
+import { useLanguage } from "@/app/context/languageContext";
+import { getTranslatedText } from "@/lib/utils/language";
+import { useMemo } from "react";
 
 export default function TopEarbudsSectionClient({
   earbuds,
 }: {
   earbuds: any[];
 }) {
+  const { locale } = useLanguage();
+
+  // Resolve multilingual product names
+  const resolvedEarbuds = useMemo(() => {
+    return earbuds.map((e) => ({
+      ...e,
+      name: typeof e.name === 'string' ? e.name : getTranslatedText(e.name, locale),
+    }));
+  }, [earbuds, locale]);
+
   return (
     <section className="w-full py-12 bg-white dark:bg-neutral-950">
       <Container>
         {/* HEADER */}
         <div className="flex items-end justify-between mb-8">
           <h2 className="text-2xl md:text-3xl font-semibold text-neutral-900 dark:text-neutral-50 tracking-tight">
-            Top Earbuds
+            {locale === "pt" ? "Melhores Fones de Ouvido" : "Top Earbuds"}
           </h2>
 
           <Link
             href="/products?category=m2A9BCDELvjQDvWUZQjEq"
             className="text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors flex items-center gap-1 group"
           >
-            See All
+            {locale === "pt" ? "Ver Todos" : "See All"}
             <div className="flex items-center justify-center w-6 h-6  rounded-xl bg-neutral-100">
               <ChevronRight className="w-4 h-4 bg-neutral-100 transition-transform group-hover:translate-x-0.5" />
             </div>{" "}
@@ -42,7 +55,7 @@ export default function TopEarbudsSectionClient({
           
           "
         >
-            {earbuds.map((e) => (
+            {resolvedEarbuds.map((e) => (
               <Link
                 href={`/products/${e.id}`}
                 key={e.id}
@@ -99,7 +112,7 @@ export default function TopEarbudsSectionClient({
         rounded-full
       "
                     >
-                      {e.discount}% OFF
+                      {e.discount}% {locale === "pt" ? "DESCONTO" : "OFF"}
                     </span>
                   )}
                 </div>

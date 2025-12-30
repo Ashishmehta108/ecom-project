@@ -73,26 +73,6 @@ export async function filterProducts(
 
   let products = await fetchProductsFromDB();
 
-  const categoryMap = new Map<
-    string,
-    { id: string; name: string; count: number }
-  >();
-
-  products.forEach((product: any) => {
-    product.productCategories?.forEach((pc: any) => {
-      const cat = pc.category;
-      if (categoryMap.has(cat.id)) {
-        categoryMap.get(cat.id)!.count++;
-      } else {
-        categoryMap.set(cat.id, { id: cat.id, name: cat.name, count: 1 });
-      }
-    });
-  });
-
-  const categories = Array.from(categoryMap.values()).sort((a, b) =>
-    a.name.localeCompare(b.name)
-  );
-
   // Create pairs of original and resolved products for filtering and sorting
   // We keep the original multilingual objects but use resolved versions for operations
   let productsWithResolved = products.map((product) => ({
@@ -100,14 +80,7 @@ export async function filterProducts(
     resolved: resolveProductForLanguage(product, lang),
   }));
 
-  // Filter by category
-  if (category && category !== "all") {
-    productsWithResolved = productsWithResolved.filter((item) =>
-      (item.original as any).productCategories?.some((pc: any) => pc.categoryId === category)
-    );
-  }
-
-  // Filter by search
+  // Filter by search FIRST (before counting categories)
   if (search && search.trim()) {
     const searchLower = search.trim().toLowerCase();
     productsWithResolved = productsWithResolved.filter((item) => {
@@ -125,6 +98,37 @@ export async function filterProducts(
 
       return searchableText.includes(searchLower);
     });
+  }
+
+  // Count categories from filtered products (after search, before category filter)
+  // This way category counts reflect products that match the search
+  const categoryMap = new Map<
+    string,
+    { id: string; name: string | { en: string; pt: string }; count: number }
+  >();
+
+  productsWithResolved.forEach((item) => {
+    (item.original as any).productCategories?.forEach((pc: any) => {
+      const cat = pc.category;
+      if (categoryMap.has(cat.id)) {
+        categoryMap.get(cat.id)!.count++;
+      } else {
+        categoryMap.set(cat.id, { id: cat.id, name: cat.name, count: 1 });
+      }
+    });
+  });
+
+  const categories = Array.from(categoryMap.values()).sort((a, b) => {
+    const nameA = typeof a.name === 'string' ? a.name : ((a.name as { en: string; pt: string })[lang] || (a.name as { en: string; pt: string }).en || '');
+    const nameB = typeof b.name === 'string' ? b.name : ((b.name as { en: string; pt: string })[lang] || (b.name as { en: string; pt: string }).en || '');
+    return nameA.localeCompare(nameB);
+  });
+
+  // Filter by category AFTER counting (so counts reflect search results)
+  if (category && category !== "all") {
+    productsWithResolved = productsWithResolved.filter((item) =>
+      (item.original as any).productCategories?.some((pc: any) => pc.categoryId === category)
+    );
   }
 
   // Sort products using resolved versions

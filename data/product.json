@@ -1,0 +1,159 @@
+{
+  "productName": {
+    "en": "Hoco EW30 Intelligent True Wireless Bluetooth Earphone",
+    "pt": "Hoco EW30 Fone de Ouvido Bluetooth True Wireless Inteligente"
+  },
+  "brand": "Hoco",
+  "categories":["Earphones"],
+  "model": "EW30",
+
+  "subCategory": {
+    "en": "Bluetooth Earphone",
+    "pt": "Fone de Ouvido Bluetooth"
+  },
+
+  "description": {
+    "en": "Hoco EW30 is a true wireless Bluetooth 5.3 headset with low latency, long standby time, LED indicators, and ergonomic design.",
+    "pt": "O Hoco EW30 é um fone de ouvido Bluetooth 5.3 true wireless com baixa latência, longa duração em standby, indicadores LED e design ergonômico."
+  },
+
+  "features": {
+    "en": [
+      "Bluetooth 5.3",
+      "41–50ms low-latency wireless audio",
+      "Charging case 300mAh, Earbuds 25mAh",
+      "3.5 hours use time",
+      "150 hours standby",
+      "Leader–follower switching",
+      "Summon Siri",
+      "LED battery indicator",
+      "IPX-3 waterproof rating"
+    ],
+    "pt": [
+      "Bluetooth 5.3",
+      "Áudio sem fio com baixa latência de 41–50ms",
+      "Estojo de carregamento 300mAh, Earbuds 25mAh",
+      "Até 3,5 horas de uso",
+      "150 horas de standby",
+      "Alternância entre líder e seguidor",
+      "Ativação da Siri",
+      "Indicador de bateria em LED",
+      "Classificação à prova d’água IPX-3"
+    ]
+  },
+
+  "pricing": {
+    "price": 660,
+    "currency": "EUR",
+    "discount": 0,
+    "inStock": true,
+    "stockQuantity": 0
+  },
+
+  "specifications": {
+    "general": {
+      "productName": {
+        "en": "EW30 Intelligent True Wireless Bluetooth Headset",
+        "pt": "EW30 Fone de Ouvido Bluetooth True Wireless Inteligente"
+      },
+      "brandName": {
+        "en": "Hoco",
+        "pt": "Hoco"
+      },
+      "colors": {
+        "en": "White",
+        "pt": "Branco"
+      },
+      "material": {
+        "en": "ABS",
+        "pt": "ABS"
+      },
+      "weight": {
+        "en": "37g",
+        "pt": "37g"
+      },
+      "sizeMm": {
+        "en": "51 x 44 x 21 mm",
+        "pt": "51 x 44 x 21 mm"
+      },
+      "privateMold": {
+        "en": "Yes",
+        "pt": "Sim"
+      },
+      "certificate": {
+        "en": "CE / FCC / ROHS",
+        "pt": "CE / FCC / ROHS"
+      }
+    },
+
+    "technical": {
+      "bluetoothVersion": {
+        "en": "5.3",
+        "pt": "5.3"
+      },
+      "wirelessDelayTime": {
+        "en": "41–50 ms",
+        "pt": "41–50 ms"
+      },
+      "waterproofStandard": {
+        "en": "IPX-3",
+        "pt": "IPX-3"
+      },
+      "chipset": {
+        "en": "JL AC6983D2",
+        "pt": "JL AC6983D2"
+      },
+      "batteryCapacity": {
+        "en": "300mAh (case), 25mAh (earbuds)",
+        "pt": "300mAh (estojo) e 25mAh (earbuds)"
+      },
+      "useTime": {
+        "en": "3.5 hours",
+        "pt": "3.5 horas"
+      },
+      "standbyTime": {
+        "en": "150 hours",
+        "pt": "150 horas"
+      }
+    }
+  },
+
+  "tags": {
+    "en": [
+      "Bluetooth Earphone",
+      "Earphone",
+      "Wireless Earphone",
+      "TWS Earbuds",
+      "Earbuds",
+      "Hoco EW30",
+      "Low Latency Earbuds",
+      "Gaming Earbuds",
+      "Bluetooth 5.3 Earphone",
+      "Waterproof Earbuds",
+      "Budget TWS",
+      "LED Indicator Earbuds",
+      "Electronics",
+      "Audio Device",
+      "Wireless Audio"
+    ],
+    "pt": [
+      "Fone Bluetooth",
+      "Fone de ouvido",
+      "Fone de ouvido sem fio",
+      "Earbuds TWS",
+      "Auriculares",
+      "Hoco EW30",
+      "Earbuds de baixa latência",
+      "Earbuds para jogos",
+      "Fone Bluetooth 5.3",
+      "Earbuds à prova d’água",
+      "TWS econômico",
+      "Earbuds com indicador LED",
+      "Eletrônicos",
+      "Dispositivo de áudio",
+      "Áudio sem fio"
+    ]
+  },
+"imagesFolder": "/Techbar/hocoew30"
+
+}

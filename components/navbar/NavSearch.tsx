@@ -98,7 +98,7 @@
 //                 <Input
 //                   ref={inputRef}
 //                   type="search"
-//                   placeholder="Search products..."
+//                   placeholder={locale === "pt" ? "Pesquisar produtos..." : "Search products..."}
 //                   className="w-full pl-10 pr-10 py-2.5 text-sm rounded-lg border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-900 focus:border-transparent transition-shadow focus-visible:ring-0 focus-visible:outline-none focus-visible:border-neutral-300"
 //                   value={search}
 //                   onChange={(e) => setSearch(e.target.value)}
@@ -245,13 +245,15 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { searchProducts } from "@/lib/actions/search";
+import { useLanguage } from "@/app/context/languageContext";
+import { getTranslatedText } from "@/lib/utils/language";
 
 export default function NavSearch() {
   const [search, setSearch] = useState("");
@@ -261,6 +263,15 @@ export default function NavSearch() {
   const inputRef = useRef<HTMLInputElement>(null);
   const desktopInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const { locale } = useLanguage();
+
+  // Resolve multilingual product names
+  const resolvedSuggestions = useMemo(() => {
+    return suggestions.map((item) => ({
+      ...item,
+      name: typeof item.name === 'string' ? item.name : getTranslatedText(item.name, locale),
+    }));
+  }, [suggestions, locale]);
 
   // Debounced search
   useEffect(() => {
@@ -359,14 +370,14 @@ export default function NavSearch() {
                 <Input
                   ref={inputRef}
                   type="search"
-                  placeholder="Search products..."
+                  placeholder={locale === "pt" ? "Pesquisar produtos..." : "Search products..."}
                   className="w-full pl-10 pr-10 py-2.5 text-sm rounded-lg border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900 focus:border-neutral-400 dark:focus:border-neutral-600 transition-colors focus-visible:ring-0 focus-visible:outline-none"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   onKeyDown={handleKeyDown}
                   aria-label="Search for products"
                   aria-autocomplete="list"
-                  aria-controls={suggestions.length > 0 ? "mobile-suggestions" : undefined}
+                  aria-controls={resolvedSuggestions.length > 0 ? "mobile-suggestions" : undefined}
                 />
                 <button
                   type="button"
@@ -380,7 +391,7 @@ export default function NavSearch() {
 
               {/* Mobile suggestions */}
               <AnimatePresence>
-                {suggestions.length > 0 && (
+                {resolvedSuggestions.length > 0 && (
                   <motion.div
                     id="mobile-suggestions"
                     initial={{ opacity: 0, scale: 0.98 }}
@@ -390,13 +401,13 @@ export default function NavSearch() {
                     className="mt-3 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden max-h-[65vh] overflow-y-auto"
                     role="listbox"
                   >
-                    {suggestions.map((item, index) => (
+                    {resolvedSuggestions.map((item, index) => (
                       <Link
                         key={item.id}
                         href={`/products/${item.id}`}
                         onClick={handleProductClick}
                         className={`flex items-center gap-3 px-3 py-3 hover:bg-neutral-50/50 dark:hover:bg-neutral-800/50 transition-colors duration-200 ${
-                          index !== suggestions.length - 1
+                          index !== resolvedSuggestions.length - 1
                             ? "border-b border-neutral-100 dark:border-neutral-800"
                             : ""
                         }`}
@@ -405,7 +416,7 @@ export default function NavSearch() {
                         <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800 flex-shrink-0">
                           <Image
                             src={item.image || "/placeholder.png"}
-                            alt=""
+                            alt={item.name}
                             fill
                             sizes="48px"
                             className="object-cover"
@@ -457,13 +468,13 @@ export default function NavSearch() {
             onKeyDown={handleKeyDown}
             aria-label="Search for products"
             aria-autocomplete="list"
-            aria-controls={suggestions.length > 0 ? "desktop-suggestions" : undefined}
+            aria-controls={resolvedSuggestions.length > 0 ? "desktop-suggestions" : undefined}
           />
         </div>
 
         {/* Desktop suggestions dropdown */}
         <AnimatePresence>
-          {suggestions.length > 0 && (
+          {resolvedSuggestions.length > 0 && (
             <motion.div
               id="desktop-suggestions"
               initial={{ opacity: 0, y: -8, scale: 0.98 }}
@@ -473,13 +484,13 @@ export default function NavSearch() {
               className="absolute top-full mt-2 left-0 right-0 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden max-h-[450px] overflow-y-auto z-50"
               role="listbox"
             >
-              {suggestions.map((item, index) => (
+              {resolvedSuggestions.map((item, index) => (
                 <Link
                   key={item.id}
                   href={`/products/${item.id}`}
                   onClick={handleProductClick}
                   className={`flex items-center gap-3 px-4 py-3.5 hover:bg-neutral-50/50 dark:hover:bg-neutral-800/50 transition-colors duration-200 ${
-                    index !== suggestions.length - 1
+                    index !== resolvedSuggestions.length - 1
                       ? "border-b border-neutral-100 dark:border-neutral-800"
                       : ""
                   }`}
@@ -488,7 +499,7 @@ export default function NavSearch() {
                   <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800 flex-shrink-0">
                     <Image
                       src={item.image || "/placeholder.png"}
-                      alt=""
+                      alt={item.name}
                       fill
                       sizes="56px"
                       className="object-cover"
