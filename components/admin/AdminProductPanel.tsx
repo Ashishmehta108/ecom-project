@@ -1011,18 +1011,22 @@ export default function AdminProductPanel({
     obj: Record<string, any>
   ): Array<{ key: string; value: { en: string; pt: string } }> => {
     if (!obj || typeof obj !== "object") return [];
+  
     return Object.entries(obj).map(([key, value]) => {
-      // Handle multilingual value
-      if (value && typeof value === "object" && ("en" in value || "pt" in value)) {
+      if (
+        value &&
+        typeof value === "object" &&
+        ("en" in value || "pt" in value)
+      ) {
         return {
           key,
           value: {
-            en: value.en || "",
-            pt: value.pt || "",
+            en: Array.isArray(value.en) ? value.en.join(", ") : value.en || "",
+            pt: Array.isArray(value.pt) ? value.pt.join(", ") : value.pt || "",
           },
         };
       }
-      // Handle string value (legacy - convert to multilingual)
+  
       return {
         key,
         value: {
@@ -1032,6 +1036,7 @@ export default function AdminProductPanel({
       };
     });
   };
+  
   // Helper: Convert array format to object format for form
   const arrayToObject = (
     arr: Array<{ key: string; value: { en: string; pt: string } | string }> | undefined
