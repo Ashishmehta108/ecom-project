@@ -6,11 +6,13 @@ import { SortFilter } from "@/components/products/SortFilter";
 import { filterProducts } from "@/lib/actions/productActions";
 import { getUserSession } from "@/server";
 import ProductsListWrapper from "./productWrapper";
+import { getLanguageFromRequest } from "@/lib/utils/language";
 
 type SearchParams = {
   category?: string;
   sort?: string;
   search?: string;
+  lang?: string;
 };
 
 export default async function ProductPage({
@@ -23,10 +25,13 @@ export default async function ProductPage({
   const search = params.search ?? undefined;
   const sort = params.sort ?? undefined;
   const category = params.category ?? undefined;
+  const lang = (params.lang === "pt" ? "pt" : "en") as "en" | "pt";
+  
   const { products, categories } = await filterProducts({
     category: category === "all" ? undefined : category,
     search,
     sort,
+    lang,
   });
 
   const activeCategory = category || "all";

@@ -1,6 +1,8 @@
 "use server";
 
 import { db } from "../db";
+import { resolveProductForLanguage } from "@/lib/utils/language";
+import type { Language } from "@/lib/types/product.types";
 
 // This would typically fetch from your database
 // For now, simulating with a function that returns your product data
@@ -64,8 +66,10 @@ async function fetchProductsFromDB() {
   return data;
 }
 
-export async function filterProducts(params: FilterParams) {
-  const { category, sort = "featured", search } = params;
+export async function filterProducts(
+  params: FilterParams & { lang?: Language }
+) {
+  const { category, sort = "featured", search, lang = "en" } = params;
 
   let products = await fetchProductsFromDB();
 
@@ -74,8 +78,8 @@ export async function filterProducts(params: FilterParams) {
     { id: string; name: string; count: number }
   >();
 
-  products.forEach((product) => {
-    product.productCategories.forEach((pc) => {
+  products.forEach((product: any) => {
+    product.productCategories?.forEach((pc: any) => {
       const cat = pc.category;
       if (categoryMap.has(cat.id)) {
         categoryMap.get(cat.id)!.count++;
@@ -89,23 +93,32 @@ export async function filterProducts(params: FilterParams) {
     a.name.localeCompare(b.name)
   );
 
+  // Create pairs of original and resolved products for filtering and sorting
+  // We keep the original multilingual objects but use resolved versions for operations
+  let productsWithResolved = products.map((product) => ({
+    original: product,
+    resolved: resolveProductForLanguage(product, lang),
+  }));
+
+  // Filter by category
   if (category && category !== "all") {
-    products = products.filter((product) =>
-      product.productCategories.some((pc) => pc.categoryId === category)
+    productsWithResolved = productsWithResolved.filter((item) =>
+      (item.original as any).productCategories?.some((pc: any) => pc.categoryId === category)
     );
   }
 
+  // Filter by search
   if (search && search.trim()) {
     const searchLower = search.trim().toLowerCase();
-    products = products.filter((product) => {
+    productsWithResolved = productsWithResolved.filter((item) => {
       const searchableText = [
-        product.productName,
-        product.brand,
-        product.model,
-        product.subCategory,
-        product.description,
-        ...product.features,
-        ...product.tags,
+        item.resolved.productName,
+        item.resolved.brand,
+        item.resolved.model,
+        item.resolved.subCategory,
+        item.resolved.description,
+        ...item.resolved.features,
+        ...item.resolved.tags,
       ]
         .join(" ")
         .toLowerCase();
@@ -114,34 +127,35 @@ export async function filterProducts(params: FilterParams) {
     });
   }
 
-  // Sort products
+  // Sort products using resolved versions
   switch (sort) {
     case "price-asc":
-      products.sort((a, b) => a.pricing.price - b.pricing.price);
+      productsWithResolved.sort((a, b) => a.resolved.pricing.price - b.resolved.pricing.price);
       break;
     case "price-desc":
-      products.sort((a, b) => b.pricing.price - a.pricing.price);
+      productsWithResolved.sort((a, b) => b.resolved.pricing.price - a.resolved.pricing.price);
       break;
     case "newest":
-      products.sort(
+      productsWithResolved.sort(
         (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          new Date(b.resolved.createdAt).getTime() - new Date(a.resolved.createdAt).getTime()
       );
       break;
     case "name-asc":
-      products.sort((a, b) => a.productName.localeCompare(b.productName));
+      productsWithResolved.sort((a, b) => a.resolved.productName.localeCompare(b.resolved.productName));
       break;
     case "featured":
     default:
-      // Keep default order or implement custom featured logic
-      // e.g., sort by popularity, inStock first, etc.
-      products.sort((a, b) => {
-        if (a.pricing.inStock && !b.pricing.inStock) return -1;
-        if (!a.pricing.inStock && b.pricing.inStock) return 1;
+      productsWithResolved.sort((a, b) => {
+        if (a.resolved.pricing.inStock && !b.resolved.pricing.inStock) return -1;
+        if (!a.resolved.pricing.inStock && b.resolved.pricing.inStock) return 1;
         return 0;
       });
       break;
   }
+
+  // Return original products with multilingual objects (not resolved)
+  products = productsWithResolved.map((item) => item.original);
 
   return {
     products,

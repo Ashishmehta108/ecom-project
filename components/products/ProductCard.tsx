@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { isInCart } from "@/lib/helper/cart/cart.helper";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
+import { useLanguage } from "@/app/context/languageContext";
+import { getTranslatedText, getTranslatedArray } from "@/lib/utils/language";
 
 // Dialog
 import {
@@ -28,10 +30,36 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product, userId, listView }: ProductCardProps) {
+  const { locale } = useLanguage();
   const [loginOpen, setLoginOpen] = useState(false);
   const [cartPopupOpen, setCartPopupOpen] = useState(false);
 
-  const mainImage = product.productImages.find(
+  // Resolve multilingual fields - handle both resolved strings and multilingual objects
+  const productName = useMemo(() => {
+    if (typeof product.productName === 'string') {
+      return product.productName;
+    }
+    return getTranslatedText(product.productName, locale);
+  }, [product.productName, locale]);
+
+  const subCategory = useMemo(() => {
+    if (typeof product.subCategory === 'string') {
+      return product.subCategory;
+    }
+    return getTranslatedText(product.subCategory, locale);
+  }, [product.subCategory, locale]);
+
+  const features = useMemo(() => {
+    if (Array.isArray(product.features) && product.features.length > 0) {
+      // Check if it's already resolved (array of strings)
+      if (typeof product.features[0] === 'string') {
+        return product.features;
+      }
+    }
+    return getTranslatedArray(product.features, locale);
+  }, [product.features, locale]);
+
+  const mainImage = product.productImages?.find(
     (img: any) => img.position === "0"
   );
 
@@ -49,7 +77,7 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
     : `/products/${product.id}`;
 
   const stockQty =
-    product.pricing.stockQuantity !== undefined
+    product.pricing?.stockQuantity !== undefined
       ? product.pricing.stockQuantity
       : 0;
 
@@ -65,7 +93,7 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
     const data = await addItemToCart(userId, product.id, 1);
 
     if (data.success) {
-      toast.success(`Product added to cart`);
+      toast.success(locale === "pt" ? "Produto adicionado ao carrinho" : "Product added to cart");
       setCartPopupOpen(true);
     }
   };
@@ -76,9 +104,11 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
       <Dialog open={loginOpen} onOpenChange={setLoginOpen}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle>Login Required</DialogTitle>
+            <DialogTitle>{locale === "pt" ? "Login Necessário" : "Login Required"}</DialogTitle>
             <DialogDescription>
-              Please login to continue adding products to your cart.
+              {locale === "pt" 
+                ? "Por favor, faça login para continuar adicionando produtos ao seu carrinho."
+                : "Please login to continue adding products to your cart."}
             </DialogDescription>
           </DialogHeader>
 
@@ -90,9 +120,11 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
       <Dialog open={cartPopupOpen} onOpenChange={setCartPopupOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Added to Cart</DialogTitle>
+            <DialogTitle>{locale === "pt" ? "Adicionado ao Carrinho" : "Added to Cart"}</DialogTitle>
             <DialogDescription>
-              {product.productName} was successfully added to your cart.
+              {locale === "pt"
+                ? `${productName} foi adicionado ao seu carrinho com sucesso.`
+                : `${productName} was successfully added to your cart.`}
             </DialogDescription>
           </DialogHeader>
 
@@ -102,11 +134,11 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
               className="w-full"
               onClick={() => setCartPopupOpen(false)}
             >
-              Continue Shopping
+              {locale === "pt" ? "Continuar Comprando" : "Continue Shopping"}
             </Button>
 
             <Link href="/cart" className="w-full">
-              <Button className="w-full">Go to Cart</Button>
+              <Button className="w-full">{locale === "pt" ? "Ir para o Carrinho" : "Go to Cart"}</Button>
             </Link>
           </div>
         </DialogContent>
@@ -135,13 +167,13 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
         >
           {!adminViewOnly && outOfStock && (
             <span className="absolute right-2 top-2 z-30 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-red-600 shadow-sm backdrop-blur dark:bg-neutral-900/90 dark:text-red-400">
-              Out of stock
+              {locale === "pt" ? "Esgotado" : "Out of stock"}
             </span>
           )}
 
           <Image
             src={mainImage?.url || "/placeholder.jpg"}
-            alt={product.productName}
+            alt={productName}
             fill={!listView}
             width={listView ? 120 : undefined}
             height={listView ? 120 : undefined}
@@ -157,7 +189,7 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
           )}
         >
           <p className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
-            {product.subCategory}
+            {subCategory}
           </p>
 
           <Link href={productLink}>
@@ -167,13 +199,13 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
                 "dark:text-neutral-100 dark:hover:text-neutral-300"
               )}
             >
-              {product.productName}
+              {productName}
             </h3>
           </Link>
 
-          {!adminViewOnly && !listView && (
+          {!adminViewOnly && !listView && features && features.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
-              {product.features
+              {features
                 .slice(0, 2)
                 .map((feature: string, idx: number) => (
                   <span
@@ -199,11 +231,11 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
                     : "text-neutral-700 dark:text-neutral-300"
                 )}
               >
-                Stock: <span className="font-semibold">{stockQty}</span>
+                {locale === "pt" ? "Estoque" : "Stock"}: <span className="font-semibold">{stockQty}</span>
               </p>
 
               <div className="flex items-center">
-                {product.pricing.discount > 0 ? (
+                {product.pricing?.discount > 0 ? (
                   <div className="space-y-0.5">
                     <p className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
                       €
@@ -223,7 +255,7 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
                   </div>
                 ) : (
                   <p className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-                    €{product.pricing.price.toLocaleString("en-IN")}
+                    €{product.pricing?.price.toLocaleString("en-IN") || "0.00"}
                   </p>
                 )}
               </div>
@@ -240,18 +272,23 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
             >
               {/* Price */}
               <div className="flex items-center">
-                {product.pricing.discount > 0 ? (
+                {product.pricing?.discount > 0 ? (
                   <div className="space-y-0.5">
                     <p className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
                       €
                       {(
                         product.pricing.price -
                         (product.pricing.price * product.pricing.discount) / 100
-                      ).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                      ).toLocaleString(
+                        locale === "pt" ? "pt-PT" : "en-US",
+                        { minimumFractionDigits: 2 }
+                      )}
                     </p>
 
                     <p className="text-xs line-through text-neutral-500 dark:text-neutral-400">
-                      €{product.pricing.price.toLocaleString("en-IN")}
+                      €{product.pricing.price.toLocaleString(
+                        locale === "pt" ? "pt-PT" : "en-US"
+                      )}
                     </p>
 
                     <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
@@ -260,7 +297,10 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
                   </div>
                 ) : (
                   <p className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-                    €{product.pricing.price.toLocaleString("en-IN")}
+                    €{product.pricing?.price.toLocaleString(
+                      locale === "pt" ? "pt-PT" : "en-US",
+                      { minimumFractionDigits: 2 }
+                    ) || "0.00"}
                   </p>
                 )}
               </div>
@@ -273,7 +313,7 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
                   className="rounded-full px-5 text-xs font-medium flex items-center gap-2 border-green-600 text-green-700 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-950"
                 >
                   <span className="h-2 w-2 rounded-full bg-green-600 dark:bg-green-300" />
-                  In Cart
+                  {locale === "pt" ? "No Carrinho" : "In Cart"}
                 </Button>
               ) : (
                 <Button
@@ -287,7 +327,13 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
                       : "bg-neutral-900 text-white hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
                   )}
                 >
-                  {outOfStock ? "Coming Soon" : "Add to cart"}
+                  {outOfStock
+                    ? locale === "pt"
+                      ? "Em Breve"
+                      : "Coming Soon"
+                    : locale === "pt"
+                    ? "Adicionar ao Carrinho"
+                    : "Add to cart"}
                 </Button>
               )}
             </div>

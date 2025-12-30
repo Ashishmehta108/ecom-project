@@ -1,13 +1,16 @@
+export type Language = "en" | "pt";
+export type TranslatedField = { en: string; pt: string };
+export type TranslatedArray = { en: string[]; pt: string[] };
+
 export type Product = {
   id: string;
-  productName: string;
+  productName: TranslatedField;
   brand: string;
   model: string;
   categories: string[];
-  subCategory: string;
-  description: string;
-  features: string[];
-
+  subCategory: TranslatedField; // Updated to TranslatedField
+  description: TranslatedField;
+  features: TranslatedArray;
   pricing: {
     price: number;
     currency: string;
@@ -15,29 +18,26 @@ export type Product = {
     inStock: boolean;
     stockQuantity: number;
   };
-
-
   specifications: {
-    general: Record<string, any>;
-    technical: Record<string, any>;
+    general?: Record<string, any>; // Can be string, array, or { en: string; pt: string }
+    technical?: Record<string, any>; // Can be string, array, or { en: string; pt: string }
+    [key: string]: any;
   };
-
   productImages: {
     url: string;
     fileId?: string;
   }[];
-
-  tags: string[];
+  tags: TranslatedArray;
 };
 
 export type productPageProductType = {
   id: string;
-  productName: string;
+  productName: string; // This will be the resolved string based on language
   brand: string;
   model: string;
   subCategory: string;
-  description: string;
-  features: string[];
+  description: string; // Resolved
+  features: string[]; // Resolved
   pricing: {
     price: number;
     inStock: boolean;
@@ -55,7 +55,7 @@ export type productPageProductType = {
     url: string;
     position: string;
   }>;
-  tags: string[];
+  tags: string[]; // Resolved
 };
 
 // types/product.ts

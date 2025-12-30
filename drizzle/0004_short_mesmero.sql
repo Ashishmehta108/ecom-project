@@ -1,1 +1,0 @@
-ALTER TABLE "favorite_item" ADD COLUMN "image_url" text NOT NULL;

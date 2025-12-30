@@ -1,5 +1,6 @@
 import AdminProductPanel from "@/components/admin/AdminProductPanel";
-import { getProductById } from "@/lib/actions/product-actions";
+import { getProductByIdRaw } from "@/lib/actions/product-actions";
+import { getAllCategories } from "@/lib/actions/categories.actions";
 
 export default async function ProductEditorPage({
   params,
@@ -7,14 +8,23 @@ export default async function ProductEditorPage({
   params: Promise<{ id: string }>;
 }) {
   const p = await params;
-  const product = await getProductById((await params).id);
-  console.log("this is product",product.categories);
+  const product = await getProductByIdRaw(p.id);
+  const allCategories = await getAllCategories();
+
+  if (!product) {
+    return <div>Product not found</div>;
+  }
+
+  // Extract category names from multilingual structure
+  const categoryNames = allCategories.map((c: any) => {
+    if (typeof c.name === "string") return c.name;
+    return c.name?.en || c.name?.pt || "";
+  }).filter(Boolean);
 
   return (
     <div className="p-8">
       <AdminProductPanel
-        //@ts-ignore
-        categories={product.categories}
+        categories={categoryNames}
         initialProduct={product}
       />
     </div>

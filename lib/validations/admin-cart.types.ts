@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { TranslatedField } from "@/lib/types/product.types";
 
 export const customerInfoSchema = z.object({
   customerName: z.string().min(2, "Name must be at least 2 characters"),
@@ -27,11 +28,11 @@ export type UpdateQuantityInput = z.infer<typeof updateQuantitySchema>;
 
 export interface ProductWithImage {
   id: string;
-  productName: string;
+  productName: TranslatedField; // Updated to match database schema
   brand: string;
   model: string;
-  subCategory: string;
-  description: string;
+  subCategory: TranslatedField; // Updated to match database schema
+  description: TranslatedField; // Updated to match database schema
   pricing: {
     price: number;
     currency: string;

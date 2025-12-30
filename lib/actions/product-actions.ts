@@ -12,6 +12,8 @@ import { and, eq, gte, inArray } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { Product } from "../types/product.types";
 import { revalidatePath } from "next/cache";
+import { resolveProductForLanguage } from "@/lib/utils/language";
+import type { Language } from "@/lib/types/product.types";
 
 async function createCategoryIfNotExists(name: string) {
   const existing = await db.query.category.findFirst({
@@ -30,7 +32,7 @@ async function createCategoryIfNotExists(name: string) {
   return newCat;
 }
 
-export async function getProductById(id: string) {
+export async function getProductById(id: string, lang: Language = "en") {
   const result = await db.query.product.findFirst({
     where: eq(product.id, id),
     with: {
@@ -45,19 +47,36 @@ export async function getProductById(id: string) {
 
   if (!result) return null;
 
-  const obj = {
-    ...result,
+  // Resolve multilingual fields
+  const resolved = resolveProductForLanguage(result, lang);
 
+  return {
+    ...resolved,
     categories: result.productCategories?.map((pc) => ({
       id: pc.category.id,
       name: pc.category.name,
     })),
   };
-  console.log(obj)
+}
+
+// Add new function to get raw product data (without language resolution)
+export async function getProductByIdRaw(id: string) {
+  const result = await db.query.product.findFirst({
+    where: eq(product.id, id),
+    with: {
+      productImages: true,
+      productCategories: {
+        with: {
+          category: true,
+        },
+      },
+    },
+  });
+
+  if (!result) return null;
 
   return {
     ...result,
-
     categories: result.productCategories?.map((pc) => ({
       id: pc.category.id,
       name: pc.category.name,
@@ -65,16 +84,24 @@ export async function getProductById(id: string) {
   };
 }
 
-export async function getProducts() {
-  return await db.query.product.findMany({
+export async function getProducts(lang: Language = "en") {
+  const products = await db.query.product.findMany({
     with: {
       productImages: true,
-      productCategories: true,
+      productCategories: {
+        with: {
+          category: true,
+        },
+      },
     },
   });
+
+  // Return original products with multilingual objects (not resolved)
+  // This allows client-side components to translate dynamically when language changes
+  return products;
 }
 
-export const getEarbuds = async () => {
+export const getEarbuds = async (lang: Language = "en") => {
   const earbuds = await db.query.product.findMany({
     where: (product, { exists, eq, and }) =>
       exists(
@@ -84,7 +111,6 @@ export const getEarbuds = async () => {
           .where(
             and(
               eq(productCategory.productId, product.id),
-              // correlate category.id with productCategory.categoryId
               exists(
                 db
                   .select()
@@ -109,8 +135,7 @@ export const getEarbuds = async () => {
     },
   });
 
-  console.log(earbuds);
-  return earbuds;
+  return earbuds.map((p) => resolveProductForLanguage(p, lang));
 };
 
 export async function createProduct(p: Partial<Product>) {
@@ -119,14 +144,35 @@ export async function createProduct(p: Partial<Product>) {
     throw new Error("Product is required");
   }
 
+  // Ensure multilingual structure
+  const productName = typeof p.productName === 'string' 
+    ? { en: p.productName, pt: '' }
+    : (p.productName || { en: '', pt: '' });
+
+  const subCategory = typeof p.subCategory === 'string'
+    ? { en: p.subCategory, pt: '' }
+    : (p.subCategory || { en: '', pt: '' });
+
+  const description = typeof p.description === 'string'
+    ? { en: p.description, pt: '' }
+    : (p.description || { en: '', pt: '' });
+
+  const features = Array.isArray(p.features)
+    ? { en: p.features, pt: [] }
+    : (p.features || { en: [], pt: [] });
+
+  const tags = Array.isArray(p.tags)
+    ? { en: p.tags, pt: [] }
+    : (p.tags || { en: [], pt: [] });
+
   await db.insert(product).values({
     id: id,
-    productName: p.productName!,
+    productName: productName,
     brand: p.brand!,
     model: p.model ?? "",
-    subCategory: p.subCategory ?? "",
-    description: p.description ?? "",
-    features: p.features ?? [],
+    subCategory: subCategory,
+    description: description,
+    features: features,
     pricing: {
       price: p.pricing?.price,
       currency: "eur",
@@ -135,7 +181,7 @@ export async function createProduct(p: Partial<Product>) {
       stockQuantity: p.pricing?.stockQuantity,
     },
     specifications: p.specifications,
-    tags: p.tags ?? [],
+    tags: tags,
   });
 
   const categoriesToInsert = [];
@@ -168,21 +214,42 @@ export async function createProduct(p: Partial<Product>) {
   revalidatePath("/products");
   revalidatePath("/admin/products");
   return getProductById(id);
-  
 }
+
 export async function updateProduct(id: string, p: Partial<Product>) {
+  // Ensure multilingual structure
+  const productName = typeof p.productName === 'string' 
+    ? { en: p.productName, pt: '' }
+    : p.productName;
+
+  const subCategory = typeof p.subCategory === 'string'
+    ? { en: p.subCategory, pt: '' }
+    : (p.subCategory || { en: '', pt: '' });
+
+  const description = typeof p.description === 'string'
+    ? { en: p.description, pt: '' }
+    : p.description;
+
+  const features = Array.isArray(p.features)
+    ? { en: p.features, pt: [] }
+    : (p.features || { en: [], pt: [] });
+
+  const tags = Array.isArray(p.tags)
+    ? { en: p.tags, pt: [] }
+    : (p.tags || { en: [], pt: [] });
+
   await db
     .update(product)
     .set({
-      productName: p.productName,
+      productName: productName,
       brand: p.brand,
       model: p.model,
-      subCategory: p.subCategory,
-      description: p.description,
-      features: p.features ?? [],
+      subCategory: subCategory,
+      description: description,
+      features: features,
       pricing: p.pricing,
       specifications: p.specifications,
-      tags: p.tags ?? [],
+      tags: tags,
     })
     .where(eq(product.id, id));
 
@@ -283,14 +350,16 @@ export async function updateProduct(id: string, p: Partial<Product>) {
       .set({ position: newImg.position })
       .where(eq(productImage.id, oldImg.id));
   }
+  
   revalidatePath("/");
-revalidatePath("/products");
-revalidatePath(`/products/${id}`);
-revalidatePath("/admin/products");
-revalidatePath(`/admin/products/${id}`);
+  revalidatePath("/products");
+  revalidatePath(`/products/${id}`);
+  revalidatePath("/admin/products");
+  revalidatePath(`/admin/products/${id}`);
 
   return getProductById(id);
 }
+
 export async function deleteProduct(id: string) {
   await db.delete(product).where(eq(product.id, id));
   revalidatePath("/");

@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { useLanguage } from "@/app/context/languageContext";
 
 import {
   customerInfoSchema,
@@ -38,6 +39,7 @@ export default function CustomerInfoForm({
   cartId,
   onBack,
 }: CustomerInfoFormProps) {
+  const { locale } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<CustomerInfo>({
@@ -57,17 +59,17 @@ export default function CustomerInfoForm({
       const result = await createAdminCustomerCheckoutSession(cartId, data);
 
       if (result.success && result.sessionUrl) {
-        toast("redirecting to payment ");
+        toast(locale === "pt" ? "Redirecionando para pagamento..." : "Redirecting to payment...");
         // Redirect to Stripe Checkout
         window.location.href = result.sessionUrl;
       } else {
-        toast.error("Failed to create checkout session");
+        toast.error(locale === "pt" ? "Falha ao criar sessão de checkout" : "Failed to create checkout session");
 
         setIsSubmitting(false);
       }
     } catch (error) {
       console.error("Checkout error:", error);
-      toast("An unexpected error occurred");
+      toast.error(locale === "pt" ? "Ocorreu um erro inesperado" : "An unexpected error occurred");
 
       setIsSubmitting(false);
     }
@@ -85,12 +87,14 @@ export default function CustomerInfoForm({
               disabled={isSubmitting}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Cart
+              {locale === "pt" ? "Voltar ao Carrinho" : "Back to Cart"}
             </Button>
           </div>
-          <CardTitle>Customer Information</CardTitle>
+          <CardTitle>{locale === "pt" ? "Informações do Cliente" : "Customer Information"}</CardTitle>
           <CardDescription>
-            Enter customer details to complete the order
+            {locale === "pt" 
+              ? "Digite os detalhes do cliente para concluir o pedido"
+              : "Enter customer details to complete the order"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -101,10 +105,10 @@ export default function CustomerInfoForm({
                 name="customerName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full Name *</FormLabel>
+                    <FormLabel>{locale === "pt" ? "Nome Completo *" : "Full Name *"}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="John Doe"
+                        placeholder={locale === "pt" ? "João Silva" : "John Doe"}
                         {...field}
                         disabled={isSubmitting}
                       />
@@ -119,7 +123,7 @@ export default function CustomerInfoForm({
                 name="customerEmail"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email Address *</FormLabel>
+                    <FormLabel>{locale === "pt" ? "Endereço de Email *" : "Email Address *"}</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -138,11 +142,11 @@ export default function CustomerInfoForm({
                 name="customerPhone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone Number *</FormLabel>
+                    <FormLabel>{locale === "pt" ? "Número de Telefone *" : "Phone Number *"}</FormLabel>
                     <FormControl>
                       <Input
                         type="tel"
-                        placeholder="+1234567890"
+                        placeholder={locale === "pt" ? "+351912345678" : "+1234567890"}
                         {...field}
                         disabled={isSubmitting}
                       />
@@ -157,10 +161,12 @@ export default function CustomerInfoForm({
                 name="customerAddress"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Address *</FormLabel>
+                    <FormLabel>{locale === "pt" ? "Endereço *" : "Address *"}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="123 Main St, City, State, ZIP, Country"
+                        placeholder={locale === "pt" 
+                          ? "Rua Principal, 123, Cidade, Código Postal, País"
+                          : "123 Main St, City, State, ZIP, Country"}
                         rows={4}
                         {...field}
                         disabled={isSubmitting}
@@ -179,7 +185,7 @@ export default function CustomerInfoForm({
                   disabled={isSubmitting}
                   className="flex-1"
                 >
-                  Cancel
+                  {locale === "pt" ? "Cancelar" : "Cancel"}
                 </Button>
                 <Button
                   type="submit"
@@ -189,10 +195,10 @@ export default function CustomerInfoForm({
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Processing...
+                      {locale === "pt" ? "Processando..." : "Processing..."}
                     </>
                   ) : (
-                    "Continue to Payment"
+                    locale === "pt" ? "Continuar para Pagamento" : "Continue to Payment"
                   )}
                 </Button>
               </div>

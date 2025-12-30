@@ -1,1 +1,0 @@
-ALTER TABLE "pos_order" DROP COLUMN "order_status";

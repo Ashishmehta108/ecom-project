@@ -36,13 +36,15 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
   // save & restore selected language
   useEffect(() => {
-    const saved = localStorage.getItem("app_language") as Locale | null;
-    if (saved) setLocale(saved);
+    const saved = localStorage.getItem("lang") as Locale | null;
+    if (saved && (saved === "en" || saved === "pt")) {
+      setLocale(saved);
+    }
   }, []);
 
   const changeLanguage = (lang: Locale) => {
     setLocale(lang);
-    localStorage.setItem("app_language", lang);
+    localStorage.setItem("lang", lang);
   };
 
   const t = (key: string) => {

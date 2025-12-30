@@ -58,8 +58,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import clsx from "clsx";
-import { Category } from "@/lib/types/product.types";
 import { SpecsTab } from "./specTab";
+import { useLanguage } from "@/app/context/languageContext";
 
 type ProductImage = {
   url: string;
@@ -93,7 +93,7 @@ type Product = {
 
 type Props = {
   initialProduct?: Partial<Product>;
-  categories?: Category[];
+  categories?: string[]; // Changed to string array since we extract names
   isNew?: boolean;
 };
 
@@ -163,8 +163,10 @@ const uploadToImageKit = async (
   }
 };
 
+// Update GeneralTab to support multilingual input
 const GeneralTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
+  const { locale ,setLocale } = useLanguage();
 
   return (
     <div className="space-y-8">
@@ -173,27 +175,73 @@ const GeneralTab: React.FC = () => {
         description="Core details about your product"
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <FormField
-          control={form.control}
-          name="productName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-sm font-medium">
-                Product Name <span className="text-red-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="e.g., Premium Wireless Earbuds"
-                  className="h-11 rounded-xl"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      {/* Language Tabs */}
+      <Tabs value={locale} onValueChange={setLocale} className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="en">English</TabsTrigger>
+          <TabsTrigger value="pt">Português</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="en" className="space-y-6 mt-6">
+          <FormField
+            control={form.control}
+            name="productName.en"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Product Name (English) <span className="text-red-500">*</span></FormLabel>
+                <FormControl>
+                  <Input placeholder="e.g., Premium Wireless Earbuds" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description.en"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description (English)</FormLabel>
+                <FormControl>
+                  <Textarea rows={6} placeholder="English description..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </TabsContent>
+        
+        <TabsContent value="pt" className="space-y-6 mt-6">
+          <FormField
+            control={form.control}
+            name="productName.pt"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nome do Produto (Português) <span className="text-red-500">*</span></FormLabel>
+                <FormControl>
+                  <Input placeholder="ex: Fones de Ouvido Sem Fio Premium" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description.pt"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Descrição (Português)</FormLabel>
+                <FormControl>
+                  <Textarea rows={6} placeholder="Descrição em português..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </TabsContent>
+      </Tabs>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormField
           control={form.control}
           name="brand"
@@ -233,46 +281,65 @@ const GeneralTab: React.FC = () => {
             </FormItem>
           )}
         />
-
-        <FormField
-          control={form.control}
-          name="subCategory"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-sm font-medium">
-                Sub Category
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="e.g., True Wireless"
-                  className="h-11 rounded-xl"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
       </div>
 
-      <FormField
-        control={form.control}
-        name="description"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-sm font-medium">Description</FormLabel>
-            <FormControl>
-              <Textarea
-                rows={6}
-                className="resize-none rounded-xl"
-                placeholder="Provide a detailed description of your product, including key selling points and benefits..."
-                {...field}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      {/* Sub Category as Multilingual */}
+      <div className="space-y-4">
+        <SectionHeader
+          title="Sub Category"
+          description="Product subcategory in multiple languages"
+        />
+        <Tabs value={locale} onValueChange={setLocale} className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="en">English</TabsTrigger>
+            <TabsTrigger value="pt">Português</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="en" className="space-y-6 mt-6">
+            <FormField
+              control={form.control}
+              name="subCategory.en"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium">
+                    Sub Category (English)
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="e.g., True Wireless"
+                      className="h-11 rounded-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </TabsContent>
+          
+          <TabsContent value="pt" className="space-y-6 mt-6">
+            <FormField
+              control={form.control}
+              name="subCategory.pt"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium">
+                    Sub Categoria (Português)
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="ex: Sem Fio Verdadeiro"
+                      className="h-11 rounded-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };
@@ -499,7 +566,7 @@ const ImagesTab: React.FC = () => {
       ) : (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="product-images" direction="horizontal">
-            {(provided) => (
+            {(provided: any) => (
               <div
                 className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
                 ref={provided.innerRef}
@@ -511,7 +578,7 @@ const ImagesTab: React.FC = () => {
                     draggableId={fieldItem.id}
                     index={idx}
                   >
-                    {(drag, snapshot) => (
+                    {(drag: any, snapshot: any) => (
                       <div
                         ref={drag.innerRef}
                         {...drag.draggableProps}
@@ -570,142 +637,290 @@ const ImagesTab: React.FC = () => {
 
 const FeaturesTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
-  const { fields, append, remove } = useFieldArray({
+  const { locale, setLocale } = useLanguage();
+  
+  const enFields = useFieldArray({
     control: form.control,
-    name: "features",
+    name: `features.en` as any,
   });
+
+  const ptFields = useFieldArray({
+    control: form.control,
+    name: `features.pt` as any,
+  });
+
+  const currentFields = locale === "en" ? enFields : ptFields;
 
   return (
     <div className="space-y-8">
       <SectionHeader
         title="Product Features"
-        description="List key features and selling points"
+        description="List key features and selling points in multiple languages"
       />
 
-      {fields.length === 0 ? (
-        <EmptyState
-          icon={<CheckCircle2 className="w-8 h-8 text-neutral-400" />}
-          message="No features added"
-          description="Add key product features to highlight benefits"
-        />
-      ) : (
-        <div className="space-y-3">
-          {fields.map((fieldItem, idx) => (
-            <FormField
-              key={fieldItem.id}
-              control={form.control}
-              name={`features.${idx}`}
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex gap-3 items-start">
-                    <div className="flex items-center justify-center w-8 h-11 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-sm font-medium text-neutral-600 dark:text-neutral-400 shrink-0">
-                      {idx + 1}
-                    </div>
-                    <FormControl>
-                      <Input
-                        placeholder="e.g., Active noise cancellation"
-                        className="h-11 rounded-xl flex-1"
-                        {...field}
-                      />
-                    </FormControl>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => remove(idx)}
-                      className="h-11 w-11 shrink-0 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-red-600 rounded-xl transition-colors"
-                    >
-                      <X className="w-5 h-5" />
-                    </Button>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
-        </div>
-      )}
+      {/* Language Tabs */}
+      <Tabs value={locale} onValueChange={setLocale} className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="en">English</TabsTrigger>
+          <TabsTrigger value="pt">Português</TabsTrigger>
+        </TabsList>
 
-      <Button
-        type="button"
-        variant="outline"
-        className="w-full h-12 gap-2 rounded-xl border-2 border-dashed hover:border-solid hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
-        onClick={() => append("")}
-      >
-        <Plus className="w-5 h-5" />
-        Add Feature
-      </Button>
+        <TabsContent value="en" className="space-y-4 mt-6">
+          {enFields.fields.length === 0 ? (
+            <EmptyState
+              icon={<CheckCircle2 className="w-8 h-8 text-neutral-400" />}
+              message="No features added"
+              description="Add key product features to highlight benefits"
+            />
+          ) : (
+            <div className="space-y-3">
+              {enFields.fields.map((fieldItem, idx) => (
+                <FormField
+                  key={fieldItem.id}
+                  control={form.control}
+                  name={`features.en.${idx}`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex gap-3 items-start">
+                        <div className="flex items-center justify-center w-8 h-11 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-sm font-medium text-neutral-600 dark:text-neutral-400 shrink-0">
+                          {idx + 1}
+                        </div>
+                        <FormControl>
+                          <Input
+                            placeholder="e.g., Active noise cancellation"
+                            className="h-11 rounded-xl flex-1"
+                            {...field}
+                          />
+                        </FormControl>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => enFields.remove(idx)}
+                          className="h-11 w-11 shrink-0 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-red-600 rounded-xl transition-colors"
+                        >
+                          <X className="w-5 h-5" />
+                        </Button>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+            </div>
+          )}
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full h-12 gap-2 rounded-xl border-2 border-dashed hover:border-solid hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+            onClick={() => enFields.append("" as any)}
+          >
+            <Plus className="w-5 h-5" />
+            Add Feature (English)
+          </Button>
+        </TabsContent>
+
+        <TabsContent value="pt" className="space-y-4 mt-6">
+          {ptFields.fields.length === 0 ? (
+            <EmptyState
+              icon={<CheckCircle2 className="w-8 h-8 text-neutral-400" />}
+              message="Nenhuma característica adicionada"
+              description="Adicione características principais do produto para destacar benefícios"
+            />
+          ) : (
+            <div className="space-y-3">
+              {ptFields.fields.map((fieldItem, idx) => (
+                <FormField
+                  key={fieldItem.id}
+                  control={form.control}
+                  name={`features.pt.${idx}`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex gap-3 items-start">
+                        <div className="flex items-center justify-center w-8 h-11 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-sm font-medium text-neutral-600 dark:text-neutral-400 shrink-0">
+                          {idx + 1}
+                        </div>
+                        <FormControl>
+                          <Input
+                            placeholder="ex: Cancelamento de ruído ativo"
+                            className="h-11 rounded-xl flex-1"
+                            {...field}
+                          />
+                        </FormControl>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => ptFields.remove(idx)}
+                          className="h-11 w-11 shrink-0 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-red-600 rounded-xl transition-colors"
+                        >
+                          <X className="w-5 h-5" />
+                        </Button>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+            </div>
+          )}
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full h-12 gap-2 rounded-xl border-2 border-dashed hover:border-solid hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+            onClick={() => ptFields.append("" as any)}
+          >
+            <Plus className="w-5 h-5" />
+            Adicionar Característica (Português)
+          </Button>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
 
 const TagsTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
-  const { fields, append, remove } = useFieldArray({
+  const { locale, setLocale } = useLanguage();
+  
+  const enFields = useFieldArray({
     control: form.control,
-    name: "tags",
+    name: `tags.en` as any,
+  });
+
+  const ptFields = useFieldArray({
+    control: form.control,
+    name: `tags.pt` as any,
   });
 
   return (
     <div className="space-y-8">
       <SectionHeader
         title="Product Tags"
-        description="Add tags to improve search and categorization"
+        description="Add tags to improve search and categorization in multiple languages"
       />
 
-      {fields.length === 0 ? (
-        <EmptyState
-          icon={<Package className="w-8 h-8 text-neutral-400" />}
-          message="No tags added"
-          description="Add tags to make your product easier to find"
-        />
-      ) : (
-        <div className="space-y-3">
-          {fields.map((fieldItem, idx) => (
-            <FormField
-              key={fieldItem.id}
-              control={form.control}
-              name={`tags.${idx}`}
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex gap-3 items-start">
-                    <div className="flex items-center justify-center w-8 h-11 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-sm font-medium text-neutral-600 dark:text-neutral-400 shrink-0">
-                      #{idx + 1}
-                    </div>
-                    <FormControl>
-                      <Input
-                        placeholder="e.g., wireless, bluetooth"
-                        className="h-11 rounded-xl flex-1"
-                        {...field}
-                      />
-                    </FormControl>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => remove(idx)}
-                      className="h-11 w-11 shrink-0 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-red-600 rounded-xl transition-colors"
-                    >
-                      <X className="w-5 h-5" />
-                    </Button>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
-        </div>
-      )}
+      {/* Language Tabs */}
+      <Tabs value={locale} onValueChange={setLocale} className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="en">English</TabsTrigger>
+          <TabsTrigger value="pt">Português</TabsTrigger>
+        </TabsList>
 
-      <Button
-        type="button"
-        variant="outline"
-        className="w-full h-12 gap-2 rounded-xl border-2 border-dashed hover:border-solid hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
-        onClick={() => append("")}
-      >
-        <Plus className="w-5 h-5" />
-        Add Tag
-      </Button>
+        <TabsContent value="en" className="space-y-4 mt-6">
+          {enFields.fields.length === 0 ? (
+            <EmptyState
+              icon={<Package className="w-8 h-8 text-neutral-400" />}
+              message="No tags added"
+              description="Add tags to make your product easier to find"
+            />
+          ) : (
+            <div className="space-y-3">
+              {enFields.fields.map((fieldItem, idx) => (
+                <FormField
+                  key={fieldItem.id}
+                  control={form.control}
+                  name={`tags.en.${idx}`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex gap-3 items-start">
+                        <div className="flex items-center justify-center w-8 h-11 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-sm font-medium text-neutral-600 dark:text-neutral-400 shrink-0">
+                          #{idx + 1}
+                        </div>
+                        <FormControl>
+                          <Input
+                            placeholder="e.g., wireless, bluetooth"
+                            className="h-11 rounded-xl flex-1"
+                            {...field}
+                          />
+                        </FormControl>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => enFields.remove(idx)}
+                          className="h-11 w-11 shrink-0 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-red-600 rounded-xl transition-colors"
+                        >
+                          <X className="w-5 h-5" />
+                        </Button>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+            </div>
+          )}
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full h-12 gap-2 rounded-xl border-2 border-dashed hover:border-solid hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+            onClick={() => enFields.append("" as any)}
+          >
+            <Plus className="w-5 h-5" />
+            Add Tag (English)
+          </Button>
+        </TabsContent>
+
+        <TabsContent value="pt" className="space-y-4 mt-6">
+          {ptFields.fields.length === 0 ? (
+            <EmptyState
+              icon={<Package className="w-8 h-8 text-neutral-400" />}
+              message="Nenhuma tag adicionada"
+              description="Adicione tags para tornar seu produto mais fácil de encontrar"
+            />
+          ) : (
+            <div className="space-y-3">
+              {ptFields.fields.map((fieldItem, idx) => (
+                <FormField
+                  key={fieldItem.id}
+                  control={form.control}
+                  name={`tags.pt.${idx}`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex gap-3 items-start">
+                        <div className="flex items-center justify-center w-8 h-11 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-sm font-medium text-neutral-600 dark:text-neutral-400 shrink-0">
+                          #{idx + 1}
+                        </div>
+                        <FormControl>
+                          <Input
+                            placeholder="ex: sem fio, bluetooth"
+                            className="h-11 rounded-xl flex-1"
+                            {...field}
+                          />
+                        </FormControl>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => ptFields.remove(idx)}
+                          className="h-11 w-11 shrink-0 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-red-600 rounded-xl transition-colors"
+                        >
+                          <X className="w-5 h-5" />
+                        </Button>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+            </div>
+          )}
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full h-12 gap-2 rounded-xl border-2 border-dashed hover:border-solid hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+            onClick={() => ptFields.append("" as any)}
+          >
+            <Plus className="w-5 h-5" />
+            Adicionar Tag (Português)
+          </Button>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
@@ -794,28 +1009,56 @@ export default function AdminProductPanel({
   const [isPending, startTransition] = useTransition();
   const objectToArray = (
     obj: Record<string, any>
-  ): Array<{ key: string; value: string }> => {
+  ): Array<{ key: string; value: { en: string; pt: string } }> => {
     if (!obj || typeof obj !== "object") return [];
-    return Object.entries(obj).map(([key, value]) => ({
-      key,
-      value: Array.isArray(value) ? value.join(", ") : String(value ?? ""),
-    }));
+    return Object.entries(obj).map(([key, value]) => {
+      // Handle multilingual value
+      if (value && typeof value === "object" && ("en" in value || "pt" in value)) {
+        return {
+          key,
+          value: {
+            en: value.en || "",
+            pt: value.pt || "",
+          },
+        };
+      }
+      // Handle string value (legacy - convert to multilingual)
+      return {
+        key,
+        value: {
+          en: Array.isArray(value) ? value.join(", ") : String(value ?? ""),
+          pt: "",
+        },
+      };
+    });
   };
   // Helper: Convert array format to object format for form
   const arrayToObject = (
-    arr: Array<{ key: string; value: string }> | undefined
+    arr: Array<{ key: string; value: { en: string; pt: string } | string }> | undefined
   ): Record<string, any> => {
     if (!Array.isArray(arr)) return {};
     const obj: Record<string, any> = {};
     for (const item of arr) {
       if (item.key && item.value !== undefined) {
-        if (item.key === "certificate" && item.value.includes(",")) {
-          obj[item.key] = item.value
-            .split(",")
-            .map((s) => s.trim())
-            .filter(Boolean);
-        } else {
-          obj[item.key] = item.value;
+        // Handle multilingual value
+        if (typeof item.value === "object" && ("en" in item.value || "pt" in item.value)) {
+          obj[item.key] = {
+            en: item.value.en || "",
+            pt: item.value.pt || "",
+          };
+        } else if (typeof item.value === "string") {
+          // Legacy string value - convert to multilingual
+          if (item.key === "certificate" && item.value.includes(",")) {
+            obj[item.key] = {
+              en: item.value,
+              pt: "",
+            };
+          } else {
+            obj[item.key] = {
+              en: item.value,
+              pt: "",
+            };
+          }
         }
       }
     }
@@ -843,22 +1086,60 @@ export default function AdminProductPanel({
       : {},
   };
 
+  // Extract category names - handle both string array and Category objects with multilingual names
   const categoryNames = Array.isArray(initialProduct?.categories)
-    ? initialProduct.categories.map((c: any) =>
-        typeof c === "string" ? c : c?.name || c
-      )
+    ? initialProduct.categories.map((c: any) => {
+        if (typeof c === "string") return c;
+        // Handle Category object with multilingual name
+        if (c?.name) {
+          return typeof c.name === "string" ? c.name : (c.name?.en || c.name?.pt || "");
+        }
+        return "";
+      }).filter(Boolean)
+    : [];
+
+  // Extract category names from the categories prop (for selection)
+  const availableCategories = Array.isArray(categories)
+    ? categories.map((c: any) => {
+        if (typeof c === "string") return c;
+        // Handle Category object with multilingual name - use English as key
+        if (c?.name) {
+          return typeof c.name === "string" ? c.name : (c.name?.en || c.name?.pt || "");
+        }
+        return "";
+      }).filter(Boolean)
     : [];
 
   const defaultValues: ProductFormValues = {
     id: initialProduct?.id ?? undefined,
-    productName: initialProduct?.productName ?? "",
+    productName: initialProduct?.productName 
+      ? (typeof initialProduct.productName === 'string' 
+          ? { en: initialProduct.productName, pt: '' }
+          : initialProduct.productName)
+      : { en: '', pt: '' },
     brand: initialProduct?.brand ?? "",
     model: initialProduct?.model ?? "",
-    subCategory: initialProduct?.subCategory ?? "",
-    description: initialProduct?.description ?? "",
+    subCategory: initialProduct?.subCategory
+      ? (typeof initialProduct.subCategory === 'string'
+          ? { en: initialProduct.subCategory, pt: '' }
+          : initialProduct.subCategory)
+      : { en: '', pt: '' },
+    description: initialProduct?.description
+      ? (typeof initialProduct.description === 'string'
+          ? { en: initialProduct.description, pt: '' }
+          : initialProduct.description)
+      : { en: '', pt: '' },
 
-    features: initialProduct?.features ?? [],
-    tags: initialProduct?.tags ?? [],
+    features: initialProduct?.features
+      ? (Array.isArray(initialProduct.features)
+          ? { en: initialProduct.features, pt: [] }
+          : initialProduct.features)
+      : { en: [], pt: [] },
+    tags: initialProduct?.tags
+      ? (Array.isArray(initialProduct.tags)
+          ? { en: initialProduct.tags, pt: [] }
+          : initialProduct.tags)
+      : { en: [], pt: [] },
     categories: categoryNames,
     pricing: initialProduct?.pricing ?? {
       price: 0,
@@ -899,10 +1180,10 @@ export default function AdminProductPanel({
             specifications: {
               general: arrayToObject(values.specifications.general),
               technical: arrayToObject(values.specifications.technical),
-            },
+            } as any,
             productImages: (values.productImages ?? []).map((img) => ({
               url: img.url,
-              fileId: img.fileId ?? null,
+              fileId: img.fileId ?? undefined,
             })),
           };
 
@@ -1070,7 +1351,7 @@ export default function AdminProductPanel({
                       </TabsContent>
 
                       <TabsContent value="categories" className="mt-0">
-                        <CategoriesTab categories={defaultValues.categories} />
+                        <CategoriesTab categories={availableCategories} />
                       </TabsContent>
 
                       <TabsContent value="tags" className="mt-0">

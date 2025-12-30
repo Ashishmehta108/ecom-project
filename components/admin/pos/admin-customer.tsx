@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Loader2, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
+import { useLanguage } from "@/app/context/languageContext";
+import { getTranslatedText } from "@/lib/utils/language";
 
 import {
   getProductsWithMainImage,
@@ -33,6 +35,7 @@ import {
 export default function AdminCustomerCartPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { locale } = useLanguage();
 
   const [products, setProducts] = useState<ProductWithImage[]>([]);
   const [cart, setCart] = useState<AdminCartWithItems | null>(null);
@@ -50,9 +53,9 @@ export default function AdminCustomerCartPage() {
 
   useEffect(() => {
     if (searchParams.get("canceled") === "true") {
-      toast.error("Checkout cancelled");
+      toast.error(locale === "pt" ? "Checkout cancelado" : "Checkout cancelled");
     }
-  }, [searchParams]);
+  }, [searchParams, locale]);
 
   const initializeCart = async () => {
     setLoading(true);
@@ -75,7 +78,7 @@ export default function AdminCustomerCartPage() {
         await loadCart(currentCartId);
       }
     } catch (error) {
-      toast.error("Failed to initialize cart");
+      toast.error(locale === "pt" ? "Falha ao inicializar carrinho" : "Failed to initialize cart");
     } finally {
       setLoading(false);
     }
@@ -89,7 +92,7 @@ export default function AdminCustomerCartPage() {
   };
 
   const handleAddToCart = async (productId: string) => {
-    if (!cartId) return toast.error("Cart not initialized");
+    if (!cartId) return toast.error(locale === "pt" ? "Carrinho não inicializado" : "Cart not initialized");
 
     setProcessingItems((prev) => new Set(prev).add(productId));
 
@@ -103,7 +106,7 @@ export default function AdminCustomerCartPage() {
       if (result.success) {
         const updatedCart = await getAdminCustomerCart(cartId);
         setCart(updatedCart);
-        toast.success("Added to cart");
+        toast.success(locale === "pt" ? "Adicionado ao carrinho" : "Added to cart");
       }
     } finally {
       setProcessingItems((prev) => {
@@ -147,7 +150,7 @@ export default function AdminCustomerCartPage() {
       if (result.success) {
         const updatedCart = await getAdminCustomerCart(cartId);
         setCart(updatedCart);
-        toast.success("Removed");
+        toast.success(locale === "pt" ? "Removido" : "Removed");
       }
     } finally {
       setProcessingItems((prev) => {
@@ -158,12 +161,20 @@ export default function AdminCustomerCartPage() {
     }
   };
 
-  const filteredProducts = products.filter(
-    (p) =>
-      p.productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.model.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredProducts = useMemo(() => {
+    return products.filter(
+      (p) => {
+        const productNameEn = typeof p.productName === 'object' ? p.productName.en : p.productName;
+        const productNamePt = typeof p.productName === 'object' ? p.productName.pt : '';
+        return (
+          productNameEn.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          productNamePt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          p.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          p.model.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+    );
+  }, [products, searchQuery]);
 
   const cartSubtotal =
     cart?.items.reduce(
@@ -191,10 +202,12 @@ export default function AdminCustomerCartPage() {
         {/* Header */}
         <div className="mb-4">
           <h1 className="text-3xl font-semibold text-neutral-900 tracking-tight">
-            Admin Customer Cart
+            {locale === "pt" ? "Carrinho do Cliente Admin" : "Admin Customer Cart"}
           </h1>
           <p className="text-neutral-600 mt-1">
-            Create orders for walk-in customers
+            {locale === "pt" 
+              ? "Criar pedidos para clientes presenciais"
+              : "Create orders for walk-in customers"}
           </p>
         </div>
 
@@ -203,16 +216,18 @@ export default function AdminCustomerCartPage() {
             <Card className="border-neutral-200 shadow-sm">
               <CardHeader>
                 <CardTitle className="text-neutral-900">
-                  Product Catalog
+                  {locale === "pt" ? "Catálogo de Produtos" : "Product Catalog"}
                 </CardTitle>
                 <CardDescription className="text-neutral-500">
-                  Select products to add to cart
+                  {locale === "pt" 
+                    ? "Selecione produtos para adicionar ao carrinho"
+                    : "Select products to add to cart"}
                 </CardDescription>
               </CardHeader>
 
               <CardContent>
                 <Input
-                  placeholder="Search products..."
+                  placeholder={locale === "pt" ? "Pesquisar produtos..." : "Search products..."}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="mb-4"
@@ -228,13 +243,13 @@ export default function AdminCustomerCartPage() {
                         {product.mainImage && (
                           <img
                             src={product.mainImage.url}
-                            alt={product.productName}
+                            alt={getTranslatedText(product.productName, locale) || "Product"}
                             className="w-full h-40 object-contain rounded-md mb-3 bg-white p-2"
                           />
                         )}
 
                         <h3 className="font-medium text-neutral-900 line-clamp-2">
-                          {product.productName}
+                          {getTranslatedText(product.productName, locale) || "No name"}
                         </h3>
 
                         <p className="text-sm text-neutral-600">
@@ -247,7 +262,7 @@ export default function AdminCustomerCartPage() {
                               €{product.pricing.price.toFixed(2)}
                             </p>
                             <p className="text-xs text-neutral-500">
-                              Stock: {product.pricing.stockQuantity}
+                              {locale === "pt" ? "Estoque" : "Stock"}: {product.pricing.stockQuantity}
                             </p>
                           </div>
 
@@ -282,11 +297,12 @@ export default function AdminCustomerCartPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-neutral-900">
                   <ShoppingCart className="w-5 h-5" />
-                  Cart Summary
+                  {locale === "pt" ? "Resumo do Carrinho" : "Cart Summary"}
                 </CardTitle>
                 <CardDescription className="text-neutral-500">
-                  {cart?.items.length || 0} item
-                  {cart?.items.length !== 1 ? "s" : ""}
+                  {cart?.items.length || 0} {locale === "pt" 
+                    ? cart?.items.length !== 1 ? "itens" : "item"
+                    : cart?.items.length !== 1 ? "items" : "item"}
                 </CardDescription>
               </CardHeader>
 
@@ -367,26 +383,26 @@ export default function AdminCustomerCartPage() {
                 {/* TOTALS */}
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-neutral-600">Subtotal</span>
+                    <span className="text-neutral-600">{locale === "pt" ? "Subtotal" : "Subtotal"}</span>
                     <span className="font-medium">
                       €{cartSubtotal.toFixed(2)}
                     </span>
                   </div>
 
                   <div className="flex justify-between text-sm">
-                    <span className="text-neutral-600">Tax</span>
+                    <span className="text-neutral-600">{locale === "pt" ? "Imposto" : "Tax"}</span>
                     <span className="font-medium">€0.00</span>
                   </div>
 
                   <div className="flex justify-between text-sm">
-                    <span className="text-neutral-600">Shipping</span>
+                    <span className="text-neutral-600">{locale === "pt" ? "Envio" : "Shipping"}</span>
                     <span className="font-medium">€0.00</span>
                   </div>
 
                   <Separator />
 
                   <div className="flex justify-between text-lg font-semibold">
-                    <span>Total</span>
+                    <span>{locale === "pt" ? "Total" : "Total"}</span>
                     <span className="text-indigo-600">
                       €{cartSubtotal.toFixed(2)}
                     </span>
@@ -399,7 +415,7 @@ export default function AdminCustomerCartPage() {
                   onClick={() => setShowCheckout(true)}
                   disabled={!cart || cart.items.length === 0}
                 >
-                  Proceed to Checkout
+                  {locale === "pt" ? "Prosseguir para Checkout" : "Proceed to Checkout"}
                 </Button>
               </CardContent>
             </Card>

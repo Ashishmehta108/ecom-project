@@ -10,6 +10,7 @@ import {
 
 import { eq, and, asc } from "drizzle-orm";
 import { nanoid } from "nanoid";
+import { getTranslatedText } from "@/lib/utils/language";
 
 import {
   addToCartSchema,
@@ -42,7 +43,7 @@ export async function getProductsWithMainImage(): Promise<ProductWithImage[]> {
     subCategory: p.subCategory,
     description: p.description,
     pricing: p.pricing,
-    mainImage: p.productImages[0] ? { url: p.productImages[0].url } : undefined,
+    mainImage: (p as any).productImages?.[0] ? { url: (p as any).productImages[0].url } : undefined,
   }));
 }
 
@@ -110,8 +111,8 @@ export async function getAdminCustomerCart(
           subCategory: item.product.subCategory,
           description: item.product.description,
           pricing: item.product.pricing,
-          mainImage: item.product.productImages[0]
-            ? { url: item.product.productImages[0].url }
+          mainImage: (item.product as any).productImages?.[0]
+            ? { url: (item.product as any).productImages[0].url }
             : undefined,
         },
       })),
@@ -152,14 +153,19 @@ export async function addItemToAdminCustomerCart(input: {
       throw new ProductNotFoundError(validated.productId);
     }
 
+    // Extract product name (handle multilingual)
+    const productNameStr = typeof prod.productName === 'object' && prod.productName !== null
+      ? (prod.productName.en || prod.productName.pt || 'Product')
+      : (prod.productName || 'Product');
+
     // Check stock
     if (!prod.pricing.inStock) {
-      return { success: false, error: `${prod.productName} is out of stock` };
+      return { success: false, error: `${productNameStr} is out of stock` };
     }
 
     if (prod.pricing.stockQuantity < validated.quantity) {
       throw new InsufficientStockError(
-        prod.productName,
+        productNameStr,
         prod.pricing.stockQuantity,
         validated.quantity
       );
@@ -179,7 +185,7 @@ export async function addItemToAdminCustomerCart(input: {
 
       if (prod.pricing.stockQuantity < newQuantity) {
         throw new InsufficientStockError(
-          prod.productName,
+          productNameStr,
           prod.pricing.stockQuantity,
           newQuantity
         );
@@ -195,7 +201,7 @@ export async function addItemToAdminCustomerCart(input: {
         id: nanoid(),
         cartId: validated.cartId,
         productId: validated.productId,
-        name: prod.productName,
+        name: productNameStr, // Use extracted string name
         price: prod.pricing.price.toString(),
         quantity: validated.quantity,
       });
@@ -232,10 +238,15 @@ export async function updateAdminCustomerCartItemQuantity(input: {
       return { success: false, error: "Cart item not found" };
     }
 
+    // Extract product name (handle multilingual)
+    const productNameStr = typeof item.product.productName === 'object' && item.product.productName !== null
+      ? (item.product.productName.en || item.product.productName.pt || 'Product')
+      : (item.product.productName || 'Product');
+
     // Check stock
     if (item.product.pricing.stockQuantity < validated.quantity) {
       throw new InsufficientStockError(
-        item.product.productName,
+        productNameStr,
         item.product.pricing.stockQuantity,
         validated.quantity
       );

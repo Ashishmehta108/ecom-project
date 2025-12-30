@@ -11,11 +11,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { SectionHeader } from "@/components/admin/AdminProductPanel";
 import { ProductFormValues } from "@/lib/validations/product-schema";
+import { useLanguage } from "@/app/context/languageContext";
 
 export const SpecsTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
+  const { locale, setLocale } = useLanguage();
 
   const { control } = form;
 
@@ -29,7 +32,7 @@ export const SpecsTab: React.FC = () => {
     name: "specifications.technical",
   });
 
-  // Renders any dynamic KEY–VALUE pair array (general/technical)
+  // Renders any dynamic KEY–VALUE pair array (general/technical) with multilingual values
   const renderPairBlock = (
     fields: { id: string }[],
     remove: (i: number) => void,
@@ -37,48 +40,77 @@ export const SpecsTab: React.FC = () => {
   ) =>
     fields.map((f, idx) => (
       <Card key={f.id} className="p-4 shadow-sm border rounded-xl">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-          
-          {/* KEY */}
-          <FormField
-            control={control}
-            name={`${nameBase}.${idx}.key`}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Key</FormLabel>
-                <FormControl>
-                  <Input {...field} className="h-9" placeholder="e.g. Brand" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* KEY */}
+            <FormField
+              control={control}
+              name={`${nameBase}.${idx}.key` as any}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Key</FormLabel>
+                  <FormControl>
+                    <Input {...field} className="h-9" placeholder="e.g. Brand" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* VALUE */}
-          <FormField
-            control={control}
-            name={`${nameBase}.${idx}.value`}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Value</FormLabel>
-                <FormControl>
-                  <Input {...field} className="h-9" placeholder="e.g. Apple" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            {/* REMOVE BUTTON */}
+            <div className="flex items-end">
+              <Button
+                type="button"
+                size="sm"
+                variant="destructive"
+                className="h-9 w-full"
+                onClick={() => remove(idx)}
+              >
+                Remove
+              </Button>
+            </div>
+          </div>
 
-          {/* REMOVE BUTTON */}
-          <Button
-            type="button"
-            size="sm"
-            variant="destructive"
-            className="mt-6 h-9"
-            onClick={() => remove(idx)}
-          >
-            Remove
-          </Button>
+          {/* VALUE - Multilingual */}
+          <div className="space-y-2">
+            <FormLabel>Value</FormLabel>
+            <Tabs value={locale} onValueChange={setLocale} className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="en">English</TabsTrigger>
+                <TabsTrigger value="pt">Português</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="en" className="mt-2">
+                <FormField
+                  control={control}
+                  name={`${nameBase}.${idx}.value.en` as any}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className="h-9" placeholder="e.g. Apple" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </TabsContent>
+
+              <TabsContent value="pt" className="mt-2">
+                <FormField
+                  control={control}
+                  name={`${nameBase}.${idx}.value.pt` as any}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} className="h-9" placeholder="ex: Maçã" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
       </Card>
     ));
@@ -104,7 +136,7 @@ export const SpecsTab: React.FC = () => {
           type="button"
           size="sm"
           className="h-9"
-          onClick={() => generalPairs.append({ key: "", value: "" })}
+          onClick={() => generalPairs.append({ key: "", value: { en: "", pt: "" } })}
         >
           + Add General Field
         </Button>
@@ -124,7 +156,7 @@ export const SpecsTab: React.FC = () => {
           type="button"
           size="sm"
           className="h-9"
-          onClick={() => technicalPairs.append({ key: "", value: "" })}
+          onClick={() => technicalPairs.append({ key: "", value: { en: "", pt: "" } })}
         >
           + Add Technical Field
         </Button>

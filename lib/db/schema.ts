@@ -92,17 +92,18 @@ Cart item schema
 /*
 Product schema
 */
-
+// UPDATED: product table
 const product = pgTable("product", {
   id: text("id").primaryKey(),
-  productName: text("product_name").notNull(),
+  productName: jsonb("product_name").$type<{ en: string; pt: string }>().notNull(),
   brand: text("brand").notNull(),
   model: text("model").notNull(),
-  subCategory: text("sub_category").notNull(),
-  description: text("description").notNull(),
-
-  features: jsonb("features").$type<string[]>().notNull(),
-
+  
+  // CHANGED: subCategory from text to jsonb
+  subCategory: jsonb("sub_category").$type<{ en: string; pt: string }>().notNull(),
+  
+  description: jsonb("description").$type<{ en: string; pt: string }>().notNull(),
+  features: jsonb("features").$type<{ en: string[]; pt: string[] }>().notNull(),
   pricing: jsonb("pricing")
     .$type<{
       price: number;
@@ -112,15 +113,32 @@ const product = pgTable("product", {
       stockQuantity: number;
     }>()
     .notNull(),
-
-  specifications: jsonb("specifications").$type<any>().notNull(),
-  tags: jsonb("tags").$type<string[]>().notNull(),
-
+  
+  // IMPROVED: specifications typing for bilingual nested fields
+  specifications: jsonb("specifications")
+    .$type<{
+      general?: Record<string, { en: string; pt: string }>;
+      technical?: Record<string, { en: string; pt: string }>;
+      [key: string]: any; // Allow other nested structures
+    }>()
+    .notNull(),
+  
+  tags: jsonb("tags").$type<{ en: string[]; pt: string[] }>().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
+});
+
+// UPDATED: category table
+const category = pgTable("category", {
+  id: text("id").primaryKey(),
+  
+  // CHANGED: name from text to jsonb
+  name: jsonb("name").$type<{ en: string; pt: string }>().notNull(),
+  
+  imageUrl: text("categoryurl").notNull().default("default"),
 });
 
 const cart = pgTable(
@@ -141,11 +159,7 @@ const cart = pgTable(
   (table) => [index("idx_cart_user_id").on(table.userId)]
 );
 
-const category = pgTable("category", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  imageUrl: text("categoryurl").notNull().default("default"),
-});
+
 
 const productCategory = pgTable(
   "productcategory",
