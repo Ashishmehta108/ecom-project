@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+
 import { Poppins } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar/Navbar";
@@ -15,6 +16,13 @@ export const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400"],
 });
+
+
+export const playfair=Playfair({
+
+  subsets: ["latin"],
+  weight: ["400"],
+})
 
 // export const playfair=Playfair({variable:'--font-playfair',subsets:["latin"],weight:["400"]})
 // const sans = Open_Sans({
