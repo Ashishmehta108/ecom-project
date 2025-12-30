@@ -34,7 +34,7 @@ export default function TopEarbudsSectionClient({
           </h2>
 
           <Link
-            href="/products?category=m2A9BCDELvjQDvWUZQjEq"
+            href="/products?category=h7SaLkNacMSQl3ykBewqm"
             className="text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors flex items-center gap-1 group"
           >
             {locale === "pt" ? "Ver Todos" : "See All"}
