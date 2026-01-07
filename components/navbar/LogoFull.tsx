@@ -8,7 +8,7 @@ interface LogoProps {
   size?: number; // optional
 }
 
-function Logo({ size = 200 }: LogoProps) {
+function Logo({ size = 140 }: LogoProps) {
   return (
     <Link
       href="/"

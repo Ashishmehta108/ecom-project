@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Globe2 } from "lucide-react";
+import { Globe } from "lucide-react";
 
 export default function LanguageSwitcher() {
   const { locale, setLocale } = useLanguage();
@@ -18,16 +18,21 @@ export default function LanguageSwitcher() {
         <Button
           variant="ghost"
           className="
+          focus-visible:outline-none
+          focus-visible:ring-0
+          focus-visible:ring-offset-0
+          focus-visible:ring-offset-background
+          focus-visible:ring-offset-0
             flex items-center gap-1.5 sm:gap-2
             px-2 sm:px-3
             rounded-md
-            text-xs sm:text-sm font-medium
-            text-muted-foreground hover:text-foreground
+            text-lg sm:text-sm font-medium
+            text-neutral-600 hover:text-foreground
             hover:bg-muted
             transition
           "
         >
-          <Globe2 className="w-4 h-4 sm:w-4 sm:h-4" />
+          <Globe className="w-6 h-6 sm:w-6 sm:h-6" />
           {/* Hide full language label on very small screens */}
           <span className="hidden sm:inline">
             {locale === "en" ? "English" : "Português"}

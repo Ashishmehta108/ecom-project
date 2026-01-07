@@ -10,86 +10,92 @@ const AUTOPLAY_DURATION = 3000;
 
 export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
   const { locale } = useLanguage();
-  slides =
-    locale === "pt"
-      ? [
-          {
-            bgColor: "bg-red-950",
-            subtitle: "",
-            title: "Promoção de Natal",
-            discount: "Até 20% de desconto em todos os acessórios",
-            shortText:
-              "Oferta por tempo limitado em todos os produtos premium.",
-            buttonText: "Compre Agora",
-            buttonLink: "/products?category=black-friday",
-            image: "/christmas.png",
-            imageStyles:
-              "max-w-[140px] sm:max-w-[200px] md:max-w-[280px] lg:max-w-[340px]",
-          },
-          {
-            bgColor: "bg-blue-900",
-            subtitle: "",
-            title: "Auscultadores Premium",
-            discount: "Oferta por tempo limitado",
-            shortText: "Som rico, graves profundos e conforto o dia todo.",
-            buttonText: "Ver Detalhes",
-            buttonLink: "/products?category=headphones",
-            image: "/promo2.png",
-            imageStyles:
-              "max-w-[160px] sm:max-w-[220px] md:max-w-[320px] lg:max-w-[400px]",
-          },
-          {
-            bgColor: "bg-slate-900",
-            subtitle: "",
-            title: "Novidades",
-            discount: "Oferta exclusiva",
-            shortText:
-              "Novos designs criados para conforto e estilo no dia a dia.",
-            buttonText: "Explorar",
-            buttonLink: "/products?category=summer",
-            image: "/promo1.png",
-            imageStyles:
-              "max-w-[160px] sm:max-w-[240px] md:max-w-[340px] lg:max-w-[420px]",
-          },
-        ]
+   slides =
+  locale === "pt"
+    ? [
+        {
+          bgColor: "bg-zinc-950",
+          subtitle: "Tecnologia Premium",
+          title: "Descubra os Novos iPhones",
+          discount: "Design icônico. Performance incomparável.",
+          shortText:
+            "Explore a nova geração de iPhones e acessórios premium criados para produtividade, estilo e desempenho diário.",
+          buttonText: "Ver iPhones",
+          buttonLink: "/products?category=iphones",
+          image: "/iphones.png",
+          imageStyles:
+            "w-full max-w-[200px] sm:max-w-[280px] md:max-w-[380px] lg:max-w-[520px]",
+        },
+        {
+          bgColor: "bg-blue-900",
+          subtitle: "Áudio Imersivo",
+          title: "Auscultadores Premium",
+          discount: "Oferta por tempo limitado",
+          shortText:
+            "Som cristalino, graves profundos e conforto máximo para ouvir o dia todo.",
+          buttonText: "Ver Detalhes",
+          buttonLink: "/products?category=headphones",
+          image: "/promo2.png",
+          imageStyles:
+            "w-full max-w-[180px] sm:max-w-[260px] md:max-w-[360px] lg:max-w-[500px]",
+        },
+        {
+          bgColor: "bg-slate-900",
+          subtitle: "Coleção Nova",
+          title: "Novidades da Estação",
+          discount: "Oferta exclusiva",
+          shortText:
+            "Designs modernos pensados para conforto, elegância e uso diário.",
+          buttonText: "Explorar Coleção",
+          buttonLink: "/products?category=summer",
+          image: "/promo1.png",
+          imageStyles:
+            "w-full max-w-[180px] sm:max-w-[260px] md:max-w-[360px] lg:max-w-[440px]",
+        },
+      ]
+
       : [
-          {
-            bgColor: "bg-red-950",
-            subtitle: "",
-            title: "Christmas Sale",
-            discount: "Up to 20% Off on all accessories",
-            shortText: "Limited time offer on all premium products.",
-            buttonText: "Shop Now",
-            buttonLink: "/products?category=black-friday",
-            image: "/christmas.png",
-            imageStyles:
-              "max-w-[140px] sm:max-w-[200px] md:max-w-[280px] lg:max-w-[340px]",
-          },
-          {
-            bgColor: "bg-blue-900",
-            subtitle: "",
-            title: "Premium Headphones",
-            discount: "Limited Time Offer",
-            shortText: "Experience rich sound, deep bass, and all-day comfort.",
-            buttonText: "View Details",
-            buttonLink: "/products?category=headphones",
-            image: "/promo2.png",
-            imageStyles:
-              "max-w-[160px] sm:max-w-[220px] md:max-w-[320px] lg:max-w-[400px]",
-          },
-          {
-            bgColor: "bg-slate-900",
-            subtitle: "",
-            title: "New Arrivals",
-            discount: "Exclusive deal",
-            shortText: "Fresh designs made for comfort and everyday style.",
-            buttonText: "Explore",
-            buttonLink: "/products?category=summer",
-            image: "/promo1.png",
-            imageStyles:
-              "max-w-[160px] sm:max-w-[240px] md:max-w-[340px] lg:max-w-[420px]",
-          },
-        ];
+        {
+          bgColor: "bg-zinc-950",
+          subtitle: "Premium Technology",
+          title: "Explore the Latest iPhones",
+          discount: "Iconic design. Unmatched performance.",
+          shortText:
+            "Discover the next generation of iPhones and premium accessories built for productivity, style, and everyday power.",
+          buttonText: "Shop iPhones",
+          buttonLink: "/products?category=iphones",
+          image: "/iphones.png",
+          imageStyles:
+            "w-full max-w-[200px] sm:max-w-[280px] md:max-w-[380px] lg:max-w-[520px]",
+        },
+        {
+          bgColor: "bg-blue-900",
+          subtitle: "Immersive Audio",
+          title: "Premium Headphones",
+          discount: "Limited Time Offer",
+          shortText:
+            "Experience crystal-clear sound, deep bass, and all-day comfort.",
+          buttonText: "View Details",
+          buttonLink: "/products?category=headphones",
+          image: "/promo2.png",
+          imageStyles:
+            "w-full max-w-[180px] sm:max-w-[260px] md:max-w-[360px] lg:max-w-[500px]",
+        },
+        {
+          bgColor: "bg-blue-500",
+          subtitle: "New Collection",
+          title: "Fresh Arrivals",
+          discount: "Exclusive Deal",
+          shortText:
+            "Modern designs crafted for comfort, elegance, and everyday wear.",
+          buttonText: "Explore Collection",
+          buttonLink: "/products?category=summer",
+          image: "/promo1.png",
+          imageStyles:
+            "w-full max-w-[180px] sm:max-w-[260px] md:max-w-[360px] lg:max-w-[440px]",
+        },
+      ];
+    
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -319,7 +325,8 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
                       className={`
                         flex flex-col gap-2 sm:gap-3 md:gap-4 max-w-[400px] 
                         text-center sm:text-left w-full order-1 sm:order-1
-                        transition-all duration-700 ease-out sm:max-w-[500px] md:max-w-[580px] lg:max-w-[650px] xl:max-w-[700px]   
+                        transition-all duration-700 ease-out sm:max-w-[500px] md:max-w-[580px] lg:max-w-[650px] xl:max-w-[700px]
+                           
                         ${isActive 
                           ? 'opacity-100 translate-y-0' 
                           : 'opacity-0 translate-y-4'
