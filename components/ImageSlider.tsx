@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
@@ -10,92 +8,90 @@ const AUTOPLAY_DURATION = 3000;
 
 export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
   const { locale } = useLanguage();
-   slides =
-  locale === "pt"
-    ? [
-        {
-          bgColor: "bg-zinc-950",
-          subtitle: "Tecnologia Premium",
-          title: "Descubra os Novos iPhones",
-          discount: "Design icônico. Performance incomparável.",
-          shortText:
-            "Explore a nova geração de iPhones e acessórios premium criados para produtividade, estilo e desempenho diário.",
-          buttonText: "Ver iPhones",
-          buttonLink: "/products?category=iphones",
-          image: "/iphones.png",
-          imageStyles:
-            "w-full max-w-[200px] sm:max-w-[280px] md:max-w-[380px] lg:max-w-[520px]",
-        },
-        {
-          bgColor: "bg-blue-900",
-          subtitle: "Áudio Imersivo",
-          title: "Auscultadores Premium",
-          discount: "Oferta por tempo limitado",
-          shortText:
-            "Som cristalino, graves profundos e conforto máximo para ouvir o dia todo.",
-          buttonText: "Ver Detalhes",
-          buttonLink: "/products?category=headphones",
-          image: "/promo2.png",
-          imageStyles:
-            "w-full max-w-[180px] sm:max-w-[260px] md:max-w-[360px] lg:max-w-[500px]",
-        },
-        {
-          bgColor: "bg-slate-900",
-          subtitle: "Coleção Nova",
-          title: "Novidades da Estação",
-          discount: "Oferta exclusiva",
-          shortText:
-            "Designs modernos pensados para conforto, elegância e uso diário.",
-          buttonText: "Explorar Coleção",
-          buttonLink: "/products?category=summer",
-          image: "/promo1.png",
-          imageStyles:
-            "w-full max-w-[180px] sm:max-w-[260px] md:max-w-[360px] lg:max-w-[440px]",
-        },
-      ]
-
+  slides =
+    locale === "pt"
+      ? [
+          {
+            bgColor: "bg-zinc-950",
+            subtitle: "Tecnologia Premium",
+            title: "Descubra os Novos iPhones",
+            discount: "Design icônico. Performance incomparável.",
+            shortText:
+              "Explore a nova geração de iPhones e acessórios premium criados para produtividade, estilo e desempenho diário.",
+            buttonText: "Ver iPhones",
+            buttonLink: "/products?category=iphones",
+            image: "/iphones.png",
+            imageStyles:
+              "w-full max-w-[120px] xs:max-w-[150px] sm:max-w-[220px] md:max-w-[360px] lg:max-w-[520px]",
+          },
+          {
+            bgColor: "bg-zinc-950",
+            subtitle: "Áudio Imersivo",
+            title: "Auscultadores Premium",
+            discount: "Oferta por tempo limitado",
+            shortText:
+              "Som cristalino, graves profundos e conforto máximo para ouvir o dia todo.",
+            buttonText: "Ver Detalhes",
+            buttonLink: "/products?category=headphones",
+            image: "/promo2.png",
+            imageStyles:
+              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[500px]",
+          },
+          {
+            bgColor: "bg-zinc-950",
+            subtitle: "Coleção Nova",
+            title: "Novidades da Estação",
+            discount: "Oferta exclusiva",
+            shortText:
+              "Designs modernos pensados para conforto, elegância e uso diário.",
+            buttonText: "Relógios",
+            buttonLink: "/products?category=summer",
+            image: "/promo1.png",
+            imageStyles:
+              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[440px]",
+          },
+        ]
       : [
-        {
-          bgColor: "bg-zinc-950",
-          subtitle: "Premium Technology",
-          title: "Explore the Latest iPhones",
-          discount: "Iconic design. Unmatched performance.",
-          shortText:
-            "Discover the next generation of iPhones and premium accessories built for productivity, style, and everyday power.",
-          buttonText: "Shop iPhones",
-          buttonLink: "/products?category=iphones",
-          image: "/iphones.png",
-          imageStyles:
-            "w-full max-w-[200px] sm:max-w-[280px] md:max-w-[380px] lg:max-w-[520px]",
-        },
-        {
-          bgColor: "bg-blue-900",
-          subtitle: "Immersive Audio",
-          title: "Premium Headphones",
-          discount: "Limited Time Offer",
-          shortText:
-            "Experience crystal-clear sound, deep bass, and all-day comfort.",
-          buttonText: "View Details",
-          buttonLink: "/products?category=headphones",
-          image: "/promo2.png",
-          imageStyles:
-            "w-full max-w-[180px] sm:max-w-[260px] md:max-w-[360px] lg:max-w-[500px]",
-        },
-        {
-          bgColor: "bg-blue-500",
-          subtitle: "New Collection",
-          title: "Fresh Arrivals",
-          discount: "Exclusive Deal",
-          shortText:
-            "Modern designs crafted for comfort, elegance, and everyday wear.",
-          buttonText: "Explore Collection",
-          buttonLink: "/products?category=summer",
-          image: "/promo1.png",
-          imageStyles:
-            "w-full max-w-[180px] sm:max-w-[260px] md:max-w-[360px] lg:max-w-[440px]",
-        },
-      ];
-    
+          {
+            bgColor: "bg-zinc-950",
+            subtitle: "Premium Technology",
+            title: "Explore the Latest iPhones",
+            discount: "Iconic design. Unmatched performance.",
+            shortText:
+              "Discover the next generation of iPhones and premium accessories built for productivity, style, and everyday power.",
+            buttonText: "Shop iPhones",
+            buttonLink: "/products?category=iphones",
+            image: "/iphones.png",
+            imageStyles:
+              "w-full max-w-[120px] xs:max-w-[150px] sm:max-w-[220px] md:max-w-[360px] lg:max-w-[520px]",
+          },
+          {
+            bgColor: "bg-zinc-950",
+            subtitle: "Immersive Audio",
+            title: "Premium Headphones",
+            discount: "Limited Time Offer",
+            shortText:
+              "Experience crystal-clear sound, deep bass, and all-day comfort.",
+            buttonText: "View Details",
+            buttonLink: "/products?category=headphones",
+            image: "/promo2.png",
+            imageStyles:
+              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[500px]",
+          },
+          {
+            bgColor: "bg-zinc-950",
+            subtitle: "New Collection",
+            title: "Fresh Arrivals",
+            discount: "Exclusive Deal",
+            shortText:
+              "Modern designs crafted for comfort, elegance, and everyday wear.",
+            buttonText: "Watches",
+            buttonLink: "/products?category=summer",
+            image: "/promo1.png",
+            imageStyles:
+              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[440px]",
+          },
+        ];
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -311,7 +307,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
           >
             {slides.map((slide: any, index: number) => {
               const isActive = index === activeIndex;
-              
+
               return (
                 <div
                   key={index}
@@ -327,54 +323,89 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
                         text-center sm:text-left w-full order-1 sm:order-1
                         transition-all duration-700 ease-out sm:max-w-[500px] md:max-w-[580px] lg:max-w-[650px] xl:max-w-[700px]
                            
-                        ${isActive 
-                          ? 'opacity-100 translate-y-0' 
-                          : 'opacity-0 translate-y-4'
+                        ${
+                          isActive
+                            ? "opacity-100 translate-y-0"
+                            : "opacity-0 translate-y-4"
                         }
                       `}
                       style={{
-                        transitionDelay: isActive ? '200ms' : '0ms'
+                        transitionDelay: isActive ? "200ms" : "0ms",
                       }}
                     >
                       {/* Optional dark overlay for text readability */}
                       <div className="relative z-10">
                         {slide.subtitle && (
-                          <span className="inline-block text-xs sm:text-sm font-bold tracking-[0.2em] sm:tracking-[0.25em] text-indigo-300 uppercase mb-1 animate-fade-in">
+                          <span
+                            className="
+                        inline-block
+                        text-[10px] sm:text-sm
+                        font-medium sm:font-bold
+                        tracking-[0.18em] sm:tracking-[0.25em]
+                        text-indigo-300/80
+                        uppercase
+                        mb-1
+                      "
+                          >
                             {slide.subtitle}
                           </span>
                         )}
 
-                        <h2 className="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-tight text-white drop-shadow-lg">
+                        <h2
+                          className="
+  text-lg sm:text-3xl md:text-4xl lg:text-5xl
+  font-semibold sm:font-black
+  leading-tight
+  tracking-tight
+  text-white
+"
+                        >
                           {slide.title}
                         </h2>
 
-                        <p className="text-xs hidden sm:block sm:text-xl text-neutral-200 leading-relaxed mt-2">
+                        <p
+                          className="
+  hidden sm:block
+  text-sm sm:text-lg
+  text-neutral-300
+  leading-relaxed
+  mt-1
+"
+                        >
                           {slide.shortText}
                         </p>
 
-                        <p className="text-lg sm:text-xl md:text-2xl lg:text-xl font-bold text-neutral-300 mt-2">
+                        <p
+                          className="
+  text-xs sm:text-xl
+  font-medium sm:font-bold
+  text-neutral-400
+  mt-1.5
+"
+                        >
                           {slide.discount}
                         </p>
 
                         {slide.buttonText && (
                           <Link
                             href={slide.buttonLink || "#"}
-                            aria-label={`${slide.buttonText} - ${slide.title}`}
                             onClick={() => resetProgress(true)}
                             className="
-                              inline-flex items-center justify-center
-                              px-5 py-2.5
-                              mt-4
-                              text-sm sm:text-base md:text-lg lg:text-xl font-semibold
-                              bg-indigo-600 text-white
-                              rounded-lg shadow-lg
-                              transition-all duration-300 ease-out
-                              hover:bg-indigo-500 hover:shadow-xl  hover:-translate-y-0.5
-                              active:shadow-md
-                              focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-transparent
-                              max-w-[180px] sm:max-w-[200px] md:max-w-[220px] lg:max-w-[240px] xl:max-w-[260px]
-                              mx-auto sm:mx-0
-                            "
+                        inline-flex items-center justify-center
+                        mt-3 sm:mt-4
+                        px-3 py-1.5 sm:px-5 sm:py-2.5
+                        text-xs sm:text-base
+                        font-medium sm:font-semibold
+                        bg-indigo-600/90
+                        text-white
+                        rounded-full
+                        shadow-sm sm:shadow-lg
+                        transition
+                        hover:bg-indigo-500
+                        w-full sm:w-auto
+                        max-w-[110px] sm:max-w-[180px]
+                        mx-auto sm:mx-0
+                      "
                           >
                             {slide.buttonText}
                           </Link>
@@ -387,13 +418,14 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
                       <div
                         className={`
                           transition-all duration-700 ease-out
-                          ${isActive 
-                            ? 'opacity-100 translate-x-0 scale-100' 
-                            : 'opacity-0 translate-x-8 scale-95'
+                          ${
+                            isActive
+                              ? "opacity-100 translate-x-0 scale-100"
+                              : "opacity-0 translate-x-8 scale-95"
                           }
                         `}
                         style={{
-                          transitionDelay: isActive ? '350ms' : '0ms'
+                          transitionDelay: isActive ? "350ms" : "0ms",
                         }}
                       >
                         <img
@@ -523,8 +555,6 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
           />
         </div>
       )}
-
-    
     </div>
   );
 }
