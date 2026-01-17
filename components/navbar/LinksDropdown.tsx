@@ -14,6 +14,7 @@ import {
 
 
 import userCartState from "@/lib/states/cart.state";
+import AnimatedLink from "../AnimatedLink";
 
 
 
@@ -59,6 +60,7 @@ export default function RightSidebar() {
         <nav className="flex-1 px-1 py-4 space-y-1 overflow-y-auto">
           {links.map((item) => (
             <SheetClose key={item.href} asChild>
+            
               <Link
                 href={item.href}
                 className="

@@ -22,7 +22,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             buttonLink: "/products?category=iphones",
             image: "/iphones.png",
             imageStyles:
-              "w-full max-w-[120px] xs:max-w-[150px] sm:max-w-[220px] md:max-w-[360px] lg:max-w-[520px]",
+              "w-full max-w-[120px] xs:max-w-[150px] sm:max-w-[220px] md:max-w-[360px] lg:max-w-[430px]",
           },
           {
             bgColor: "bg-zinc-950",
@@ -35,7 +35,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             buttonLink: "/products?category=headphones",
             image: "/promo2.png",
             imageStyles:
-              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[500px]",
+              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[400px]",
           },
           {
             bgColor: "bg-zinc-950",
@@ -48,7 +48,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             buttonLink: "/products?category=summer",
             image: "/promo1.png",
             imageStyles:
-              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[440px]",
+              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[300px]",
           },
         ]
       : [
@@ -63,7 +63,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             buttonLink: "/products?category=iphones",
             image: "/iphones.png",
             imageStyles:
-              "w-full max-w-[120px] xs:max-w-[150px] sm:max-w-[220px] md:max-w-[360px] lg:max-w-[520px]",
+              "w-full max-w-[120px] xs:max-w-[150px] sm:max-w-[220px] md:max-w-[360px] lg:max-w-[430px]",
           },
           {
             bgColor: "bg-zinc-950",
@@ -76,7 +76,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             buttonLink: "/products?category=headphones",
             image: "/promo2.png",
             imageStyles:
-              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[500px]",
+              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[400px]",
           },
           {
             bgColor: "bg-zinc-950",
@@ -89,7 +89,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             buttonLink: "/products?category=summer",
             image: "/promo1.png",
             imageStyles:
-              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[440px]",
+              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[300px]",
           },
         ];
 

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-
 import { Poppins } from "next/font/google";
+import PageTransition from "@/components/PageTransition";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
@@ -10,19 +10,13 @@ import techbar from "@/public/Tech Bar (4).svg";
 import { Toaster } from "sonner";
 import { Playfair } from "next/font/google";
 import { LanguageProvider } from "./context/languageContext";
-// import SmoothScroll from "@/components/global/smoothScroll";
-export const poppins = Poppins({
-  variable: "--font-arimo",
+
+import { Inter } from "next/font/google";
+
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400"],
+  variable: "--font-inter",
 });
-
-
-export const playfair=Playfair({
-
-  subsets: ["latin"],
-  weight: ["400"],
-})
 
 // export const playfair=Playfair({variable:'--font-playfair',subsets:["latin"],weight:["400"]})
 // const sans = Open_Sans({
@@ -47,19 +41,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`antialiased ${poppins.className}`}>
+      <body className={`antialiased ${inter.className}`}>
         <LanguageProvider>
-          {/* <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          
-          disableTransitionOnChange
-        > */}
           <Toaster position="bottom-right" />
           <Navbar />
-          <main className="min-h-screen">{children}</main>
+          <PageTransition>
+            <main className="min-h-screen">{children}</main>
+          </PageTransition>
           <Footer />
-          {/* </ThemeProvider> */}
         </LanguageProvider>
       </body>
     </html>

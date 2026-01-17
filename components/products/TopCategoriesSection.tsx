@@ -99,9 +99,8 @@ export default function TopCategoriesSection({
           <div
             ref={scrollRef}
             onScroll={checkScrollButtons}
-            className="flex gap-3 md:gap-4 lg:gap-5 overflow-x-auto scroll-smooth pb-2 select-none 
-             scrollbar-thin scrollbar-track-transparent scrollbar-thumb-transparent
-             [&::-webkit-scrollbar]:hidden"
+            className="flex gap-3 md:gap-4 lg:gap-5 overflow-x-auto pb-2 select-none 
+             [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
           >
             {categories.map((cat) => (
               <Link

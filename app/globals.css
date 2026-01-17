@@ -375,3 +375,18 @@
   }
 
 
+  .page-transition {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+/*   
+  html {
+    background-color: rgb(250, 250, 250); /* light neutral */
+  /* }  */
+  /* @media (prefers-reduced-motion: reduce) {
+    .page-transition {
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+   */

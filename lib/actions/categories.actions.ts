@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import {client as imagekit} from "@/lib/imagekit/imageUpload"
 import { v4 as uuid } from "uuid";
 
+
 // ------------------------------
 // Get all categories
 // ------------------------------

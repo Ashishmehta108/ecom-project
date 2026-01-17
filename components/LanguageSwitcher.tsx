@@ -32,13 +32,13 @@ export default function LanguageSwitcher() {
             transition
           "
         >
-          <Globe className="w-6 h-6 sm:w-6 sm:h-6" />
+          <Globe className="w-5 h-5 sm:w-6 sm:h-6" />
           {/* Hide full language label on very small screens */}
           <span className="hidden sm:inline">
             {locale === "en" ? "English" : "Português"}
           </span>
-          {/* Show short label on mobile */}
-          <span className="sm:hidden uppercase">
+        
+          <span className="sm:hidden text-xs uppercase">
             {locale === "en" ? "EN" : "PT"}
           </span>
         </Button>

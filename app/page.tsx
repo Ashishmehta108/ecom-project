@@ -3,7 +3,6 @@ import ProductDealsSection from "@/components/products/ProductDealsSection";
 import TopCategoriesSection from "@/components/products/TopCategoriesSection";
 import { getAllCategories } from "@/lib/actions/categories.actions";
 import TechbarCTA from "@/components/CTA/TechbarCTA";
-
 import TopEarbudsSectionServer from "@/components/home/TopEarbudsSectionServer";
 import TopSmartphonesSection from "@/components/home/TopSmartphoneServer";
 import KlarnaBanner from "@/components/topbanner";
