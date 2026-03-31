@@ -34,7 +34,7 @@ export default function TopSmartphonesSectionClient({
           </h2>
 
           <Link
-            href="/products?category=Phones"
+            href="/products?category=INALZ1POuP-Wpgw1V5zxN"
             className="text-xs md:text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors flex items-center gap-1 group"
           >
             {locale === "pt" ? "Ver Todos" : "See All"}

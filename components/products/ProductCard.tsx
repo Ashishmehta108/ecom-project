@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
 import { useLanguage } from "@/app/context/languageContext";
 import { getTranslatedText, getTranslatedArray } from "@/lib/utils/language";
+import { ShoppingCart, Check, Package } from "lucide-react";
 
-// Dialog
 import {
   Dialog,
   DialogContent,
@@ -27,34 +27,31 @@ type ProductCardProps = {
   product: any;
   userId: string;
   listView?: boolean;
+  view?: "grid" | "list";
+  admin?: boolean;
 };
 
-export function ProductCard({ product, userId, listView }: ProductCardProps) {
+export function ProductCard({ product, userId, listView, view, admin }: ProductCardProps) {
   const { locale } = useLanguage();
   const [loginOpen, setLoginOpen] = useState(false);
   const [cartPopupOpen, setCartPopupOpen] = useState(false);
+  const [adding, setAdding] = useState(false);
 
-  // Resolve multilingual fields - handle both resolved strings and multilingual objects
+  const isListView = listView || view === "list";
+
   const productName = useMemo(() => {
-    if (typeof product.productName === 'string') {
-      return product.productName;
-    }
+    if (typeof product.productName === "string") return product.productName;
     return getTranslatedText(product.productName, locale);
   }, [product.productName, locale]);
 
   const subCategory = useMemo(() => {
-    if (typeof product.subCategory === 'string') {
-      return product.subCategory;
-    }
+    if (typeof product.subCategory === "string") return product.subCategory;
     return getTranslatedText(product.subCategory, locale);
   }, [product.subCategory, locale]);
 
   const features = useMemo(() => {
     if (Array.isArray(product.features) && product.features.length > 0) {
-      // Check if it's already resolved (array of strings)
-      if (typeof product.features[0] === 'string') {
-        return product.features;
-      }
+      if (typeof product.features[0] === "string") return product.features;
     }
     return getTranslatedArray(product.features, locale);
   }, [product.features, locale]);
@@ -68,8 +65,6 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
   const isLoggedIn = !!user.data?.user;
   const isAdmin = user.data?.user?.role === "admin";
   const isInsideAdminProducts = pathname.startsWith("/admin/products");
-
-  // Admin flag
   const adminViewOnly = isAdmin && isInsideAdminProducts;
 
   const productLink = adminViewOnly
@@ -77,21 +72,24 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
     : `/products/${product.id}`;
 
   const stockQty =
-    product.pricing?.stockQuantity !== undefined
-      ? product.pricing.stockQuantity
-      : 0;
-
+    product.pricing?.stockQuantity !== undefined ? product.pricing.stockQuantity : 0;
   const outOfStock = stockQty <= 0;
   const inCart = isInCart(product.id);
 
+  const discountedPrice =
+    product.pricing?.discount > 0
+      ? product.pricing.price - (product.pricing.price * product.pricing.discount) / 100
+      : null;
+
+  const displayPrice = discountedPrice ?? product.pricing?.price ?? 0;
+  const formatPrice = (n: number) =>
+    n.toLocaleString(locale === "pt" ? "pt-PT" : "en-US", { minimumFractionDigits: 2 });
+
   const handleAddToCart = async () => {
-    if (!isLoggedIn) {
-      setLoginOpen(true);
-      return;
-    }
-
+    if (!isLoggedIn) { setLoginOpen(true); return; }
+    setAdding(true);
     const data = await addItemToCart(userId, product.id, 1);
-
+    setAdding(false);
     if (data.success) {
       toast.success(locale === "pt" ? "Produto adicionado ao carrinho" : "Product added to cart");
       setCartPopupOpen(true);
@@ -100,246 +98,253 @@ export function ProductCard({ product, userId, listView }: ProductCardProps) {
 
   return (
     <>
-      {/* LOGIN POPUP */}
+      {/* LOGIN DIALOG */}
       <Dialog open={loginOpen} onOpenChange={setLoginOpen}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle>{locale === "pt" ? "Login Necessário" : "Login Required"}</DialogTitle>
             <DialogDescription>
-              {locale === "pt" 
-                ? "Por favor, faça login para continuar adicionando produtos ao seu carrinho."
-                : "Please login to continue adding products to your cart."}
+              {locale === "pt"
+                ? "Faça login para adicionar produtos ao carrinho."
+                : "Please login to add products to your cart."}
             </DialogDescription>
           </DialogHeader>
-
           <LoginForm />
         </DialogContent>
       </Dialog>
 
-      {/* ADDED-TO-CART POPUP */}
+      {/* CART DIALOG */}
       <Dialog open={cartPopupOpen} onOpenChange={setCartPopupOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{locale === "pt" ? "Adicionado ao Carrinho" : "Added to Cart"}</DialogTitle>
             <DialogDescription>
               {locale === "pt"
-                ? `${productName} foi adicionado ao seu carrinho com sucesso.`
-                : `${productName} was successfully added to your cart.`}
+                ? `${productName} foi adicionado ao seu carrinho.`
+                : `${productName} was added to your cart.`}
             </DialogDescription>
           </DialogHeader>
-
           <div className="flex items-center gap-3 mt-4">
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => setCartPopupOpen(false)}
-            >
-              {locale === "pt" ? "Continuar Comprando" : "Continue Shopping"}
+            <Button variant="outline" className="w-full" onClick={() => setCartPopupOpen(false)}>
+              {locale === "pt" ? "Continuar" : "Continue Shopping"}
             </Button>
-
             <Link href="/cart" className="w-full">
-              <Button className="w-full">{locale === "pt" ? "Ir para o Carrinho" : "Go to Cart"}</Button>
+              <Button className="w-full">{locale === "pt" ? "Ver Carrinho" : "View Cart"}</Button>
             </Link>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* PRODUCT CARD */}
-      <article
-        className={cn(
-          "group relative w-full overflow-hidden rounded-xl border bg-white shadow-sm transition-all duration-300 hover:shadow-md dark:bg-neutral-900",
-          "border-neutral-200 dark:border-neutral-800",
-          listView
-            ? "flex gap-4 p-4 h-auto"
-            : `flex ${adminViewOnly ? "h-[420px]" : "h-[540px]"} flex-col`
-        )}
-      >
-        {!adminViewOnly && outOfStock && (
-          <div className="absolute inset-0 z-20 bg-black/5 pointer-events-none rounded-xl" />
-        )}
-
-        <Link
-          href={productLink}
-          className={cn(
-            "relative overflow-hidden rounded-lg bg-neutral-50 dark:bg-neutral-800",
-            listView ? "w-28 h-28 flex-shrink-0" : "aspect-square w-full"
-          )}
-        >
-          {!adminViewOnly && outOfStock && (
-            <span className="absolute right-2 top-2 z-30 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-red-600 shadow-sm backdrop-blur dark:bg-neutral-900/90 dark:text-red-400">
-              {locale === "pt" ? "Esgotado" : "Out of stock"}
-            </span>
-          )}
-
-          <Image
-            src={mainImage?.url || "/placeholder.jpg"}
-            alt={productName}
-            fill={!listView}
-            width={listView ? 120 : undefined}
-            height={listView ? 120 : undefined}
-            className="object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105 p-3"
-          />
-        </Link>
-
-        {/* CONTENT */}
-        <div
-          className={cn(
-            "flex flex-col",
-            listView ? "flex-1 py-1" : "flex-1 p-5"
-          )}
-        >
-          <p className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
-            {subCategory}
-          </p>
-
-          <Link href={productLink}>
-            <h3
-              className={cn(
-                "mt-2 line-clamp-2 text-base font-semibold leading-snug text-neutral-900 transition-colors hover:text-neutral-600",
-                "dark:text-neutral-100 dark:hover:text-neutral-300"
-              )}
-            >
-              {productName}
-            </h3>
+      {/* ── LIST VIEW ─────────────────────────────────────────── */}
+      {isListView ? (
+        <article className="group relative flex gap-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-3.5 transition-all duration-200 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-sm">
+          {/* Image */}
+          <Link
+            href={productLink}
+            className="relative flex-shrink-0 h-24 w-24 rounded-lg overflow-hidden bg-neutral-50 dark:bg-neutral-800"
+          >
+            {outOfStock && !adminViewOnly && (
+              <span className="absolute inset-0 z-10 flex items-center justify-center bg-white/60 dark:bg-black/50 backdrop-blur-[2px]">
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-red-500">
+                  {locale === "pt" ? "Esgotado" : "Out of stock"}
+                </span>
+              </span>
+            )}
+            <Image
+              src={mainImage?.url || "/placeholder.jpg"}
+              alt={productName}
+              fill
+              className="object-contain p-2 transition-transform duration-300 group-hover:scale-105 mix-blend-multiply dark:mix-blend-normal"
+            />
           </Link>
 
-          {!adminViewOnly && !listView && features && features.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2">
-              {features
-                .slice(0, 2)
-                .map((feature: string, idx: number) => (
-                  <span
-                    key={idx}
-                    className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
+          {/* Info */}
+          <div className="flex flex-1 flex-col min-w-0">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+              {subCategory}
+            </p>
+            <Link href={productLink}>
+              <h3 className="mt-0.5 text-sm font-semibold text-neutral-900 dark:text-neutral-100 line-clamp-1 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors">
+                {productName}
+              </h3>
+            </Link>
+            {features?.length > 0 && (
+              <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 line-clamp-1">
+                {features.slice(0, 2).join(" · ")}
+              </p>
+            )}
+
+            <div className="mt-auto pt-2 flex items-center justify-between gap-3">
+              {/* Price */}
+              <div className="flex items-baseline gap-2">
+                <span className="text-base font-bold text-neutral-900 dark:text-neutral-100">
+                  €{formatPrice(displayPrice)}
+                </span>
+                {discountedPrice && (
+                  <>
+                    <span className="text-xs text-neutral-400 line-through">
+                      €{formatPrice(product.pricing.price)}
+                    </span>
+                    <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-1.5 py-0.5 rounded-full">
+                      -{product.pricing.discount}%
+                    </span>
+                  </>
+                )}
+              </div>
+
+              {/* Cart button */}
+              {!adminViewOnly && (
+                inCart ? (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950 px-3 py-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                    <Check size={11} />
+                    {locale === "pt" ? "No Carrinho" : "In Cart"}
+                  </span>
+                ) : (
+                  <Button
+                    size="sm"
+                    disabled={outOfStock || adding}
+                    onClick={handleAddToCart}
+                    className={cn(
+                      "h-8 rounded-full px-4 text-xs font-medium",
+                      outOfStock
+                        ? "bg-neutral-100 text-neutral-400 dark:bg-neutral-800 dark:text-neutral-600 cursor-not-allowed"
+                        : "bg-neutral-900 text-white hover:bg-neutral-700 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-300"
+                    )}
                   >
-                    {feature}
+                    {outOfStock
+                      ? locale === "pt" ? "Indisponível" : "Unavailable"
+                      : locale === "pt" ? "Adicionar" : "Add to Cart"}
+                  </Button>
+                )
+              )}
+            </div>
+          </div>
+        </article>
+      ) : (
+        /* ── GRID VIEW ────────────────────────────────────────── */
+        <article
+          className={cn(
+            "group relative flex flex-col rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-neutral-200/60 dark:hover:shadow-neutral-900 hover:-translate-y-0.5",
+            outOfStock && !adminViewOnly && "opacity-80"
+          )}
+        >
+          {/* Discount badge */}
+          {product.pricing?.discount > 0 && (
+            <div className="absolute top-3 left-3 z-10">
+              <span className="inline-block rounded-full bg-emerald-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
+                -{product.pricing.discount}%
+              </span>
+            </div>
+          )}
+
+          {/* Out of stock badge */}
+          {outOfStock && !adminViewOnly && (
+            <div className="absolute top-3 right-3 z-10">
+              <span className="inline-block rounded-full bg-red-100 dark:bg-red-950 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-red-600 dark:text-red-400">
+                {locale === "pt" ? "Esgotado" : "Out of stock"}
+              </span>
+            </div>
+          )}
+
+          {/* Image */}
+          <Link
+            href={productLink}
+            className="relative aspect-square w-full overflow-hidden bg-neutral-50 dark:bg-neutral-800"
+          >
+            <Image
+              src={mainImage?.url || "/placeholder.jpg"}
+              alt={productName}
+              fill
+              className="object-contain p-5 transition-transform duration-500 group-hover:scale-108 mix-blend-multiply dark:mix-blend-normal"
+            />
+          </Link>
+
+          {/* Divider */}
+          <div className="h-px bg-neutral-100 dark:bg-neutral-800" />
+
+          {/* Content */}
+          <div className="flex flex-col flex-1 p-4">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+              {subCategory}
+            </p>
+
+            <Link href={productLink}>
+              <h3 className="mt-1.5 text-sm font-semibold leading-snug text-neutral-900 dark:text-neutral-100 line-clamp-2 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors">
+                {productName}
+              </h3>
+            </Link>
+
+            {!adminViewOnly && features?.length > 0 && (
+              <div className="mt-2.5 flex flex-wrap gap-1.5">
+                {features.slice(0, 2).map((f: string, i: number) => (
+                  <span
+                    key={i}
+                    className="rounded-full bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 text-[10px] font-medium text-neutral-600 dark:text-neutral-400"
+                  >
+                    {f}
                   </span>
                 ))}
-            </div>
-          )}
-
-          <div className="flex-1" />
-
-          {/* ADMIN VIEW */}
-          {adminViewOnly && (
-            <div className="mt-4 space-y-3">
-              <p
-                className={cn(
-                  "text-sm font-medium",
-                  outOfStock
-                    ? "text-red-600 dark:text-red-400"
-                    : "text-neutral-700 dark:text-neutral-300"
-                )}
-              >
-                {locale === "pt" ? "Estoque" : "Stock"}: <span className="font-semibold">{stockQty}</span>
-              </p>
-
-              <div className="flex items-center">
-                {product.pricing?.discount > 0 ? (
-                  <div className="space-y-0.5">
-                    <p className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-                      €
-                      {(
-                        product.pricing.price -
-                        (product.pricing.price * product.pricing.discount) / 100
-                      ).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-                    </p>
-
-                    <p className="text-xs line-through text-neutral-500 dark:text-neutral-400">
-                      €{product.pricing.price.toLocaleString("en-IN")}
-                    </p>
-
-                    <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
-                      {product.pricing.discount}% OFF
-                    </p>
-                  </div>
-                ) : (
-                  <p className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-                    €{product.pricing?.price.toLocaleString("en-IN") || "0.00"}
-                  </p>
-                )}
               </div>
-            </div>
-          )}
+            )}
 
-          {/* USER VIEW */}
-          {!adminViewOnly && (
-            <div
-              className={cn(
-                "mt-5 flex items-center gap-4",
-                listView ? "justify-between" : "justify-between"
-              )}
-            >
-              {/* Price */}
-              <div className="flex items-center">
-                {product.pricing?.discount > 0 ? (
-                  <div className="space-y-0.5">
-                    <p className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-                      €
-                      {(
-                        product.pricing.price -
-                        (product.pricing.price * product.pricing.discount) / 100
-                      ).toLocaleString(
-                        locale === "pt" ? "pt-PT" : "en-US",
-                        { minimumFractionDigits: 2 }
-                      )}
-                    </p>
+            <div className="flex-1" />
 
-                    <p className="text-xs line-through text-neutral-500 dark:text-neutral-400">
-                      €{product.pricing.price.toLocaleString(
-                        locale === "pt" ? "pt-PT" : "en-US"
-                      )}
-                    </p>
-
-                    <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
-                      {product.pricing.discount}% OFF
-                    </p>
-                  </div>
-                ) : (
-                  <p className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-                    €{product.pricing?.price.toLocaleString(
-                      locale === "pt" ? "pt-PT" : "en-US",
-                      { minimumFractionDigits: 2 }
-                    ) || "0.00"}
-                  </p>
-                )}
+            {/* Admin stock */}
+            {adminViewOnly && (
+              <div className="mt-3 flex items-center gap-1.5">
+                <Package size={12} className={outOfStock ? "text-red-500" : "text-neutral-400"} />
+                <span className={cn("text-xs font-medium", outOfStock ? "text-red-500 dark:text-red-400" : "text-neutral-500 dark:text-neutral-400")}>
+                  {locale === "pt" ? "Estoque" : "Stock"}:{" "}
+                  <span className="font-bold text-neutral-800 dark:text-neutral-200">{stockQty}</span>
+                </span>
               </div>
+            )}
 
-              {/* Add to cart */}
-              {inCart ? (
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="rounded-full px-5 text-xs font-medium flex items-center gap-2 border-green-600 text-green-700 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-950"
-                >
-                  <span className="h-2 w-2 rounded-full bg-green-600 dark:bg-green-300" />
-                  {locale === "pt" ? "No Carrinho" : "In Cart"}
-                </Button>
-              ) : (
-                <Button
-                  size="sm"
-                  disabled={outOfStock}
-                  onClick={handleAddToCart}
-                  className={cn(
-                    "rounded-full px-5 text-xs font-medium transition",
-                    outOfStock
-                      ? "bg-neutral-300 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-400 cursor-not-allowed"
-                      : "bg-neutral-900 text-white hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
+            {/* Price + CTA */}
+            <div className="mt-3 flex items-end justify-between gap-2">
+              <div>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-base font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+                    €{formatPrice(displayPrice)}
+                  </span>
+                  {discountedPrice && (
+                    <span className="text-xs text-neutral-400 line-through">
+                      €{formatPrice(product.pricing.price)}
+                    </span>
                   )}
-                >
-                  {outOfStock
-                    ? locale === "pt"
-                      ? "Em Breve"
-                      : "Coming Soon"
-                    : locale === "pt"
-                    ? "Adicionar ao Carrinho"
-                    : "Add to cart"}
-                </Button>
+                </div>
+              </div>
+
+              {!adminViewOnly && (
+                inCart ? (
+                  <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950 px-2.5 py-1.5 text-[10px] font-semibold text-emerald-700 dark:text-emerald-300">
+                    <Check size={10} />
+                    {locale === "pt" ? "Adicionado" : "In Cart"}
+                  </span>
+                ) : (
+                  <button
+                    disabled={outOfStock || adding}
+                    onClick={handleAddToCart}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold transition-all duration-200",
+                      outOfStock
+                        ? "bg-neutral-100 text-neutral-400 dark:bg-neutral-800 dark:text-neutral-600 cursor-not-allowed"
+                        : "bg-neutral-900 text-white hover:bg-neutral-700 active:scale-95 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-300"
+                    )}
+                  >
+                    {!outOfStock && <ShoppingCart size={11} />}
+                    {outOfStock
+                      ? locale === "pt" ? "Indisponível" : "Unavailable"
+                      : adding
+                      ? "..."
+                      : locale === "pt" ? "Adicionar" : "Add"}
+                  </button>
+                )
               )}
             </div>
-          )}
-        </div>
-      </article>
+          </div>
+        </article>
+      )}
     </>
   );
 }

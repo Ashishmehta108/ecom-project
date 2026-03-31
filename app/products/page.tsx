@@ -1,12 +1,10 @@
 import Link from "next/link";
 import Container from "@/components/giobal/Container";
-import { ProductCard } from "@/components/products/ProductCard";
 import { CategoryFilter } from "@/components/products/SortFilter";
 import { SortFilter } from "@/components/products/SortFilter";
 import { filterProducts } from "@/lib/actions/productActions";
 import { getUserSession } from "@/server";
 import ProductsListWrapper from "./productWrapper";
-import { getLanguageFromRequest } from "@/lib/utils/language";
 
 type SearchParams = {
   category?: string;
@@ -21,34 +19,64 @@ export default async function ProductPage({
   searchParams?: Promise<SearchParams>;
 }) {
   const params = (await searchParams) || {};
+
   const session = await getUserSession();
+
   const search = params.search ?? undefined;
-  const sort = params.sort ?? undefined;
-  const category = params.category ?? undefined;
+  const sort = params.sort ?? "featured";
+  const category = params.category ?? "all";
   const lang = (params.lang === "pt" ? "pt" : "en") as "en" | "pt";
-  
-  const { products, categories } = await filterProducts({
-    category: category === "all" ? undefined : category,
+
+  // First pass: fetch without category filter to get all categories
+  // This lets us check if the selected category is a real sub-category or a parent
+  const { products: allProducts, categories } = await filterProducts({
     search,
     sort,
     lang,
   });
 
-  const activeCategory = category || "all";
-  const activeSort = sort || "featured";
+  const categoryExistsInList = categories.some((cat) => cat.id === category);
+  const activeCategory =
+    category === "all" || !categoryExistsInList ? "all" : category;
+    const activeSort = sort; // ← add this line
+
+  // Second pass: only filter by category if it's a valid sub-category
+  const products =
+    categoryExistsInList
+      ? (
+          await filterProducts({
+            category,
+            search,
+            sort,
+            lang,
+          })
+        ).products
+      : allProducts;
+
+  const categoriesWithAll = [
+    {
+      id: "all",
+      name: { en: "All", pt: "Todos" },
+      count: allProducts.length,
+    },
+    ...categories,
+  ];
+
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-950">
       <Container className="py-8 md:py-12">
-        <div className="mb-8 space-y-2s">
+        <div className="mb-8 space-y-2">
           <div className="flex items-baseline justify-between">
             <div>
               <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
                 Products
               </h1>
               <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                {products.length} {products.length === 1 ? "item" : "items"}
+                Showing {products.length}{" "}
+                {products.length === 1 ? "product" : "products"}
               </p>
             </div>
+
             {search && (
               <Link
                 href="/products"
@@ -61,10 +89,11 @@ export default async function ProductPage({
 
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <CategoryFilter
-              categories={categories}
+              categories={categoriesWithAll}
               activeCategory={activeCategory}
+              lang={lang}
             />
-            <SortFilter activeSort={activeSort} />
+            <SortFilter activeSort={activeSort} lang={lang} />
           </div>
         </div>
 
@@ -81,36 +110,13 @@ export default async function ProductPage({
               className="mt-6 rounded-full bg-neutral-900 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200"
             >
               Reset filters
-          </Link>
+            </Link>
           </div>
         ) : (
-          <ProductsListWrapper products={products} userId={session?.user.id!} />
-
-          // <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          //   {products.map((product) => (
-          //     <ProductCard
-          //       key={product.id}
-          //       product={{
-          //         id: product.id,
-          //         productName: product.productName,
-          //         brand: product.brand,
-          //         subCategory: product.subCategory,
-          //         description: product.description,
-          //         features: product.features,
-          //         pricing: product.pricing,
-
-          //         //@ts-ignore
-          //         productImages: product.productImages
-          //           .filter((img) => img.position !== null)
-          //           .map((img) => ({
-          //             url: img.url,
-          //             position: img.position as string,
-          //           })),
-          //       }}
-          //       userId={session?.user.id!}
-          //     />
-          //   ))}
-          // </div>
+          <ProductsListWrapper
+            products={products}
+            userId={session?.user?.id || ""}
+          />
         )}
       </Container>
     </div>

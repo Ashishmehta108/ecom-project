@@ -314,6 +314,7 @@ export const getCart = async (userId: string): Promise<GetCartResponse> => {
         quantity: cartItem.quantity,
         imageUrl: productImage.url,
         productPricing: product.pricing,
+        product: product,
       })
       .from(cartItem)
       .leftJoin(
@@ -344,12 +345,12 @@ export const getCart = async (userId: string): Promise<GetCartResponse> => {
         continue;
       }
 
-      // Add to valid items with stock info
+      // Add to valid items with stock info - use current product name and price
       validItems.push({
         id: item.id,
         productId: item.productId,
-        name: item.name,
-        price: item.price,
+        name: item.product?.productName || item.name,
+        price: item.product?.pricing.price.toString() || item.price,
         quantity: item.quantity,
         imageUrl: item.imageUrl,
         stockQuantity: stockQuantity,

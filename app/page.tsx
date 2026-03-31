@@ -9,6 +9,7 @@ import KlarnaBanner from "@/components/topbanner";
 
 export default async function App() {
   const categories = await getAllCategories();
+  console.log(categories);
   return (
     <div className="min-h-screen bg-background">
       <div className="w-full">

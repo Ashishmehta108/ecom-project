@@ -13,6 +13,9 @@ export default function PageTransition({
   const pathname = usePathname();
 
   useEffect(() => {
+    // Scroll to top on route change
+    window.scrollTo(0, 0);
+
     if (!ref.current) return;
 
     const ctx = gsap.context(() => {

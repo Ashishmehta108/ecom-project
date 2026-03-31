@@ -124,8 +124,17 @@ export async function filterProducts(
     return nameA.localeCompare(nameB);
   });
 
-  // Filter by category AFTER counting (so counts reflect search results)
-  if (category && category !== "all") {
+  // Filter by category - match by UUID only
+  // Treat "Electronics" category as "all" since it's a parent category
+  // Check if the selected category is "Electronics" by name
+  const isElectronicsCategory = category && category !== "all" && categories.some(
+    (cat) => cat.id === category && (
+      (typeof cat.name === 'string' && cat.name.toLowerCase() === 'electronics') ||
+      (typeof cat.name === 'object' && (cat.name.en?.toLowerCase() === 'electronics' || cat.name.pt?.toLowerCase() === 'eletrônicos'))
+    )
+  );
+
+  if (category && category !== "all" && !isElectronicsCategory) {
     productsWithResolved = productsWithResolved.filter((item) =>
       (item.original as any).productCategories?.some((pc: any) => pc.categoryId === category)
     );

@@ -15,10 +15,12 @@ export type ProductInCart = {
 
 
 // lib/types/cart.types.ts
+import type { TranslatedField } from "@/lib/types/product.types";
+
 export type CartItem = {
   id: string;
   productId: string;
-  name: string;
+  name: string | TranslatedField;
   price: number | string;
   quantity: number;
   imageUrl?: string | null;

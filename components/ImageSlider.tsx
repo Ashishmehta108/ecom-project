@@ -19,7 +19,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             shortText:
               "Explore a nova geração de iPhones e acessórios premium criados para produtividade, estilo e desempenho diário.",
             buttonText: "Ver iPhones",
-            buttonLink: "/products?category=iphones",
+            buttonLink: "/products?category=INALZ1POuP-Wpgw1V5zxN",
             image: "/iphones.png",
             imageStyles:
               "w-full max-w-[120px] xs:max-w-[150px] sm:max-w-[220px] md:max-w-[360px] lg:max-w-[430px]",
@@ -32,7 +32,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             shortText:
               "Som cristalino, graves profundos e conforto máximo para ouvir o dia todo.",
             buttonText: "Ver Detalhes",
-            buttonLink: "/products?category=headphones",
+            buttonLink: "/products?category=mOTdRnd4ve0dp-1qcmUGB",
             image: "/promo2.png",
             imageStyles:
               "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[400px]",
@@ -45,7 +45,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             shortText:
               "Designs modernos pensados para conforto, elegância e uso diário.",
             buttonText: "Relógios",
-            buttonLink: "/products?category=summer",
+            buttonLink: "/products?category=Zg-M3CrHIORqVsDa4vk18",
             image: "/promo1.png",
             imageStyles:
               "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[300px]",
@@ -60,7 +60,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             shortText:
               "Discover the next generation of iPhones and premium accessories built for productivity, style, and everyday power.",
             buttonText: "Shop iPhones",
-            buttonLink: "/products?category=iphones",
+            buttonLink: "/products?category=INALZ1POuP-Wpgw1V5zxN",
             image: "/iphones.png",
             imageStyles:
               "w-full max-w-[120px] xs:max-w-[150px] sm:max-w-[220px] md:max-w-[360px] lg:max-w-[430px]",
@@ -73,7 +73,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             shortText:
               "Experience crystal-clear sound, deep bass, and all-day comfort.",
             buttonText: "View Details",
-            buttonLink: "/products?category=headphones",
+            buttonLink: "/products?category=mOTdRnd4ve0dp-1qcmUGB",
             image: "/promo2.png",
             imageStyles:
               "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[400px]",
@@ -86,7 +86,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             shortText:
               "Modern designs crafted for comfort, elegance, and everyday wear.",
             buttonText: "Watches",
-            buttonLink: "/products?category=summer",
+            buttonLink: "/products?category=Zg-M3CrHIORqVsDa4vk18",
             image: "/promo1.png",
             imageStyles:
               "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[300px]",
