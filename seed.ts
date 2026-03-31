@@ -9,8 +9,8 @@ export const createAdmin=async()=>{
     const user=await auth.api.createUser({
         body:{
             name:"Admin",
-            email:"ashishmehta108@gmail.com",
-            password:"Ashish_m108",
+            email:"adminaccount@gmail.com",
+            password:"admin123@",
             data: { customField: "customValue" },
             role:"admin"
         }

@@ -16,15 +16,21 @@ import { resolveProductForLanguage } from "@/lib/utils/language";
 import type { Language } from "@/lib/types/product.types";
 
 async function createCategoryIfNotExists(name: string) {
+  // Query JSONB field properly - check both English and Portuguese names
   const existing = await db.query.category.findFirst({
-    where: (c, { eq }) => eq(c.name, name),
+    where: (c, { sql, or }) =>
+      or(
+        sql`${c.name}->>'en' = ${name}`,
+        sql`${c.name}->>'pt' = ${name}`
+      ),
   });
 
   if (existing) return existing;
 
+  // Create category with proper multilingual structure
   const newCat = {
     id: nanoid(),
-    name,
+    name: { en: name, pt: name },
     imageUrl: "default",
   };
 

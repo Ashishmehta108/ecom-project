@@ -17,6 +17,7 @@ export default function TopCategoriesSection({
   categories: Category[];
 }) {
   const { locale } = useLanguage();
+  
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);

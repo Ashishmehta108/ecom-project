@@ -10,9 +10,15 @@ import techbar from "@/public/Tech Bar (4).svg";
 import { Toaster } from "sonner";
 import { Playfair } from "next/font/google";
 import { LanguageProvider } from "./context/languageContext";
+import { Lora } from "next/font/google";
 
 import { Inter } from "next/font/google";
 
+// const lora=Lora({
+//   subsets: ["latin"],
+//   variable: "--font-lora",
+//   weight: ["400", "500", "600", "700"],
+// });
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
