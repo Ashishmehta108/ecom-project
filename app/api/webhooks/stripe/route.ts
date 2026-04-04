@@ -11,7 +11,7 @@ import {
   product,
 } from "@/lib/db/schema";
 import {
-  posPayment,
+  
   adminCustomerOrder,
   adminCustomerOrderItem,
 } from "@/lib/db/schema";
