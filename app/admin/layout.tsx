@@ -55,7 +55,7 @@ export default function AdminLayout({
     <div className="flex min-h-screen bg-background">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <Topbar />
+     
         <main className="p-6">{children}</main>
       </div>
     </div>

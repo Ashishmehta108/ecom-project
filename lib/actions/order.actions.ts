@@ -21,8 +21,10 @@ export async function getAllOrders() {
     },
     orderBy: (orders, { desc }) => [desc(orders.createdAt)],
   });
-
-  return result;
+  return result.map((o) => ({
+    ...o,
+    createdAt: o.createdAt.toISOString(),
+  }));
 }
 
 /**

@@ -1,0 +1,11 @@
+▲ Next.js 16.1.1 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://192.168.1.45:3001
+- Environments: .env.local, .env
+- Experiments (use with caution):
+  · optimizePackageImports
+  · serverActions
+
+✓ Starting...
+  Suggestion: If you intended to restart next dev, terminate the other process, and then try again.
+[?25h

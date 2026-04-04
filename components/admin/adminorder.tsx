@@ -22,7 +22,7 @@ import {
 } from "@/lib/actions/order.actions";
 
 export default function OrdersClient({ orders, refreshOrders }: any) {
-  const { language } = useLanguage();
+  const { locale } = useLanguage();
 
   const [loadingId, setLoadingId] = useState("");
   const [detailsLoading, setDetailsLoading] = useState(false);
@@ -144,7 +144,7 @@ export default function OrdersClient({ orders, refreshOrders }: any) {
                       {selectedOrder.items?.map((item: any) => {
                         const product = item.product;
                         const name =
-                          product?.productName?.[language] ??
+                          product?.productName?.[locale] ??
                           product?.productName?.en ??
                           "Unnamed";
 
@@ -185,11 +185,11 @@ export default function OrdersClient({ orders, refreshOrders }: any) {
                   {selectedOrder.shippingAddress && (
                     <div className="space-y-1 text-sm">
                       <h3 className="font-medium">Shipping Address</h3>
-                      {Object.values(selectedOrder.shippingAddress).map(
-                        (line: any, i: number) => (
-                          line && <p key={i}>{line}</p>
-                        )
-                      )}
+                      {Object.entries(selectedOrder.shippingAddress)
+                        .filter(([key, value]) => key !== 'id' && key !== 'userId' && key !== 'createdAt' && typeof value === 'string' && value)
+                        .map(([key, value]: any, i: number) => (
+                          <p key={i}>{value}</p>
+                        ))}
                     </div>
                   )}
 

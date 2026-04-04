@@ -57,13 +57,16 @@ export async function createAdminCustomerCheckoutSession(
 
       // Validate stock for all items
       for (const item of cart.items) {
+        const prodNameObj = item.product.productName as any;
+        const prodName = typeof prodNameObj === 'object' && prodNameObj !== null ? prodNameObj.en || prodNameObj.pt || 'Product' : String(prodNameObj || 'Product');
+
         if (!item.product.pricing.inStock) {
-          throw new Error(`${item.product.productName} is out of stock`);
+          throw new Error(`${prodName} is out of stock`);
         }
 
         if (item.product.pricing.stockQuantity < item.quantity) {
           throw new InsufficientStockError(
-            item.product.productName,
+            prodName,
             item.product.pricing.stockQuantity,
             item.quantity
           );
@@ -113,17 +116,21 @@ export async function createAdminCustomerCheckoutSession(
 
       // Create Stripe Checkout Session
       const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
-        cart.items.map((item) => ({
-          price_data: {
-            currency: "eur",
-            product_data: {
-              name: item.name,
-              description: `${item.product.brand} ${item.product.model}`,
+        cart.items.map((item) => {
+          const itemNameObj = item.name as any;
+          const itemName = typeof itemNameObj === 'object' && itemNameObj !== null ? itemNameObj.en || itemNameObj.pt || 'Product' : String(itemNameObj || 'Product');
+          return {
+            price_data: {
+              currency: "eur",
+              product_data: {
+                name: itemName,
+                description: `${item.product.brand} ${item.product.model}`,
+              },
+              unit_amount: Math.round(parseFloat(item.price) * 100), // Convert to cents
             },
-            unit_amount: Math.round(parseFloat(item.price) * 100), // Convert to cents
-          },
-          quantity: item.quantity,
-        }));
+            quantity: item.quantity,
+          };
+        });
 
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],

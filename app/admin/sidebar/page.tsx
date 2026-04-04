@@ -41,6 +41,11 @@ export default function Sidebar() {
     { name: "Categories", icon: Tag, href: "/admin/categories" },
     { name: "Payments", icon: CreditCard, href: "/admin/payments" },
     {
+      name: "Admin Customer Orders",
+      icon: ShoppingCart,
+      href: "/admin/orders/adminCustomerOrders",
+    },
+    {
       name: "Buy for customer",
       icon: ShoppingCart,
       href: "/admin/customers/order",
@@ -48,8 +53,16 @@ export default function Sidebar() {
     
   ];
 
-  const isActive = (href: string) =>
-    href === "/admin" ? pathname === href : pathname.startsWith(href);
+  const isActive = (href: string) => {
+    // Exact match for dashboard
+    if (href === "/admin") return pathname === href;
+    
+    // For "Orders" - only match /admin/orders exactly or /admin/orders but NOT sub-routes like /admin/orders/adminCustomerOrders
+    if (href === "/admin/orders") return pathname === "/admin/orders";
+    
+    // For other routes, match exact or sub-routes
+    return pathname === href || pathname.startsWith(href + "/");
+  };
 
   return (
     <aside

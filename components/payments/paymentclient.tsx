@@ -157,10 +157,14 @@ export function PaymentPage({
               {cart.map((item) => (
                 <div
                   key={item.id}
-                  className="flex justify-between py-2 border-b border-neutral-200 dark:border-neutral-700 text-neutral-800 dark:text-neutral-200"
+                  className="flex justify-between py-2 border-b border-neutral-200 dark:border-neutral-700 text-neutral-800 dark:border-neutral-700 text-neutral-800 dark:text-neutral-200"
                 >
-                  <span className="truncate">{item.name}</span>
-                  <span>€{(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="truncate">
+                    {typeof item.name === "object" && item.name !== null
+                      ? (item.name as any)[locale] || (item.name as any).en
+                      : item.name}
+                  </span>
+                  <span>€{(item.price! * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
             </div>

@@ -11,7 +11,7 @@ import {
   posPayment,
   product,
 } from "@/lib/db/schema";
-import { getPosCart,clearPosCart } from "@/lib/queries/admin-cart";
+import { getPosCart, clearPosCart } from "@/lib/queries/admin-cart";
 import { nanoid } from "nanoid";
 
 export async function POST(req: NextRequest) {
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     const [order] = await db
       .insert(posOrder)
       .values({
-        id:nanoid(),
+        id: nanoid(),
         customerId,
         subtotal: subtotal.toString(),
         tax: "0",
@@ -72,16 +72,19 @@ export async function POST(req: NextRequest) {
     // 3. Order items
     console.log("📦 Creating POS order items:", cartData.items);
     await db.insert(posOrderItem).values(
-      cartData.items.map((i) => ({
-        id: nanoid(),
-        orderId: order.id,
-        productId: i.productId,
-        quantity: i.quantity,
-        price: i.price.toString(),
-        name: i.productName,
-        brand: i.brand,
-        model: i.model,
-      }))
+      cartData.items.map((i) => {
+
+        return {
+          id: nanoid(),
+          orderId: order.id,
+          productId: i.productId,
+          quantity: i.quantity,
+          price: i.price.toString(),
+          name: i.productName as { en: string; pt: string },
+          brand: i.brand,
+          model: i.model,
+        };
+      })
     );
     console.log("📦 POS Order Items inserted");
 
@@ -91,22 +94,25 @@ export async function POST(req: NextRequest) {
       mode: "payment",
       payment_method_types: ["card"],
 
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/order/success?orderId=${order.id}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/order/cancel`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/admin/orders/${order.id}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/admin/pos`,
 
       client_reference_id: order.id,
 
-      line_items: cartData.items.map((item) => ({
-        quantity: item.quantity,
-        price_data: {
-          currency: "EUR",
-          product_data: {
-            name: item.productName,
-            description: `${item.brand} ${item.model}`,
+      line_items: cartData.items.map((item) => {
+        const itemName = typeof item.productName === "object" && item.productName !== null ? (item.productName as any).en || (item.productName as any).pt || "Product" : String(item.productName || "Product");
+        return {
+          quantity: item.quantity,
+          price_data: {
+            currency: "EUR",
+            product_data: {
+              name: itemName,
+              description: `${item.brand} ${item.model}`,
+            },
+            unit_amount: Number(item.price) * 100,
           },
-          unit_amount: Number(item.price) * 100,
-        },
-      })),
+        };
+      }),
       metadata: { adminCustomerOrderId: order.id }
     });
 

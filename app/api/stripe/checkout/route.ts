@@ -43,9 +43,11 @@ export async function POST(req: NextRequest) {
 
     // ✅ STOCK VALIDATION - Check if products are in stock before creating checkout
     for (const item of items) {
+      const itemName = typeof item.name === "object" && item.name !== null ? (item.name.en || item.name.pt || "Product") : String(item.name || "Product");
+
       if (!item.productId) {
         return NextResponse.json(
-          { error: `Missing productId for item: ${item.name}` },
+          { error: `Missing productId for item: ${itemName}` },
           { status: 400 }
         );
       }
@@ -56,7 +58,7 @@ export async function POST(req: NextRequest) {
 
       if (!productData) {
         return NextResponse.json(
-          { error: `Product not found: ${item.name}` },
+          { error: `Product not found: ${itemName}` },
           { status: 404 }
         );
       }
@@ -64,7 +66,7 @@ export async function POST(req: NextRequest) {
       // Check if product is in stock
       if (!productData.pricing.inStock) {
         return NextResponse.json(
-          { error: `Product out of stock: ${item.name}` },
+          { error: `Product out of stock: ${itemName}` },
           { status: 400 }
         );
       }
@@ -74,7 +76,7 @@ export async function POST(req: NextRequest) {
       if (productData.pricing.stockQuantity < requestedQuantity) {
         return NextResponse.json(
           {
-            error: `Insufficient stock for ${item.name}. Available: ${productData.pricing.stockQuantity}, Requested: ${requestedQuantity}`,
+            error: `Insufficient stock for ${itemName}. Available: ${productData.pricing.stockQuantity}, Requested: ${requestedQuantity}`,
           },
           { status: 400 }
         );
@@ -84,9 +86,11 @@ export async function POST(req: NextRequest) {
     const line_items: any[] = [];
 
     for (const item of items) {
+      const itemNameStr = typeof item.name === "object" && item.name !== null ? (item.name.en || item.name.pt || "Product") : item.name;
+
       if (
         !item ||
-        typeof item.name !== "string" ||
+        typeof itemNameStr !== "string" ||
         isNaN(item.price) ||
         Number(item.price) <= 0
       ) {
@@ -111,7 +115,7 @@ export async function POST(req: NextRequest) {
         price_data: {
           currency: "eur",
           product_data: {
-            name: item.name,
+            name: itemNameStr,
             images:
               Array.isArray(item.images) && item.images.length > 0
                 ? [item.images[0]]

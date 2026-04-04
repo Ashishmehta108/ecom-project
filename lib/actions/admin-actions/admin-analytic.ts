@@ -226,8 +226,8 @@
 
 import Stripe from "stripe";
 import { db } from "@/lib/db";
-import { orders, orderItem, user, product } from "@/lib/db/schema";
-import { eq, desc, sum, count, inArray } from "drizzle-orm";
+import { orders, orderItem, user, product, adminCustomerOrder, adminCustomerOrderItem } from "@/lib/db/schema";
+import { eq, desc, sum, count, inArray, sql } from "drizzle-orm";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
@@ -364,6 +364,52 @@ export async function getHybridAdminAnalytics(daysBack = 30) {
     .orderBy(desc(orders.createdAt))
     .limit(10);
 
+  // ------------------------------
+  // ADMIN CUSTOMER ORDERS ANALYTICS
+  // ------------------------------
+
+  // Total admin customer orders
+  const totalAdminCustomerOrdersRes = await db
+    .select({ count: count() })
+    .from(adminCustomerOrder);
+
+  const totalAdminCustomerOrders = totalAdminCustomerOrdersRes[0]?.count ?? 0;
+
+  // Admin customer orders revenue
+  const adminCustomerRevenueRes = await db
+    .select({ total: sum(adminCustomerOrder.total) })
+    .from(adminCustomerOrder)
+    .where(eq(adminCustomerOrder.status, "paid"));
+
+  const adminCustomerRevenue = adminCustomerRevenueRes[0]?.total 
+    ? Number(adminCustomerRevenueRes[0].total) 
+    : 0;
+
+  // Admin customer orders by status
+  const adminCustomerOrdersByStatus = await db
+    .select({
+      status: adminCustomerOrder.status,
+      count: count(),
+      revenue: sum(adminCustomerOrder.total),
+    })
+    .from(adminCustomerOrder)
+    .groupBy(adminCustomerOrder.status);
+
+  // Recent admin customer orders
+  const recentAdminCustomerOrders = await db
+    .select({
+      id: adminCustomerOrder.id,
+      customerName: adminCustomerOrder.customerName,
+      customerEmail: adminCustomerOrder.customerEmail,
+      total: adminCustomerOrder.total,
+      status: adminCustomerOrder.status,
+      orderStatus: adminCustomerOrder.orderStatus,
+      createdAt: adminCustomerOrder.createdAt,
+    })
+    .from(adminCustomerOrder)
+    .orderBy(desc(adminCustomerOrder.createdAt))
+    .limit(10);
+
   return {
     kpis: {
       totalRevenue,
@@ -374,6 +420,9 @@ export async function getHybridAdminAnalytics(daysBack = 30) {
       refundRate,
       paymentSuccessCount,
       paymentFailureCount,
+      // Admin Customer Orders KPIs
+      totalAdminCustomerOrders,
+      adminCustomerRevenue,
     },
 
     revenueOverTime,
@@ -385,12 +434,16 @@ export async function getHybridAdminAnalytics(daysBack = 30) {
       revenue: Number(r.revenue),
     })),
 
-    topProducts: topProducts.map((p) => ({
-      productId: p.productId,
-      productName: p.productName,
-      totalRevenue: Number(p.totalRevenue),
-      totalQuantity: Number(p.totalQuantity),
-    })),
+    topProducts: topProducts.map((p) => {
+      const pName = p.productName as any;
+      const nameStr = typeof pName === 'object' && pName !== null ? pName.en || pName.pt || 'Product' : String(pName);
+      return {
+        productId: p.productId,
+        productName: nameStr,
+        totalRevenue: Number(p.totalRevenue),
+        totalQuantity: Number(p.totalQuantity),
+      };
+    }),
 
     recentOrders: recentOrders.map((o) => ({
       ...o,
@@ -399,5 +452,18 @@ export async function getHybridAdminAnalytics(daysBack = 30) {
     })),
 
     topCustomers: topStripeCustomers,
+
+    // Admin Customer Orders Data
+    adminCustomerOrdersByStatus: adminCustomerOrdersByStatus.map((o) => ({
+      status: o.status || "pending",
+      count: Number(o.count),
+      revenue: Number(o.revenue || 0),
+    })),
+
+    recentAdminCustomerOrders: recentAdminCustomerOrders.map((o) => ({
+      ...o,
+      createdAt: o.createdAt.toISOString(),
+      total: Number(o.total || 0),
+    })),
   };
 }
