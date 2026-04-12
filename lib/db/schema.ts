@@ -415,7 +415,7 @@ export const adminCustomerCartItem = pgTable("admin_customer_cart_item", {
 
   productId: text("product_id")
     .notNull()
-    .references(() => product.id),
+    .references(() => product.id,{ onDelete: "cascade"  }),
 
   name: jsonb("name").$type<{ en: string; pt: string }>().notNull(),
   price: numeric("price", { precision: 10, scale: 2 }).notNull(),

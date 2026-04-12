@@ -74,12 +74,24 @@ type Props = {
 export default function KpiCards({ analytics, dateRange }: Props) {
   const { kpis } = analytics;
 
+  // Combine revenue from both sources
+  const totalCombinedRevenue = kpis.totalRevenue + kpis.adminCustomerRevenue;
+
+  // Format revenue with max 3 decimals
+  const formatRevenue = (value: number) => {
+    if (value >= 1000) {
+      const k = value / 1000;
+      return `€${k.toFixed(Math.min(3, 1))}k`;
+    }
+    return `€${value.toFixed(3).replace(/\.?0+$/, "")}`;
+  };
+
   const cards = [
     {
       title: "Total Revenue",
-      value: `€${(kpis.totalRevenue / 1000).toFixed(1)}k`,
+      value: formatRevenue(totalCombinedRevenue),
       change: 12.4,
-      sparkData: spark(kpis.totalRevenue / 30),
+      sparkData: spark(totalCombinedRevenue / 30),
       icon: <DollarSign className="w-4 h-4" />,
       accent: "#6366f1",
       bgClass: "bg-indigo-50",

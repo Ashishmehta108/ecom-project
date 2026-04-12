@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,7 @@ export default function OrdersClient({ orders, refreshOrders }: any) {
   const [openConfirm, setOpenConfirm] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);
 
+ console.log(selectedOrder)
   async function showOrderDetails(orderId: string) {
     setDetailsLoading(true);
     const fullOrder = await getOrderDetails(orderId);
@@ -63,7 +64,9 @@ export default function OrdersClient({ orders, refreshOrders }: any) {
       shipped: "bg-blue-100 text-blue-800 border-blue-300",
       delivered: "bg-green-100 text-green-800 border-green-300",
     };
-    return colors[status] || "bg-neutral-100 text-neutral-700 border-neutral-300";
+    return (
+      colors[status] || "bg-neutral-100 text-neutral-700 border-neutral-300"
+    );
   };
 
   return (
@@ -118,7 +121,9 @@ export default function OrdersClient({ orders, refreshOrders }: any) {
                   <div className="space-y-1 text-sm">
                     <p>
                       <strong>Status:</strong>{" "}
-                      <Badge className={`capitalize border ${statusColor(selectedOrder.orderStatus)}`}>
+                      <Badge
+                        className={`capitalize border ${statusColor(selectedOrder.orderStatus)}`}
+                      >
                         {selectedOrder.orderStatus}
                       </Badge>
                     </p>
@@ -186,7 +191,14 @@ export default function OrdersClient({ orders, refreshOrders }: any) {
                     <div className="space-y-1 text-sm">
                       <h3 className="font-medium">Shipping Address</h3>
                       {Object.entries(selectedOrder.shippingAddress)
-                        .filter(([key, value]) => key !== 'id' && key !== 'userId' && key !== 'createdAt' && typeof value === 'string' && value)
+                        .filter(
+                          ([key, value]) =>
+                            key !== "id" &&
+                            key !== "userId" &&
+                            key !== "createdAt" &&
+                            typeof value === "string" &&
+                            value,
+                        )
                         .map(([key, value]: any, i: number) => (
                           <p key={i}>{value}</p>
                         ))}
@@ -198,10 +210,20 @@ export default function OrdersClient({ orders, refreshOrders }: any) {
                     <>
                       <Separator />
                       <div className="flex gap-3">
-                        <Button onClick={() => askToConfirm(selectedOrder, "shipped")}>
-                          Mark Shipped
-                        </Button>
-                        <Button onClick={() => askToConfirm(selectedOrder, "delivered")}>
+                        {selectedOrder.orderStatus !== "shipped" && (
+                          <Button
+                            onClick={() =>
+                              askToConfirm(selectedOrder, "shipped")
+                            }
+                          >
+                            Mark Shipped
+                          </Button>
+                        )}
+                        <Button
+                          onClick={() =>
+                            askToConfirm(selectedOrder, "delivered")
+                          }
+                        >
                           Mark Delivered
                         </Button>
                       </div>
@@ -221,7 +243,9 @@ export default function OrdersClient({ orders, refreshOrders }: any) {
             <CardHeader className="pb-2">
               <CardTitle className="flex justify-between">
                 <span>Order #{order.id}</span>
-                <Badge className={`capitalize border ${statusColor(order.orderStatus)}`}>
+                <Badge
+                  className={`capitalize border ${statusColor(order.orderStatus)}`}
+                >
                   {order.orderStatus}
                 </Badge>
               </CardTitle>
@@ -246,11 +270,20 @@ export default function OrdersClient({ orders, refreshOrders }: any) {
                 </Button>
 
                 {order.orderStatus !== "delivered" && (
-                  <div className="flex gap-2">
-                    <Button size="sm" onClick={() => askToConfirm(order, "shipped")}>
-                      Ship
-                    </Button>
-                    <Button size="sm" onClick={() => askToConfirm(order, "delivered")}>
+                 <div className="flex gap-2">
+                   {selectedOrder.orderStatus !== "shipped" && (
+                          <Button
+                            onClick={() =>
+                              askToConfirm(selectedOrder, "shipped")
+                            }
+                          >
+                            Mark Shipped
+                          </Button>
+                        )}
+                    <Button
+                      size="sm"
+                      onClick={() => askToConfirm(order, "delivered")}
+                    >
                       Deliver
                     </Button>
                   </div>

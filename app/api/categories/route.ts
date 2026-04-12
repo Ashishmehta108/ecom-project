@@ -1,49 +1,45 @@
+import { createCategory, getAllCategories } from "@/lib/actions/categories.actions";
 import { db } from "@/lib/db";
 import { category } from "@/lib/db/schema";
 import { seedCategory } from "@/seed/categories.seed";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function GET() {
   try {
-    await db.delete(category);
-    const c = await seedCategory();
-    return NextResponse.json(
-      {
-        data: c,
-      },
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error("Error seeding categories:", error);
-    return new Response("Internal Server Error", { status: 500 });
-  }
-}
-
-export async function GET(req: Request) {
-  try {
-    const categories = await db.query.category.findMany();
+    const categories = await getAllCategories();
     return NextResponse.json({
       data: categories,
     });
   } catch (error) {
     console.error("Error fetching categories:", error);
-    return NextResponse.json({
-      data: error,
-    });
+    return NextResponse.json(
+      {
+        error: "Failed to fetch categories",
+      },
+      { status: 500 }
+    );
   }
 }
 
-// import {
-//   createCategory,
-//   getAllCategories,
-// } from "@/lib/actions/categories.actions";
-// export async function GET() {
-//   const categories = await getAllCategories();
-//   return Response.json(categories);
-// }
 
-// export async function POST(req: Request) {
-//   const formData = await req.formData();
-//   const category = await createCategory(formData);
-//   return Response.json(category);
-// }
+export async function POST(req: Request) {
+  try {
+    const formData = await req.formData();
+    const newCategory = await createCategory(formData);
+    return NextResponse.json(
+      {
+        data: newCategory,
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Error creating category:", error);
+    const message = error instanceof Error ? error.message : "Failed to create category";
+    return NextResponse.json(
+      {
+        error: message,
+      },
+      { status: 400 }
+    );
+  }
+}

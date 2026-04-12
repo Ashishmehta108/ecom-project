@@ -17,6 +17,8 @@ type AdminAnalytics = Awaited<ReturnType<typeof getHybridAdminAnalytics>>;
 
 type Props = {
   analytics: AdminAnalytics;
+  dateRange?: DateRange;
+  onDateRangeChange?: (range: DateRange) => void;
 };
 
 const statusColors: Record<string, { dot: string; bg: string; text: string }> = {
@@ -31,7 +33,16 @@ function formatCurrency(value: number) {
     style: "currency",
     currency: "EUR",
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    maximumFractionDigits: 3,
+  }).format(value);
+}
+
+function formatCurrencyWithDecimals(value: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 3,
   }).format(value);
 }
 
@@ -39,19 +50,26 @@ function formatNumber(value: number) {
   return new Intl.NumberFormat("en-US").format(value);
 }
 
-export default function AdminDashboardPage({ analytics }: Props) {
+export default function AdminDashboardPage({ 
+  analytics, 
+  dateRange: parentDateRange = "30d",
+  onDateRangeChange 
+}: Props) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [dateRange, setDateRange] = useState<DateRange>("30d");
   const [activeNav, setActiveNav] = useState("dashboard");
 
   const { kpis } = analytics;
+
+  const handleDateRangeChange = (newRange: DateRange) => {
+    onDateRangeChange?.(newRange);
+  };
 
   return (
     <div className="flex h-screen bg-[#f9fafb] text-gray-900 overflow-hidden font-sans">
  
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <Topbar dateRange={dateRange} onDateRangeChange={setDateRange} />
+        <Topbar dateRange={parentDateRange} onDateRangeChange={handleDateRangeChange} />
 
         <main className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
           {/* Page Title */}
@@ -60,13 +78,13 @@ export default function AdminDashboardPage({ analytics }: Props) {
               Sales Overview
             </h1>
             <p className="text-sm text-gray-500 mt-0.5">
-              {dateRange === "7d" ? "Last 7 days" : dateRange === "30d" ? "Last 30 days" : "Last 12 months"}
+              {parentDateRange === "7d" ? "Last 7 days" : parentDateRange === "30d" ? "Last 30 days" : "Last 12 months"}
               {" · "}Updated just now
             </p>
           </div>
 
           {/* KPI Cards */}
-          <KpiCards analytics={analytics} dateRange={dateRange} />
+          <KpiCards analytics={analytics} dateRange={parentDateRange} />
 
           {/* Secondary KPIs */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
