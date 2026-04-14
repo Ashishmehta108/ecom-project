@@ -511,7 +511,7 @@ export async function POST(req: NextRequest) {
       console.error(`[webhook] Error processing event ${event.type}:`, err);
     }
   };
-  processStripe();
+ await  processStripe();
 
   return new Response("OK", { status: 200 });
 }

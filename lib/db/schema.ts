@@ -312,6 +312,11 @@ const address = pgTable("address", {
   postalCode: text("postal_code").notNull(),
   country: text("country").notNull(),
 
+  // Tax details
+  taxId: text("tax_id"),
+  taxType: text("tax_type"), // "VAT", "GST", "ITIN", etc
+  companyName: text("company_name"),
+
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 const orders = pgTable("orders", {

@@ -8,6 +8,20 @@
       "when": 1775322193430,
       "tag": "0000_little_patriot",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1776174047053,
+      "tag": "0001_lyrical_strong_guy",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1776174899809,
+      "tag": "0002_add_tax_fields",
+      "breakpoints": true
     }
   ]
 }

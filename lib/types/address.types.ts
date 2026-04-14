@@ -7,4 +7,8 @@ export type Address = {
   city: string;
   state: string;
   postalCode: string;
+  country?: string;
+  taxId?: string;
+  taxType?: string;
+  companyName?: string;
 };

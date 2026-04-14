@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { category } from "@/lib/db/schema";
 import { seedCategory } from "@/seed/categories.seed";
 import { NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
+
 
 export async function GET() {
   try {

@@ -23,6 +23,10 @@ const t = {
     save: "Save Address",
     saving: "Saving...",
     requiredMsg: "Please fill all required fields",
+    taxSection: "Tax Information (Optional)",
+    companyName: "Company Name",
+    taxId: "Tax ID / VAT Number",
+    taxType: "Tax Type",
   },
   pt: {
     back: "Voltar",
@@ -38,6 +42,10 @@ const t = {
     save: "Salvar Endereço",
     saving: "Salvando...",
     requiredMsg: "Por favor, preencha todos os campos obrigatórios",
+    taxSection: "Informações de Imposto (Opcional)",
+    companyName: "Nome da Empresa",
+    taxId: "ID de Imposto / Número de IVA",
+    taxType: "Tipo de Imposto",
   },
 };
 
@@ -57,6 +65,9 @@ export function AddNewAddressPage({ onBack }: { onBack: () => void }) {
     state: "",
     postalCode: "",
     country: "India",
+    companyName: "",
+    taxId: "",
+    taxType: "VAT",
   });
 
   const updateField = (field: string, value: string) => {
@@ -165,6 +176,50 @@ export function AddNewAddressPage({ onBack }: { onBack: () => void }) {
             value={form.country}
             onChange={(e) => updateField("country", e.target.value)}
           />
+        </div>
+
+        {/* Tax Information Section */}
+        <div className="border-t pt-4 mt-4">
+          <h3 className="text-sm font-semibold mb-3 text-neutral-700 dark:text-neutral-300">
+            {text.taxSection}
+          </h3>
+
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm mb-1 block">{text.companyName}</label>
+              <Input
+                value={form.companyName}
+                onChange={(e) => updateField("companyName", e.target.value)}
+                placeholder="Acme Corp"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm mb-1 block">{text.taxId}</label>
+                <Input
+                  value={form.taxId}
+                  onChange={(e) => updateField("taxId", e.target.value)}
+                  placeholder="GB123456789"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm mb-1 block">{text.taxType}</label>
+                <select
+                  value={form.taxType}
+                  onChange={(e) => updateField("taxType", e.target.value)}
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100"
+                >
+                  <option value="VAT">VAT</option>
+                  <option value="GST">GST</option>
+                  <option value="ITIN">ITIN</option>
+                  <option value="TAX_ID">Tax ID</option>
+                  <option value="OTHER">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
 
         <Button

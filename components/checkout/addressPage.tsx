@@ -28,12 +28,23 @@ export function AddressCard({
           )}
   
           <h3 className="font-semibold">{address.fullName || "Unnamed User"}</h3>
+          {address.companyName && (
+            <p className="text-xs opacity-75">{address.companyName}</p>
+          )}
           <p>{address.line1 || "Address missing"}</p>
           {address.line2 && <p>{address.line2}</p>}
           <p>
             {address.city}, {address.state} {address.postalCode}
           </p>
           <p className="text-xs mt-1 opacity-70">{address.phone}</p>
+          
+          {/* Tax Info */}
+          {address.taxId && (
+            <div className="text-xs mt-2 pt-2 border-t opacity-75">
+              <p>Tax ID: {address.taxId}</p>
+              {address.taxType && <p>Type: {address.taxType}</p>}
+            </div>
+          )}
         </CardContent>
       </Card>
     );

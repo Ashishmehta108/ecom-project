@@ -46,6 +46,11 @@ type Order = {
     price: string;
     product?: any;
   }>;
+  shippingAddress?: {
+    taxId?: string | null;
+    taxType?: string | null;
+    companyName?: string | null;
+  };
 };
 
 const PAYMENT_STATUSES: PaymentStatus[] = ["pending", "paid", "refunded"];
@@ -266,6 +271,51 @@ export default function OrderDetailModal({
               ))}
             </div>
           </div>
+
+          {/* Tax Information */}
+          {order.shippingAddress && (order.shippingAddress.taxId || order.shippingAddress.companyName) && (
+            <div className="bg-white rounded-2xl border border-[#ECEAE4] overflow-hidden">
+              <div className="px-4 py-2.5 border-b border-[#F4F3F0] flex items-center gap-1.5">
+                <CreditCard size={12} className="text-[#AAA]" />
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#AAA]">Tax Information</span>
+              </div>
+              <div className="px-4 py-3 grid grid-cols-1 gap-2.5">
+                {order.shippingAddress.companyName && (
+                  <div className="flex items-start gap-2.5">
+                    <div className="mt-0.5 w-5 h-5 shrink-0 bg-[#F4F3F0] rounded-md flex items-center justify-center">
+                      <User size={10} className="text-[#888]" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] text-[#BBB]">Company Name</p>
+                      <p className="text-xs text-[#1A1A1A]">{order.shippingAddress.companyName}</p>
+                    </div>
+                  </div>
+                )}
+                {order.shippingAddress.taxId && (
+                  <div className="flex items-start gap-2.5">
+                    <div className="mt-0.5 w-5 h-5 shrink-0 bg-[#F4F3F0] rounded-md flex items-center justify-center">
+                      <Hash size={10} className="text-[#888]" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] text-[#BBB]">Tax ID</p>
+                      <p className="text-xs text-[#1A1A1A] break-words">{order.shippingAddress.taxId}</p>
+                    </div>
+                  </div>
+                )}
+                {order.shippingAddress.taxType && (
+                  <div className="flex items-start gap-2.5">
+                    <div className="mt-0.5 w-5 h-5 shrink-0 bg-[#F4F3F0] rounded-md flex items-center justify-center">
+                      <CreditCard size={10} className="text-[#888]" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] text-[#BBB]">Tax Type</p>
+                      <p className="text-xs text-[#1A1A1A]">{order.shippingAddress.taxType}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Items */}
           {order.items && order.items.length > 0 && (

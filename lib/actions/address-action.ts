@@ -16,6 +16,9 @@ export async function createAddress(form: {
   state: string;
   postalCode: string;
   country: string;
+  taxId?: string;
+  taxType?: string;
+  companyName?: string;
 }) {
   const session = await getUserSession();
 
@@ -35,6 +38,9 @@ export async function createAddress(form: {
       state: form.state,
       postalCode: form.postalCode,
       country: form.country,
+      taxId: form.taxId || null,
+      taxType: form.taxType || null,
+      companyName: form.companyName || null,
     });
 
     return { success: true, addressId: id };
