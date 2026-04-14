@@ -84,7 +84,7 @@ export default function FavoritesClient({ initialItems }: { initialItems: any[] 
               return (
                 <article
                   key={item.productId}
-                  className="group flex flex-col rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-hidden hover:shadow-md hover:border-neutral-300 dark:hover:border-neutral-700 transition-all"
+                  className="group flex flex-col rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-hidden hover:shadow-md hover:border-neutral-300 dark:hover:border-neutral-700 transition-all cursor-pointer"
                 >
                   <Link href={`/products/${item.productId}`}>
                     <div className="relative aspect-square w-full bg-neutral-100 dark:bg-neutral-950 overflow-hidden">

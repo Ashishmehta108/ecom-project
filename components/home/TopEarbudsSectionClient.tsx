@@ -50,7 +50,7 @@ export default function TopEarbudsSectionClient({
             <Link
               href={`/products/${e.id}`}
               key={e.id}
-              className="group w-[130px] sm:w-[160px] md:w-[180px] lg:w-[200px] flex-shrink-0 snap-start rounded-xl md:rounded-2xl bg-neutral-50 hover:bg-neutral-100/80 dark:bg-neutral-900 dark:hover:bg-neutral-900/80 border border-neutral-200 dark:border-neutral-800 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-md"
+              className="group w-[130px] sm:w-[160px] md:w-[180px] lg:w-[200px] flex-shrink-0 snap-start rounded-xl md:rounded-2xl bg-neutral-50 hover:bg-neutral-100/80 dark:bg-neutral-900 dark:hover:bg-neutral-900/80 border border-neutral-200 dark:border-neutral-800 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-md cursor-pointer"
             >
               {/* IMAGE CONTAINER */}
               <div className="relative w-full aspect-square dark:bg-neutral-950 p-2 md:p-3 rounded-[16px] md:rounded-[20px] flex items-center justify-center">

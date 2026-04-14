@@ -467,7 +467,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
               hover:scale-110 active:scale-95 
               focus:outline-none focus:ring-2 focus:ring-white/70 focus:opacity-100
               disabled:opacity-50 disabled:cursor-not-allowed
-              z-20
+              z-20 cursor-pointer
             "
             aria-label="Previous slide"
           >
@@ -487,7 +487,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
               hover:scale-110 active:scale-95 
               focus:outline-none focus:ring-2 focus:ring-white/70 focus:opacity-100
               disabled:opacity-50 disabled:cursor-not-allowed
-              z-20
+              z-20 cursor-pointer
             "
             aria-label="Next slide"
           >
@@ -512,7 +512,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
                 h-2 sm:h-2.5 rounded-full 
                 transition-all duration-300 ease-out
                 focus:outline-none focus:ring-2 focus:ring-white/50
-                disabled:cursor-not-allowed
+                disabled:cursor-not-allowed cursor-pointer
                 ${
                   index === activeIndex
                     ? "w-8 sm:w-10 bg-indigo-400 shadow-lg"

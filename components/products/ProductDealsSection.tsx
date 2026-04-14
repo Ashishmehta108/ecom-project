@@ -284,6 +284,7 @@ export default function ProductDealsSection() {
                 border border-neutral-200 dark:border-neutral-800
                 overflow-hidden
                 transition-all duration-300
+                cursor-pointer
               "
             >
               {/* IMAGE CARD */}

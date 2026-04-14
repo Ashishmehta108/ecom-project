@@ -255,7 +255,7 @@ export function ProductCard({ product, userId, listView, view }: ProductCardProp
 
       {/* ── List view ─────────────────────────────────────────── */}
       {isListView ? (
-        <article className="group flex gap-3 rounded-lg border border-neutral-150 dark:border-neutral-800/80 bg-white dark:bg-neutral-900 p-3 transition-all duration-150 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-[0_1px_4px_0_rgb(0,0,0,0.06)] dark:hover:shadow-none">
+        <article className="group flex gap-3 rounded-lg border border-neutral-150 dark:border-neutral-800/80 bg-white dark:bg-neutral-900 p-3 transition-all duration-150 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-[0_1px_4px_0_rgb(0,0,0,0.06)] dark:hover:shadow-none cursor-pointer">
           {/* Thumbnail */}
           <Link
             href={productLink}
@@ -302,7 +302,7 @@ export function ProductCard({ product, userId, listView, view }: ProductCardProp
         /* ── Grid view ────────────────────────────────────────── */
         <article
           className={cn(
-            "group relative flex flex-col h-full  rounded-xl border border-neutral-150 dark:border-neutral-800/80 bg-white dark:bg-neutral-900 overflow-hidden transition-all duration-200 hover:border-neutral-250 dark:hover:border-neutral-700 hover:shadow-[0_2px_12px_0_rgb(0,0,0,0.07)] dark:hover:shadow-none",
+            "group relative flex flex-col h-full  rounded-xl border border-neutral-150 dark:border-neutral-800/80 bg-white dark:bg-neutral-900 overflow-hidden transition-all duration-200 hover:border-neutral-250 dark:hover:border-neutral-700 hover:shadow-[0_2px_12px_0_rgb(0,0,0,0.07)] dark:hover:shadow-none cursor-pointer",
             outOfStock && !adminViewOnly && "opacity-60"
           )}
         >

@@ -1,6 +1,7 @@
 import { db } from "../db";
 import { category } from "../db/schema";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import {client as imagekit} from "@/lib/imagekit/imageUpload"
 import { v4 as uuid } from "uuid";
 
@@ -42,6 +43,7 @@ export async function createCategory(formData: FormData) {
     })
     .returning();
 
+  revalidatePath("/", "layout");
   return newCategory[0];
 }
 
@@ -78,6 +80,7 @@ export async function updateCategory(id: string, formData: FormData) {
     .where(eq(category.id, id))
     .returning();
 
+  revalidatePath("/", "layout");
   return updatedCategory[0];
 }
 
@@ -90,6 +93,7 @@ export async function deleteCategory(id: string) {
     .where(eq(category.id, id))
     .returning();
 
+  revalidatePath("/", "layout");
   return deleted[0];
 }
 

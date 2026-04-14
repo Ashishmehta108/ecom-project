@@ -46,6 +46,7 @@ export default function TechbarCTA() {
             bg-neutral-900 text-neutral-100 shadow-md shadow-neutral-300/20
             hover:shadow-lg hover:shadow-neutral-400/30 hover:bg-neutral-800
             active:scale-[0.98] transition-all duration-300
+            cursor-pointer
           "
         >
           <span className="flex items-center gap-2 justify-center">

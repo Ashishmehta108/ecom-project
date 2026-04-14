@@ -81,6 +81,7 @@ export default function TopEarbudsSection() {
                 shadow-[0_2px_6px_rgba(0,0,0,0.06)]
                 overflow-hidden
                 transition-all duration-200
+                cursor-pointer
               "
             >
               {/* IMAGE BOX */}
