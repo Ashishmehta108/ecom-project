@@ -8,7 +8,7 @@ export type Product = {
   brand: string;
   model: string;
   categories: string[];
-  subCategory: TranslatedField; // Updated to TranslatedField
+  subCategory: TranslatedField;
   description: TranslatedField;
   features: TranslatedArray;
   pricing: {
@@ -19,8 +19,8 @@ export type Product = {
     stockQuantity: number;
   };
   specifications: {
-    general?: Record<string, any>; // Can be string, array, or { en: string; pt: string }
-    technical?: Record<string, any>; // Can be string, array, or { en: string; pt: string }
+    general?: Record<string, any>;
+    technical?: Record<string, any>;
     [key: string]: any;
   };
   productImages: {
@@ -28,6 +28,8 @@ export type Product = {
     fileId?: string;
   }[];
   tags: TranslatedArray;
+  variantGroupId?: string | null;
+  variantLabel?: string | null;
 };
 
 export type productPageProductType = {

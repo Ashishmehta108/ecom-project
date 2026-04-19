@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { ProductCard } from "@/components/products/ProductCard";
 import { LayoutGrid, List } from "lucide-react";
 
-export default function ProductsListWrapper({ products, userId }: any) {
+export default function ProductsListWrapper({ products, userId, admin }: any) {
   const [view, setView] = useState<"grid" | "list">("grid");
 
   useEffect(() => {
@@ -71,6 +71,8 @@ export default function ProductsListWrapper({ products, userId }: any) {
               product={product}
               userId={userId}
               listView={view === "list" ? true : false}
+              allProducts={products}
+              admin={admin}
             />
           </div>
         ))}

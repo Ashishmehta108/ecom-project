@@ -31,7 +31,10 @@ export default function AdminLayout({
 
       <div className="flex-1 flex flex-col">
         <Topbar />
-        <main className="p-6">{children}</main>
+        <main className="p-6">{children}
+
+          <div id="dnd-portal" style={{ position: 'fixed', zIndex: 9999, top: 0, left: 0 }} />
+        </main>
       </div>
     </div>
   );

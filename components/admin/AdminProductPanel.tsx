@@ -57,9 +57,29 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { createPortal } from "react-dom";
+
 import clsx from "clsx";
 import { SpecsTab } from "./specTab";
 import { useLanguage } from "@/app/context/languageContext";
+
+// Portal helper for DND to fix invisible dragging when items are clipped by parent containers
+const DraggablePortal = ({
+  children,
+  dragging,
+}: {
+  children: React.ReactNode;
+  dragging: boolean;
+}) => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  if (!dragging) return <>{children}</>;
+  if (!mounted) return <>{children}</>;
+
+  const portalRoot = document.getElementById("dnd-portal") || document.body;
+  return createPortal(children, portalRoot);
+};
 
 type ProductImage = {
   url: string;
@@ -91,9 +111,23 @@ type Product = {
   slug?: string;
 };
 
+type CategoryOption = {
+  id: string;
+  name: string;
+};
+
+type ProductBasic = {
+  id: string;
+  productName: { en: string; pt: string };
+  brand: string;
+  variantGroupId?: string | null;
+  variantLabel?: string | null;
+};
+
 type Props = {
   initialProduct?: Partial<Product>;
-  categories?: string[]; // Changed to string array since we extract names
+  categoryOptions?: CategoryOption[];
+  allProducts?: ProductBasic[];
   isNew?: boolean;
 };
 
@@ -166,7 +200,7 @@ const uploadToImageKit = async (
 // Update GeneralTab to support multilingual input
 const GeneralTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
-  const { locale ,setLocale } = useLanguage();
+  const { locale, setLocale } = useLanguage();
 
   return (
     <div className="space-y-8">
@@ -181,7 +215,7 @@ const GeneralTab: React.FC = () => {
           <TabsTrigger value="en">English</TabsTrigger>
           <TabsTrigger value="pt">Português</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="en" className="space-y-6 mt-6">
           <FormField
             control={form.control}
@@ -210,7 +244,7 @@ const GeneralTab: React.FC = () => {
             )}
           />
         </TabsContent>
-        
+
         <TabsContent value="pt" className="space-y-6 mt-6">
           <FormField
             control={form.control}
@@ -294,7 +328,7 @@ const GeneralTab: React.FC = () => {
             <TabsTrigger value="en">English</TabsTrigger>
             <TabsTrigger value="pt">Português</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="en" className="space-y-6 mt-6">
             <FormField
               control={form.control}
@@ -316,7 +350,7 @@ const GeneralTab: React.FC = () => {
               )}
             />
           </TabsContent>
-          
+
           <TabsContent value="pt" className="space-y-6 mt-6">
             <FormField
               control={form.control}
@@ -450,50 +484,60 @@ const ImagesTab: React.FC = () => {
   });
 
   const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState<string>("");
+  const [uploadingCount, setUploadingCount] = useState(0);
+  const [uploadedCount, setUploadedCount] = useState(0);
   const [uploadError, setUploadError] = useState<string>("");
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
 
-  const handleFileInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const processFiles = async (files: File[]) => {
+    const imageFiles = files.filter((f) => f.type.startsWith("image/"));
+    const oversized = imageFiles.filter((f) => f.size > 5 * 1024 * 1024);
 
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
-      setUploadError("Please select a valid image file");
+    if (oversized.length > 0) {
+      setUploadError(`${oversized.length} file(s) exceed 5MB limit`);
       return;
     }
-
-    // Validate file size (5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setUploadError("Image size must be less than 5MB");
-      return;
-    }
+    if (imageFiles.length === 0) return;
 
     setUploading(true);
     setUploadError("");
-    setUploadProgress("Uploading to ImageKit...");
+    setUploadingCount(imageFiles.length);
+    setUploadedCount(0);
 
     try {
-      const uploaded = await uploadToImageKit(file);
-      if (uploaded) {
-        setUploadProgress("Upload complete!");
-        append({ url: uploaded.url, fileId: uploaded.fileId });
-
-        // Clear success message after 2s
-        setTimeout(() => setUploadProgress(""), 2000);
+      for (const file of imageFiles) {
+        const uploaded = await uploadToImageKit(file);
+        if (uploaded) {
+          append({ url: uploaded.url, fileId: uploaded.fileId });
+          setUploadedCount((n) => n + 1);
+        }
       }
     } catch (error: any) {
       setUploadError(error.message || "Upload failed. Please try again.");
     } finally {
       setUploading(false);
-      e.target.value = "";
+      setUploadingCount(0);
+      setUploadedCount(0);
     }
+  };
+
+  const handleFileInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? []);
+    await processFiles(files);
+    e.target.value = "";
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const files = Array.from(e.dataTransfer.files);
+    await processFiles(files);
   };
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     if (result.source.index === result.destination.index) return;
-
     move(result.source.index, result.destination.index);
   };
 
@@ -501,135 +545,188 @@ const ImagesTab: React.FC = () => {
     <div className="space-y-8">
       <SectionHeader
         title="Product Images"
-        description="Upload and manage product photos. Drag to reorder."
+        description="Upload photos, drag rows to reorder. First image is used as the cover."
       />
 
-      {/* Upload Area */}
-      <div className="space-y-4">
-        <label
-          className={clsx(
-            "group relative flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-200",
-            uploading
-              ? "border-blue-300 bg-blue-50 dark:bg-blue-950/20"
-              : "border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900 hover:border-neutral-400 dark:hover:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-          )}
-        >
-          {uploading ? (
-            <div className="flex flex-col items-center gap-3">
-              <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
-              <div className="text-center">
-                <p className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                  {uploadProgress}
-                </p>
-              </div>
+      {/* ── Drop Zone ── */}
+      <label
+        onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+        onDragLeave={() => setIsDragOver(false)}
+        onDrop={handleDrop}
+        className={clsx(
+          "relative flex flex-col items-center justify-center h-48 rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-200 select-none",
+          isDragOver
+            ? "border-indigo-400 bg-indigo-50 dark:bg-indigo-950/30 scale-[1.01]"
+            : uploading
+              ? "border-blue-300 bg-blue-50 dark:bg-blue-950/20 cursor-default"
+              : "border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50/40 dark:hover:bg-indigo-950/10"
+        )}
+      >
+        {uploading ? (
+          <div className="flex flex-col items-center gap-3">
+            <div className="relative">
+              <div className="w-12 h-12 rounded-full border-4 border-blue-100 dark:border-blue-900 border-t-blue-500 animate-spin" />
+              <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-400">
+                {uploadedCount}/{uploadingCount}
+              </span>
             </div>
-          ) : (
-            <>
-              <div className="w-14 h-14 rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Upload className="w-7 h-7 text-neutral-600 dark:text-neutral-400" />
-              </div>
-              <p className="text-base font-medium text-neutral-900 dark:text-neutral-100 mb-1">
-                Upload Product Image
-              </p>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                PNG, JPG up to 5MB • Powered by ImageKit
-              </p>
-            </>
-          )}
-
-          <input
-            type="file"
-            className="hidden"
-            onChange={handleFileInput}
-            accept="image/*"
-            disabled={uploading}
-          />
-        </label>
-
-        {uploadError && (
-          <div className="flex items-center gap-2 p-4 rounded-xl bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900">
-            <X className="w-5 h-5 text-red-500 shrink-0" />
-            <p className="text-sm text-red-700 dark:text-red-400">
-              {uploadError}
+            <p className="text-sm font-medium text-blue-600 dark:text-blue-400">
+              Uploading {uploadingCount > 1 ? `${uploadingCount} images` : "image"}…
             </p>
           </div>
+        ) : (
+          <>
+            <div className={clsx(
+              "w-12 h-12 rounded-2xl flex items-center justify-center mb-3 transition-all duration-200",
+              isDragOver
+                ? "bg-indigo-100 dark:bg-indigo-900 scale-110"
+                : "bg-neutral-100 dark:bg-neutral-800"
+            )}>
+              <Upload className={clsx("w-6 h-6", isDragOver ? "text-indigo-500" : "text-neutral-500 dark:text-neutral-400")} />
+            </div>
+            <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+              {isDragOver ? "Drop images here" : "Drag & drop or click to upload"}
+            </p>
+            <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-1">
+              PNG, JPG, WEBP · up to 5MB each · multiple allowed
+            </p>
+          </>
         )}
-      </div>
 
-      {/* Images Grid */}
-      {fields.length === 0 ? (
-        <EmptyState
-          icon={<ImageIcon className="w-8 h-8 text-neutral-400" />}
-          message="No images uploaded"
-          description="Upload your first product image to get started"
+        <input
+          type="file"
+          className="hidden"
+          onChange={handleFileInput}
+          accept="image/*"
+          multiple
+          disabled={uploading}
         />
+      </label>
+
+      {/* Error */}
+      {uploadError && (
+        <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50">
+          <X className="w-4 h-4 text-red-500 shrink-0" />
+          <p className="text-sm text-red-700 dark:text-red-400">{uploadError}</p>
+          <button type="button" onClick={() => setUploadError("")} className="ml-auto text-red-400 hover:text-red-600">
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
+      {/* ── Image list ── */}
+      {fields.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-14 rounded-2xl border-2 border-dashed border-neutral-200 dark:border-neutral-800 bg-neutral-50/60 dark:bg-neutral-900/40">
+          <ImageIcon className="w-10 h-10 text-neutral-300 dark:text-neutral-700 mb-3" />
+          <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">No images yet</p>
+          <p className="text-xs text-neutral-400 dark:text-neutral-600 mt-0.5">Upload your first product photo above</p>
+        </div>
       ) : (
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="product-images" direction="horizontal">
-            {(provided: any) => (
-              <div
-                className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {fields.map((fieldItem, idx) => (
-                  <Draggable
-                    key={fieldItem.id}
-                    draggableId={fieldItem.id}
-                    index={idx}
-                  >
-                    {(drag: any, snapshot: any) => (
-                      <div
-                        ref={drag.innerRef}
-                        {...drag.draggableProps}
-                        className={clsx(
-                          "relative group rounded-2xl overflow-hidden border-2 transition-all duration-200",
-                          snapshot.isDragging
-                            ? "border-blue-500 shadow-2xl scale-105 rotate-2"
-                            : "border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 hover:shadow-lg"
-                        )}
-                      >
-                        <div className="aspect-square relative bg-neutral-100 dark:bg-neutral-900">
-                          <Image
-                            src={(fieldItem as any).url}
-                            fill
-                            alt={`Product ${idx + 1}`}
-                            className="object-cover"
-                          />
-
-                          {/* Drag Handle */}
+        <>
+          <p className="text-xs text-neutral-400 dark:text-neutral-500 -mb-4">
+            {fields.length} image{fields.length !== 1 ? "s" : ""} · drag rows to reorder
+          </p>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="product-images" direction="vertical">
+              {(provided: any) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="space-y-2.5"
+                >
+                  {fields.map((fieldItem, idx) => (
+                    <Draggable key={fieldItem.id} draggableId={fieldItem.id} index={idx}>
+                      {(drag: any, snapshot: any) => (
+                        <DraggablePortal dragging={snapshot.isDragging}>
                           <div
-                            {...drag.dragHandleProps}
-                            className="absolute top-2 left-2 bg-black/60 hover:bg-black/80 backdrop-blur-sm p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing"
+                            ref={drag.innerRef}
+                            {...drag.draggableProps}
+                            style={drag.draggableProps.style}
+                            className={clsx(
+                              "flex items-center gap-4 p-3 rounded-2xl border transition-all",
+                              snapshot.isDragging
+                                ? "border-indigo-500 bg-white dark:bg-neutral-800 shadow-2xl scale-[1.02] ring-2 ring-indigo-500/20 duration-0"
+                                : "border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-300 dark:hover:border-neutral-700 duration-150"
+                            )}
                           >
-                            <GripVertical className="w-4 h-4 text-white" />
-                          </div>
+                            {/* Drag handle */}
+                            <div
+                              {...drag.dragHandleProps}
+                              className="flex items-center justify-center w-9 h-9 rounded-xl text-neutral-400 dark:text-neutral-500 hover:text-indigo-500 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 cursor-grab active:cursor-grabbing transition-colors shrink-0"
+                            >
+                              <GripVertical className="w-5 h-5" />
+                            </div>
 
-                          {/* Remove Button */}
-                          <button
-                            type="button"
-                            className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all hover:scale-110"
-                            onClick={() => remove(idx)}
-                          >
-                            <Trash2 className="w-4 h-4 text-white" />
-                          </button>
+                            {/* Thumbnail */}
+                            <button
+                              type="button"
+                              onClick={() => setPreview((fieldItem as any).url)}
+                              className="relative w-16 h-16 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 shrink-0 hover:border-indigo-400 dark:hover:border-indigo-600 transition-all group/thumb"
+                            >
+                              <Image
+                                src={(fieldItem as any).url}
+                                fill
+                                alt={`Image ${idx + 1}`}
+                                className="object-cover group-hover/thumb:scale-105 transition-transform duration-300"
+                              />
+                            </button>
 
-                          {/* Image Number Badge */}
-                          <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-lg">
-                            <span className="text-xs font-medium text-white">
-                              #{idx + 1}
-                            </span>
+                            {/* Label */}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300 truncate">
+                                  Image {idx + 1}
+                                </span>
+                                {idx === 0 && (
+                                  <span className="shrink-0 text-[10px] font-semibold uppercase tracking-widest px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400">
+                                    Cover
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-xs text-neutral-400 dark:text-neutral-600 mt-0.5 truncate">
+                                {(fieldItem as any).url?.split("/").pop() ?? ""}
+                              </p>
+                            </div>
+
+                            {/* Delete */}
+                            <button
+                              type="button"
+                              onClick={() => remove(idx)}
+                              className="flex items-center justify-center w-9 h-9 rounded-xl text-neutral-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all hover:scale-110 shrink-0"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           </div>
-                        </div>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+                        </DraggablePortal>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </>
+      )}
+
+      {/* ── Lightbox preview ── */}
+      {preview && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+          onClick={() => setPreview(null)}
+        >
+          <div className="relative max-w-2xl max-h-[80vh] w-full mx-4 rounded-3xl overflow-hidden shadow-2xl">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={preview} alt="Preview" className="w-full h-full object-contain" />
+            <button
+              type="button"
+              className="absolute top-3 right-3 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full transition"
+              onClick={() => setPreview(null)}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
@@ -638,7 +735,7 @@ const ImagesTab: React.FC = () => {
 const FeaturesTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
   const { locale, setLocale } = useLanguage();
-  
+
   const enFields = useFieldArray({
     control: form.control,
     name: `features.en` as any,
@@ -784,7 +881,7 @@ const FeaturesTab: React.FC = () => {
 const TagsTab: React.FC = () => {
   const form = useFormContext<ProductFormValues>();
   const { locale, setLocale } = useLanguage();
-  
+
   const enFields = useFieldArray({
     control: form.control,
     name: `tags.en` as any,
@@ -927,20 +1024,261 @@ const TagsTab: React.FC = () => {
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
+import { nanoid } from "nanoid";
 
-const CategoriesTab: React.FC<{ categories: string[] }> = ({ categories }) => {
+// ---------------------------------------------------------
+// VariantsTab — link products as color/style variants
+// ---------------------------------------------------------
+const VariantsTab: React.FC<{
+  allProducts: ProductBasic[];
+  currentProductId?: string;
+}> = ({ allProducts, currentProductId }) => {
+  const form = useFormContext<ProductFormValues>();
+  const variantGroupId = form.watch("variantGroupId");
+  const [search, setSearch] = useState("");
+
+  // Products already in this variant group (siblings)
+  const linkedVariants = variantGroupId
+    ? allProducts.filter(
+      (p) => p.variantGroupId === variantGroupId && p.id !== currentProductId
+    )
+    : [];
+
+  // Products available to link: not self, not already in this group
+  const availableToLink = allProducts.filter((p) => {
+    if (p.id === currentProductId) return false;
+    if (variantGroupId && p.variantGroupId === variantGroupId) return false;
+    const name =
+      typeof p.productName === "string"
+        ? p.productName
+        : (p.productName as any)?.en || (p.productName as any)?.pt || "";
+    const q = search.toLowerCase();
+    return (
+      !q ||
+      name.toLowerCase().includes(q) ||
+      p.brand.toLowerCase().includes(q) ||
+      ((p.variantLabel ?? "")).toLowerCase().includes(q)
+    );
+  });
+
+  return (
+    <div className="space-y-8">
+      <SectionHeader
+        title="Product Variants"
+        description="Link this product to others as color/style variants (e.g. Black, White, 128GB)."
+      />
+
+      {/* Variant Label */}
+      <FormField
+        control={form.control}
+        name="variantLabel"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-sm font-medium">
+              Variant Label
+              <span className="text-neutral-500 font-normal ml-2 text-xs">
+                e.g. Black, White, 128GB
+              </span>
+            </FormLabel>
+            <FormControl>
+              <Input
+                placeholder="Black"
+                className="h-11 rounded-xl max-w-xs"
+                value={field.value ?? ""}
+                onChange={(e) => field.onChange(e.target.value || null)}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      {/* Variant Group ID */}
+      <FormField
+        control={form.control}
+        name="variantGroupId"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-sm font-medium">
+              Variant Group ID
+              <span className="text-neutral-500 font-normal ml-2 text-xs">
+                shared across all variants of the same product line
+              </span>
+            </FormLabel>
+            <FormControl>
+              <div className="flex gap-2 max-w-lg">
+                <Input
+                  placeholder="Generate or paste from another variant"
+                  className="h-11 rounded-xl font-mono text-xs"
+                  value={field.value ?? ""}
+                  onChange={(e) => field.onChange(e.target.value || null)}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="h-11 shrink-0 px-4 rounded-xl text-sm"
+                  onClick={() => {
+                    const id = nanoid();
+                    form.setValue("variantGroupId", id, { shouldDirty: true });
+                    navigator.clipboard?.writeText(id).catch(() => { });
+                    toast.success("Group ID generated & copied to clipboard!");
+                  }}
+                >
+                  Generate
+                </Button>
+                {field.value && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="h-11 shrink-0 px-3 rounded-xl text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20"
+                    onClick={() => {
+                      form.setValue("variantGroupId", null, { shouldDirty: true });
+                      form.setValue("variantLabel", null, { shouldDirty: true });
+                    }}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      {/* Currently linked variants */}
+      {linkedVariants.length > 0 && (
+        <div className="space-y-3">
+          <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            Linked Variants ({linkedVariants.length})
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {linkedVariants.map((v) => {
+              const name =
+                typeof v.productName === "string"
+                  ? v.productName
+                  : (v.productName as any)?.en || (v.productName as any)?.pt || "Unnamed";
+              const colorSeed = Math.abs(v.id.charCodeAt(0) * 37 + v.id.charCodeAt(1) * 13) % 360;
+              return (
+                <div
+                  key={v.id}
+                  className="flex items-center gap-3 p-4 rounded-2xl border-2 border-indigo-200 dark:border-indigo-800 bg-indigo-50/60 dark:bg-indigo-950/20"
+                >
+                  <div
+                    className="w-9 h-9 rounded-xl shrink-0 flex items-center justify-center text-xs font-bold text-white shadow-sm"
+                    style={{ background: `hsl(${colorSeed}, 60%, 50%)` }}
+                  >
+                    {(v.variantLabel ?? name)[0]?.toUpperCase()}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate">
+                      {v.variantLabel ?? "—"}
+                    </p>
+                    <p className="text-xs text-neutral-500 truncate">{name}</p>
+                  </div>
+                  <CheckCircle2 className="w-4 h-4 text-indigo-500 shrink-0" />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Search & quick-link */}
+      <div className="space-y-3">
+        <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          Link Another Product as a Variant
+        </p>
+        <Input
+          placeholder="Search products by name, brand, or variant label…"
+          className="h-11 rounded-xl max-w-md"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        {search && (
+          <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+            {availableToLink.length === 0 ? (
+              <p className="text-sm text-neutral-400 py-4 text-center">
+                No matching products
+              </p>
+            ) : (
+              availableToLink.slice(0, 12).map((p) => {
+                const name =
+                  typeof p.productName === "string"
+                    ? p.productName
+                    : (p.productName as any)?.en || (p.productName as any)?.pt || "Unnamed";
+                const colorSeed = Math.abs(p.id.charCodeAt(0) * 37 + p.id.charCodeAt(1) * 13) % 360;
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => {
+                      const newGroupId = variantGroupId ?? nanoid();
+                      form.setValue("variantGroupId", newGroupId, { shouldDirty: true });
+                      navigator.clipboard?.writeText(newGroupId).catch(() => { });
+                      toast.info(
+                        `Group ID "${newGroupId}" copied! Open "${name}" and paste it in its Variants tab, then save both products.`,
+                        { duration: 10000 }
+                      );
+                      setSearch("");
+                    }}
+                    className="flex items-center gap-3 p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/20 transition-all text-left w-full"
+                  >
+                    <div
+                      className="w-9 h-9 rounded-xl shrink-0 flex items-center justify-center text-xs font-bold text-white"
+                      style={{ background: `hsl(${colorSeed}, 60%, 50%)` }}
+                    >
+                      {name[0]?.toUpperCase()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">
+                        {name}
+                      </p>
+                      <p className="text-xs text-neutral-500">
+                        {p.brand}
+                        {p.variantLabel ? ` · ${p.variantLabel}` : ""}
+                        {p.variantGroupId ? " · already in a group" : ""}
+                      </p>
+                    </div>
+                    <Plus className="w-4 h-4 text-neutral-400 shrink-0" />
+                  </button>
+                );
+              })
+            )}
+          </div>
+        )}
+
+        <div className="rounded-xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-4 max-w-lg">
+          <p className="text-xs text-neutral-500 leading-relaxed">
+            <strong className="text-neutral-700 dark:text-neutral-300">How to link variants:</strong>
+            <br />
+            1. On <em>this</em> product: set a Variant Label (e.g. "Black") then click <strong>Generate</strong>.
+            <br />
+            2. Open the other variant product (e.g. "White"), paste the same Group ID, set its label, and save.
+            <br />
+            3. Both products will now show color swatches on each other's product pages.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+const CategoriesTab: React.FC<{ categoryOptions: CategoryOption[] }> = ({ categoryOptions }) => {
   const form = useFormContext<ProductFormValues>();
   const selected = form.watch("categories") ?? [];
 
-  const toggleCategory = (category: string) => {
-    const updated = selected.includes(category)
-      ? selected.filter((c) => c !== category)
-      : [...selected, category];
+  const toggleCategory = (categoryId: string) => {
+    const updated = selected.includes(categoryId)
+      ? selected.filter((c) => c !== categoryId)
+      : [...selected, categoryId];
 
     form.setValue("categories", updated, { shouldDirty: true });
   };
 
-  if (!categories?.length) {
+  if (!categoryOptions?.length) {
     return (
       <EmptyState
         icon={<Package className="w-8 h-8 text-neutral-400" />}
@@ -958,12 +1296,12 @@ const CategoriesTab: React.FC<{ categories: string[] }> = ({ categories }) => {
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {categories.map((category) => {
-          const isSelected = selected.includes(category);
+        {categoryOptions.map((cat) => {
+          const isSelected = selected.includes(cat.id);
 
           return (
             <label
-              key={category}
+              key={cat.id}
               className={clsx(
                 "relative flex items-start gap-4 p-5 rounded-2xl border transition-all duration-300 cursor-pointer group",
                 "bg-white dark:bg-neutral-900",
@@ -975,7 +1313,7 @@ const CategoriesTab: React.FC<{ categories: string[] }> = ({ categories }) => {
               {/* ShadCN Checkbox */}
               <Checkbox
                 checked={isSelected}
-                onCheckedChange={() => toggleCategory(category)}
+                onCheckedChange={() => toggleCategory(cat.id)}
                 className={clsx(
                   "data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600",
                   "transition-all duration-200"
@@ -985,7 +1323,7 @@ const CategoriesTab: React.FC<{ categories: string[] }> = ({ categories }) => {
               {/* Label */}
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-neutral-900 dark:text-neutral-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                  {category}
+                  {cat.name}
                 </p>
               </div>
 
@@ -1003,7 +1341,8 @@ const CategoriesTab: React.FC<{ categories: string[] }> = ({ categories }) => {
 
 export default function AdminProductPanel({
   initialProduct = {},
-  categories = [],
+  categoryOptions = [],
+  allProducts = [],
   isNew = false,
 }: Props) {
   const [isPending, startTransition] = useTransition();
@@ -1011,7 +1350,7 @@ export default function AdminProductPanel({
     obj: Record<string, any>
   ): Array<{ key: string; value: { en: string; pt: string } }> => {
     if (!obj || typeof obj !== "object") return [];
-  
+
     return Object.entries(obj).map(([key, value]) => {
       if (
         value &&
@@ -1026,7 +1365,7 @@ export default function AdminProductPanel({
           },
         };
       }
-  
+
       return {
         key,
         value: {
@@ -1036,7 +1375,7 @@ export default function AdminProductPanel({
       };
     });
   };
-  
+
   // Helper: Convert array format to object format for form
   const arrayToObject = (
     arr: Array<{ key: string; value: { en: string; pt: string } | string }> | undefined
@@ -1081,71 +1420,56 @@ export default function AdminProductPanel({
     general: Array.isArray(specs?.general)
       ? arrayToObject(specs.general)
       : typeof specs?.general === "object"
-      ? specs.general
-      : {},
+        ? specs.general
+        : {},
 
     technical: Array.isArray(specs?.technical)
       ? arrayToObject(specs.technical)
       : typeof specs?.technical === "object"
-      ? specs.technical
-      : {},
+        ? specs.technical
+        : {},
   };
 
-  // Extract category names - handle both string array and Category objects with multilingual names
-  const categoryNames = Array.isArray(initialProduct?.categories)
+  // Extract category IDs from the product's categories
+  const categoryIds = Array.isArray(initialProduct?.categories)
     ? initialProduct.categories.map((c: any) => {
-        if (typeof c === "string") return c;
-        // Handle Category object with multilingual name
-        if (c?.name) {
-          return typeof c.name === "string" ? c.name : (c.name?.en || c.name?.pt || "");
-        }
-        return "";
-      }).filter(Boolean)
-    : [];
-
-  // Extract category names from the categories prop (for selection)
-  const availableCategories = Array.isArray(categories)
-    ? categories.map((c: any) => {
-        if (typeof c === "string") return c;
-        // Handle Category object with multilingual name - use English as key
-        if (c?.name) {
-          return typeof c.name === "string" ? c.name : (c.name?.en || c.name?.pt || "");
-        }
-        return "";
-      }).filter(Boolean)
+      if (typeof c === "string") return c;
+      if (c?.id) return c.id;
+      return "";
+    }).filter(Boolean)
     : [];
 
   const defaultValues: ProductFormValues = {
     id: initialProduct?.id ?? undefined,
-    productName: initialProduct?.productName 
-      ? (typeof initialProduct.productName === 'string' 
-          ? { en: initialProduct.productName, pt: '' }
-          : initialProduct.productName)
+    productName: initialProduct?.productName
+      ? (typeof initialProduct.productName === 'string'
+        ? { en: initialProduct.productName, pt: '' }
+        : initialProduct.productName)
       : { en: '', pt: '' },
     brand: initialProduct?.brand ?? "",
     model: initialProduct?.model ?? "",
     subCategory: initialProduct?.subCategory
       ? (typeof initialProduct.subCategory === 'string'
-          ? { en: initialProduct.subCategory, pt: '' }
-          : initialProduct.subCategory)
+        ? { en: initialProduct.subCategory, pt: '' }
+        : initialProduct.subCategory)
       : { en: '', pt: '' },
     description: initialProduct?.description
       ? (typeof initialProduct.description === 'string'
-          ? { en: initialProduct.description, pt: '' }
-          : initialProduct.description)
+        ? { en: initialProduct.description, pt: '' }
+        : initialProduct.description)
       : { en: '', pt: '' },
 
     features: initialProduct?.features
       ? (Array.isArray(initialProduct.features)
-          ? { en: initialProduct.features, pt: [] }
-          : initialProduct.features)
+        ? { en: initialProduct.features, pt: [] }
+        : initialProduct.features)
       : { en: [], pt: [] },
     tags: initialProduct?.tags
       ? (Array.isArray(initialProduct.tags)
-          ? { en: initialProduct.tags, pt: [] }
-          : initialProduct.tags)
+        ? { en: initialProduct.tags, pt: [] }
+        : initialProduct.tags)
       : { en: [], pt: [] },
-    categories: categoryNames,
+    categories: categoryIds,
     pricing: initialProduct?.pricing ?? {
       price: 0,
       currency: "EUR",
@@ -1161,6 +1485,8 @@ export default function AdminProductPanel({
       url: img.url,
       fileId: img.fileId,
     })),
+    variantGroupId: (initialProduct as any)?.variantGroupId ?? null,
+    variantLabel: (initialProduct as any)?.variantLabel ?? null,
   };
 
   const form = useForm({
@@ -1287,7 +1613,7 @@ export default function AdminProductPanel({
                     )}
                   </Button>
                   <Tabs defaultValue="general" className="space-y-8">
-                    <TabsList className="grid w-full grid-cols-4 lg:grid-cols-7 gap-2 h-auto p-1.5 bg-neutral-100 dark:bg-neutral-900 rounded-xl">
+                    <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-2 h-auto p-1.5 bg-neutral-100 dark:bg-neutral-900 rounded-xl">
                       <TabsTrigger
                         value="general"
                         className="h-11 rounded-lg data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-800 data-[state=active]:shadow-sm transition-all"
@@ -1330,6 +1656,12 @@ export default function AdminProductPanel({
                       >
                         Tags
                       </TabsTrigger>
+                      <TabsTrigger
+                        value="variants"
+                        className="h-11 rounded-lg data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-800 data-[state=active]:shadow-sm transition-all"
+                      >
+                        Variants
+                      </TabsTrigger>
                     </TabsList>
 
                     <div className="bg-white dark:bg-neutral-900 rounded-2xl border-2 border-neutral-200 dark:border-neutral-800 p-6 sm:p-8 min-h-[400px]">
@@ -1356,11 +1688,18 @@ export default function AdminProductPanel({
                       </TabsContent>
 
                       <TabsContent value="categories" className="mt-0">
-                        <CategoriesTab categories={availableCategories} />
+                        <CategoriesTab categoryOptions={categoryOptions} />
                       </TabsContent>
 
                       <TabsContent value="tags" className="mt-0">
                         <TagsTab />
+                      </TabsContent>
+
+                      <TabsContent value="variants" className="mt-0">
+                        <VariantsTab
+                          allProducts={allProducts}
+                          currentProductId={initialProduct?.id}
+                        />
                       </TabsContent>
                     </div>
                   </Tabs>

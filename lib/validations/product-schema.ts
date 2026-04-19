@@ -41,7 +41,7 @@ export const productFormSchema = z.object({
   productName: translatedFieldSchema,
   brand: z.string().min(1, "Brand is required"),
   model: z.string().default(""),
-  subCategory: translatedFieldSchema, // Updated to TranslatedField to match database schema
+  subCategory: translatedFieldSchema,
   description: translatedFieldSchema,
   categories: z.array(z.string()).default([]),
   features: translatedArraySchema,
@@ -52,6 +52,8 @@ export const productFormSchema = z.object({
   }),
   productImages: z.array(productImageSchema).default([]),
   tags: translatedArraySchema,
+  variantGroupId: z.string().optional().nullable(),
+  variantLabel: z.string().optional().nullable(),
 });
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;

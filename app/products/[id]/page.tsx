@@ -1,4 +1,4 @@
-import { getProductByIdRaw } from "@/lib/actions/product-actions";
+import { getProductByIdRaw, getVariantsByGroupId } from "@/lib/actions/product-actions";
 import ProductPage from "./test";
 import type { Product } from "@/lib/types/product.types";
 
@@ -13,5 +13,11 @@ export default async function Product({
   const p = await getProductByIdRaw(id);
   if (!p) return <div>Product not found</div>;
 
-  return <ProductPage product={p as Product} />;
+  // Fetch sibling variants if this product is part of a variant group
+  const variantGroupId = (p as any).variantGroupId;
+  const variants = variantGroupId
+    ? await getVariantsByGroupId(variantGroupId, id)
+    : [];
+
+  return <ProductPage product={p as Product} variants={variants} />;
 }

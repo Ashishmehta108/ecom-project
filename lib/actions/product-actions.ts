@@ -15,28 +15,8 @@ import { revalidatePath } from "next/cache";
 import { resolveProductForLanguage } from "@/lib/utils/language";
 import type { Language } from "@/lib/types/product.types";
 
-async function createCategoryIfNotExists(name: string) {
-  // Query JSONB field properly - check both English and Portuguese names
-  const existing = await db.query.category.findFirst({
-    where: (c, { sql, or }) =>
-      or(
-        sql`${c.name}->>'en' = ${name}`,
-        sql`${c.name}->>'pt' = ${name}`
-      ),
-  });
-
-  if (existing) return existing;
-
-  // Create category with proper multilingual structure
-  const newCat = {
-    id: nanoid(),
-    name: { en: name, pt: name },
-    imageUrl: "default",
-  };
-
-  await db.insert(category).values(newCat);
-  return newCat;
-}
+// Categories are now passed as IDs directly - no need for name-based creation
+// This prevents duplicate categories from being created during product updates
 
 export async function getProductById(id: string, lang: Language = "en") {
   const result = await db.query.product.findFirst({
@@ -194,18 +174,18 @@ export async function createProduct(p: Partial<Product>) {
     },
     specifications: p.specifications,
     tags: tags,
+    variantGroupId: p.variantGroupId ?? null,
+    variantLabel: p.variantLabel ?? null,
   });
 
-  const categoriesToInsert = [];
-  for (const name of p.categories ?? []) {
-    categoriesToInsert.push(await createCategoryIfNotExists(name));
-  }
+  // Categories are now passed as IDs - use them directly
+  const categoryIds = (p.categories ?? []).filter(Boolean);
 
-  if (categoriesToInsert.length) {
+  if (categoryIds.length) {
     await db.insert(productCategory).values(
-      categoriesToInsert.map((c) => ({
+      categoryIds.map((categoryId: string) => ({
         productId: id,
-        categoryId: c.id,
+        categoryId,
       }))
     );
   }
@@ -262,6 +242,8 @@ export async function updateProduct(id: string, p: Partial<Product>) {
       pricing: p.pricing,
       specifications: p.specifications,
       tags: tags,
+      variantGroupId: p.variantGroupId !== undefined ? p.variantGroupId : undefined,
+      variantLabel: p.variantLabel !== undefined ? p.variantLabel : undefined,
     })
     .where(eq(product.id, id));
 
@@ -271,11 +253,8 @@ export async function updateProduct(id: string, p: Partial<Product>) {
 
   const existingIds = new Set(existingCategoryLinks.map((c) => c.categoryId));
 
-  const incomingCats = [];
-  for (const name of p.categories ?? []) {
-    incomingCats.push(await createCategoryIfNotExists(name));
-  }
-  const incomingIds = new Set(incomingCats.map((c) => c.id));
+  // Categories are now passed as IDs - use them directly
+  const incomingIds = new Set((p.categories ?? []).filter(Boolean));
 
   const toAdd = [...incomingIds].filter((cid) => !existingIds.has(cid));
   const toRemove = [...existingIds].filter((cid) => !incomingIds.has(cid));
@@ -380,4 +359,32 @@ export async function deleteProduct(id: string) {
   revalidatePath("/admin/products");
   revalidatePath(`/admin/products/${id}`);
   return { success: true };
+}
+
+// Get all sibling variants in the same variant group (excluding current product)
+export async function getVariantsByGroupId(groupId: string, excludeId?: string) {
+  const rows = await db.query.product.findMany({
+    where: (p, { eq: eqFn, and: andFn, ne }) =>
+      excludeId
+        ? andFn(eqFn(p.variantGroupId, groupId), ne(p.id, excludeId))
+        : eqFn(p.variantGroupId, groupId),
+    with: {
+      productImages: true,
+    },
+  });
+  return rows;
+}
+
+// Lightweight list for admin variant-linking dropdown
+export async function getAllProductsBasic() {
+  const rows = await db
+    .select({
+      id: product.id,
+      productName: product.productName,
+      brand: product.brand,
+      variantGroupId: product.variantGroupId,
+      variantLabel: product.variantLabel,
+    })
+    .from(product);
+  return rows;
 }

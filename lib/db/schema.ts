@@ -124,6 +124,11 @@ const product = pgTable("product", {
     .notNull(),
 
   tags: jsonb("tags").$type<{ en: string[]; pt: string[] }>().notNull(),
+
+  // Variant grouping: products sharing the same variantGroupId are variants of each other
+  variantGroupId: text("variant_group_id"),
+  variantLabel: text("variant_label"), // e.g. "Black", "White", "128GB"
+
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
