@@ -9,19 +9,29 @@ import {
   Package,
   ShoppingCart,
   Users,
-  Settings,
   Tag,
   CreditCard,
-  ChevronLeft,
-  Store,
   UserSearch,
-  Menu,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Store,
 } from "lucide-react";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+
+const routes = [
+  { name: "Dashboard",             icon: LayoutDashboard, href: "/admin" },
+  { name: "Orders",                icon: ShoppingCart,    href: "/admin/orders" },
+  { name: "Products",              icon: Package,         href: "/admin/products" },
+  { name: "Appointments",          icon: UserSearch,      href: "/admin/appointment" },
+  { name: "Customers",             icon: Users,           href: "/admin/users" },
+  { name: "Categories",            icon: Tag,             href: "/admin/categories" },
+  { name: "Payments",              icon: CreditCard,      href: "/admin/payments" },
+  { name: "Customer Orders",       icon: ShoppingCart,    href: "/admin/orders/adminCustomerOrders" },
+  { name: "Buy for Customer",      icon: Store,           href: "/admin/customers/order" },
+];
 
 export default function Sidebar() {
   const [open, setOpen] = useState(true);
@@ -32,96 +42,107 @@ export default function Sidebar() {
 
   const user = data?.user;
 
-  const routes = [
-    { name: "Dashboard", icon: LayoutDashboard, href: "/admin" },
-    { name: "Orders", icon: ShoppingCart, href: "/admin/orders" },
-    { name: "Products", icon: Package, href: "/admin/products" },
-    { name: "Appointment", icon: UserSearch, href: "/admin/appointment" },
-    { name: "Customers", icon: Users, href: "/admin/users" },
-    { name: "Categories", icon: Tag, href: "/admin/categories" },
-    { name: "Payments", icon: CreditCard, href: "/admin/payments" },
-    {
-      name: "Admin Customer Orders",
-      icon: ShoppingCart,
-      href: "/admin/orders/adminCustomerOrders",
-    },
-    {
-      name: "Buy for customer",
-      icon: ShoppingCart,
-      href: "/admin/customers/order",
-    },
-    
-  ];
-
   const isActive = (href: string) => {
-    // Exact match for dashboard
     if (href === "/admin") return pathname === href;
-    
-    // For "Orders" - only match /admin/orders exactly or /admin/orders but NOT sub-routes like /admin/orders/adminCustomerOrders
     if (href === "/admin/orders") return pathname === "/admin/orders";
-    
-    // For other routes, match exact or sub-routes
     return pathname === href || pathname.startsWith(href + "/");
   };
 
   return (
     <aside
       className={cn(
-        "sticky left-0 top-0 z-40 h-screen border-r border-neutral-200 bg-white transition-all duration-300 ease-in-out",
-        open ? "w-64" : "w-20"
+        "relative flex flex-col h-screen border-r border-neutral-100 dark:border-neutral-800",
+        "bg-white/95 dark:bg-neutral-950/95 backdrop-blur-sm",
+        "transition-[width] duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
+        "overflow-hidden shrink-0 z-40",
+        open ? "w-[220px]" : "w-[64px]"
       )}
     >
-      {/* HEADER WITH TOGGLE */}
-      <div className="relative flex items-center p-4 h-20 border-b border-neutral-200">
-        {/* Sidebar toggle button replaces the logo */}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setOpen(!open)}
-          className="h-9 w-9  text-neutral-700 hover:bg-neutral-100"
+      {/* ── HEADER ── */}
+      <div className="flex items-center gap-3 px-3 h-16 border-b border-neutral-100 dark:border-neutral-800 shrink-0">
+        {/* Toggle */}
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className={cn(
+            "flex items-center justify-center w-9 h-9 rounded-xl shrink-0",
+            "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200",
+            "hover:bg-neutral-100 dark:hover:bg-neutral-800",
+            "transition-colors duration-150"
+          )}
+          aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
         >
-          <Menu className={cn("h-5 w-5")} />
-        </Button>
+          {open
+            ? <PanelLeftClose className="w-4.5 h-4.5" strokeWidth={1.75} />
+            : <PanelLeftOpen  className="w-4.5 h-4.5" strokeWidth={1.75} />}
+        </button>
 
-        {/* Title when expanded */}
-        {open && (
-          <h1 className="ml-3 text-xl font-semibold tracking-tight text-neutral-900">
-            Admin Panel
-          </h1>
-        )}
+        {/* Logo text — fades + shrinks instead of mounting/unmounting */}
+        <span
+          className={cn(
+            "font-semibold text-[15px] tracking-tight text-neutral-900 dark:text-neutral-100 whitespace-nowrap",
+            "transition-all duration-200 origin-left",
+            open ? "opacity-100 max-w-[160px]" : "opacity-0 max-w-0 pointer-events-none"
+          )}
+        >
+          Admin Panel
+        </span>
       </div>
 
-      {/* NAVIGATION */}
-      <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-9rem)]">
+      {/* ── NAVIGATION ── */}
+      <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-y-auto overflow-x-hidden">
         {routes.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href);
 
           return (
-            <Link key={item.name} href={item.href}>
+            <Link key={item.name} href={item.href} title={!open ? item.name : undefined}>
               <div
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative text-sm",
+                  "group relative flex items-center gap-3 px-2.5 py-2.5 rounded-xl text-sm",
+                  "transition-all duration-150 cursor-pointer select-none",
                   active
-                    ? "bg-indigo-50 text-indigo-600 font-medium"
-                    : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
+                    ? "bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-medium"
+                    : "text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800/70 hover:text-neutral-800 dark:hover:text-neutral-200"
                 )}
               >
-                {/* Active indicator */}
+                {/* Active bar */}
                 {active && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-indigo-600 rounded-r-full" />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-indigo-500 rounded-r-full transition-all" />
                 )}
 
-                <Icon className="w-5 h-5 flex-shrink-0" />
+                {/* Icon */}
+                <Icon
+                  className={cn(
+                    "shrink-0 transition-colors duration-150",
+                    active ? "w-[18px] h-[18px] text-indigo-600 dark:text-indigo-400" : "w-[18px] h-[18px]"
+                  )}
+                  strokeWidth={active ? 2.25 : 1.75}
+                />
 
-                {/* Show text only when open */}
-                {open && <span className="truncate">{item.name}</span>}
+                {/* Label — CSS transition, no mount/unmount */}
+                <span
+                  className={cn(
+                    "truncate leading-none transition-all duration-200 whitespace-nowrap",
+                    open ? "opacity-100 max-w-[160px]" : "opacity-0 max-w-0 pointer-events-none"
+                  )}
+                >
+                  {item.name}
+                </span>
 
-                {/* Tooltip when collapsed */}
+                {/* Tooltip on collapsed */}
                 {!open && (
-                  <div className="absolute left-full ml-2 px-2 py-1 bg-neutral-200 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible whitespace-nowrap shadow-md">
+                  <span
+                    className={cn(
+                      "absolute left-full ml-2.5 px-2.5 py-1.5 z-50",
+                      "bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900",
+                      "text-[11px] font-medium rounded-lg whitespace-nowrap shadow-lg",
+                      "invisible opacity-0 -translate-x-1",
+                      "group-hover:visible group-hover:opacity-100 group-hover:translate-x-0",
+                      "transition-all duration-150 pointer-events-none"
+                    )}
+                  >
                     {item.name}
-                  </div>
+                  </span>
                 )}
               </div>
             </Link>
@@ -129,23 +150,36 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* FOOTER USER CARD */}
-      {open && (
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-neutral-200 bg-white">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-neutral-50">
-            <div className="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center font-medium">
-              {user?.name?.charAt(0)?.toUpperCase() ?? "A"}
-            </div>
+      {/* ── FOOTER USER CARD ── */}
+      <div className="shrink-0 px-2 pb-3 border-t border-neutral-100 dark:border-neutral-800 pt-2">
+        <div
+          className={cn(
+            "flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl",
+            "bg-neutral-50 dark:bg-neutral-900/60",
+            "transition-all duration-300"
+          )}
+        >
+          {/* Avatar */}
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-white flex items-center justify-center text-sm font-semibold shrink-0 shadow-sm">
+            {user?.name?.charAt(0)?.toUpperCase() ?? "A"}
+          </div>
 
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-neutral-900 truncate">
-                {user?.name ?? "Admin User"}
-              </p>
-              <p className="text-xs text-neutral-500 truncate">{user?.email}</p>
-            </div>
+          {/* Info — CSS transition */}
+          <div
+            className={cn(
+              "min-w-0 transition-all duration-200",
+              open ? "opacity-100 max-w-[160px]" : "opacity-0 max-w-0 pointer-events-none overflow-hidden"
+            )}
+          >
+            <p className="text-[13px] font-medium text-neutral-900 dark:text-neutral-100 truncate leading-snug">
+              {user?.name ?? "Admin"}
+            </p>
+            <p className="text-[11px] text-neutral-400 dark:text-neutral-500 truncate leading-snug">
+              {user?.email}
+            </p>
           </div>
         </div>
-      )}
+      </div>
     </aside>
   );
 }

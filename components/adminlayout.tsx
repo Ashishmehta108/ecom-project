@@ -29,13 +29,13 @@ export default function AdminLayout({
     <div className="flex min-h-screen bg-background">
       <Sidebar />
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         <Topbar />
-        <main className="p-6">{children}
-
-          <div id="dnd-portal" style={{ position: 'fixed', zIndex: 9999, top: 0, left: 0 }} />
-        </main>
+        <main className="p-6 flex-1">{children}</main>
       </div>
+
+      {/* Portal root for DND drag layer — must be outside overflow containers */}
+      <div id="dnd-portal" style={{ position: "fixed", zIndex: 9999, top: 0, left: 0, pointerEvents: "none" }} />
     </div>
   );
 }
