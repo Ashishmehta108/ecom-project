@@ -3,12 +3,14 @@ export function orderConfirmationTemplate({
   orderId,
   orderDate,
   total,
+  shippingFee,
   items,
 }: {
   customerName: string;
   orderId: string;
   orderDate: string;
   total: string;
+  shippingFee: string;
   items: {
     title: string;
     quantity: number;
@@ -128,7 +130,7 @@ export function orderConfirmationTemplate({
                       <span style="font-size: 14px; color: #64748b;">Subtotal</span>
                     </td>
                     <td width="90" align="right" style="padding-bottom: 8px;">
-                      <span style="font-size: 14px; color: #475569;">€${total}</span>
+                      <span style="font-size: 14px; color: #475569;">€${(Number(total) - Number(shippingFee)).toFixed(2)}</span>
                     </td>
                   </tr>
                   <tr>
@@ -136,7 +138,7 @@ export function orderConfirmationTemplate({
                       <span style="font-size: 14px; color: #64748b;">Shipping</span>
                     </td>
                     <td width="90" align="right" style="padding-bottom: 16px;">
-                      <span style="font-size: 14px; color: #475569;">Free</span>
+                      <span style="font-size: 14px; color: #475569;">€${shippingFee}</span>
                     </td>
                   </tr>
                   <tr>

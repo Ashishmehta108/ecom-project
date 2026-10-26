@@ -6,6 +6,7 @@ import TechbarCTA from "@/components/CTA/TechbarCTA";
 import TopEarbudsSectionServer from "@/components/home/TopEarbudsSectionServer";
 import TopSmartphonesSection from "@/components/home/TopSmartphoneServer";
 import KlarnaBanner from "@/components/topbanner";
+import AllProductsSectionServer from "@/components/home/AllProductsSectionServer";
 
 export default async function App() {
   const categories = await getAllCategories();
@@ -16,6 +17,7 @@ export default async function App() {
         <KlarnaBanner/>
         <ImageSlider />
         <TopCategoriesSection categories={categories} />
+        <AllProductsSectionServer />
         <TopEarbudsSectionServer />
         {/* <TopSmartphonesSection /> */}
         <TechbarCTA />

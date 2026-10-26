@@ -8,6 +8,7 @@ import { Suspense, useState } from "react";
 import { Address } from "@/lib/types/address.types";
 import { CartItem } from "@/lib/types/cart.types";
 import { useLanguage } from "@/app/context/languageContext";
+import { SHIPPING_FEE } from "@/lib/shipping";
 
 // 🌎 Text Localization
 const t = {
@@ -18,7 +19,6 @@ const t = {
     orderSummary: "Order Summary",
     subtotal: "Subtotal",
     shipping: "Shipping",
-    free: "Free",
     total: "Total",
     pay: "Proceed to Secure Stripe Payment",
     redirecting: "Redirecting...",
@@ -31,7 +31,6 @@ const t = {
     orderSummary: "Resumo do Pedido",
     subtotal: "Subtotal",
     shipping: "Frete",
-    free: "Grátis",
     total: "Total",
     pay: "Ir para Pagamento Seguro com Stripe",
     redirecting: "Redirecionando...",
@@ -176,11 +175,11 @@ export function PaymentPage({
               </div>
               <div className="flex justify-between">
                 <span>{text.shipping}:</span>
-                <span>{text.free}</span>
+                <span>€{SHIPPING_FEE.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-lg sm:text-xl font-bold mt-2">
                 <span>{text.total}:</span>
-                <span>€{total.toFixed(2)}</span>
+                <span>€{(total + SHIPPING_FEE).toFixed(2)}</span>
               </div>
             </div>
           </CardContent>
