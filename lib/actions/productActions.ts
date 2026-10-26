@@ -50,6 +50,7 @@ type FilterParams = {
   category?: string;
   sort?: string;
   search?: string;
+  name?: string;
 };
 
 async function fetchProductsFromDB() {
@@ -69,7 +70,7 @@ async function fetchProductsFromDB() {
 export async function filterProducts(
   params: FilterParams & { lang?: Language }
 ) {
-  const { category, sort = "featured", search, lang = "en" } = params;
+  const { category, sort = "featured", search, name, lang = "en" } = params;
 
   let products = await fetchProductsFromDB();
 
@@ -79,6 +80,17 @@ export async function filterProducts(
     original: product,
     resolved: resolveProductForLanguage(product, lang),
   }));
+
+  // Filter by product name/model only (used by homepage hero links)
+  if (name && name.trim()) {
+    const nameLower = name.trim().toLowerCase();
+    productsWithResolved = productsWithResolved.filter((item) =>
+      [item.resolved.productName, item.resolved.model]
+        .join(" ")
+        .toLowerCase()
+        .includes(nameLower)
+    );
+  }
 
   // Filter by search FIRST (before counting categories)
   if (search && search.trim()) {

@@ -8,88 +8,114 @@ const AUTOPLAY_DURATION = 3000;
 
 export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
   const { locale } = useLanguage();
+  const imageStyles =
+    "h-[130px] xs:h-[150px] sm:h-[190px] md:h-[230px] lg:h-[260px] w-auto max-w-full";
+  const heroMask =
+    "linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%)";
+  const blackBg = "#000000";
+  const darkBg = "linear-gradient(100deg, #1f0711 0%, #3a0e1f 45%, #51172d 100%)";
+  const lightBg = "linear-gradient(100deg, #ffffff 0%, #f4f7fb 100%)";
+
   slides =
     locale === "pt"
       ? [
           {
-            bgColor: "bg-zinc-950",
-            subtitle: "Tecnologia Premium",
-            title: "Descubra os Novos iPhones",
-            discount: "Design icônico. Performance incomparável.",
-            shortText:
-              "Explore a nova geração de iPhones e acessórios premium criados para produtividade, estilo e desempenho diário.",
-            buttonText: "Ver iPhones",
-            buttonLink: "/products?category=INALZ1POuP-Wpgw1V5zxN",
-            image: "/iphones.png",
-            imageStyles:
-              "w-full max-w-[120px] xs:max-w-[150px] sm:max-w-[220px] md:max-w-[360px] lg:max-w-[430px]",
+            bgStyle: blackBg,
+            title: "iPhone 18 Pro Max",
+            discount: "A partir de €1749",
+            buttonText: "Comprar",
+            buttonLink: "/products?name=iphone",
+            image: "/hero-iphone-18-pro-colors.webp",
+            fade: true,
+            imageStyles,
+          },
+          {
+            bgStyle: blackBg,
+            title: "iPhone 18 Pro",
+            discount: "A partir de €1459",
+            buttonText: "Comprar",
+            buttonLink: "/products?name=iphone",
+            image: "/hero-iphone-18-pro-colors.webp",
+            fade: true,
+            imageStyles,
+          },
+          {
+            bgStyle: lightBg,
+            light: true,
+            title: "iPhone Duo",
+            discount: "Disponível em breve",
+            buttonLink: "/products?name=iphone",
+            image: "/hero-iphone-duo.webp",
+            imageStyles,
+          },
+          {
+            bgStyle: lightBg,
+            light: true,
+            title: "AirPods 5",
+            discount: "Já disponível",
+            buttonText: "Comprar agora",
+            buttonLink: "/products?name=airpods",
+            image: "/hero-airpods-5.webp",
+            imageStyles,
           },
           {
             bgColor: "bg-zinc-950",
-            subtitle: "Áudio Imersivo",
-            title: "Auscultadores Premium",
-            discount: "Oferta por tempo limitado",
-            shortText:
-              "Som cristalino, graves profundos e conforto máximo para ouvir o dia todo.",
-            buttonText: "Ver Detalhes",
-            buttonLink: "/products?category=mOTdRnd4ve0dp-1qcmUGB",
-            image: "/promo2.png",
-            imageStyles:
-              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[400px]",
-          },
-          {
-            bgColor: "bg-zinc-950",
-            subtitle: "Coleção Nova",
             title: "Novidades da Estação",
-            discount: "Oferta exclusiva",
-            shortText:
-              "Designs modernos pensados para conforto, elegância e uso diário.",
             buttonText: "Relógios",
-            buttonLink: "/products?category=Zg-M3CrHIORqVsDa4vk18",
+            buttonLink: "/products?category=BRlebewlxBNfqtVulEwmG",
             image: "/promo1.png",
             imageStyles:
-              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[300px]",
+              "w-full h-auto max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[300px]",
           },
         ]
       : [
           {
-            bgColor: "bg-zinc-950",
-            subtitle: "Premium Technology",
-            title: "Explore the Latest iPhones",
-            discount: "Iconic design. Unmatched performance.",
-            shortText:
-              "Discover the next generation of iPhones and premium accessories built for productivity, style, and everyday power.",
-            buttonText: "Shop iPhones",
-            buttonLink: "/products?category=INALZ1POuP-Wpgw1V5zxN",
-            image: "/iphones.png",
-            imageStyles:
-              "w-full max-w-[120px] xs:max-w-[150px] sm:max-w-[220px] md:max-w-[360px] lg:max-w-[430px]",
+            bgStyle: blackBg,
+            title: "iPhone 18 Pro Max",
+            discount: "From €1749",
+            buttonText: "Buy",
+            buttonLink: "/products?name=iphone",
+            image: "/hero-iphone-18-pro-colors.webp",
+            fade: true,
+            imageStyles,
+          },
+          {
+            bgStyle: blackBg,
+            title: "iPhone 18 Pro",
+            discount: "From €1459",
+            buttonText: "Buy",
+            buttonLink: "/products?name=iphone",
+            image: "/hero-iphone-18-pro-colors.webp",
+            fade: true,
+            imageStyles,
+          },
+          {
+            bgStyle: lightBg,
+            light: true,
+            title: "iPhone Duo",
+            discount: "Available Soon",
+            buttonLink: "/products?name=iphone",
+            image: "/hero-iphone-duo.webp",
+            imageStyles,
+          },
+          {
+            bgStyle: lightBg,
+            light: true,
+            title: "AirPods 5",
+            discount: "Now Available",
+            buttonText: "Shop Now",
+            buttonLink: "/products?name=airpods",
+            image: "/hero-airpods-5.webp",
+            imageStyles,
           },
           {
             bgColor: "bg-zinc-950",
-            subtitle: "Immersive Audio",
-            title: "Premium Headphones",
-            discount: "Limited Time Offer",
-            shortText:
-              "Experience crystal-clear sound, deep bass, and all-day comfort.",
-            buttonText: "View Details",
-            buttonLink: "/products?category=mOTdRnd4ve0dp-1qcmUGB",
-            image: "/promo2.png",
-            imageStyles:
-              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[400px]",
-          },
-          {
-            bgColor: "bg-zinc-950",
-            subtitle: "New Collection",
             title: "Fresh Arrivals",
-            discount: "Exclusive Deal",
-            shortText:
-              "Modern designs crafted for comfort, elegance, and everyday wear.",
             buttonText: "Watches",
-            buttonLink: "/products?category=Zg-M3CrHIORqVsDa4vk18",
+            buttonLink: "/products?category=BRlebewlxBNfqtVulEwmG",
             image: "/promo1.png",
             imageStyles:
-              "w-full max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[320px] lg:max-w-[300px]",
+              "w-full h-auto max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[300px]",
           },
         ];
 
@@ -106,6 +132,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
   const isInteractingRef = useRef(false);
 
   const totalSlides = slides?.length ?? 0;
+  const isLight = !!slides?.[activeIndex]?.light;
   const hasMultipleSlides = totalSlides > 1;
 
   const setProgressWidth = (percent: number) => {
@@ -293,10 +320,15 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
         <div
           className={`
             relative overflow-hidden  shadow-2xl
-            min-h-[280px] sm:min-h-[350px] md:min-h-[420px] lg:min-h-[500px]
+            min-h-[190px] sm:min-h-[230px] md:min-h-[270px] lg:min-h-[300px]
             transition-colors duration-700 ease-out
             ${slides[activeIndex]?.bgColor || "bg-[#1a1d2e]"}
           `}
+          style={
+            slides[activeIndex]?.bgStyle
+              ? { background: slides[activeIndex].bgStyle }
+              : undefined
+          }
         >
           <div
             className="flex h-full transition-transform duration-700 ease-out "
@@ -311,11 +343,20 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
               return (
                 <div
                   key={index}
-                  className="w-full  py-10 sm:max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto flex-shrink-0"
+                  className="relative w-full  py-3 sm:max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto flex-shrink-0"
                   style={{ width: `${100 / totalSlides}%` }}
                   aria-hidden={!isActive}
                 >
-                  <div className="h-full flex  sm:flex-row items-center justify-between px-4 sm:px-8 md:px-12 lg:px-16 py-4 sm:py-6 md:py-8 gap-4 sm:gap-6 md:gap-8  w-full g:gap-12">
+                  {slide.buttonLink && (
+                    <Link
+                      href={slide.buttonLink}
+                      aria-label={slide.title}
+                      tabIndex={isActive ? 0 : -1}
+                      onClick={() => resetProgress(true)}
+                      className="absolute inset-0 z-20"
+                    />
+                  )}
+                  <div className="h-full flex  sm:flex-row items-center justify-between px-6 sm:px-8 md:px-12 lg:px-16 py-2 sm:py-3 md:py-4 gap-4 sm:gap-6 md:gap-8  w-full g:gap-12">
                     {/* Content Section with Fade-in Animation */}
                     <div
                       className={`
@@ -352,17 +393,18 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
                         )}
 
                         <h2
-                          className="
+                          className={`
   text-lg sm:text-3xl md:text-4xl lg:text-5xl
   font-semibold sm:font-black
   leading-tight
   tracking-tight
-  text-white
-"
+  ${slide.light ? "text-neutral-900" : "text-white"}
+`}
                         >
                           {slide.title}
                         </h2>
 
+                        {slide.shortText && (
                         <p
                           className="
   hidden sm:block
@@ -374,17 +416,20 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
                         >
                           {slide.shortText}
                         </p>
+                        )}
 
+                        {slide.discount && (
                         <p
-                          className="
+                          className={`
   text-xs sm:text-xl
   font-medium sm:font-bold
-  text-neutral-400
+  ${slide.light ? "text-neutral-600" : "text-neutral-300"}
   mt-1.5
-"
+`}
                         >
                           {slide.discount}
                         </p>
+                        )}
 
                         {slide.buttonText && (
                           <Link
@@ -398,12 +443,13 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
                         font-medium sm:font-semibold
                         bg-indigo-600/90
                         text-white
+                        whitespace-nowrap
                         rounded-full
                         shadow-sm sm:shadow-lg
                         transition
                         hover:bg-indigo-500
                         w-full sm:w-auto
-                        max-w-[110px] sm:max-w-[180px]
+                        max-w-[130px] sm:max-w-[200px]
                         mx-auto sm:mx-0
                       "
                           >
@@ -433,13 +479,21 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
                           alt={slide.title}
                           className={`
                             ${slide.imageStyles}
-                            w-full h-auto
-                            object-contain
-                            drop-shadow-2xl
+                            object-contain drop-shadow-2xl
                             select-none pointer-events-none
                             transition-transform duration-500 ease-out
-                            hover:scale-110 hover:rotate-2
                           `}
+                          style={
+                            slide.fade
+                              ? {
+                                  WebkitMaskImage: heroMask,
+                                  maskImage: heroMask,
+                                  WebkitMaskComposite: "source-in",
+                                  maskComposite: "intersect",
+                                }
+                              : undefined
+                          }
+
                         />
                       </div>
                     </div>
@@ -457,41 +511,39 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
           <button
             onClick={goToPrev}
             disabled={isTransitioning}
-            className="
-              hidden md:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 
-              w-12 h-12 lg:w-14 lg:h-14 rounded-full 
-              bg-white/10 hover:bg-white/20 backdrop-blur-md text-white 
+            className={`
+              flex absolute left-0 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 
+              w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 sm:rounded-full 
+              ${isLight ? "text-neutral-900 sm:bg-black/5 sm:hover:bg-black/10" : "text-white sm:bg-white/10 sm:hover:bg-white/20"} sm:backdrop-blur-md 
               items-center justify-center 
               transition-all duration-300 ease-out
-              opacity-0 group-hover:opacity-100 
               hover:scale-110 active:scale-95 
               focus:outline-none focus:ring-2 focus:ring-white/70 focus:opacity-100
               disabled:opacity-50 disabled:cursor-not-allowed
-              z-20 cursor-pointer
-            "
+              z-30 cursor-pointer
+            `}
             aria-label="Previous slide"
           >
-            <ChevronLeft className="w-6 h-6 lg:w-7 lg:h-7" />
+            <ChevronLeft className="w-4 h-4 md:w-6 md:h-6 lg:w-7 lg:h-7" />
           </button>
 
           <button
             onClick={goToNext}
             disabled={isTransitioning}
-            className="
-              hidden md:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 
-              w-12 h-12 lg:w-14 lg:h-14 rounded-full 
-              bg-white/10 hover:bg-white/20 backdrop-blur-md text-white 
+            className={`
+              flex absolute right-0 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 
+              w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 sm:rounded-full 
+              ${isLight ? "text-neutral-900 sm:bg-black/5 sm:hover:bg-black/10" : "text-white sm:bg-white/10 sm:hover:bg-white/20"} sm:backdrop-blur-md 
               items-center justify-center 
               transition-all duration-300 ease-out
-              opacity-0 group-hover:opacity-100 
               hover:scale-110 active:scale-95 
               focus:outline-none focus:ring-2 focus:ring-white/70 focus:opacity-100
               disabled:opacity-50 disabled:cursor-not-allowed
-              z-20 cursor-pointer
-            "
+              z-30 cursor-pointer
+            `}
             aria-label="Next slide"
           >
-            <ChevronRight className="w-6 h-6 lg:w-7 lg:h-7" />
+            <ChevronRight className="w-4 h-4 md:w-6 md:h-6 lg:w-7 lg:h-7" />
           </button>
         </>
       )}
@@ -499,7 +551,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
       {/* Dot Indicators with Smooth Animation */}
       {hasMultipleSlides && (
         <div
-          className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex justify-center items-center gap-2 z-20"
+          className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex justify-center items-center gap-2 z-30"
           role="tablist"
           aria-label="Slide navigation"
         >
@@ -516,7 +568,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
                 ${
                   index === activeIndex
                     ? "w-8 sm:w-10 bg-indigo-400 shadow-lg"
-                    : "w-2 sm:w-2.5 bg-white/40 hover:bg-white/70 hover:scale-125"
+                    : `w-2 sm:w-2.5 hover:scale-125 ${isLight ? "bg-black/25 hover:bg-black/50" : "bg-white/40 hover:bg-white/70"}`
                 }
               `}
               aria-label={`Go to slide ${index + 1}`}
