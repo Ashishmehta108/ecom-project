@@ -1,24 +1,15 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ProductCard } from "@/components/products/ProductCard";
 import { LayoutGrid, List } from "lucide-react";
 
 export default function ProductsListWrapper({ products, userId, admin }: any) {
   const [view, setView] = useState<"grid" | "list">("grid");
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 640) setView("list");
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   return (
     <div className="w-full">
       {/* Toggle Controls */}
-      <div className="hidden sm:flex justify-end mb-6">
+      <div className="flex justify-end mb-6">
         <div className="inline-flex items-center gap-0.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 p-1">
           <button
             onClick={() => setView("grid")}

@@ -105,8 +105,10 @@ export const getEarbuds = async (lang: Language = "en") => {
                     andFn(
                       eqFn(category.id, productCategory.categoryId),
                       or(
-                        sql`${category.name}->>'en' = 'Earphones'`,
-                        sql`${category.name}->>'pt' = 'Fones de ouvido'`
+                        sql`(${category.name} #>> '{}')::jsonb ->> 'en' = 'Earphones'`,
+                        sql`(${category.name} #>> '{}')::jsonb ->> 'pt' = 'Fones de ouvido'`,
+                        sql`(${category.name} #>> '{}')::jsonb ->> 'en' = 'HeadPhones'`,
+                        sql`(${category.name} #>> '{}')::jsonb ->> 'pt' = 'Auscultadores'`
                       )
                     )
                   )

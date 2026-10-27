@@ -10,6 +10,7 @@ type SearchParams = {
   category?: string;
   sort?: string;
   search?: string;
+  name?: string;
   lang?: string;
 };
 
@@ -23,6 +24,7 @@ export default async function ProductPage({
   const session = await getUserSession();
 
   const search = params.search ?? undefined;
+  const name = params.name ?? undefined;
   const sort = params.sort ?? "featured";
   const category = params.category ?? "all";
   const lang = (params.lang === "pt" ? "pt" : "en") as "en" | "pt";
@@ -31,6 +33,7 @@ export default async function ProductPage({
   // This lets us check if the selected category is a real sub-category or a parent
   const { products: allProducts, categories } = await filterProducts({
     search,
+    name,
     sort,
     lang,
   });
@@ -47,6 +50,7 @@ export default async function ProductPage({
           await filterProducts({
             category,
             search,
+            name,
             sort,
             lang,
           })
@@ -77,7 +81,7 @@ export default async function ProductPage({
               </p>
             </div>
 
-            {search && (
+            {(search || name) && (
               <Link
                 href="/products"
                 className="text-sm text-neutral-500 underline underline-offset-4 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"

@@ -80,7 +80,7 @@ async function createOrder(
     status: "successful",
     subtotal: ((session.amount_subtotal ?? 0) / 100).toString(),
     tax: "0",
-    shippingFee: "0",
+    shippingFee: ((session.total_details?.amount_shipping ?? 0) / 100).toFixed(2),
     total: ((session.amount_total ?? 0) / 100).toString(),
     currency: (session.currency ?? "EUR").toUpperCase(),
     shippingAddressId: session.metadata?.addressId ?? null,
@@ -394,6 +394,7 @@ async function handleUserCheckoutCompleted(
         orderId,
         orderDate: new Date().toLocaleDateString(),
         total: ((session.amount_total ?? 0) / 100).toString(),
+        shippingFee: ((session.total_details?.amount_shipping ?? 0) / 100).toFixed(2),
         items: purchasedItems.map((i) => {
           const itemName =
             typeof i.name === "object" && i.name !== null

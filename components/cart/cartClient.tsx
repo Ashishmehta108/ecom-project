@@ -10,6 +10,7 @@ import {
 import { syncCart } from "@/lib/syncCart";
 import EmptyCart from "./EmptyCart";
 import CartSkeleton from "./CartSkeleton";
+import { SHIPPING_FEE } from "@/lib/shipping";
 import { Trash2, AlertCircle, ShoppingBag, Minus, Plus } from "lucide-react";
 import { useLanguage } from "@/app/context/languageContext";
 
@@ -52,7 +53,6 @@ export default function CartPageClient({
     orderSummary: locale === "pt" ? "Resumo da Encomenda" : "Order Summary",
     subtotal: locale === "pt" ? "Subtotal" : "Subtotal",
     shipping: locale === "pt" ? "Envio" : "Shipping",
-    free: locale === "pt" ? "Grátis" : "Free",
     total: locale === "pt" ? "Total" : "Total",
     checkout: locale === "pt" ? "Finalizar Compra" : "Proceed to Checkout",
     clearCart: locale === "pt" ? "Limpar Carrinho" : "Clear Cart",
@@ -132,6 +132,7 @@ export default function CartPageClient({
       items.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0),
     [items]
   );
+  const grandTotal = total + SHIPPING_FEE;
 
   if (loading) return <CartSkeleton />;
   if (items.length === 0) return <EmptyCart />;
@@ -301,8 +302,8 @@ export default function CartPageClient({
                   <span className="text-neutral-500 dark:text-neutral-400">
                     {t.shipping}
                   </span>
-                  <span className="text-emerald-600 dark:text-emerald-400 text-xs font-medium tracking-wide uppercase">
-                    {t.free}
+                  <span className="font-medium text-neutral-900 dark:text-neutral-100">
+                    €{SHIPPING_FEE.toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -315,8 +316,9 @@ export default function CartPageClient({
                   </span>
                   <span className="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
                     €
-                    {total.toLocaleString(
-                      locale === "pt" ? "pt-PT" : "en-US"
+                    {grandTotal.toLocaleString(
+                      locale === "pt" ? "pt-PT" : "en-US",
+                      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
                     )}
                   </span>
                 </div>

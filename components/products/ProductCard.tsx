@@ -545,19 +545,6 @@ export function ProductCard({
               </h3>
             </Link>
 
-            {!adminViewOnly && features.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-1">
-                {features.slice(0, 2).map((f, i) => (
-                  <span
-                    key={i}
-                    className="rounded-md border border-neutral-150 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/60 px-1.5 py-0.5 text-[10px] font-medium text-neutral-500 dark:text-neutral-500"
-                  >
-                    {f}
-                  </span>
-                ))}
-              </div>
-            )}
-
             {/* Variant dots */}
             {!adminViewOnly && (
               <div className="mt-2">

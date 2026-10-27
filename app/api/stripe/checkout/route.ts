@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripeClient as stripe } from "@/lib/stripe";
 import { getUserSession } from "@/server";
 import { db } from "@/lib/db";
+import { SHIPPING_FEE_CENTS } from "@/lib/shipping";
 
 export async function POST(req: NextRequest) {
   try {
@@ -155,6 +156,15 @@ export async function POST(req: NextRequest) {
         // "paypal",
       ],
       line_items,
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: "fixed_amount",
+            display_name: "Shipping",
+            fixed_amount: { amount: SHIPPING_FEE_CENTS, currency: "eur" },
+          },
+        },
+      ],
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/cancel`,
       metadata: {
