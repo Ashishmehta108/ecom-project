@@ -21,18 +21,8 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
       ? [
           {
             bgStyle: blackBg,
-            title: "iPhone 18 Pro Max",
-            discount: "A partir de €1749",
-            buttonText: "Comprar",
-            buttonLink: "/products?name=iphone",
-            image: "/hero-iphone-18-pro-colors.webp",
-            fade: true,
-            imageStyles,
-          },
-          {
-            bgStyle: blackBg,
-            title: "iPhone 18 Pro",
-            discount: "A partir de €1459",
+            title: "iPhone 18 Pro e\nPro Max",
+            discount: "18 Pro: a partir de €1459\n18 Pro Max: a partir de €1749",
             buttonText: "Comprar",
             buttonLink: "/products?name=iphone",
             image: "/hero-iphone-18-pro-colors.webp",
@@ -71,18 +61,8 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
       : [
           {
             bgStyle: blackBg,
-            title: "iPhone 18 Pro Max",
-            discount: "From €1749",
-            buttonText: "Buy",
-            buttonLink: "/products?name=iphone",
-            image: "/hero-iphone-18-pro-colors.webp",
-            fade: true,
-            imageStyles,
-          },
-          {
-            bgStyle: blackBg,
-            title: "iPhone 18 Pro",
-            discount: "From €1459",
+            title: "iPhone 18 Pro &\nPro Max",
+            discount: "18 Pro: from €1459\n18 Pro Max: from €1749",
             buttonText: "Buy",
             buttonLink: "/products?name=iphone",
             image: "/hero-iphone-18-pro-colors.webp",
@@ -394,6 +374,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
 
                         <h2
                           className={`
+  whitespace-pre-line
   text-lg sm:text-3xl md:text-4xl lg:text-5xl
   font-semibold sm:font-black
   leading-tight
@@ -424,7 +405,7 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
   text-xs sm:text-xl
   font-medium sm:font-bold
   ${slide.light ? "text-neutral-600" : "text-neutral-300"}
-  mt-1.5
+  mt-1.5 whitespace-pre-line
 `}
                         >
                           {slide.discount}
