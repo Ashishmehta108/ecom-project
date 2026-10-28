@@ -130,7 +130,7 @@ export default function TopCategoriesSection({
                     />
                   </div>
 
-                  <span className="mt-2 md:mt-3 text-[11px] sm:text-xs md:text-sm font-medium text-neutral-800 dark:text-neutral-100 text-center line-clamp-2 leading-tight px-1">
+                  <span className="mt-2 md:mt-3 text-sm sm:text-base md:text-lg font-semibold text-neutral-800 dark:text-neutral-100 text-center line-clamp-2 leading-tight px-1">
                     {cat.name[locale]}
                   </span>
                 </div>
