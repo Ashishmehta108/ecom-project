@@ -12,7 +12,10 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
     "h-[130px] xs:h-[150px] sm:h-[190px] md:h-[230px] lg:h-[260px] w-auto max-w-full";
   const heroMask =
     "linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%)";
-  const blackBg = "#000000";
+  const burgundyBg =
+    "radial-gradient(ellipse 42% 75% at 74% 50%, rgba(160,34,66,0.85) 0%, rgba(160,34,66,0) 70%), linear-gradient(100deg, #060205 0%, #200711 55%, #2c0a18 100%)";
+  const watchBg =
+    "radial-gradient(ellipse 38% 80% at 74% 50%, rgba(255,96,48,0.55) 0%, rgba(255,96,48,0) 70%), linear-gradient(100deg, #0b090a 0%, #26100f 55%, #3d1510 100%)";
   const darkBg = "linear-gradient(100deg, #1f0711 0%, #3a0e1f 45%, #51172d 100%)";
   const lightBg = "linear-gradient(100deg, #ffffff 0%, #f4f7fb 100%)";
 
@@ -20,13 +23,13 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
     locale === "pt"
       ? [
           {
-            bgStyle: blackBg,
+            bgStyle: burgundyBg,
+            bigText: "18",
             title: "iPhone 18 Pro e\nPro Max",
             discount: "18 Pro: a partir de €1459\n18 Pro Max: a partir de €1749",
             buttonText: "Comprar",
             buttonLink: "/products?name=iphone",
             image: "/hero-iphone-18-pro-colors.webp",
-            fade: true,
             imageStyles,
           },
           {
@@ -53,20 +56,20 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             title: "Novidades da Estação",
             buttonText: "Relógios",
             buttonLink: "/products?category=BRlebewlxBNfqtVulEwmG",
-            image: "/promo1.png",
-            imageStyles:
-              "w-full h-auto max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[300px]",
+            image: "/hero-watch.webp",
+            bgStyle: watchBg,
+            imageStyles,
           },
         ]
       : [
           {
-            bgStyle: blackBg,
+            bgStyle: burgundyBg,
+            bigText: "18",
             title: "iPhone 18 Pro &\nPro Max",
             discount: "18 Pro: from €1459\n18 Pro Max: from €1749",
             buttonText: "Buy",
             buttonLink: "/products?name=iphone",
             image: "/hero-iphone-18-pro-colors.webp",
-            fade: true,
             imageStyles,
           },
           {
@@ -93,9 +96,9 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
             title: "Fresh Arrivals",
             buttonText: "Watches",
             buttonLink: "/products?category=BRlebewlxBNfqtVulEwmG",
-            image: "/promo1.png",
-            imageStyles:
-              "w-full h-auto max-w-[110px] xs:max-w-[140px] sm:max-w-[200px] md:max-w-[260px] lg:max-w-[300px]",
+            image: "/hero-watch.webp",
+            bgStyle: watchBg,
+            imageStyles,
           },
         ];
 
@@ -442,8 +445,21 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
 
                     {/* Image Section with Parallax Effect */}
                     <div className="flex items-center justify-center relative w-full order-2 sm:order-2">
+                      {slide.bigText && (
+                        <span
+                          aria-hidden
+                          className="absolute inset-0 flex items-center justify-center -translate-x-[16%] sm:-translate-x-[22%] select-none pointer-events-none font-black leading-none text-[115px] xs:text-[135px] sm:text-[240px] md:text-[310px] lg:text-[360px]"
+                          style={{
+                            color: "rgba(255,120,150,0.18)",
+                            WebkitTextStroke: "2px rgba(255,175,195,0.75)",
+                          }}
+                        >
+                          {slide.bigText}
+                        </span>
+                      )}
                       <div
                         className={`
+                          relative z-10
                           transition-all duration-700 ease-out
                           ${
                             isActive

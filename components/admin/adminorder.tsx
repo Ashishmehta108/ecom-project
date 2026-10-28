@@ -271,15 +271,14 @@ export default function OrdersClient({ orders, refreshOrders }: any) {
 
                 {order.orderStatus !== "delivered" && (
                  <div className="flex gap-2">
-                   {selectedOrder.orderStatus !== "shipped" && (
-                          <Button
-                            onClick={() =>
-                              askToConfirm(selectedOrder, "shipped")
-                            }
-                          >
-                            Mark Shipped
-                          </Button>
-                        )}
+                   {order.orderStatus !== "shipped" && (
+                      <Button
+                        size="sm"
+                        onClick={() => askToConfirm(order, "shipped")}
+                      >
+                        Mark Shipped
+                      </Button>
+                    )}
                     <Button
                       size="sm"
                       onClick={() => askToConfirm(order, "delivered")}

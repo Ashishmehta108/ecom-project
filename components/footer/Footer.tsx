@@ -12,34 +12,33 @@ export default function Footer() {
   // Categories (EN + PT translation)
   const categories = [
     {
-      id: "mOTdRnd4ve0dp-1qcmUGB",
+      href: "/products?category=48abdd39-1a2a-4392-a380-208667ced7e5",
       name: locale === "pt" ? "Auriculares" : "Earphones",
     },
     {
-      id: "yKuRPnbT-1iVANXJd0o22",
+      href: "/products?name=tablet",
       name: locale === "pt" ? "Tablets" : "Tablet",
     },
     {
-      id: "Zg-M3CrHIORqVsDa4vk18",
+      href: "/products?category=BRlebewlxBNfqtVulEwmG",
       name: locale === "pt" ? "Relógios" : "Watches",
     },
     {
-      id: "q0yW2LXO_hsjUUV4iJawt",
+      href: "/products?category=0c6c7cc9-f789-424f-831b-bd8cf630bca5",
       name: locale === "pt" ? "Colunas" : "Speakers",
     },
     {
-      id: "INALZ1POuP-Wpgw1V5zxN",
+      href: "/products?name=iphone",
       name: locale === "pt" ? "Telemóveis" : "Phones",
     },
     {
-      id: "T_C_0IxGAA3Y4NgS0FgrC",
+      href: "/products?category=f8223d48-05cf-4ecf-be9d-2944dbb02eaf",
       name:
         locale === "pt" ? "Telemóveis Recondicionados" : "Refurbished Phones",
     },
   ];
 
-  const getCategoryHref = (cat: any) =>
-    `/products?category=${encodeURIComponent(cat.id)}`;
+  const getCategoryHref = (cat: { href: string }) => cat.href;
 
   return (
     <footer className="w-full bg-black text-neutral-300 relative overflow-hidden py-16">
@@ -56,24 +55,24 @@ export default function Footer() {
           <div>
             <h2 className="text-3xl font-semibold text-white mb-2">TechBar</h2>
 
-            <p className="text-white font-semibold tracking-wide text-sm mb-1">
+            <p className="text-white font-semibold tracking-wide text-base mb-1">
               {locale === "pt"
                 ? "Reparação rápida de telemóveis"
                 : "Quick phone repair service"}
             </p>
-            <p className="text-white font-bold tracking-[2px] text-sm mb-4">
+            <p className="text-white font-bold tracking-[2px] text-base mb-4">
               {locale === "pt" ? "TELECOMUNICAÇÕES" : "TELECOMMUNICATIONS"}
             </p>
 
             {/* ADDRESS */}
-            <p className="text-neutral-400 text-sm leading-relaxed mb-6">
+            <p className="text-neutral-400 text-base leading-relaxed mb-6">
               Rua Ary dos Santos 20E <br />
               2810-433 Almada, Portugal
             </p>
 
             {/* CALL */}
-            <div className="space-y-2 text-sm">
-              <p className="text-neutral-500 text-xs mb-1">
+            <div className="space-y-2 text-base">
+              <p className="text-neutral-500 text-sm mb-1">
                 {locale === "pt" ? "Contacte-nos" : "Call Us"}
               </p>
               <p className="text-white font-medium tracking-wide">
@@ -114,7 +113,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-white mb-4">
               {locale === "pt" ? "Categorias" : "Popular Categories"}
             </h3>
-            <ul className="space-y-2 text-neutral-400 text-sm leading-relaxed">
+            <ul className="space-y-2 text-neutral-400 text-base leading-relaxed">
               {categories.map((cat, idx) => (
                 <li key={idx} className="hover:text-white transition">
                   • <Link href={getCategoryHref(cat)}>{cat.name}</Link>
@@ -128,7 +127,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-white mb-4">
               {locale === "pt" ? "Serviço ao Cliente" : "Customer Services"}
             </h3>
-            <ul className="space-y-2 text-neutral-400 text-sm leading-relaxed">
+            <ul className="space-y-2 text-neutral-400 text-base leading-relaxed">
               <li className="hover:text-white transition">
                 •{" "}
                 <Link href="/about">
@@ -165,7 +164,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-white mb-4">
               {locale === "pt" ? "Apoio ao Cliente" : "Support & Help"}
             </h3>
-            <ul className="space-y-2 text-neutral-400 text-sm leading-relaxed">
+            <ul className="space-y-2 text-neutral-400 text-base leading-relaxed">
               <li className="hover:text-white transition">
                 •{" "}
                 <Link href="#">
@@ -219,7 +218,7 @@ export default function Footer() {
         <div className="mt-16 mb-8 h-px w-full bg-white/10" />
 
         {/* COPYRIGHT */}
-        <p className="text-center text-xs text-neutral-500">
+        <p className="text-center text-sm text-neutral-500">
           © {new Date().getFullYear()} TechBar —{" "}
           {locale === "pt"
             ? "Todos os direitos reservados."
