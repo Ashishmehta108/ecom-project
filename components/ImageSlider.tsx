@@ -448,10 +448,10 @@ export default function PromoSlider({ slides = [] }: { slides?: any[] }) {
                       {slide.bigText && (
                         <span
                           aria-hidden
-                          className="absolute inset-0 flex items-center justify-center -translate-x-[16%] sm:-translate-x-[22%] select-none pointer-events-none font-black leading-none text-[115px] xs:text-[135px] sm:text-[240px] md:text-[310px] lg:text-[360px]"
+                          className="absolute inset-0 flex items-center justify-center -translate-x-[6%] sm:-translate-x-[22%] select-none pointer-events-none font-black leading-none text-[195px] xs:text-[215px] sm:text-[240px] md:text-[310px] lg:text-[360px]"
                           style={{
-                            color: "rgba(255,120,150,0.18)",
-                            WebkitTextStroke: "2px rgba(255,175,195,0.75)",
+                            color: "rgba(255,120,150,0.26)",
+                            WebkitTextStroke: "2px rgba(255,185,205,0.95)",
                           }}
                         >
                           {slide.bigText}
