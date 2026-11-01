@@ -224,6 +224,17 @@ export default function Footer() {
             ? "Todos os direitos reservados."
             : "All Rights Reserved."}
         </p>
+        <p className="mt-2 text-center text-sm text-neutral-500">
+          {locale === "pt" ? "Desenvolvido por" : "Powered by"}{" "}
+          <a
+            href="https://skyrockets.co.in"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-neutral-300 underline-offset-4 hover:text-white hover:underline transition"
+          >
+            skyrockets.co.in
+          </a>
+        </p>
       </div>
     </footer>
   );
