@@ -13,6 +13,9 @@
       discount: Number(item.pricing?.discount) || 0,
       image: item.productImages?.[0]?.url || "/placeholder.png",
       productImages: item.productImages || [],
+      outOfStock:
+        item.pricing?.inStock === false ||
+        (item.pricing?.stockQuantity ?? 1) <= 0,
     }));
 
     return <TopEarbudsSectionClient earbuds={formatted} />;
