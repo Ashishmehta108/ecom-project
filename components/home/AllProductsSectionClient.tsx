@@ -8,6 +8,7 @@ import FavoriteButton from "../favourites/favoritebutton";
 import { useLanguage } from "@/app/context/languageContext";
 import { getTranslatedText } from "@/lib/utils/language";
 import { useMemo } from "react";
+import QuickAddButton from "./QuickAddButton";
 
 export default function AllProductsSectionClient({
   products,
@@ -15,6 +16,7 @@ export default function AllProductsSectionClient({
   products: any[];
 }) {
   const { locale } = useLanguage();
+  const pt = locale === "pt";
 
   const resolvedProducts = useMemo(() => {
     return products.map((p) => ({
@@ -46,11 +48,11 @@ export default function AllProductsSectionClient({
         {/* PRODUCT GRID */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-5">
           {resolvedProducts.map((p) => (
-            <Link
-              href={`/products/${p.id}`}
+            <div
               key={p.id}
-              className="group rounded-xl md:rounded-2xl bg-neutral-50 hover:bg-neutral-100/80 dark:bg-neutral-900 dark:hover:bg-neutral-900/80 border border-neutral-200 dark:border-neutral-800 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-md cursor-pointer"
+              className="group flex flex-col rounded-xl md:rounded-2xl bg-neutral-50 hover:bg-neutral-100/80 dark:bg-neutral-900 dark:hover:bg-neutral-900/80 border border-neutral-200 dark:border-neutral-800 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-md"
             >
+            <Link href={`/products/${p.id}`} className="block flex-1 cursor-pointer">
               <div className="relative w-full aspect-square dark:bg-neutral-950 p-2 md:p-3 rounded-[16px] md:rounded-[20px] flex items-center justify-center">
                 <Image
                   src={p.image}
@@ -75,7 +77,11 @@ export default function AllProductsSectionClient({
                   {p.name}
                 </h3>
 
-                <div className="flex items-center gap-1.5 md:gap-2 mt-1">
+              </div>
+            </Link>
+
+              <div className="flex items-center justify-between gap-2 px-2.5 md:px-3 pb-3 md:pb-4">
+                <div className="flex flex-wrap items-baseline gap-x-1.5 min-w-0">
                   <span className="text-xs md:text-[15px] font-bold text-neutral-900 dark:text-neutral-50">
                     €
                     {Number(
@@ -92,8 +98,13 @@ export default function AllProductsSectionClient({
                     </span>
                   )}
                 </div>
+                <QuickAddButton
+                  productId={p.id}
+                  outOfStock={p.outOfStock}
+                  pt={pt}
+                />
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </Container>

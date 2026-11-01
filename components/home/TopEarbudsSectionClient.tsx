@@ -8,6 +8,7 @@ import FavoriteButton from "../favourites/favoritebutton";
 import { useLanguage } from "@/app/context/languageContext";
 import { getTranslatedText } from "@/lib/utils/language";
 import { useMemo } from "react";
+import QuickAddButton from "./QuickAddButton";
 
 export default function TopEarbudsSectionClient({
   earbuds,
@@ -47,11 +48,11 @@ export default function TopEarbudsSectionClient({
         {/* CARD SLIDER */}
         <div className="flex gap-3 md:gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-2">
           {resolvedEarbuds.map((e) => (
-            <Link
-              href={`/products/${e.id}`}
+            <div
               key={e.id}
-              className="group w-[130px] sm:w-[160px] md:w-[180px] lg:w-[200px] flex-shrink-0 snap-start rounded-xl md:rounded-2xl bg-neutral-50 hover:bg-neutral-100/80 dark:bg-neutral-900 dark:hover:bg-neutral-900/80 border border-neutral-200 dark:border-neutral-800 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-md cursor-pointer"
+              className="group flex flex-col w-[130px] sm:w-[160px] md:w-[180px] lg:w-[200px] flex-shrink-0 snap-start rounded-xl md:rounded-2xl bg-neutral-50 hover:bg-neutral-100/80 dark:bg-neutral-900 dark:hover:bg-neutral-900/80 border border-neutral-200 dark:border-neutral-800 overflow-hidden transition-all duration-300 ease-in-out hover:shadow-md"
             >
+            <Link href={`/products/${e.id}`} className="block flex-1 cursor-pointer">
               {/* IMAGE CONTAINER */}
               <div className="relative w-full aspect-square dark:bg-neutral-950 p-2 md:p-3 rounded-[16px] md:rounded-[20px] flex items-center justify-center">
                 <Image
@@ -80,8 +81,12 @@ export default function TopEarbudsSectionClient({
                   {e.name}
                 </h3>
 
+              </div>
+            </Link>
+
+              <div className="flex items-center justify-between gap-2 px-2.5 md:px-3 pb-3 md:pb-4">
                 {/* PRICE SECTION */}
-                <div className="flex items-center gap-1.5 md:gap-2 mt-1">
+                <div className="flex flex-wrap items-baseline gap-x-1.5 min-w-0">
                   {/* NEW PRICE (calculated after discount) */}
                   <span className="text-xs md:text-[15px] font-bold text-neutral-900 dark:text-neutral-50">
                     €{Number((e.price - (e.price * e.discount) / 100).toFixed(2)).toLocaleString('en-US', { 
@@ -97,8 +102,13 @@ export default function TopEarbudsSectionClient({
                     </span>
                   )}
                 </div>
+                <QuickAddButton
+                  productId={e.id}
+                  outOfStock={e.outOfStock}
+                  pt={locale === "pt"}
+                />
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </Container>
